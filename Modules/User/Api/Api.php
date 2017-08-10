@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\User\Api;
+namespace Framework\User\Api;
 
-use Modules\Base\Module\ModuleInterface;
+use Framework\Base\Module\ModuleInterface;
 
 class Api implements ModuleInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Http\Response;
+namespace Framework\Http\Response;
 
-use Modules\Base\JsonOutput\JsonOutput;
-use Modules\Base\Module\ModuleInterface;
+use Framework\Base\JsonOutput\JsonOutput;
+use Framework\Base\Module\ModuleInterface;
 
 class Response implements ModuleInterface
 {

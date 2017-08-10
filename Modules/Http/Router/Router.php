@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Http\Router;
+namespace Framework\Http\Router;
 
-use Modules\Application\RestApi\NotFoundException;
-use \Modules\Base\Module\ModuleInterface;
+use Framework\Application\RestApi\NotFoundException;
+use \Framework\Base\Module\ModuleInterface;
 
 class Router implements ModuleInterface
 {
     private $registry = [
-        '/test' => '\Modules\User\Api\Actions\Single'
+        '/test' => '\Framework\User\Api\Actions\Single'
     ];
 
     public function bootstrap()
@@ -17,7 +17,7 @@ class Router implements ModuleInterface
 
     /**
      * @param $uri
-     * @return \Modules\Http\Request\ApiMethodInterface
+     * @return \Framework\Http\Request\ApiMethodInterface
      */
     public function parse($uri)
     {

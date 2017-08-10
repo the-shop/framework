@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Http\Request;
+namespace Framework\Http\Request;
 
-use Modules\Base\Module\ModuleInterface;
+use Framework\Base\Module\ModuleInterface;
 
 class Request implements ModuleInterface
 {

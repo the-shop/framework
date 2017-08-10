@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Base\Module;
+namespace Framework\Base\Module;
 
 interface OutputInterface
 {

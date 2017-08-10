@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Application\RestApi;
+namespace Framework\Application\RestApi;
 
 class NotFoundException extends \RuntimeException
 {

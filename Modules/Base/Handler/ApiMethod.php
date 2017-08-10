@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Base\Handler;
+namespace Framework\Base\Handler;
 
-use Modules\Application\RestApi\ApplicationAwareInterface;
-use Modules\Application\RestApi\ApplicationAwareTrait;
-use Modules\Http\Request\ApiMethodInterface;
+use Framework\Application\RestApi\ApplicationAwareInterface;
+use Framework\Application\RestApi\ApplicationAwareTrait;
+use Framework\Http\Request\ApiMethodInterface;
 
 abstract class ApiMethod implements ApiMethodInterface, ApplicationAwareInterface
 {

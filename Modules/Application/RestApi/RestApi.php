@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Application\RestApi;
+namespace Framework\Application\RestApi;
 
-use Modules\Base\Module\ModuleInterface;
-use Modules\Http\Request\Request;
-use Modules\Http\Response\Response;
-use Modules\Http\Router\Router;
+use Framework\Base\Module\ModuleInterface;
+use Framework\Http\Request\Request;
+use Framework\Http\Response\Response;
+use Framework\Http\Router\Router;
 
 class RestApi implements ModuleInterface
 {
@@ -14,7 +14,7 @@ class RestApi implements ModuleInterface
 
     public function __construct()
     {
-        $request = new \Modules\Http\Request\Request();
+        $request = new \Framework\Http\Request\Request();
         $request->setPost(isset($_POST) ? $_POST : []);
         $request->setGet(isset($_GET) ? $_GET : []);
         $request->setFiles(isset($_FILES) ? $_FILES : []);
@@ -56,7 +56,7 @@ class RestApi implements ModuleInterface
     }
 
     /**
-     * @return \Modules\Http\Request\Request
+     * @return \Framework\Http\Request\Request
      */
     public function getRequest()
     {
@@ -70,7 +70,7 @@ class RestApi implements ModuleInterface
     }
 
     /**
-     * @return \Modules\Http\Response\Response
+     * @return \Framework\Http\Response\Response
      */
     public function getResponse() {
         return $this->response;

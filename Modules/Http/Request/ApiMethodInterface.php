@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Http\Request;
+namespace Framework\Http\Request;
 
-use Modules\Application\RestApi\RestApi;
+use Framework\Application\RestApi\RestApi;
 
 interface ApiMethodInterface
 {

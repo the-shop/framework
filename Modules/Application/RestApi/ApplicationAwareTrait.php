@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Application\RestApi;
+namespace Framework\Application\RestApi;
 
 trait ApplicationAwareTrait
 {
@@ -14,7 +14,7 @@ trait ApplicationAwareTrait
     }
 
     /**
-     * @return \Modules\Application\RestApi\RestApi
+     * @return \Framework\Application\RestApi\RestApi
      */
     public function getApplication()
     {

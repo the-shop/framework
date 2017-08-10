@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Base\Handler;
+namespace Framework\Base\Handler;
 
-use Modules\Base\Module\ModuleInterface;
+use Framework\Base\Module\ModuleInterface;
 
 class Handler implements ModuleInterface
 {

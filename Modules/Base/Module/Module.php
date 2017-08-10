@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Base\Module;
+namespace Framework\Base\Module;
 
-use \Modules\Base\Module\ModuleInterface;
+use \Framework\Base\Module\ModuleInterface;
 
 class Module implements ModuleInterface
 {

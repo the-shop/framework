@@ -21,23 +21,12 @@ if (!function_exists('getallheaders')) {
 require_once 'vendor/autoload.php';
 
 $modules = [
-    "Modules/Application/RestApi/RestApi",
+//    "Framework/Application/RestApi/RestApi",
 ];
 
-foreach ($modules as $module) {
-    require_once $module . ".php";
-    $moduleClass = str_replace('/', '\\', $module);
-    $instance = new $moduleClass();
-    $instance->bootstrap();
-}
-
-/**
- * Require entry point class for API
- */
-//require_once 'Api.php';
-
-/**
- * Load environment variables
- */
-//$dotenv = new \Symfony\Component\Dotenv\Dotenv(__DIR__);
-//$dotenv->load(__DIR__.'/.env');
+//foreach ($modules as $module) {
+//    require_once $module . ".php";
+//    $moduleClass = str_replace('/', '\\', $module);
+//    $instance = new $moduleClass();
+//    $instance->bootstrap();
+//}

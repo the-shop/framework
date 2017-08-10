@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Base\JsonOutput;
+namespace Framework\Base\JsonOutput;
 
-use Modules\Base\Module\ModuleInterface;
-use Modules\Base\Module\OutputInterface;
+use Framework\Base\Module\ModuleInterface;
+use Framework\Base\Module\OutputInterface;
 
 class JsonOutput implements ModuleInterface, OutputInterface
 {

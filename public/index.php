@@ -2,5 +2,5 @@
 
 require_once "../bootstrap.php";
 
-$app = new \Modules\Application\RestApi\RestApi();
+$app = new \Framework\Application\RestApi\RestApi();
 $response = $app->handle();

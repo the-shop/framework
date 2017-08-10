@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\User\Api\Actions;
+namespace Framework\User\Api\Actions;
 
-use Modules\Base\Handler\ApiMethod;
-use Modules\Http\Request\ApiMethodInterface;
+use Framework\Base\Handler\ApiMethod;
+use Framework\Http\Request\ApiMethodInterface;
 
 class Single extends ApiMethod implements ApiMethodInterface
 {

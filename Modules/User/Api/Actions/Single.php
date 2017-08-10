@@ -4,6 +4,7 @@ namespace Framework\User\Api\Actions;
 
 use Framework\Base\Handler\ApiMethod;
 use Framework\Http\Request\ApiMethodInterface;
+use Framework\User\Api\Models\User;
 
 class Single extends ApiMethod implements ApiMethodInterface
 {
@@ -16,9 +17,8 @@ class Single extends ApiMethod implements ApiMethodInterface
 
     protected function create()
     {
-        // TODO:
-//        $user = new User();
-//        $user->save();
-        return 'TODO: implement me';
+        $user = new User();
+        $user->save();
+        return $user->getId();
     }
 }

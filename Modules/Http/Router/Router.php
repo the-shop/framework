@@ -3,16 +3,21 @@
 namespace Framework\Http\Router;
 
 use Framework\Application\RestApi\NotFoundException;
-use \Framework\Base\Module\ModuleInterface;
+use Framework\Base\Module\Module;
 
-class Router implements ModuleInterface
+class Router extends Module
 {
-    private $registry = [
-        '/test' => '\Framework\User\Api\Actions\Single'
-    ];
+    private $registry = [];
 
     public function bootstrap()
     {
+    }
+
+    public function registerRoutes($routes)
+    {
+        $this->registry = array_merge($this->registry, $routes);
+
+        return $this;
     }
 
     /**

@@ -21,12 +21,6 @@ abstract class ApiMethod implements ApiMethodInterface, ApplicationAwareInterfac
             ->getRequest()
             ->getMethod();
 
-
-        if (!method_exists($this, $this->getRegisteredRequestRoutes()[$requestMethod])) {
-            // TODO: implement custom exception for this
-            throw new \Exception('Not implemented');
-        }
-
         return call_user_func([$this, $this->getRegisteredRequestRoutes()[$requestMethod]]);
     }
 }

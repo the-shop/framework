@@ -10,30 +10,15 @@ class Single extends ApiMethod implements ApiMethodInterface
     public function getRegisteredRequestRoutes()
     {
         return [
-            'get' => 'get',
             'post' => 'create',
-            'put' => 'update',
-            'delete' => 'delete',
         ];
-    }
-
-    protected function get()
-    {
-        return 'output 1';
     }
 
     protected function create()
     {
-        return 'output 2';
-    }
-
-    protected function update()
-    {
-        return 'output 3';
-    }
-
-    protected function delete()
-    {
-        return 'output 4';
+        // TODO:
+//        $user = new User();
+//        $user->save();
+        return 'TODO: implement me';
     }
 }

@@ -2,12 +2,20 @@
 
 namespace Framework\User\Api;
 
-use Framework\Base\Module\ModuleInterface;
+use Framework\Base\Module\Module;
 
-class Api implements ModuleInterface
+class Api extends Module
 {
+    private $config = [
+        'routes' => [
+            '/test' => '\Framework\User\Api\Actions\Single'
+        ]
+    ];
+
     public function bootstrap()
     {
-        // TODO: Implement bootstrap() method.
+        $this->getApplication()
+            ->getRouter()
+            ->registerRoutes($this->config['routes']);
     }
 }

@@ -2,10 +2,12 @@
 
 namespace Framework\Base\Module;
 
-use \Framework\Base\Module\ModuleInterface;
+use Framework\Application\RestApi\ApplicationAwareTrait;
 
-class Module implements ModuleInterface
+abstract class Module implements ModuleInterface
 {
+    use ApplicationAwareTrait;
+
     public function bootstrap()
     {
         echo 'bootstrapping here';

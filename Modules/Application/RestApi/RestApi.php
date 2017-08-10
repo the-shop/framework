@@ -2,13 +2,14 @@
 
 namespace Framework\Application\RestApi;
 
-use Framework\Base\Module\ModuleInterface;
+use Framework\Base\Module\Module;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
 use Framework\Http\Router\Router;
 
-class RestApi implements ModuleInterface
+class RestApi extends Module
 {
+    private $router = null;
     private $request = null;
     private $response = null;
 
@@ -25,6 +26,9 @@ class RestApi implements ModuleInterface
         unset($_FILES);
 
         $this->setRequest($request);
+
+        $router = new Router();
+        $this->setRouter($router);
     }
 
     public function bootstrap()
@@ -32,14 +36,28 @@ class RestApi implements ModuleInterface
         //
     }
 
+    /**
+     * @return \Framework\Http\Router\Router
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
+    public function setRouter(Router $router)
+    {
+        $this->router = $router;
+    }
+
     public function handle()
     {
         try {
-            $router = new Router();
-            $routeHandler = $router->parse($_SERVER['REQUEST_URI']);
+            $routeHandler = $this->getRouter()
+                ->parse($_SERVER['REQUEST_URI']);
 
             if (!in_array($this->getRequest()->getMethod(), $routeHandler->getRegisteredRequestMethods())) {
-                // throw
+                // TODO: implement custom exception for this
+                throw new \Exception('Not implemented');
             }
 
             $routeHandler->setApplication($this);

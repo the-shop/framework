@@ -3,9 +3,9 @@
 namespace Framework\Http\Response;
 
 use Framework\Base\JsonOutput\JsonOutput;
-use Framework\Base\Module\ModuleInterface;
+use Framework\Base\Module\Module;
 
-class Response implements ModuleInterface
+class Response extends Module
 {
     private $body = '';
     private $response = null;

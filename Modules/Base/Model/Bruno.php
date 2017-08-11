@@ -2,8 +2,9 @@
 
 namespace Framework\Base\Model;
 
-use MongoDB\Client;
-use MongoDB\Exception\InvalidArgumentException;
+use Framework\Base\Database\DatabaseAdapterInterface;
+use Framework\Base\Database\MongoAdapter;
+use Framework\Base\Database\MongoQuery;
 
 /**
  * Base Model for database
@@ -11,23 +12,18 @@ use MongoDB\Exception\InvalidArgumentException;
  * @package Framework\Base\Model
  * @property bool new returns if exists in db
  */
-abstract class Bruno
+abstract class Bruno implements BrunoInterface
 {
     /**
-     * @var Client
+     * @var MongoAdapter
      */
-    private $client;
+    protected $databaseAdapter;
 
-    protected $address;
+    protected $databaseAddress = '192.168.33.10:27017'; // TODO: use this
 
-    protected $database;
+    protected $database = 'framework';
 
-    protected $collection;
-
-    /**
-     * @var \MongoDB\Collection
-     */
-    private $currentCollection;
+    protected $collection = 'users';
 
     /**
      * @var array
@@ -37,7 +33,7 @@ abstract class Bruno
     /**
      * @var array
      */
-    private $attributes;
+    private $attributes = [];
 
     /**
      * @var bool
@@ -46,57 +42,80 @@ abstract class Bruno
 
     public function __construct(array $attributes = [])
     {
-        $this->client = new Client("mongodb://" . $this->address);
-        try {
-            $this->currentCollection = $this->client->selectCollection($this->getDatabase(), $this->getCollection());
-        } catch (InvalidArgumentException $exception) {
-            //TODO throw new Exception
-        }
+        $mongoAdapter = new MongoAdapter();
+
+        $this->setDatabaseAdapter($mongoAdapter);
+
         $this->attributes = $attributes;
     }
 
     public function getId()
     {
-        return isset($this->getDBAttributes()['_id']) ? $this->getDBAttributes()['_id'] : null;
+        return isset($this->getDatabaseAttributes()['_id']) ? $this->getDatabaseAttributes()['_id'] : null;
     }
 
     public function save()
     {
+        $query = new MongoQuery();
+        $query->setDatabase($this->getDatabase());
+        $query->setCollection($this->getCollection());
+
         if ($this->isNew()) {
-            $this->getCurrentCollection()->insertOne($this->getAttributes());
+            $id = $this->getDatabaseAdapter()->insertOne($query, $this->getAttributes());
+            $this->attributes['_id'] = (string) $id;
             $this->isNew = false;
             $this->dbAttributes = $this->getAttributes();
         } else {
-            $this->getCurrentCollection()->updateOne(['_id' => $this->getId()], $this->getAttributes());
+            $this->getDatabaseAdapter()->updateOne($query, $this->getId(), $this->getAttributes());
+            $this->dbAttributes = $this->getAttributes();
         }
+
         return $this;
     }
+
+    public function getDatabase()
+    {
+        return $this->database;
+    }
+
+    public function getCollection()
+    {
+        return $this->collection;
+    }
+
     public function isNew()
     {
         return $this->isNew;
     }
 
-    protected function getCollection()
+    public function setDatabaseAdapter(DatabaseAdapterInterface $adapter)
     {
-        return isset($this->collection) ? $this->collection : null;
+        $this->databaseAdapter = $adapter;
+
+        return $this;
     }
 
-    protected function getDatabase()
+    public function getDatabaseAdapter()
     {
-        return isset($this->database) ? $this->database : null;
+        return $this->databaseAdapter;
     }
 
-    private function getCurrentCollection()
+    public function setAttributes(array $attributes = [])
     {
-        return $this->currentCollection;
+        $this->attributes = $attributes;
     }
 
-    private function getAttributes()
+    public function getAttributes()
     {
         return $this->attributes;
     }
 
-    private function getDBAttributes()
+    public function getDirtyAttributes()
+    {
+        // TODO: Implement getDirtyAttributes() method.
+    }
+
+    public function getDatabaseAttributes()
     {
         return $this->dbAttributes;
     }

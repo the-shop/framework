@@ -2,13 +2,13 @@
 
 namespace Framework\Base\Module;
 
-use Framework\Application\RestApi\RestApi;
+use Framework\Application\Base\BaseApplication;
 
 interface ModuleInterface
 {
     public function bootstrap();
 
-    public function setApplication(RestApi $application);
+    public function setApplication(BaseApplication $application);
 
     public function getApplication();
 }

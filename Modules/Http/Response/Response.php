@@ -3,13 +3,12 @@
 namespace Framework\Http\Response;
 
 use Framework\Base\JsonOutput\JsonOutput;
-use Framework\Base\Module\Module;
+use Framework\Base\Module\BaseModule;
 
-class Response extends Module
+class Response extends BaseModule
 {
     private $body = '';
     private $response = null;
-
 
     public function __construct($response)
     {

@@ -3,9 +3,9 @@
 namespace Framework\Http\Router;
 
 use Framework\Application\RestApi\NotFoundException;
-use Framework\Base\Module\Module;
+use Framework\Base\Module\BaseModule;
 
-class Router extends Module
+class Router extends BaseModule
 {
     private $registry = [];
 

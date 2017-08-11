@@ -2,9 +2,9 @@
 
 namespace Framework\Base\Handler;
 
-use Framework\Base\Module\Module;
+use Framework\Base\Module\BaseModule;
 
-class Handler extends Module
+class Handler extends BaseModule
 {
     public function bootstrap()
     {

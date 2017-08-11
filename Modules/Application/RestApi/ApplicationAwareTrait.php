@@ -2,11 +2,13 @@
 
 namespace Framework\Application\RestApi;
 
+use Framework\Application\Base\BaseApplication;
+
 trait ApplicationAwareTrait
 {
     private $application;
 
-    public function setApplication(RestApi $application)
+    public function setApplication(BaseApplication $application)
     {
         $this->application = $application;
 

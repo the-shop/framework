@@ -2,9 +2,9 @@
 
 namespace Framework\Http\Request;
 
-use Framework\Base\Module\Module;
+use Framework\Base\Module\BaseModule;
 
-class Request extends Module
+class Request extends BaseModule
 {
     private $getParams = [];
     private $postParams = [];

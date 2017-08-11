@@ -2,54 +2,19 @@
 
 namespace Framework\Application\RestApi;
 
-use Framework\Base\Module\Module;
-use Framework\Http\Request\Request;
+use Framework\Application\Base\BaseApplication;
 use Framework\Http\Response\Response;
-use Framework\Http\Router\Router;
 
-class RestApi extends Module
+/**
+ * Class RestApi
+ * @package Framework\Application\RestApi
+ */
+class RestApi extends BaseApplication
 {
-    private $router = null;
-    private $request = null;
-    private $response = null;
-
-    public function __construct()
-    {
-        $request = new \Framework\Http\Request\Request();
-        $request->setPost(isset($_POST) ? $_POST : []);
-        $request->setGet(isset($_GET) ? $_GET : []);
-        $request->setFiles(isset($_FILES) ? $_FILES : []);
-        $request->setMethod($_SERVER['REQUEST_METHOD']);
-
-        unset($_POST);
-        unset($_GET);
-        unset($_FILES);
-
-        $this->setRequest($request);
-
-        $router = new Router();
-        $this->setRouter($router);
-    }
-
-    public function bootstrap()
-    {
-        //
-    }
-
     /**
-     * @return \Framework\Http\Router\Router
+     * @return \Framework\Http\Response\Response
      */
-    public function getRouter()
-    {
-        return $this->router;
-    }
-
-    public function setRouter(Router $router)
-    {
-        $this->router = $router;
-    }
-
-    public function handle()
+    public function run()
     {
         try {
             $routeHandler = $this->getRouter()
@@ -57,40 +22,21 @@ class RestApi extends Module
 
             if (!in_array($this->getRequest()->getMethod(), $routeHandler->getRegisteredRequestMethods())) {
                 // TODO: implement custom exception for this
-                throw new \Exception('Not implemented');
+                throw new \RuntimeException('Not implemented');
             }
 
             $routeHandler->setApplication($this);
-            $this->response = $routeHandler->handle();
+            $handlerOutput = $routeHandler->handle();
         } catch (\Exception $e) {
-            $this->response = $e->getMessage();
+            $handlerOutput = $e->getMessage();
         }
 
-        $this->response = new Response($this->response);
+        $response = new Response($handlerOutput);
 
-        $this->response->output();
+        $this->setResponse($response);
 
-        return $this->response;
-    }
+        $response->output();
 
-    /**
-     * @return \Framework\Http\Request\Request
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    public function setRequest(Request $request) {
-        $this->request = $request;
-
-        return $this;
-    }
-
-    /**
-     * @return \Framework\Http\Response\Response
-     */
-    public function getResponse() {
-        return $this->response;
+        return $this->getResponse();
     }
 }

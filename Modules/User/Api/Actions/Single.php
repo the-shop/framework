@@ -3,14 +3,14 @@
 namespace Framework\User\Api\Actions;
 
 use Framework\Base\Handler\ApiMethod;
-use Framework\Http\Request\ApiMethodInterface;
 use Framework\User\Api\Models\User;
 
-class Single extends ApiMethod implements ApiMethodInterface
+class Single extends ApiMethod
 {
     public function getRegisteredRequestRoutes()
     {
         return [
+            'get' => 'get',
             'post' => 'create',
         ];
     }
@@ -20,5 +20,12 @@ class Single extends ApiMethod implements ApiMethodInterface
         $user = new User();
         $user->save();
         return $user->getId();
+    }
+
+    protected function get()
+    {
+        $user = $this->getRepository(User::class)
+            ->loadOne('598ddf36962d7456c80bfbb5');
+        return $user;
     }
 }

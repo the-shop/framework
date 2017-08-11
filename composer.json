@@ -1,7 +1,8 @@
 {
     "require": {
         "lcobucci/jwt": "^3.2",
-        "symfony/dotenv": "^3.3"
+        "symfony/dotenv": "^3.3",
+        "mongodb/mongodb": "^1.1"
     },
     "autoload": {
         "psr-4": {

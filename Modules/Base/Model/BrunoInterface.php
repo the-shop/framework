@@ -32,7 +32,8 @@ interface BrunoInterface
     public function save();
 
     /**
-     * @return mixed
+     * @param DatabaseAdapterInterface $adapter
+     * @return BrunoInterface
      */
     public function setDatabaseAdapter(DatabaseAdapterInterface $adapter);
 
@@ -47,6 +48,7 @@ interface BrunoInterface
     public function getAttributes();
 
     /**
+     * @param array $attributes
      * @return BrunoInterface
      */
     public function setAttributes(array $attributes = []);

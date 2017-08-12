@@ -6,8 +6,8 @@ use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Repository\BrunoRepositoryInterface;
 
 /**
- * Interface RepositoryManagerInterface
- * @package Framework\Base\Model
+ * Interface RepositoryInterface
+ * @package Framework\Base\Manager
  */
 interface RepositoryInterface
 {

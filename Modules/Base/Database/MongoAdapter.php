@@ -2,7 +2,6 @@
 
 namespace Framework\Base\Database;
 
-use Framework\Base\Model\BrunoInterface;
 use MongoDB\Client;
 
 /**

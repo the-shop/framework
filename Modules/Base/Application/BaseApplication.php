@@ -12,7 +12,7 @@ use Framework\User\Api\Module;
 
 /**
  * Class BaseApplication
- * @package Framework\Application\Base
+ * @package Framework\Base\Application
  */
 abstract class BaseApplication implements ApplicationInterface
 {

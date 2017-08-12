@@ -4,7 +4,7 @@ namespace Framework\Base\Application;
 
 /**
  * Class BaseController
- * @package Framework\Application\Base
+ * @package Framework\Base\Application
  */
 abstract class BaseController implements ControllerInterface, ApplicationAwareInterface
 {
@@ -31,7 +31,7 @@ abstract class BaseController implements ControllerInterface, ApplicationAwareIn
     }
 
     /**
-     * @return \Framework\Base\Model\RepositoryManagerInterface
+     * @return \Framework\Base\Manager\RepositoryInterface
      */
     public function getRepositoryManager()
     {
@@ -44,7 +44,7 @@ abstract class BaseController implements ControllerInterface, ApplicationAwareIn
 
     /**
      * @param $fullyQualifiedClassName
-     * @return \Framework\Base\Model\BrunoRepositoryInterface
+     * @return \Framework\Base\Repository\BrunoRepositoryInterface
      */
     public function getRepository($fullyQualifiedClassName)
     {

@@ -7,7 +7,7 @@ use Framework\User\Api\Models\User as UserModel;
 
 /**
  * Class User
- * @package Framework\User\Api\Actions
+ * @package Framework\User\Api\Controller
  */
 class User extends BaseController
 {

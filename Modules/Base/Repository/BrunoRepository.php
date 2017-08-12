@@ -9,20 +9,37 @@ use Framework\Base\Database\MongoQuery;
 use Framework\Base\Manager\RepositoryInterface;
 use Framework\Base\Model\BrunoInterface;
 
+/**
+ * Class BrunoRepository
+ * @package Framework\Base\Repository
+ */
 class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInterface
 {
     use ApplicationAwareTrait;
 
+    /**
+     * @var DatabaseAdapterInterface|null
+     */
     private $adapter = null;
 
+    /**
+     * @var RepositoryInterface|null
+     */
     private $repositoryManager = null;
 
+    /**
+     * @param DatabaseAdapterInterface $adapter
+     * @return $this
+     */
     public function setDatabaseAdapter(DatabaseAdapterInterface $adapter)
     {
         $this->adapter = $adapter;
         return $this;
     }
 
+    /**
+     * @return DatabaseAdapterInterface|null
+     */
     public function getDatabaseAdapter()
     {
         return $this->getRepositoryManager()->getDatabaseAdapter();

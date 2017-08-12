@@ -14,7 +14,7 @@ interface ApplicationInterface
     public function run();
 
     /**
-     * @return \Framework\Base\Model\RepositoryManagerInterface|null
+     * @return \Framework\Base\Manager\RepositoryInterface|null
      */
     public function getRepositoryManager();
 

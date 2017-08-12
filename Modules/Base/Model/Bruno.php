@@ -50,6 +50,10 @@ abstract class Bruno implements BrunoInterface
      */
     private $isNew = true;
 
+    /**
+     * Bruno constructor.
+     * @param array $attributes
+     */
     public function __construct(array $attributes = [])
     {
         // TODO: depend on interface for adapter

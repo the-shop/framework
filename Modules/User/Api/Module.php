@@ -23,6 +23,9 @@ class Module extends BaseModule
         ]
     ];
 
+    /**
+     * @inheritdoc
+     */
     public function bootstrap()
     {
         $application = $this->getApplication();

@@ -4,7 +4,7 @@ namespace Framework\Base\Application;
 
 /**
  * Interface ControllerInterface
- * @package Framework\Http\Request
+ * @package Framework\Base\Application
  */
 interface ControllerInterface
 {
@@ -30,13 +30,13 @@ interface ControllerInterface
     public function getRegisteredRequestRoutes();
 
     /**
-     * @return \Framework\Base\Model\RepositoryManagerInterface
+     * @return \Framework\Base\Manager\RepositoryInterface
      */
     public function getRepositoryManager();
 
     /**
      * @param $fullyQualifiedClassName
-     * @return \Framework\Base\Model\BrunoRepositoryInterface
+     * @return \Framework\Base\Repository\BrunoRepositoryInterface
      */
     public function getRepository($fullyQualifiedClassName);
 }

@@ -8,7 +8,7 @@ use Framework\Base\Model\BrunoInterface;
 
 /**
  * Interface BrunoRepositoryInterface
- * @package Framework\Base\Model
+ * @package Framework\Base\Repository
  */
 interface BrunoRepositoryInterface
 {

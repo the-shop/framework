@@ -2,8 +2,15 @@
 
 namespace Framework\Http\Response;
 
+/**
+ * Class Response
+ * @package Framework\Http\Response
+ */
 class Response implements ResponseInterface
 {
+    /**
+     * @var mixed
+     */
     private $body = null;
 
     /**
@@ -17,6 +24,9 @@ class Response implements ResponseInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getBody()
     {
         return $this->body;

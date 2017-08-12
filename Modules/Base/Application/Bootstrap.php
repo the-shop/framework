@@ -4,7 +4,7 @@ namespace Framework\Base\Application;
 
 /**
  * Class Bootstrap
- * @package Framework\Application\Base
+ * @package Framework\Base\Application
  */
 class Bootstrap
 {

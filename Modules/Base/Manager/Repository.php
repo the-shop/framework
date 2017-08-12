@@ -1,17 +1,19 @@
 <?php
 
-namespace Framework\Base\Model;
-use Framework\Application\RestApi\ApplicationAwareInterface;
-use Framework\Application\RestApi\ApplicationAwareTrait;
+namespace Framework\Base\Manager;
+
+use Framework\Base\Application\ApplicationAwareInterface;
+use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Database\MongoAdapter;
+use Framework\Base\Repository\BrunoRepositoryInterface;
 use MongoDB\Exception\RuntimeException;
 
 /**
  * Class RepositoryManager
  * @package Framework\Base\Model
  */
-class RepositoryManager implements RepositoryManagerInterface, ApplicationAwareInterface
+class Repository implements RepositoryInterface, ApplicationAwareInterface
 {
     use ApplicationAwareTrait;
 

@@ -2,7 +2,8 @@
 
 namespace Framework\User\Api\Repositories;
 
-use Framework\Base\Model\BrunoRepository;
+
+use Framework\Base\Repository\BrunoRepository;
 
 class UserRepository extends BrunoRepository
 {

@@ -2,7 +2,7 @@
 
 namespace Framework\Base\Module;
 
-use Framework\Application\RestApi\ApplicationAwareTrait;
+use Framework\Base\Application\ApplicationAwareTrait;
 
 /**
  * Class BaseModule

@@ -1,9 +1,6 @@
 <?php
 
-namespace Framework\Application\Base;
-
-use Framework\Application\RestApi\ApplicationAwareInterface;
-use Framework\Application\RestApi\ApplicationAwareTrait;
+namespace Framework\Base\Application;
 
 /**
  * Class BaseController

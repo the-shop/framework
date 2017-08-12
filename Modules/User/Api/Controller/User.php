@@ -2,7 +2,7 @@
 
 namespace Framework\User\Api\Controller;
 
-use Framework\Application\Base\BaseController;
+use Framework\Base\Application\BaseController;
 use Framework\User\Api\Models\User as UserModel;
 
 /**

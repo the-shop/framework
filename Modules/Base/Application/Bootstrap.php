@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Application\Base;
+namespace Framework\Base\Application;
 
 /**
  * Class Bootstrap

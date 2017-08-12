@@ -1,14 +1,15 @@
 <?php
 
-namespace Framework\Base\Model;
+namespace Framework\Base\Manager;
 
 use Framework\Base\Database\DatabaseAdapterInterface;
+use Framework\Base\Repository\BrunoRepositoryInterface;
 
 /**
  * Interface RepositoryManagerInterface
  * @package Framework\Base\Model
  */
-interface RepositoryManagerInterface
+interface RepositoryInterface
 {
     /**
      * @param string $fullyQualifiedClassName

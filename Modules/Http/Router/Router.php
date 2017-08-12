@@ -3,6 +3,7 @@
 namespace Framework\Http\Router;
 
 use Framework\Application\RestApi\NotFoundException;
+use Framework\Base\Application\ControllerInterface;
 
 class Router
 {

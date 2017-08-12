@@ -1,8 +1,10 @@
 <?php
 
-namespace Framework\Base\Model;
+namespace Framework\Base\Repository;
 
 use Framework\Base\Database\DatabaseAdapterInterface;
+use Framework\Base\Manager\RepositoryInterface;
+use Framework\Base\Model\BrunoInterface;
 
 /**
  * Interface BrunoRepositoryInterface
@@ -11,7 +13,7 @@ use Framework\Base\Database\DatabaseAdapterInterface;
 interface BrunoRepositoryInterface
 {
     /**
-     * @param DatabaseAdapterInterface $
+     * @param DatabaseAdapterInterface $adapter
      * @return mixed
      */
     public function setDatabaseAdapter(DatabaseAdapterInterface $adapter);
@@ -22,10 +24,10 @@ interface BrunoRepositoryInterface
     public function getDatabaseAdapter();
 
     /**
-     * @param RepositoryManagerInterface $repositoryManager
+     * @param RepositoryInterface $repositoryManager
      * @return $this
      */
-    public function setRepositoryManager(RepositoryManagerInterface $repositoryManager);
+    public function setRepositoryManager(RepositoryInterface $repositoryManager);
 
     /**
      * @param $identifier

@@ -1,19 +1,20 @@
 <?php
 
-namespace Framework\Application\Base;
+namespace Framework\Base\Application;
 
 use Framework\Base\Di\Resolver;
-use Framework\Base\Model\RepositoryManager;
-use Framework\Base\Model\RepositoryManagerInterface;
+use Framework\Base\Manager\Repository;
+use Framework\Base\Manager\RepositoryInterface;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
 use Framework\Http\Router\Router;
+use Framework\User\Api\Module;
 
 /**
  * Class BaseApplication
  * @package Framework\Application\Base
  */
-abstract class BaseApplication
+abstract class BaseApplication implements ApplicationInterface
 {
     /**
      * @var Router|null
@@ -31,7 +32,7 @@ abstract class BaseApplication
     private $response = null;
 
     /**
-     * @var RepositoryManager|null
+     * @var RepositoryInterface|null
      */
     private $repositoryManager = null;
 
@@ -39,6 +40,11 @@ abstract class BaseApplication
      * @var Resolver|null
      */
     private $resolver = null;
+
+    /**
+     * @return mixed
+     */
+    abstract public function run();
 
     /**
      * BaseApplication constructor.
@@ -55,7 +61,7 @@ abstract class BaseApplication
     {
         $bootstrap = new Bootstrap();
         $registerModules = [
-            \Framework\User\Api\Module::class
+            Module::class
         ];
         $bootstrap->registerModules($registerModules, $this);
 
@@ -63,10 +69,10 @@ abstract class BaseApplication
     }
 
     /**
-     * @param RepositoryManagerInterface $repositoryManager
+     * @param \Framework\Base\Manager\RepositoryInterface $repositoryManager
      * @return $this
      */
-    public function setRepositoryManager(RepositoryManagerInterface $repositoryManager)
+    public function setRepositoryManager(RepositoryInterface $repositoryManager)
     {
         $this->repositoryManager = $repositoryManager;
 
@@ -74,13 +80,13 @@ abstract class BaseApplication
     }
 
     /**
-     * @return \Framework\Base\Model\RepositoryManagerInterface
+     * @return \Framework\Base\Manager\RepositoryInterface|null
      */
     public function getRepositoryManager()
     {
         if ($this->repositoryManager === null) {
             $repositoryManager = $this->getResolver()
-                ->resolve(RepositoryManager::class);
+                ->resolve(Repository::class);
             $this->setRepositoryManager($repositoryManager);
         }
 

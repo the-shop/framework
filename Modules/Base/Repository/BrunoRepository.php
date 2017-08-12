@@ -1,19 +1,17 @@
 <?php
 
-namespace Framework\Base\Model;
+namespace Framework\Base\Repository;
 
-use Framework\Application\RestApi\ApplicationAwareInterface;
-use Framework\Application\RestApi\ApplicationAwareTrait;
+use Framework\Base\Application\ApplicationAwareInterface;
+use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Database\MongoQuery;
+use Framework\Base\Manager\RepositoryInterface;
+use Framework\Base\Model\BrunoInterface;
 
 class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInterface
 {
     use ApplicationAwareTrait;
-
-    private $database = 'bruno';
-
-    private $collection = 'bruno';
 
     private $adapter = null;
 
@@ -31,10 +29,10 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
     }
 
     /**
-     * @param RepositoryManagerInterface $repositoryManager
+     * @param RepositoryInterface $repositoryManager
      * @return $this
      */
-    public function setRepositoryManager(RepositoryManagerInterface $repositoryManager)
+    public function setRepositoryManager(RepositoryInterface $repositoryManager)
     {
         $this->repositoryManager = $repositoryManager;
 
@@ -42,18 +40,22 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
     }
 
     /**
-     * @return RepositoryManagerInterface|null
+     * @return RepositoryInterface|null
      */
     public function getRepositoryManager()
     {
         return $this->repositoryManager;
     }
 
+    /**
+     * @return string
+     */
     public function getModelClassName()
     {
         $repositoryClass = get_class($this);
 
-        return $this->getRepositoryManager()->getModelClass($repositoryClass);
+        return $this->getRepositoryManager()
+            ->getModelClass($repositoryClass);
     }
 
     /**
@@ -64,6 +66,7 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
     {
         $modelClass = $this->getModelClassName();
 
+        /* @var BrunoInterface $model */
         $model = new $modelClass();
 
         $query = $this->createNewQueryForModel($model);
@@ -87,6 +90,7 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
     public function save(BrunoInterface $bruno)
     {
         // TODO: Implement save() method.
+        return $bruno;
     }
 
     private function createNewQueryForModel(BrunoInterface $bruno)

@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Application\Base;
+namespace Framework\Base\Application;
 
 /**
  * Interface ControllerInterface
@@ -14,10 +14,10 @@ interface ControllerInterface
     public function handle();
 
     /**
-     * @param BaseApplication $application
-     * @return $this
+     * @param ApplicationInterface $application
+     * @return mixed
      */
-    public function setApplication(BaseApplication $application);
+    public function setApplication(ApplicationInterface $application);
 
     /**
      * @return array

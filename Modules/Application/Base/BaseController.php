@@ -1,12 +1,15 @@
 <?php
 
-namespace Framework\Base\Handler;
+namespace Framework\Application\Base;
 
 use Framework\Application\RestApi\ApplicationAwareInterface;
 use Framework\Application\RestApi\ApplicationAwareTrait;
-use Framework\Http\Request\ApiMethodInterface;
 
-abstract class ApiMethod implements ApiMethodInterface, ApplicationAwareInterface
+/**
+ * Class BaseController
+ * @package Framework\Application\Base
+ */
+abstract class BaseController implements ControllerInterface, ApplicationAwareInterface
 {
     use ApplicationAwareTrait;
 

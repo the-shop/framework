@@ -1,14 +1,12 @@
 <?php
 
-namespace Framework\Http\Request;
-
-use Framework\Application\Base\BaseApplication;
+namespace Framework\Application\Base;
 
 /**
- * Interface ApiMethodInterface
+ * Interface ControllerInterface
  * @package Framework\Http\Request
  */
-interface ApiMethodInterface
+interface ControllerInterface
 {
     /**
      * @return mixed

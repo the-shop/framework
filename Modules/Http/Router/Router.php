@@ -17,7 +17,7 @@ class Router
 
     /**
      * @param $uri
-     * @return \Framework\Http\Request\ApiMethodInterface
+     * @return ControllerInterface
      */
     public function parse($uri)
     {

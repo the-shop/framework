@@ -15,8 +15,8 @@ class Module extends BaseModule
 {
     private $config = [
         'routes' => [
-            '/test' => '\Framework\User\Api\Actions\Single',
-            '/test/:id' => '\Framework\User\Api\Actions\Single'
+            '/test' => \Framework\User\Api\Controller\User::class,
+            '/test/:id' => \Framework\User\Api\Controller\User::class
         ],
         'repositories' => [
             User::class => UserRepository::class

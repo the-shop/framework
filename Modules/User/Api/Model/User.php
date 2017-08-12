@@ -1,12 +1,12 @@
 <?php
 
-namespace Framework\User\Api\Models;
+namespace Framework\User\Api\Model;
 
 use Framework\Base\Model\Bruno;
 
 /**
  * Class User
- * @package Framework\User\Api\Models
+ * @package Framework\User\Api\Model
  */
 class User extends Bruno
 {

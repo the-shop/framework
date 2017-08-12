@@ -3,7 +3,7 @@
 namespace Framework\User\Api\Controller;
 
 use Framework\Base\Application\BaseController;
-use Framework\User\Api\Models\User as UserModel;
+use Framework\User\Api\Model\User as UserModel;
 
 /**
  * Class User

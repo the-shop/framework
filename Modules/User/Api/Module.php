@@ -4,8 +4,8 @@ namespace Framework\User\Api;
 
 use Framework\Base\Database\MongoAdapter;
 use Framework\Base\Module\BaseModule;
-use Framework\User\Api\Models\User;
-use Framework\User\Api\Repositories\UserRepository;
+use Framework\User\Api\Model\User;
+use Framework\User\Api\Repository\UserRepository;
 
 /**
  * Class Api

@@ -16,6 +16,17 @@ interface BrunoInterface
     public function getId();
 
     /**
+     * @return bool
+     */
+    public function isNew();
+
+    /**
+     * @param bool $flag
+     * @return BrunoInterface
+     */
+    public function setIsNew(bool $flag = true);
+
+    /**
      * @return BrunoInterface
      */
     public function save();
@@ -44,6 +55,12 @@ interface BrunoInterface
      * @return array
      */
     public function getDirtyAttributes();
+
+    /**
+     * @param array $attributes
+     * @return BrunoInterface
+     */
+    public function setDatabaseAttributes(array $attributes = []);
 
     /**
      * @return array

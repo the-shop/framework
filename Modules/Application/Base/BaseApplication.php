@@ -35,13 +35,31 @@ abstract class BaseApplication
      */
     private $repositoryManager = null;
 
+    /**
+     * @var Resolver|null
+     */
+    private $resolver = null;
+
+    /**
+     * BaseApplication constructor.
+     */
     public function __construct()
+    {
+        $this->bootstrap();
+    }
+
+    /**
+     * @return Bootstrap
+     */
+    public function bootstrap()
     {
         $bootstrap = new Bootstrap();
         $registerModules = [
             \Framework\User\Api\Module::class
         ];
         $bootstrap->registerModules($registerModules, $this);
+
+        return $bootstrap;
     }
 
     /**
@@ -146,8 +164,14 @@ abstract class BaseApplication
         return $this->response;
     }
 
+    /**
+     * @return Resolver
+     */
     public function getResolver()
     {
-        return new Resolver();
+        if ($this->resolver === null) {
+            $this->resolver = new Resolver();
+        }
+        return $this->resolver;
     }
 }

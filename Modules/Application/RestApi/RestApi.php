@@ -3,6 +3,7 @@
 namespace Framework\Application\RestApi;
 
 use Framework\Application\Base\BaseApplication;
+use Framework\Base\Render\Json;
 use Framework\Http\Response\Response;
 
 /**
@@ -31,11 +32,14 @@ class RestApi extends BaseApplication
             $handlerOutput = $e->getMessage();
         }
 
-        $response = new Response($handlerOutput);
+        $response = new Response();
+        $response->setBody($handlerOutput);
 
         $this->setResponse($response);
 
-        $response->output();
+        $jsonRender = new Json();
+
+        $jsonRender->render($response);
 
         return $this->getResponse();
     }

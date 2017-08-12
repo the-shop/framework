@@ -2,6 +2,10 @@
 
 namespace Framework\Base\Di;
 
+/**
+ * Class Resolver
+ * @package Framework\Base\Di
+ */
 class Resolver
 {
     /**

@@ -2,34 +2,23 @@
 
 namespace Framework\Http\Response;
 
-use Framework\Base\JsonOutput\JsonOutput;
-use Framework\Base\Module\BaseModule;
-
-class Response extends BaseModule
+class Response implements ResponseInterface
 {
-    private $body = '';
-    private $response = null;
+    private $body = null;
 
-    public function __construct($response)
+    /**
+     * @param $responseBody
+     * @return $this
+     */
+    public function setBody($responseBody)
     {
-        $this->response = $response;
+        $this->body = $responseBody;
+
+        return $this;
     }
 
-    public function bootstrap()
+    public function getBody()
     {
-        // TODO: Implement bootstrap() method.
-    }
-
-    public function output()
-    {
-        $output = new JsonOutput();
-        $output->output($this->formatBody());
-    }
-
-    private function formatBody()
-    {
-        $this->body = $this->response;
-
         return $this->body;
     }
 }

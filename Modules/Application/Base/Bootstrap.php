@@ -2,12 +2,19 @@
 
 namespace Framework\Application\Base;
 
-use Framework\Base\Di\Resolver;
-
+/**
+ * Class Bootstrap
+ * @package Framework\Application\Base
+ */
 class Bootstrap
 {
     private $registerModules = [];
 
+    /**
+     * @param array $moduleInterfaceClassNames
+     * @param BaseApplication $application
+     * @return $this
+     */
     public function registerModules(array $moduleInterfaceClassNames = [], BaseApplication $application)
     {
         $this->registerModules = $moduleInterfaceClassNames;
@@ -18,5 +25,7 @@ class Bootstrap
             $instance->setApplication($application);
             $instance->bootstrap();
         }
+
+        return $this;
     }
 }

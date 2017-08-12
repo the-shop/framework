@@ -15,7 +15,8 @@ class Module extends BaseModule
 {
     private $config = [
         'routes' => [
-            '/test' => '\Framework\User\Api\Actions\Single'
+            '/test' => '\Framework\User\Api\Actions\Single',
+            '/test/:id' => '\Framework\User\Api\Actions\Single'
         ],
         'repositories' => [
             User::class => UserRepository::class
@@ -33,7 +34,6 @@ class Module extends BaseModule
 
         $application->getRepositoryManager()
             ->registerRepositories($this->config['repositories'])
-            ->setDatabaseAdapter($mongoAdapter)
-            ->setApplication($application);
+            ->setDatabaseAdapter($mongoAdapter);
     }
 }

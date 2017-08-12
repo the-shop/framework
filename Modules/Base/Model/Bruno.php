@@ -10,20 +10,30 @@ use Framework\Base\Database\MongoQuery;
  * Base Model for database
  *
  * @package Framework\Base\Model
- * @property bool new returns if exists in db
  */
 abstract class Bruno implements BrunoInterface
 {
     /**
-     * @var MongoAdapter
+     * @var DatabaseAdapterInterface
      */
     protected $databaseAdapter;
 
+    /**
+     * @var string
+     */
+    protected $primaryKey = '_id';
+
     protected $databaseAddress = '192.168.33.10:27017'; // TODO: use this
 
+    /**
+     * @var string
+     */
     protected $database = 'framework';
 
-    protected $collection = 'users';
+    /**
+     * @var string
+     */
+    protected $collection = 'bruno';
 
     /**
      * @var array
@@ -42,6 +52,7 @@ abstract class Bruno implements BrunoInterface
 
     public function __construct(array $attributes = [])
     {
+        // TODO: depend on interface for adapter
         $mongoAdapter = new MongoAdapter();
 
         $this->setDatabaseAdapter($mongoAdapter);
@@ -49,9 +60,16 @@ abstract class Bruno implements BrunoInterface
         $this->attributes = $attributes;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getId()
     {
-        return isset($this->getDatabaseAttributes()['_id']) ? $this->getDatabaseAttributes()['_id'] : null;
+        if (isset($this->getDatabaseAttributes()[$this->primaryKey])) {
+            return $this->getDatabaseAttributes()[$this->primaryKey];
+        }
+
+        return null;
     }
 
     /**
@@ -100,6 +118,21 @@ abstract class Bruno implements BrunoInterface
         return $this->isNew;
     }
 
+    /**
+     * @param bool $flag
+     * @return $this
+     */
+    public function setIsNew(bool $flag = true)
+    {
+        $this->isNew = $flag;
+
+        return $this;
+    }
+
+    /**
+     * @param DatabaseAdapterInterface $adapter
+     * @return $this
+     */
     public function setDatabaseAdapter(DatabaseAdapterInterface $adapter)
     {
         $this->databaseAdapter = $adapter;
@@ -107,16 +140,28 @@ abstract class Bruno implements BrunoInterface
         return $this;
     }
 
+    /**
+     * @return DatabaseAdapterInterface
+     */
     public function getDatabaseAdapter()
     {
         return $this->databaseAdapter;
     }
 
+    /**
+     * @param array $attributes
+     * @return $this
+     */
     public function setAttributes(array $attributes = [])
     {
         $this->attributes = $attributes;
+
+        return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getAttributes()
     {
         return $this->attributes;
@@ -127,6 +172,20 @@ abstract class Bruno implements BrunoInterface
         // TODO: Implement getDirtyAttributes() method.
     }
 
+    /**
+     * @param array $attributes
+     * @return $this
+     */
+    public function setDatabaseAttributes(array $attributes = [])
+    {
+        $this->dbAttributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
     public function getDatabaseAttributes()
     {
         return $this->dbAttributes;

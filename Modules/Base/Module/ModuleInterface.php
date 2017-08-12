@@ -6,6 +6,9 @@ use Framework\Application\Base\BaseApplication;
 
 interface ModuleInterface
 {
+    /**
+     * Bootstrap module
+     */
     public function bootstrap();
 
     public function setApplication(BaseApplication $application);

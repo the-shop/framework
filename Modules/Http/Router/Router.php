@@ -3,15 +3,10 @@
 namespace Framework\Http\Router;
 
 use Framework\Application\RestApi\NotFoundException;
-use Framework\Base\Module\BaseModule;
 
-class Router extends BaseModule
+class Router
 {
     private $registry = [];
-
-    public function bootstrap()
-    {
-    }
 
     public function registerRoutes($routes)
     {

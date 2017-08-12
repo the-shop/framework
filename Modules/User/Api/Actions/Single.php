@@ -20,7 +20,7 @@ class Single extends ApiMethod
         $user = $this->getRepository(User::class)
             ->loadOne('598ddf36962d7456c80bfbb5');
 
-        return $user;
+        return $user->getId();
     }
 
     protected function create()

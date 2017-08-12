@@ -74,6 +74,8 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
         $attributes = $data->getArrayCopy();
 
         $model->setAttributes($attributes);
+        $model->setDatabaseAttributes($attributes);
+        $model->setIsNew(false);
 
         return $model;
     }

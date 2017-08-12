@@ -54,6 +54,9 @@ abstract class Bruno implements BrunoInterface
         return isset($this->getDatabaseAttributes()['_id']) ? $this->getDatabaseAttributes()['_id'] : null;
     }
 
+    /**
+     * @return $this
+     */
     public function save()
     {
         $query = new MongoQuery();
@@ -73,16 +76,25 @@ abstract class Bruno implements BrunoInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getDatabase()
     {
         return $this->database;
     }
 
+    /**
+     * @return string
+     */
     public function getCollection()
     {
         return $this->collection;
     }
 
+    /**
+     * @return bool
+     */
     public function isNew()
     {
         return $this->isNew;

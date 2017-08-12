@@ -22,6 +22,12 @@ interface BrunoRepositoryInterface
     public function getDatabaseAdapter();
 
     /**
+     * @param RepositoryManagerInterface $repositoryManager
+     * @return $this
+     */
+    public function setRepositoryManager(RepositoryManagerInterface $repositoryManager);
+
+    /**
      * @param $identifier
      * @return BrunoInterface|null
      */

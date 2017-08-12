@@ -29,12 +29,11 @@ class Module extends BaseModule
         $application->getRouter()
             ->registerRoutes($this->config['routes']);
 
-        $application->getRepositoryManager()
-            ->registerRepositories($this->config['repositories']);
-
         $mongoAdapter = new MongoAdapter();
 
         $application->getRepositoryManager()
-            ->setDatabaseAdapter($mongoAdapter);
+            ->registerRepositories($this->config['repositories'])
+            ->setDatabaseAdapter($mongoAdapter)
+            ->setApplication($application);
     }
 }

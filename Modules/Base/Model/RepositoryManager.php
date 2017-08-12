@@ -1,15 +1,20 @@
 <?php
 
 namespace Framework\Base\Model;
+use Framework\Application\RestApi\ApplicationAwareInterface;
+use Framework\Application\RestApi\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Database\MongoAdapter;
+use MongoDB\Exception\RuntimeException;
 
 /**
  * Class RepositoryManager
  * @package Framework\Base\Model
  */
-class RepositoryManager implements RepositoryManagerInterface
+class RepositoryManager implements RepositoryManagerInterface, ApplicationAwareInterface
 {
+    use ApplicationAwareTrait;
+
     /**
      * @var [DatabaseAdapterInterface]
      */
@@ -31,10 +36,13 @@ class RepositoryManager implements RepositoryManagerInterface
 
     /**
      * @param DatabaseAdapterInterface $adapter
+     * @return $this
      */
     public function setDatabaseAdapter(DatabaseAdapterInterface $adapter)
     {
         $this->databaseAdapter = $adapter;
+
+        return $this;
     }
 
     /**
@@ -55,10 +63,29 @@ class RepositoryManager implements RepositoryManagerInterface
             throw new \RuntimeException('Model ' . $fullyQualifiedClassName . ' is not registered');
         }
 
-        $adapter = new $this->registeredRepositories[$fullyQualifiedClassName]();
-        $adapter->setDatabaseAdapter($this->getDatabaseAdapter());
+        $repositoryClass = $this->registeredRepositories[$fullyQualifiedClassName];
+        /* @var BrunoRepositoryInterface $repository */
+        $repository = new $repositoryClass();
+        $repository->setRepositoryManager($this);
 
-        return $adapter;
+        return $repository;
+    }
+
+    public function getModelClass(string $repositoryClass)
+    {
+        $foundClass = null;
+        foreach ($this->registeredRepositories as $modelClass => $repoClass) {
+            if ($repositoryClass === $repoClass) {
+                $foundClass = $modelClass;
+                break;
+            }
+        }
+
+        if ($foundClass === null) {
+            throw new RuntimeException('Model class not registered for ' . $repositoryClass);
+        }
+
+        return $foundClass;
     }
 
     /**

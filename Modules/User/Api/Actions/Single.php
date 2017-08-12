@@ -15,17 +15,18 @@ class Single extends ApiMethod
         ];
     }
 
+    protected function get()
+    {
+        $user = $this->getRepository(User::class)
+            ->loadOne('598ddf36962d7456c80bfbb5');
+
+        return $user;
+    }
+
     protected function create()
     {
         $user = new User();
         $user->save();
         return $user->getId();
-    }
-
-    protected function get()
-    {
-        $user = $this->getRepository(User::class)
-            ->loadOne('598ddf36962d7456c80bfbb5');
-        return $user;
     }
 }

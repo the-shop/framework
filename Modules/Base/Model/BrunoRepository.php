@@ -12,9 +12,12 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
     use ApplicationAwareTrait;
 
     private $database = 'bruno';
+
     private $collection = 'bruno';
 
     private $adapter = null;
+
+    private $repositoryManager = null;
 
     public function setDatabaseAdapter(DatabaseAdapterInterface $adapter)
     {
@@ -24,17 +27,33 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
 
     public function getDatabaseAdapter()
     {
-        return $this->adapter;
+        return $this->getRepositoryManager()->getDatabaseAdapter();
     }
 
+    /**
+     * @param RepositoryManagerInterface $repositoryManager
+     * @return $this
+     */
+    public function setRepositoryManager(RepositoryManagerInterface $repositoryManager)
+    {
+        $this->repositoryManager = $repositoryManager;
+
+        return $this;
+    }
+
+    /**
+     * @return RepositoryManagerInterface|null
+     */
     public function getRepositoryManager()
     {
-        $this->getApplication()->getRepositoryManager();
+        return $this->repositoryManager;
     }
 
     public function getModelClassName()
     {
-        
+        $repositoryClass = get_class($this);
+
+        return $this->getRepositoryManager()->getModelClass($repositoryClass);
     }
 
     /**
@@ -43,14 +62,20 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
      */
     public function loadOne($identifier)
     {
-        $model = null;
+        $modelClass = $this->getModelClassName();
 
-        $query = $this->createNewQuery();
+        $model = new $modelClass();
+
+        $query = $this->createNewQueryForModel($model);
 
         $data = $this->getDatabaseAdapter()
             ->loadOne($query);
 
-        return $data;
+        $attributes = $data->getArrayCopy();
+
+        $model->setAttributes($attributes);
+
+        return $model;
     }
 
     /**
@@ -62,11 +87,11 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
         // TODO: Implement save() method.
     }
 
-    private function createNewQuery()
+    private function createNewQueryForModel(BrunoInterface $bruno)
     {
         $query = new MongoQuery();
-        $query->setDatabase($this->database);
-        $query->setCollection($this->collection);
+        $query->setDatabase($bruno->getDatabase());
+        $query->setCollection($bruno->getCollection());
         return $query;
     }
 }

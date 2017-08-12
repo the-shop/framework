@@ -49,4 +49,14 @@ interface BrunoInterface
      * @return array
      */
     public function getDatabaseAttributes();
+
+    /**
+     * @return string
+     */
+    public function getDatabase();
+
+    /**
+     * @return string
+     */
+    public function getCollection();
 }

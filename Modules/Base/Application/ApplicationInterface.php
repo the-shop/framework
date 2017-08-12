@@ -22,4 +22,9 @@ interface ApplicationInterface
      * @return \Framework\Http\Request\Request
      */
     public function getRequest();
+
+    /**
+     * @return \Framework\Http\Router\Router
+     */
+    public function getRouter();
 }

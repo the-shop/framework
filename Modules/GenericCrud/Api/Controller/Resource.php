@@ -42,7 +42,8 @@ class Resource extends HttpController
      */
     public function create(string $resourceName)
     {
-        $model = new GenericModel($resourceName);
+        $model = new GenericModel();
+        $model->setResourceName($resourceName);
         $model->save();
         return $model;
     }

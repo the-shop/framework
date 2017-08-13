@@ -18,8 +18,8 @@ interface RepositoryInterface
     public function getRepository(string $fullyQualifiedClassName = '');
 
     /**
-     * @param string $fullyQualifiedClassName
-     * @return BrunoRepositoryInterface
+     * @param string $resourceName
+     * @return mixed
      */
     public function getRepositoryFromResourceName(string $resourceName);
 

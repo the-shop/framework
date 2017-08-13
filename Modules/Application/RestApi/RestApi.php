@@ -18,6 +18,8 @@ class RestApi extends BaseApplication
      */
     public function run()
     {
+        $this->setExceptionHandler(new ExceptionHandler());
+
         $this->handleRequest();
 
         $this->renderResponse();
@@ -84,8 +86,9 @@ class RestApi extends BaseApplication
 
             $handlerOutput = $controller->{$action}(...$parameterValues);
         } catch (\Exception $e) {
-            // TODO: better error handling (i.e. new ErrorHandler($e))
-            $handlerOutput = $e->getMessage();
+            $handlerOutput = $this->getExceptionHandler()
+                ->setApplication($this)
+                ->handle($e);
         }
 
         return $handlerOutput;

@@ -3,6 +3,7 @@
 namespace Framework\Base\Application;
 
 use Framework\Base\Di\Resolver;
+use Framework\Base\Events\ListenerInterface;
 
 /**
  * Interface ApplicationInterface
@@ -45,4 +46,17 @@ interface ApplicationInterface
      * @return Resolver
      */
     public function getResolver();
+
+    /**
+     * @param string $eventName
+     * @return mixed
+     */
+    public function triggerEvent(string $eventName);
+
+    /**
+     * @param string $eventName
+     * @param ListenerInterface $listener
+     * @return mixed
+     */
+    public function listen(string $eventName, ListenerInterface $listener);
 }

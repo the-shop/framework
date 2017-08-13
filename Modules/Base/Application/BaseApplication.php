@@ -2,7 +2,9 @@
 
 namespace Framework\Base\Application;
 
+use Framework\Application\RestApi\ExceptionHandler;
 use Framework\Base\Di\Resolver;
+use Framework\Base\Events\ListenerInterface;
 use Framework\Base\Manager\Repository;
 use Framework\Base\Manager\RepositoryInterface;
 use Framework\Http\Request\Request;
@@ -47,6 +49,16 @@ abstract class BaseApplication implements ApplicationInterface
     private $resolver = null;
 
     /**
+     * @var ExceptionHandler|null
+     */
+    private $exceptionHandler = null;
+
+    /**
+     * @var array
+     */
+    private $events = [];
+
+    /**
      * @return $this
      */
     abstract public function run();
@@ -71,6 +83,46 @@ abstract class BaseApplication implements ApplicationInterface
         $bootstrap->registerModules($registerModules, $this);
 
         return $bootstrap;
+    }
+
+    public function triggerEvent(string $eventName)
+    {
+        if (array_key_exists($eventName, $this->events) === true) {
+            foreach ($this->events[$eventName] as $listener) {
+                /* @var ListenerInterface $listener */
+                $listener->handle();
+            }
+        }
+    }
+
+    public function listen(string $eventName, ListenerInterface $listener)
+    {
+        if (array_key_exists($eventName, $this->events) === false) {
+            $this->events[$eventName] = [];
+        }
+
+        $this->events[$eventName][] = $listener;
+
+        return $this;
+    }
+
+    /**
+     * @param ExceptionHandler $exceptionHandler
+     * @return $this
+     */
+    public function setExceptionHandler(ExceptionHandler $exceptionHandler)
+    {
+        $this->exceptionHandler = $exceptionHandler;
+
+        return $this;
+    }
+
+    /**
+     * @return ExceptionHandler|null
+     */
+    public function getExceptionHandler()
+    {
+        return $this->exceptionHandler;
     }
 
     /**

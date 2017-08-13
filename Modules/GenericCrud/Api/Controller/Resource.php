@@ -18,8 +18,14 @@ class Resource extends HttpController
      */
     public function loadAll(string $resourceName)
     {
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:loadAll:pre');
+
         $out = $this->getRepositoryFromResourceName($resourceName)
             ->loadMultiple();
+
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:loadAll:post');
 
         return $out;
     }
@@ -31,7 +37,13 @@ class Resource extends HttpController
      */
     public function load(string $resourceName, $identifier)
     {
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:load:pre');
+
         $model = $this->loadModel($resourceName, $identifier);
+
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:load:post');
 
         return $model;
     }
@@ -42,10 +54,16 @@ class Resource extends HttpController
      */
     public function create(string $resourceName)
     {
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:create:pre');
+
         $model = new GenericModel();
         $model->setResourceName($resourceName);
         $model->save();
         return $model;
+
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:create:post');
     }
 
     /**
@@ -55,12 +73,18 @@ class Resource extends HttpController
      */
     public function update(string $resourceName, $identifier)
     {
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:update:pre');
+
         $model = $this->loadModel($resourceName, $identifier);
 
         $postParams = $this->getPost();
 
         $model->setAttributes($postParams);
         $model->save();
+
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:update:post');
 
         return $model;
     }
@@ -72,6 +96,9 @@ class Resource extends HttpController
      */
     public function partialUpdate(string $resourceName, $identifier)
     {
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:partialUpdate:pre');
+
         $model = $this->loadModel($resourceName, $identifier);
 
         $postParams = $this->getPost();
@@ -81,6 +108,9 @@ class Resource extends HttpController
         }
 
         $model->save();
+
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:partialUpdate:post');
 
         return $model;
     }
@@ -92,9 +122,14 @@ class Resource extends HttpController
      */
     public function delete(string $resourceName, $identifier)
     {
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:delete:pre');
         $model = $this->loadModel($resourceName, $identifier);
 
         $model->delete();
+
+        $this->getApplication()
+            ->triggerEvent('GenericCrud\Api\Controller\Resource:delete:post');
 
         return $model;
     }

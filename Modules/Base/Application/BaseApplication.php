@@ -7,8 +7,8 @@ use Framework\Base\Manager\Repository;
 use Framework\Base\Manager\RepositoryInterface;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
-use Framework\Http\Router\Router;
-use Framework\User\Api\Module;
+use Framework\Http\Router\Dispatcher;
+use Framework\GenericCrud\Api\Module;
 
 /**
  * Class BaseApplication
@@ -17,9 +17,9 @@ use Framework\User\Api\Module;
 abstract class BaseApplication implements ApplicationInterface
 {
     /**
-     * @var Router|null
+     * @var Dispatcher|null
      */
-    private $router = null;
+    private $dispatcher = null;
 
     /**
      * @var Request|null
@@ -35,11 +35,6 @@ abstract class BaseApplication implements ApplicationInterface
      * @var ControllerInterface|null
      */
     private $controller = null;
-
-    /**
-     * @var string|null
-     */
-    private $routerClass = null;
 
     /**
      * @var RepositoryInterface|null
@@ -104,51 +99,27 @@ abstract class BaseApplication implements ApplicationInterface
     }
 
     /**
-     * @return \Framework\Http\Router\Router
+     * @return \Framework\Http\Router\Dispatcher
      */
-    public function getRouter()
+    public function getDispatcher()
     {
-        if ($this->router === null) {
-            if ($this->routerClass === null) {
-                throw new \RuntimeException('Router class not set.');
-            }
-            $router = $this->getResolver()
-                ->resolve($this->getRouterClass())
-                ->setApplication($this);
-            $this->setRouter($router);
+        if ($this->dispatcher === null) {
+            // TODO: support non HTTP routes
+            $this->dispatcher = new Dispatcher();
         }
 
-        return $this->router;
+        return $this->dispatcher;
     }
 
     /**
-     * @param Router $router
+     * @param Dispatcher $dispatcher
      * @return $this
      */
-    public function setRouter(Router $router)
+    public function setDispatcher(Dispatcher $dispatcher)
     {
-        $this->router = $router;
+        $this->dispatcher = $dispatcher;
 
         return $this;
-    }
-
-    /**
-     * @param string $className
-     * @return $this
-     */
-    public function setRouterClass(string $className)
-    {
-        $this->routerClass = $className;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getRouterClass()
-    {
-        return $this->routerClass;
     }
 
     /**

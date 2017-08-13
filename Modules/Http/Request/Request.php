@@ -68,7 +68,7 @@ class Request implements RequestInterface
      */
     public function setMethod($method)
     {
-        $this->method = strtolower($method);
+        $this->method = strtoupper($method);
         return $this;
     }
 

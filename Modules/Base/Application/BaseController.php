@@ -11,26 +11,6 @@ abstract class BaseController implements ControllerInterface, ApplicationAwareIn
     use ApplicationAwareTrait;
 
     /**
-     * @return array
-     */
-    public function getRegisteredRequestMethods()
-    {
-        return array_keys($this->getRegisteredRequestRoutes());
-    }
-
-    /**
-     * @return mixed
-     */
-    public function handle()
-    {
-        $requestMethod = $this->getApplication()
-            ->getRequest()
-            ->getMethod();
-
-        return call_user_func([$this, $this->getRegisteredRequestRoutes()[$requestMethod]]);
-    }
-
-    /**
      * @return \Framework\Base\Manager\RepositoryInterface
      */
     public function getRepositoryManager()

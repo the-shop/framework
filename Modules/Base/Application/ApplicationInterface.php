@@ -26,9 +26,9 @@ interface ApplicationInterface
     public function getRequest();
 
     /**
-     * @return \Framework\Http\Router\Router
+     * @return \Framework\Http\Router\Dispatcher
      */
-    public function getRouter();
+    public function getDispatcher();
 
     /**
      * @param ControllerInterface $controller
@@ -40,12 +40,6 @@ interface ApplicationInterface
      * @return ControllerInterface|null
      */
     public function getController();
-
-    /**
-     * @param string $className
-     * @return mixed
-     */
-    public function setRouterClass(string $className);
 
     /**
      * @return Resolver

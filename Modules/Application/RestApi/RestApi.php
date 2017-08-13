@@ -18,20 +18,6 @@ class RestApi extends BaseApplication
      */
     public function run()
     {
-        $uri = $this->getRequest()->getUri();
-
-        $router = $this->getRouter();
-
-        $controller = $router->getUriHandler($uri);
-
-        $this->setController($controller);
-
-        if (!in_array($this->getRequest()->getMethod(), $controller->getRegisteredRequestMethods())) {
-            throw new \RuntimeException('Not implemented');
-        }
-
-        $controller->setApplication($this);
-
         $this->handleRequest();
 
         $this->renderResponse();
@@ -39,9 +25,16 @@ class RestApi extends BaseApplication
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function handleRequest()
     {
-        $handlerOutput = $this->handle($this->getController());
+        $dispatcher = $this->getDispatcher();
+        $dispatcher->register();
+        $dispatcher->parseRequest($this->getRequest());
+
+        $handlerOutput = $this->handle();
 
         $this->buildResponse($handlerOutput);
 
@@ -71,15 +64,25 @@ class RestApi extends BaseApplication
     }
 
     /**
-     * @param ControllerInterface $routeHandler
-     * @return mixed|string
+     * @return mixed
      */
-    protected function handle(ControllerInterface $routeHandler)
+    protected function handle()
     {
         try {
-            $routeHandler->setApplication($this);
-            $handlerOutput = $routeHandler->handle();
+            $handlerPath = $this->getDispatcher()->getHandler();
+
+            $handlerPathParts = explode('::', $handlerPath);
+
+            list($controllerClass, $action) = $handlerPathParts;
+
+            /* @var ControllerInterface $controller */
+            $controller = new $controllerClass();
+            $this->setController($controller);
+            $controller->setApplication($this);
+
+            $handlerOutput = $controller->{$action}($this->getDispatcher()->getRouteParameters());
         } catch (\Exception $e) {
+            // TODO: better error handling (i.e. new ErrorHandler($e))
             $handlerOutput = $e->getMessage();
         }
 

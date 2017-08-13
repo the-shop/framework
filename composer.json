@@ -2,7 +2,8 @@
     "require": {
         "lcobucci/jwt": "^3.2",
         "symfony/dotenv": "^3.3",
-        "mongodb/mongodb": "^1.1"
+        "mongodb/mongodb": "^1.1",
+        "nikic/fast-route": "^1.2"
     },
     "autoload": {
         "psr-4": {

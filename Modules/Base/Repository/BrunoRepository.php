@@ -77,7 +77,7 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
 
     /**
      * @param $identifier
-     * @return mixed
+     * @return BrunoInterface|null
      */
     public function loadOne($identifier)
     {
@@ -90,6 +90,11 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
 
         $data = $this->getDatabaseAdapter()
             ->loadOne($query);
+
+        // Return null if no document found
+        if ($data === null) {
+            return $data;
+        }
 
         $attributes = $data->getArrayCopy();
 

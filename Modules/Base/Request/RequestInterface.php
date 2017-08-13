@@ -18,4 +18,9 @@ interface RequestInterface
      * @return mixed
      */
     public function getUri();
+
+    /**
+     * @return string
+     */
+    public function getMethod();
 }

@@ -3,7 +3,6 @@
 namespace Framework\GenericCrud\Api;
 
 use Framework\Base\Database\MongoAdapter;
-use Framework\Base\Events\Listener;
 use Framework\Base\Module\BaseModule;
 use Framework\GenericCrud\Api\Model\Generic as GenericModel;
 use Framework\GenericCrud\Api\Repository\GenericRepository;

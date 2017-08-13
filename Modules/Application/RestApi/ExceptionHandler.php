@@ -4,7 +4,6 @@ namespace Framework\Application\RestApi;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
-use Framework\Base\Events\Listener;
 
 /**
  * Class ExceptionHandler
@@ -22,6 +21,10 @@ class ExceptionHandler implements ApplicationAwareInterface
 
         if ($e instanceof NotFoundException) {
             return $e->getMessage();
+        }
+
+        if ($e instanceof \RuntimeException) {
+            return 'Server error: ' . $e->getMessage();
         }
 
         $application->triggerEvent('ExceptionHandler:handle:post');

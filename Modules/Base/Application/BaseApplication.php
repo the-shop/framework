@@ -132,7 +132,7 @@ abstract class BaseApplication implements ApplicationInterface
                 ->resolve(Request::class);
 
             $request->setPost(isset($_POST) ? $_POST : []);
-            $request->setGet(isset($_GET) ? $_GET : []);
+            $request->setQuery(isset($_GET) ? $_GET : []);
             $request->setFiles(isset($_FILES) ? $_FILES : []);
             $request->setMethod($_SERVER['REQUEST_METHOD']);
             $request->setUri($_SERVER['REQUEST_URI']);

@@ -2,6 +2,7 @@
 
 namespace Framework\Base\Database;
 
+use MongoDB\BSON\ObjectID;
 use MongoDB\Client;
 
 /**
@@ -86,14 +87,18 @@ class MongoAdapter implements DatabaseAdapterInterface
      */
     public function updateOne(DatabaseQueryInterface $query, string $identifier, array $updateData = [])
     {
-        $result = $this->getClient()
+        if (empty($updateData)) {
+            return $this;
+        }
+
+        $this->getClient()
             ->selectCollection(
                 $query->getDatabase(),
                 $query->getCollection()
             )
             ->updateOne(
-                ['_id' => new \MongoId($identifier)],
-                $updateData
+                ['_id' => new ObjectID($identifier)],
+                ['$set' => $updateData]
             );
 
         // TODO: check if $result reported successful update, throw exception otherwise

@@ -18,7 +18,10 @@ class Resource extends HttpController
      */
     public function loadAll(string $resourceName)
     {
-        return ['called', 'resource', $resourceName];
+        $out = $this->getRepositoryFromResourceName($resourceName)
+            ->loadMultiple();
+
+        return $out;
     }
 
     /**
@@ -39,7 +42,7 @@ class Resource extends HttpController
      */
     public function create(string $resourceName)
     {
-        $model = new GenericModel();
+        $model = new GenericModel($resourceName);
         $model->save();
         return $model;
     }
@@ -104,7 +107,7 @@ class Resource extends HttpController
      */
     protected function loadModel(string $resourceName, $identifier)
     {
-        $model = $this->getRepository(GenericModel::class)
+        $model = $this->getRepositoryFromResourceName($resourceName)
             ->loadOne($identifier);
 
         if (!$model) {

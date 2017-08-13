@@ -19,6 +19,12 @@ interface RepositoryInterface
 
     /**
      * @param string $fullyQualifiedClassName
+     * @return BrunoRepositoryInterface
+     */
+    public function getRepositoryFromResourceName(string $resourceName);
+
+    /**
+     * @param string $fullyQualifiedClassName
      * @return $this
      */
     public function registerRepository(string $fullyQualifiedClassName = '');
@@ -28,6 +34,12 @@ interface RepositoryInterface
      * @return $this
      */
     public function registerRepositories(array $fullyQualifiedClassNames = []);
+
+    /**
+     * @param array $resourcesMap
+     * @return $this
+     */
+    public function registerResources(array $resourcesMap = []);
 
     /**
      * @param DatabaseAdapterInterface $adapter

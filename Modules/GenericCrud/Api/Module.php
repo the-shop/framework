@@ -5,7 +5,7 @@ namespace Framework\GenericCrud\Api;
 use Framework\Base\Database\MongoAdapter;
 use Framework\Base\Module\BaseModule;
 use Framework\GenericCrud\Api\Model\Generic as GenericModel;
-use Framework\GenericCrud\Api\Repository\UserRepository;
+use Framework\GenericCrud\Api\Repository\GenericRepository;
 
 /**
  * Class Api
@@ -46,8 +46,11 @@ class Module extends BaseModule
                 '\Framework\GenericCrud\Api\Controller\Resource::delete'
             ],
         ],
+        'resources' => [
+            'bruno' => GenericRepository::class
+        ],
         'repositories' => [
-            GenericModel::class => UserRepository::class
+            GenericModel::class => GenericRepository::class
         ]
     ];
 
@@ -64,6 +67,7 @@ class Module extends BaseModule
         $mongoAdapter = new MongoAdapter();
 
         $application->getRepositoryManager()
+            ->registerResources($this->config['resources'])
             ->registerRepositories($this->config['repositories'])
             ->setDatabaseAdapter($mongoAdapter);
     }

@@ -31,4 +31,11 @@ abstract class BaseController implements ControllerInterface, ApplicationAwareIn
         return $this->getRepositoryManager()
             ->getRepository($fullyQualifiedClassName);
     }
+
+
+    public function getRepositoryFromResourceName(string $resourceName)
+    {
+        return $this->getRepositoryManager()
+            ->getRepositoryFromResourceName($resourceName);
+    }
 }

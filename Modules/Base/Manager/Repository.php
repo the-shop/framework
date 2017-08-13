@@ -18,9 +18,14 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
     use ApplicationAwareTrait;
 
     /**
-     * @var [DatabaseAdapterInterface]
+     * @var [string]
      */
     private $registeredRepositories = [];
+
+    /**
+     * @var [string]
+     */
+    private $registeredResources = [];
 
     /**
      * @var DatabaseAdapterInterface|null
@@ -73,6 +78,24 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         return $repository;
     }
 
+    /**
+     * @param string $resourceName
+     * @return BrunoRepositoryInterface
+     */
+    public function getRepositoryFromResourceName(string $resourceName)
+    {
+        if (array_key_exists($resourceName, $this->registeredResources) === false) {
+            throw new \RuntimeException('Resource "' . $resourceName . '" not registered in Framework\Base\Manager\Repository');
+        }
+
+        $repositoryClass = $this->registeredResources[$resourceName];
+        /* @var BrunoRepositoryInterface $repository */
+        $repository = new $repositoryClass();
+        $repository->setRepositoryManager($this);
+
+        return $repository;
+    }
+
     public function getModelClass(string $repositoryClass)
     {
         $foundClass = null;
@@ -112,6 +135,19 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         $this->registeredRepositories = array_merge($this->registeredRepositories, $fullyQualifiedClassNames);
 
         $this->registeredRepositories = array_unique($this->registeredRepositories);
+
+        return $this;
+    }
+
+    /**
+     * @param array $resourcesMap
+     * @return $this
+     */
+    public function registerResources(array $resourcesMap = [])
+    {
+        $this->registeredResources = array_merge($this->registeredResources, $resourcesMap);
+
+        $this->registeredResources = array_unique($this->registeredResources);
 
         return $this;
     }

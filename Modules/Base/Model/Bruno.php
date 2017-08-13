@@ -5,6 +5,7 @@ namespace Framework\Base\Model;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Database\MongoAdapter;
 use Framework\Base\Database\MongoQuery;
+use MongoDB\BSON\ObjectID;
 
 /**
  * Base Model for database
@@ -97,6 +98,20 @@ abstract class Bruno implements BrunoInterface
             $this->getDatabaseAdapter()->updateOne($query, $this->getId(), $this->getAttributes());
             $this->dbAttributes = $this->getAttributes();
         }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function delete()
+    {
+        $query = new MongoQuery();
+        $query->setDatabase($this->getDatabase());
+        $query->setCollection($this->getCollection());
+        $query->addAndCondition('_id', '$eq', new ObjectID($this->getId()));
+        $this->getDatabaseAdapter()->deleteOne($query);
 
         return $this;
     }

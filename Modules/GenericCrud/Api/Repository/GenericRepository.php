@@ -5,9 +5,9 @@ namespace Framework\GenericCrud\Api\Repository;
 use Framework\Base\Repository\BrunoRepository;
 
 /**
- * Class UserRepository
+ * Class GenericRepository
  * @package Framework\GenericCrud\Api\Repository
  */
-class UserRepository extends BrunoRepository
+class GenericRepository extends BrunoRepository
 {
 }

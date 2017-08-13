@@ -106,6 +106,37 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
     }
 
     /**
+     * @return [BrunoInterface]
+     */
+    public function loadMultiple()
+    {
+        $modelClass = $this->getModelClassName();
+
+        /* @var BrunoInterface $model */
+        $model = new $modelClass();
+
+        $query = $this->createNewQueryForModel($model);
+
+        $data = $this->getDatabaseAdapter()
+            ->loadMultiple($query);
+
+        $out = [];
+        foreach ($data as $attributes) {
+            $attributes = $attributes->getArrayCopy();
+
+            $model = new $modelClass();
+            $model->setAttributes($attributes);
+            $model->setDatabaseAttributes($attributes);
+            $model->setIsNew(false);
+
+            $out[] = $model;
+        }
+
+        return $out;
+    }
+
+
+    /**
      * @param BrunoInterface $bruno
      * @return BrunoInterface
      */

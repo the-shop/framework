@@ -36,6 +36,11 @@ interface BrunoRepositoryInterface
     public function loadOne($identifier);
 
     /**
+     * @return [BrunoInterface]
+     */
+    public function loadMultiple();
+
+    /**
      * @param BrunoInterface $bruno
      * @return BrunoInterface
      */

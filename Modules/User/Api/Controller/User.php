@@ -19,6 +19,7 @@ class User extends BaseController
         return [
             'get' => 'get',
             'post' => 'create',
+            'put' => 'update',
         ];
     }
 
@@ -37,6 +38,16 @@ class User extends BaseController
      * @return bool|null
      */
     protected function create()
+    {
+        $user = new UserModel();
+        $user->save();
+        return $user->getId();
+    }
+
+    /**
+     * @return bool|null
+     */
+    protected function update()
     {
         $user = new UserModel();
         $user->save();

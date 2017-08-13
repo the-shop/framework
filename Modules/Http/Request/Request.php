@@ -2,11 +2,13 @@
 
 namespace Framework\Http\Request;
 
+use Framework\Base\Request\RequestInterface;
+
 /**
  * Class Request
  * @package Framework\Http\Request
  */
-class Request
+class Request implements RequestInterface
 {
     /**
      * @var array
@@ -27,6 +29,11 @@ class Request
      * @var null
      */
     private $method = null;
+
+    /**
+     * @var string
+     */
+    private $uri = null;
 
     /**
      * @param array $get
@@ -75,5 +82,24 @@ class Request
         }
 
         return $this->method;
+    }
+
+    /**
+     * @param $uri
+     * @return $this
+     */
+    public function setUri($uri)
+    {
+        $this->uri = $uri;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUri()
+    {
+        return $this->uri;
     }
 }

@@ -14,15 +14,38 @@ use Framework\Http\Response\Response;
 class RestApi extends BaseApplication
 {
     /**
-     * @return \Framework\Http\Response\Response
+     * @return $this
      */
     public function run()
     {
+        $uri = $this->getRequest()->getUri();
+
+        $router = $this->getRouter();
+
+        $controller = $router->getUriHandler($uri);
+
+        $this->setController($controller);
+
+        if (!in_array($this->getRequest()->getMethod(), $controller->getRegisteredRequestMethods())) {
+            throw new \RuntimeException('Not implemented');
+        }
+
+        $controller->setApplication($this);
+
         $this->handleRequest();
 
         $this->renderResponse();
 
-        return $this->getResponse();
+        return $this;
+    }
+
+    public function handleRequest()
+    {
+        $handlerOutput = $this->handle($this->getController());
+
+        $this->buildResponse($handlerOutput);
+
+        return $handlerOutput;
     }
 
     /**
@@ -32,38 +55,6 @@ class RestApi extends BaseApplication
     {
         $jsonRender = new Json();
         $jsonRender->render($this->getResponse());
-    }
-
-    /**
-     * @return \Framework\Base\Application\ControllerInterface
-     */
-    protected function resolveHandler()
-    {
-        $routeHandler = $this->getRouter()
-            ->parse($_SERVER['REQUEST_URI']);
-
-        if (!in_array($this->getRequest()->getMethod(), $routeHandler->getRegisteredRequestMethods())) {
-            // TODO: implement custom exception for this
-            throw new \RuntimeException('Not implemented');
-        }
-
-        $routeHandler->setApplication($this);
-
-        return $routeHandler;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    protected function handleRequest()
-    {
-        $routeHandler = $this->resolveHandler();
-
-        $handlerOutput = $this->handle($routeHandler);
-
-        $this->buildResponse($handlerOutput);
-
-        return $handlerOutput;
     }
 
     /**

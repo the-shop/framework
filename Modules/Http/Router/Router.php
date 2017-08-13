@@ -3,14 +3,18 @@
 namespace Framework\Http\Router;
 
 use Framework\Application\RestApi\NotFoundException;
+use Framework\Base\Application\ApplicationAwareInterface;
+use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Application\ControllerInterface;
 
 /**
  * Class Router
  * @package Framework\Http\Router
  */
-class Router
+class Router implements ApplicationAwareInterface
 {
+    use ApplicationAwareTrait;
+
     /**
      * @var array
      */
@@ -31,12 +35,15 @@ class Router
      * @param $uri
      * @return ControllerInterface
      */
-    public function parse($uri)
+    public function getUriHandler($uri)
     {
         if (!isset($this->registry[$uri])) {
             throw new NotFoundException("Route for URI " . $uri ." is not registered");
         }
 
-        return new $this->registry[$uri];
+        $resolver = $this->getApplication()
+            ->getResolver();
+
+        return $resolver->resolve($this->registry[$uri]);
     }
 }

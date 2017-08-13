@@ -4,6 +4,7 @@ namespace Framework\User\Api;
 
 use Framework\Base\Database\MongoAdapter;
 use Framework\Base\Module\BaseModule;
+use Framework\Http\Router\Router;
 use Framework\User\Api\Controller\User as UserController;
 use Framework\User\Api\Model\User as UserModel;
 use Framework\User\Api\Repository\UserRepository;
@@ -30,6 +31,8 @@ class Module extends BaseModule
     public function bootstrap()
     {
         $application = $this->getApplication();
+
+        $application->setRouterClass(Router::class);
 
         $application->getRouter()
             ->registerRoutes($this->config['routes']);

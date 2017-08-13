@@ -32,6 +32,16 @@ abstract class BaseApplication implements ApplicationInterface
     private $response = null;
 
     /**
+     * @var ControllerInterface|null
+     */
+    private $controller = null;
+
+    /**
+     * @var string|null
+     */
+    private $routerClass = null;
+
+    /**
      * @var RepositoryInterface|null
      */
     private $repositoryManager = null;
@@ -42,7 +52,7 @@ abstract class BaseApplication implements ApplicationInterface
     private $resolver = null;
 
     /**
-     * @return mixed
+     * @return $this
      */
     abstract public function run();
 
@@ -99,8 +109,12 @@ abstract class BaseApplication implements ApplicationInterface
     public function getRouter()
     {
         if ($this->router === null) {
+            if ($this->routerClass === null) {
+                throw new \RuntimeException('Router class not set.');
+            }
             $router = $this->getResolver()
-                ->resolve(Router::class);
+                ->resolve($this->getRouterClass())
+                ->setApplication($this);
             $this->setRouter($router);
         }
 
@@ -119,6 +133,25 @@ abstract class BaseApplication implements ApplicationInterface
     }
 
     /**
+     * @param string $className
+     * @return $this
+     */
+    public function setRouterClass(string $className)
+    {
+        $this->routerClass = $className;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRouterClass()
+    {
+        return $this->routerClass;
+    }
+
+    /**
      * @return \Framework\Http\Request\Request
      */
     public function getRequest()
@@ -131,6 +164,7 @@ abstract class BaseApplication implements ApplicationInterface
             $request->setGet(isset($_GET) ? $_GET : []);
             $request->setFiles(isset($_FILES) ? $_FILES : []);
             $request->setMethod($_SERVER['REQUEST_METHOD']);
+            $request->setUri($_SERVER['REQUEST_URI']);
 
             unset($_POST);
             unset($_GET);
@@ -168,6 +202,25 @@ abstract class BaseApplication implements ApplicationInterface
      */
     public function getResponse() {
         return $this->response;
+    }
+
+    /**
+     * @param ControllerInterface $controller
+     * @return $this
+     */
+    public function setController(ControllerInterface $controller)
+    {
+        $this->controller = $controller;
+
+        return $this;
+    }
+
+    /**
+     * @return ControllerInterface|null
+     */
+    public function getController()
+    {
+        return $this->controller;
     }
 
     /**

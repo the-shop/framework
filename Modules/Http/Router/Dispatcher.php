@@ -35,6 +35,7 @@ class Dispatcher implements ApplicationAwareInterface
      * @var array
      */
     private $routeParameters = [];
+
     /**
      * @param array $routes
      * @return $this
@@ -46,6 +47,12 @@ class Dispatcher implements ApplicationAwareInterface
         return $this;
     }
 
+    /**
+     * @param RequestInterface $request
+     * @return array
+     * @throws MethodNotAllowedException
+     * @throws \Exception
+     */
     public function parseRequest(RequestInterface $request)
     {
         // Fetch method and URI from somewhere
@@ -101,11 +108,17 @@ class Dispatcher implements ApplicationAwareInterface
         return $this->dispatcher;
     }
 
+    /**
+     * @return null|string
+     */
     public function getHandler()
     {
         return $this->handler;
     }
 
+    /**
+     * @return array
+     */
     public function getRouteParameters()
     {
         return $this->routeParameters;

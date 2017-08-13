@@ -14,7 +14,7 @@ class Resource extends BaseController
 {
     public function loadAll($resourceName)
     {
-        return ['multiple'];
+        return ['called', 'resource', $resourceName];
     }
 
     public function load($resourceName, $identifier)

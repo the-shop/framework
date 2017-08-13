@@ -80,7 +80,9 @@ class RestApi extends BaseApplication
             $this->setController($controller);
             $controller->setApplication($this);
 
-            $handlerOutput = $controller->{$action}($this->getDispatcher()->getRouteParameters());
+            $parameterValues = array_values($this->getDispatcher()->getRouteParameters());
+
+            $handlerOutput = $controller->{$action}(...$parameterValues);
         } catch (\Exception $e) {
             // TODO: better error handling (i.e. new ErrorHandler($e))
             $handlerOutput = $e->getMessage();

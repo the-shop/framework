@@ -30,10 +30,6 @@ class RestApi extends BaseApplication
      */
     public function handleRequest()
     {
-        $dispatcher = $this->getDispatcher();
-        $dispatcher->register();
-        $dispatcher->parseRequest($this->getRequest());
-
         $handlerOutput = $this->handle();
 
         $this->buildResponse($handlerOutput);
@@ -69,7 +65,11 @@ class RestApi extends BaseApplication
     protected function handle()
     {
         try {
-            $handlerPath = $this->getDispatcher()->getHandler();
+            $dispatcher = $this->getDispatcher();
+            $dispatcher->register();
+            $dispatcher->parseRequest($this->getRequest());
+
+            $handlerPath = $dispatcher->getHandler();
 
             $handlerPathParts = explode('::', $handlerPath);
 

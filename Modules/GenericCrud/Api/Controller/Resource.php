@@ -12,38 +12,46 @@ use Framework\Http\Controller\Http as HttpController;
  */
 class Resource extends HttpController
 {
-    public function loadAll($resourceName)
+    /**
+     * @param string $resourceName
+     * @return array
+     */
+    public function loadAll(string $resourceName)
     {
         return ['called', 'resource', $resourceName];
     }
 
-    public function load($resourceName, $identifier)
+    /**
+     * @param string $resourceName
+     * @param $identifier
+     * @return \Framework\Base\Model\BrunoInterface|null
+     */
+    public function load(string $resourceName, $identifier)
     {
-        $model = $this->getRepository(GenericModel::class)
-            ->loadOne($identifier);
+        $model = $this->loadModel($resourceName, $identifier);
 
-        if (!$model) {
-            throw new NotFoundException('Model not found.');
-        }
-
-        return $model->getId();
+        return $model;
     }
 
-    public function create()
+    /**
+     * @param string $resourceName
+     * @return \Framework\Base\Model\BrunoInterface|null
+     */
+    public function create(string $resourceName)
     {
-        $user = new GenericModel();
-        $user->save();
-        return $user->getId();
+        $model = new GenericModel();
+        $model->save();
+        return $model;
     }
 
-    public function update($resourceName, $identifier)
+    /**
+     * @param string $resourceName
+     * @param $identifier
+     * @return \Framework\Base\Model\BrunoInterface|null
+     */
+    public function update(string $resourceName, $identifier)
     {
-        $model = $this->getRepository(GenericModel::class)
-            ->loadOne($identifier);
-
-        if (!$model) {
-            throw new NotFoundException('Model not found.');
-        }
+        $model = $this->loadModel($resourceName, $identifier);
 
         $postParams = $this->getPost();
 
@@ -53,13 +61,56 @@ class Resource extends HttpController
         return $model;
     }
 
-    public function partialUpdate($resourceName, $identifier)
+    /**
+     * @param string $resourceName
+     * @param $identifier
+     * @return \Framework\Base\Model\BrunoInterface|null
+     */
+    public function partialUpdate(string $resourceName, $identifier)
     {
-        // TODO: implement
+        $model = $this->loadModel($resourceName, $identifier);
+
+        $postParams = $this->getPost();
+
+        foreach ($postParams as $attribute => $value) {
+            $model->setAttribute($attribute, $value);
+        }
+
+        $model->save();
+
+        return $model;
     }
 
-    public function delete($resourceName, $identifier)
+    /**
+     * @param string $resourceName
+     * @param $identifier
+     * @return \Framework\Base\Model\BrunoInterface|null
+     */
+    public function delete(string $resourceName, $identifier)
     {
-        // TODO: implement
+        $model = $this->loadModel($resourceName, $identifier);
+
+        $model->delete();
+
+        return $model;
+    }
+
+    /**
+     * Helper method for the controller
+     *
+     * @param string $resourceName
+     * @param $identifier
+     * @return \Framework\Base\Model\BrunoInterface|null
+     */
+    protected function loadModel(string $resourceName, $identifier)
+    {
+        $model = $this->getRepository(GenericModel::class)
+            ->loadOne($identifier);
+
+        if (!$model) {
+            throw new NotFoundException('Model not found.');
+        }
+
+        return $model;
     }
 }

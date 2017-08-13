@@ -23,6 +23,9 @@ abstract class Bruno implements BrunoInterface
      */
     protected $primaryKey = '_id';
 
+    /**
+     * @var string
+     */
     protected $databaseAddress = '192.168.33.10:27017'; // TODO: use this
 
     /**
@@ -134,6 +137,28 @@ abstract class Bruno implements BrunoInterface
     }
 
     /**
+     * @param string $databaseName
+     * @return $this
+     */
+    public function setDatabase(string $databaseName = 'framework')
+    {
+        $this->database = $databaseName;
+
+        return $this;
+    }
+
+    /**
+     * @param string $collectionName
+     * @return $this
+     */
+    public function setCollection(string $collectionName = 'generic')
+    {
+        $this->collection = $collectionName;
+
+        return $this;
+    }
+
+    /**
      * @param DatabaseAdapterInterface $adapter
      * @return $this
      */
@@ -159,6 +184,18 @@ abstract class Bruno implements BrunoInterface
     public function setAttributes(array $attributes = [])
     {
         $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * @param string $attribute
+     * @param mixed $value
+     * @return $this
+     */
+    public function setAttribute(string $attribute, mixed $value)
+    {
+        $this->attributes[$attribute] = $value;
 
         return $this;
     }

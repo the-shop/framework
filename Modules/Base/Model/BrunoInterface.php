@@ -54,6 +54,13 @@ interface BrunoInterface
     public function setAttributes(array $attributes = []);
 
     /**
+     * @param string $attribute
+     * @param mixed $value
+     * @return mixed
+     */
+    public function setAttribute(string $attribute, mixed $value);
+
+    /**
      * @return array
      */
     public function getDirtyAttributes();

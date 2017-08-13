@@ -10,25 +10,4 @@ use Framework\Base\Model\Bruno;
  */
 class Generic extends Bruno
 {
-    /**
-     * @param string $databaseName
-     * @return $this
-     */
-    public function setDatabase(string $databaseName = 'framework')
-    {
-        $this->database = $databaseName;
-
-        return $this;
-    }
-
-    /**
-     * @param string $collectionName
-     * @return $this
-     */
-    public function setCollection(string $collectionName = 'generic')
-    {
-        $this->collection = $collectionName;
-
-        return $this;
-    }
 }

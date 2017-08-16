@@ -18,4 +18,15 @@ interface ResponseInterface
      * @return mixed
      */
     public function getBody();
+
+    /**
+     * @param int $code
+     * @return mixed
+     */
+    public function setHttpCode(int $code);
+
+    /**
+     * @return mixed
+     */
+    public function getHttpCode();
 }

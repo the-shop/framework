@@ -25,9 +25,20 @@ interface ApplicationInterface
     public function getRepositoryManager();
 
     /**
-     * @return \Framework\Http\Request\Request
+     * @return ResponseInterface
      */
     public function getRequest();
+
+    /**
+     * @param ResponseInterface $response
+     * @return mixed
+     */
+    public function setResponse(ResponseInterface $response);
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getResponse();
 
     /**
      * @return \Framework\Http\Router\Dispatcher
@@ -52,16 +63,17 @@ interface ApplicationInterface
 
     /**
      * @param string $eventName
+     * @param mixed $payload
      * @return mixed
      */
-    public function triggerEvent(string $eventName);
+    public function triggerEvent(string $eventName, $payload = null);
 
     /**
      * @param string $eventName
-     * @param ListenerInterface $listener
+     * @param string $listenerClass
      * @return mixed
      */
-    public function listen(string $eventName, ListenerInterface $listener);
+    public function listen(string $eventName, string $listenerClass);
 
     /**
      * @param array $moduleClassList

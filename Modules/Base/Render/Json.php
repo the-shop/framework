@@ -18,6 +18,10 @@ class Json extends Render
     {
         $responseBody = $response->getBody();
 
+        http_response_code($response->getHttpCode());
+
+        header('Content-type: application/json');
+
         $rendered = json_encode($responseBody);
 
         echo $rendered;

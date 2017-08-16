@@ -208,7 +208,7 @@ abstract class Bruno implements BrunoInterface
      * @param mixed $value
      * @return $this
      */
-    public function setAttribute(string $attribute, mixed $value)
+    public function setAttribute(string $attribute, $value)
     {
         $this->attributes[$attribute] = $value;
 

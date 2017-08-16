@@ -6,12 +6,8 @@
 require_once '../vendor/autoload.php';
 
 $app = new \Framework\Application\RestApi\RestApi([
+    \Framework\Application\RestApi\Module::class,
     \Framework\GenericCrud\Api\Module::class
 ]);
 
-$request = $app->buildRequest();
-
-$response = $app->handle($request);
-
-$app->getRenderer()
-    ->render($response);
+$app->run();

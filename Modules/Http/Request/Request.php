@@ -26,14 +26,9 @@ class Request implements RequestInterface
     private $fileParams = [];
 
     /**
-     * @var null
+     * @var array
      */
-    private $method = null;
-
-    /**
-     * @var string
-     */
-    private $uri = null;
+    private $serverInformation = [];
 
     /**
      * @param array $get
@@ -90,36 +85,11 @@ class Request implements RequestInterface
     }
 
     /**
-     * @param $method
-     * @return $this
-     */
-    public function setMethod($method)
-    {
-        $this->method = strtoupper($method);
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getMethod()
     {
-        if ($this->method === null) {
-            throw new \RuntimeException('Invalid flow.');
-        }
-
-        return $this->method;
-    }
-
-    /**
-     * @param $uri
-     * @return $this
-     */
-    public function setUri($uri)
-    {
-        $this->uri = $uri;
-
-        return $this;
+        return isset($this->serverInformation['REQUEST_METHOD']) ? $this->serverInformation['REQUEST_METHOD'] : 'get';
     }
 
     /**
@@ -127,6 +97,17 @@ class Request implements RequestInterface
      */
     public function getUri()
     {
-        return $this->uri;
+        return isset($this->serverInformation['REQUEST_URI']) ? $this->serverInformation['REQUEST_URI'] : null;
+    }
+
+    /**
+     * @param array $serverInformationMap
+     * @return $this
+     */
+    public function setServer(array $serverInformationMap = [])
+    {
+        $this->serverInformation = $serverInformationMap;
+
+        return $this;
     }
 }

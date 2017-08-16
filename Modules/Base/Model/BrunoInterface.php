@@ -58,7 +58,7 @@ interface BrunoInterface
      * @param mixed $value
      * @return mixed
      */
-    public function setAttribute(string $attribute, mixed $value);
+    public function setAttribute(string $attribute, $value);
 
     /**
      * @return array

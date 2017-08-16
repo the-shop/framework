@@ -4,6 +4,7 @@ namespace Framework\Application\RestApi;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
+use Framework\Http\Response\Response;
 
 /**
  * Class ExceptionHandler
@@ -11,23 +12,32 @@ use Framework\Base\Application\ApplicationAwareTrait;
  */
 class ExceptionHandler implements ApplicationAwareInterface
 {
+    /**
+     * @const string
+     */
+    const EVENT_EXCEPTION_HANDLER_HANDLE_PRE = 'EVENT\EXCEPTION_HANDLER\HANDLE_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_EXCEPTION_HANDLER_HANDLE_POST = 'EVENT\EXCEPTION_HANDLER\HANDLE_POST';
+
     use ApplicationAwareTrait;
 
+    /**
+     * @param \Exception $e
+     * @return $this
+     */
     public function handle(\Exception $e)
     {
         $application = $this->getApplication();
 
-        $application->triggerEvent('ExceptionHandler:handle:pre');
+        $application->triggerEvent(self::EVENT_EXCEPTION_HANDLER_HANDLE_PRE, $e);
 
-        if ($e instanceof NotFoundException) {
-            return $e->getMessage();
-        }
+        // TODO: Additional handling?
 
-        if ($e instanceof \RuntimeException) {
-            return 'Server error: ' . $e->getMessage();
-        }
+        $application->triggerEvent(self::EVENT_EXCEPTION_HANDLER_HANDLE_POST, $e);
 
-        $application->triggerEvent('ExceptionHandler:handle:post');
-        throw $e;
+        return $this;
     }
 }

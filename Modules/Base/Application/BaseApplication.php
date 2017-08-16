@@ -11,6 +11,7 @@ use Framework\Base\Render\RenderInterface;
 use Framework\Base\Request\RequestInterface;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
+use Framework\Http\Response\ResponseInterface;
 use Framework\Http\Router\Dispatcher;
 
 /**
@@ -19,6 +20,36 @@ use Framework\Http\Router\Dispatcher;
  */
 abstract class BaseApplication implements ApplicationInterface
 {
+    /**
+     * @const string
+     */
+    const EVENT_APPLICATION_BUILD_REQUEST_PRE = 'EVENT\APPLICATION\BUILD_REQUEST_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_APPLICATION_BUILD_REQUEST_POST = 'EVENT\APPLICATION\BUILD_REQUEST_POST';
+
+    /**
+     * @const string
+     */
+    const EVENT_APPLICATION_HANDLE_REQUEST_PRE = 'EVENT\APPLICATION\HANDLE_REQUEST_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_APPLICATION_HANDLE_REQUEST_POST = 'EVENT\APPLICATION\HANDLE_REQUEST_POST';
+
+    /**
+     * @const string
+     */
+    const EVENT_APPLICATION_RENDER_RESPONSE_PRE = 'EVENT\APPLICATION\RENDER_REQUEST_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_APPLICATION_RENDER_RESPONSE_POST = 'EVENT\APPLICATION\RENDER_REQUEST_POST';
+
     /**
      * @var Dispatcher|null
      */
@@ -70,7 +101,8 @@ abstract class BaseApplication implements ApplicationInterface
     private $registeredModules = [];
 
     /**
-     * @return $this
+     * @param RequestInterface $request
+     * @return ResponseInterface
      */
     abstract public function handle(RequestInterface $request);
 
@@ -87,6 +119,37 @@ abstract class BaseApplication implements ApplicationInterface
     {
         $this->registerModules($registerModules);
         $this->bootstrap();
+    }
+
+    /**
+     * Main application entry point
+     *
+     * @return $this
+     */
+    public function run()
+    {
+        try {
+            $this->triggerEvent(self::EVENT_APPLICATION_BUILD_REQUEST_PRE);
+            $request = $this->buildRequest();
+            $this->triggerEvent(self::EVENT_APPLICATION_BUILD_REQUEST_POST);
+
+            $this->triggerEvent(self::EVENT_APPLICATION_HANDLE_REQUEST_PRE);
+            $response = $this->handle($request);
+            $this->triggerEvent(self::EVENT_APPLICATION_HANDLE_REQUEST_POST);
+
+            $this->triggerEvent(self::EVENT_APPLICATION_RENDER_RESPONSE_PRE);
+            $this->getRenderer()
+                ->render($response);
+            $this->triggerEvent(self::EVENT_APPLICATION_RENDER_RESPONSE_POST);
+        } catch (\Exception $e) {
+            $this->getExceptionHandler()
+                ->handle($e);
+
+            $this->getRenderer()
+                ->render($this->getResponse());
+        }
+
+        return $this;
     }
 
     /**
@@ -122,23 +185,37 @@ abstract class BaseApplication implements ApplicationInterface
         return $bootstrap;
     }
 
-    public function triggerEvent(string $eventName)
+    /**
+     * @param string $eventName
+     * @param null $payload
+     * @return array
+     */
+    public function triggerEvent(string $eventName, $payload = null)
     {
+        $responses = [];
         if (array_key_exists($eventName, $this->events) === true) {
-            foreach ($this->events[$eventName] as $listener) {
+            foreach ($this->events[$eventName] as $listenerClass) {
                 /* @var ListenerInterface $listener */
-                $listener->handle();
+                $listener = new $listenerClass();
+                $listener->setApplication($this);
+                $responses[] = $listener->handle($payload);
             }
         }
+        return $responses;
     }
 
-    public function listen(string $eventName, ListenerInterface $listener)
+    /**
+     * @param string $eventName
+     * @param string $listenerClass
+     * @return $this
+     */
+    public function listen(string $eventName, string $listenerClass)
     {
         if (array_key_exists($eventName, $this->events) === false) {
             $this->events[$eventName] = [];
         }
 
-        $this->events[$eventName][] = $listener;
+        $this->events[$eventName][] = $listenerClass;
 
         return $this;
     }
@@ -150,6 +227,8 @@ abstract class BaseApplication implements ApplicationInterface
     public function setExceptionHandler(ExceptionHandler $exceptionHandler)
     {
         $this->exceptionHandler = $exceptionHandler;
+
+        $this->exceptionHandler->setApplication($this);
 
         return $this;
     }
@@ -253,10 +332,10 @@ abstract class BaseApplication implements ApplicationInterface
     }
 
     /**
-     * @param Response $response
+     * @param ResponseInterface $response
      * @return $this
      */
-    public function setResponse(Response $response)
+    public function setResponse(ResponseInterface $response)
     {
         $this->response = $response;
 
@@ -264,7 +343,7 @@ abstract class BaseApplication implements ApplicationInterface
     }
 
     /**
-     * @return \Framework\Http\Response\Response
+     * @return ResponseInterface
      */
     public function getResponse() {
         return $this->response;

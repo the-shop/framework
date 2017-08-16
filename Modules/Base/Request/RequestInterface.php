@@ -9,10 +9,10 @@ namespace Framework\Base\Request;
 interface RequestInterface
 {
     /**
-     * @param $uri
+     * @param array $serverInformationMap
      * @return mixed
      */
-    public function setUri($uri);
+    public function setServer(array $serverInformationMap = []);
 
     /**
      * @return mixed

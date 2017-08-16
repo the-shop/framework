@@ -2,7 +2,17 @@
 
 namespace Framework\Base\Events;
 
-interface ListenerInterface
+use Framework\Base\Application\ApplicationAwareInterface;
+
+/**
+ * Interface ListenerInterface
+ * @package Framework\Base\Events
+ */
+interface ListenerInterface extends ApplicationAwareInterface
 {
-    public function handle();
+    /**
+     * @param $payload
+     * @return mixed
+     */
+    public function handle($payload);
 }

@@ -14,6 +14,11 @@ class Response implements ResponseInterface
     private $body = null;
 
     /**
+     * @var int
+     */
+    private $code = 200;
+
+    /**
      * @param $responseBody
      * @return $this
      */
@@ -30,5 +35,24 @@ class Response implements ResponseInterface
     public function getBody()
     {
         return $this->body;
+    }
+
+    /**
+     * @param int $code
+     * @return $this
+     */
+    public function setHttpCode(int $code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHttpCode()
+    {
+        return $this->code;
     }
 }

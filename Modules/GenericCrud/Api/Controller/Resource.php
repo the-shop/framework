@@ -95,7 +95,7 @@ class Resource extends HttpController
             ->loadMultiple();
 
         $this->getApplication()
-            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_LOAD_ALL_POST, $out);
+            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_LOAD_ALL_POST, $models);
 
         return $models;
     }

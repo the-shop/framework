@@ -3,6 +3,7 @@
 namespace Framework\GenericCrud\Api\Controller;
 
 use Framework\Application\RestApi\NotFoundException;
+use Framework\Base\Model\BrunoInterface;
 use Framework\GenericCrud\Api\Model\Generic as GenericModel;
 use Framework\GenericCrud\Api\Model\Generic;
 use Framework\Http\Controller\Http as HttpController;
@@ -14,37 +15,108 @@ use Framework\Http\Controller\Http as HttpController;
 class Resource extends HttpController
 {
     /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_LOAD_ALL_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_LOAD_ALL_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_LOAD_ALL_POST = 'EVENT\GENERIC_CRUD\RESOURCE_LOAD_ALL_POST';
+
+    /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_LOAD_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_LOAD_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_LOAD_POST = 'EVENT\GENERIC_CRUD\RESOURCE_LOAD_POST';
+
+    /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_CREATE_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_CREATE_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_CREATE_POST = 'EVENT\GENERIC_CRUD\RESOURCE_CREATE_POST';
+
+    /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_UPDATE_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_UPDATE_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_UPDATE_POST = 'EVENT\GENERIC_CRUD\RESOURCE_UPDATE_POST';
+
+    /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_PARTIAL_UPDATE_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_PARTIAL_UPDATE_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_PARTIAL_UPDATE_POST = 'EVENT\GENERIC_CRUD\RESOURCE_PARTIAL_UPDATE_POST';
+
+    /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_DELETE_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_DELETE_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_GENERIC_CRUD_RESOURCE_DELETE_POST = 'EVENT\GENERIC_CRUD\RESOURCE_DELETE_POST';
+
+    /**
      * @param string $resourceName
      * @return array
      */
     public function loadAll(string $resourceName)
     {
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:loadAll:pre');
+            ->triggerEvent(
+                self::EVENT_GENERIC_CRUD_RESOURCE_LOAD_ALL_PRE,
+                [
+                    'resourceName' => $resourceName
+                ]
+            );
 
         $out = $this->getRepositoryFromResourceName($resourceName)
             ->loadMultiple();
 
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:loadAll:post');
+            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_LOAD_ALL_POST, $out);
 
         return $out;
     }
 
     /**
      * @param string $resourceName
-     * @param $identifier
+     * @param string $identifier
      * @return \Framework\Base\Model\BrunoInterface|null
      */
-    public function load(string $resourceName, $identifier)
+    public function load(string $resourceName, string $identifier)
     {
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:load:pre');
+            ->triggerEvent(
+                self::EVENT_GENERIC_CRUD_RESOURCE_LOAD_PRE,
+                [
+                    'resourceName' => $resourceName,
+                    'identifier' => $identifier
+                ]
+            );
 
         $model = $this->loadModel($resourceName, $identifier);
 
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:load:post');
+            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_LOAD_POST, $model);
 
         return $model;
     }
@@ -56,26 +128,37 @@ class Resource extends HttpController
     public function create(string $resourceName)
     {
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:create:pre');
+            ->triggerEvent(
+                self::EVENT_GENERIC_CRUD_RESOURCE_CREATE_PRE,
+                [
+                    'resourceName' => $resourceName
+                ]
+            );
 
         $model = new GenericModel();
         $model->setResourceName($resourceName);
         $model->save();
-        return $model;
 
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:create:post');
+            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_CREATE_POST, $model);
+
+        return $model;
     }
 
     /**
      * @param string $resourceName
-     * @param $identifier
+     * @param string $identifier
      * @return \Framework\Base\Model\BrunoInterface|null
      */
-    public function update(string $resourceName, $identifier)
+    public function update(string $resourceName, string $identifier)
     {
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:update:pre');
+            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_UPDATE_PRE,
+                [
+                    'resourceName' => $resourceName,
+                    'identifier' => $identifier
+                ]
+            );
 
         $model = $this->loadModel($resourceName, $identifier);
 
@@ -85,20 +168,26 @@ class Resource extends HttpController
         $model->save();
 
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:update:post');
+            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_UPDATE_POST, $model);
 
         return $model;
     }
 
     /**
      * @param string $resourceName
-     * @param $identifier
+     * @param string $identifier
      * @return \Framework\Base\Model\BrunoInterface|null
      */
-    public function partialUpdate(string $resourceName, $identifier)
+    public function partialUpdate(string $resourceName, string $identifier)
     {
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:partialUpdate:pre');
+            ->triggerEvent(
+                self::EVENT_GENERIC_CRUD_RESOURCE_PARTIAL_UPDATE_PRE,
+                [
+                    'resourceName' => $resourceName,
+                    'identifier' => $identifier
+                ]
+            );
 
         $model = $this->loadModel($resourceName, $identifier);
 
@@ -111,26 +200,33 @@ class Resource extends HttpController
         $model->save();
 
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:partialUpdate:post');
+            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_PARTIAL_UPDATE_POST, $model);
 
         return $model;
     }
 
     /**
      * @param string $resourceName
-     * @param $identifier
+     * @param string $identifier
      * @return \Framework\Base\Model\BrunoInterface|null
      */
-    public function delete(string $resourceName, $identifier)
+    public function delete(string $resourceName, string $identifier)
     {
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:delete:pre');
+            ->triggerEvent(
+                self::EVENT_GENERIC_CRUD_RESOURCE_DELETE_PRE,
+                [
+                    'resourceName' => $resourceName,
+                    'identifier' => $identifier
+                ]
+            );
+
         $model = $this->loadModel($resourceName, $identifier);
 
         $model->delete();
 
         $this->getApplication()
-            ->triggerEvent('GenericCrud\Api\Controller\Resource:delete:post');
+            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_DELETE_POST, $model);
 
         return $model;
     }
@@ -139,10 +235,11 @@ class Resource extends HttpController
      * Helper method for the controller
      *
      * @param string $resourceName
-     * @param $identifier
-     * @return \Framework\Base\Model\BrunoInterface|null
+     * @param string $identifier
+     * @return BrunoInterface
+     * @throws NotFoundException
      */
-    protected function loadModel(string $resourceName, $identifier)
+    protected function loadModel(string $resourceName, string $identifier)
     {
         $model = $this->getRepositoryFromResourceName($resourceName)
             ->loadOne($identifier);

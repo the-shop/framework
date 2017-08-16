@@ -7,10 +7,11 @@ use Framework\Base\Di\Resolver;
 use Framework\Base\Events\ListenerInterface;
 use Framework\Base\Manager\Repository;
 use Framework\Base\Manager\RepositoryInterface;
+use Framework\Base\Render\RenderInterface;
+use Framework\Base\Request\RequestInterface;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
 use Framework\Http\Router\Dispatcher;
-use Framework\GenericCrud\Api\Module;
 
 /**
  * Class BaseApplication
@@ -59,16 +60,54 @@ abstract class BaseApplication implements ApplicationInterface
     private $events = [];
 
     /**
+     * @var RenderInterface|null
+     */
+    private $renderer = null;
+
+    /**
+     * @var array
+     */
+    private $registeredModules = [];
+
+    /**
      * @return $this
      */
-    abstract public function run();
+    abstract public function handle(RequestInterface $request);
+
+    /**
+     * @return RequestInterface
+     */
+    abstract public function buildRequest();
 
     /**
      * BaseApplication constructor.
+     * @param array $registerModules
      */
-    public function __construct()
+    public function __construct(array $registerModules = [])
     {
+        $this->registerModules($registerModules);
         $this->bootstrap();
+    }
+
+    /**
+     * @param array $moduleClassList
+     * @return $this
+     */
+    public function registerModules(array $moduleClassList = [])
+    {
+        $this->registeredModules = array_merge($this->registeredModules, $moduleClassList);
+
+        $this->registeredModules = array_unique($this->registeredModules);
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegisteredModules()
+    {
+        return $this->registeredModules;
     }
 
     /**
@@ -77,9 +116,7 @@ abstract class BaseApplication implements ApplicationInterface
     public function bootstrap()
     {
         $bootstrap = new Bootstrap();
-        $registerModules = [
-            Module::class
-        ];
+        $registerModules = $this->getRegisteredModules();
         $bootstrap->registerModules($registerModules, $this);
 
         return $bootstrap;
@@ -123,6 +160,25 @@ abstract class BaseApplication implements ApplicationInterface
     public function getExceptionHandler()
     {
         return $this->exceptionHandler;
+    }
+
+    /**
+     * @param RenderInterface $render
+     * @return $this
+     */
+    public function setRenderer(RenderInterface $render)
+    {
+        $this->renderer = $render;
+
+        return $this;
+    }
+
+    /**
+     * @return RenderInterface
+     */
+    public function getRenderer()
+    {
+        return $this->renderer;
     }
 
     /**
@@ -175,25 +231,12 @@ abstract class BaseApplication implements ApplicationInterface
     }
 
     /**
-     * @return \Framework\Http\Request\Request
+     * @return Request|null
      */
     public function getRequest()
     {
         if ($this->request === null) {
-            $request = $this->getResolver()
-                ->resolve(Request::class);
-
-            $request->setPost(isset($_POST) ? $_POST : []);
-            $request->setQuery(isset($_GET) ? $_GET : []);
-            $request->setFiles(isset($_FILES) ? $_FILES : []);
-            $request->setMethod($_SERVER['REQUEST_METHOD']);
-            $request->setUri($_SERVER['REQUEST_URI']);
-
-            unset($_POST);
-            unset($_GET);
-            unset($_FILES);
-
-            $this->setRequest($request);
+            throw new \RuntimeException('Request object not set.');
         }
 
         return $this->request;

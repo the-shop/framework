@@ -5,6 +5,8 @@ namespace Framework\Application\RestApi;
 use Framework\Base\Application\BaseApplication;
 use Framework\Base\Application\ControllerInterface;
 use Framework\Base\Render\Json;
+use Framework\Base\Request\RequestInterface;
+use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
 
 /**
@@ -14,57 +16,44 @@ use Framework\Http\Response\Response;
 class RestApi extends BaseApplication
 {
     /**
-     * @return $this
+     * RestApi constructor.
      */
-    public function run()
+    public function __construct(array $registerModules = [])
     {
+        parent::__construct($registerModules);
+
         $this->setExceptionHandler(new ExceptionHandler());
-
-        $this->handleRequest();
-
-        $this->renderResponse();
-
-        return $this;
+        $this->setRenderer(new Json());
     }
 
     /**
-     * @return mixed
+     * @return RequestInterface
      */
-    public function handleRequest()
+    public function buildRequest()
     {
-        $handlerOutput = $this->handle();
+        $request = $this->getResolver()
+            ->resolve(Request::class);
 
-        $this->buildResponse($handlerOutput);
+        $request->setPost(isset($_POST) ? $_POST : []);
+        $request->setQuery(isset($_GET) ? $_GET : []);
+        $request->setFiles(isset($_FILES) ? $_FILES : []);
+        $request->setMethod($_SERVER['REQUEST_METHOD']);
+        $request->setUri($_SERVER['REQUEST_URI']);
 
-        return $handlerOutput;
+        unset($_POST);
+        unset($_GET);
+        unset($_FILES);
+
+        $this->setRequest($request);
+
+        return $request;
     }
 
     /**
-     * Renders response
-     */
-    public function renderResponse()
-    {
-        $jsonRender = new Json();
-        $jsonRender->render($this->getResponse());
-    }
-
-    /**
-     * @param $handlerOutput
+     * @param RequestInterface $request
      * @return Response
      */
-    public function buildResponse($handlerOutput)
-    {
-        $response = new Response();
-        $response->setBody($handlerOutput);
-        $this->setResponse($response);
-
-        return $response;
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function handle()
+    public function handle(RequestInterface $request)
     {
         try {
             $dispatcher = $this->getDispatcher();
@@ -91,6 +80,10 @@ class RestApi extends BaseApplication
                 ->handle($e);
         }
 
-        return $handlerOutput;
+        $response = new Response();
+        $response->setBody($handlerOutput);
+        $this->setResponse($response);
+
+        return $response;
     }
 }

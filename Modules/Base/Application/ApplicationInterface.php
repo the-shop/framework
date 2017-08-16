@@ -4,6 +4,8 @@ namespace Framework\Base\Application;
 
 use Framework\Base\Di\Resolver;
 use Framework\Base\Events\ListenerInterface;
+use Framework\Base\Request\RequestInterface;
+use Framework\Http\Response\ResponseInterface;
 
 /**
  * Interface ApplicationInterface
@@ -12,9 +14,10 @@ use Framework\Base\Events\ListenerInterface;
 interface ApplicationInterface
 {
     /**
-     * @return mixed
+     * @param RequestInterface $request
+     * @return ResponseInterface
      */
-    public function run();
+    public function handle(RequestInterface $request);
 
     /**
      * @return \Framework\Base\Manager\RepositoryInterface|null
@@ -59,4 +62,10 @@ interface ApplicationInterface
      * @return mixed
      */
     public function listen(string $eventName, ListenerInterface $listener);
+
+    /**
+     * @param array $moduleClassList
+     * @return mixed
+     */
+    public function registerModules(array $moduleClassList = []);
 }

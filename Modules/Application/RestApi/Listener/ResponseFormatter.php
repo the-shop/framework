@@ -31,6 +31,8 @@ class ResponseFormatter implements ListenerInterface
             foreach ($responseBody as $key => $responseItem) {
                 $out[$key] = $this->formatSingleRecord($responseItem);
             }
+        } elseif ($responseBody instanceof BrunoInterface)  {
+            $out = $this->formatSingleRecord($responseBody->getAttributes());
         }
 
         $this->getApplication()

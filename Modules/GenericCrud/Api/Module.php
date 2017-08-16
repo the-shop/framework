@@ -47,7 +47,7 @@ class Module extends BaseModule
             ],
         ],
         'resources' => [
-            'bruno' => GenericRepository::class
+            'test' => GenericRepository::class
         ],
         'repositories' => [
             GenericModel::class => GenericRepository::class

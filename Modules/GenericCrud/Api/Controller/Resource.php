@@ -6,6 +6,7 @@ use Framework\Application\RestApi\NotFoundException;
 use Framework\Base\Model\BrunoInterface;
 use Framework\GenericCrud\Api\Model\Generic as GenericModel;
 use Framework\GenericCrud\Api\Model\Generic;
+use Framework\GenericCrud\Api\Repository\GenericRepository;
 use Framework\Http\Controller\Http as HttpController;
 
 /**
@@ -88,13 +89,15 @@ class Resource extends HttpController
                 ]
             );
 
-        $out = $this->getRepositoryFromResourceName($resourceName)
+        /* @var GenericRepository $repository */
+        $repository = $this->getRepositoryFromResourceName($resourceName);
+        $models = $repository->setResourceName($resourceName)
             ->loadMultiple();
 
         $this->getApplication()
             ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_LOAD_ALL_POST, $out);
 
-        return $out;
+        return $models;
     }
 
     /**
@@ -137,6 +140,7 @@ class Resource extends HttpController
 
         $model = new GenericModel();
         $model->setResourceName($resourceName);
+        $model->setAttributes($this->getPost());
         $model->save();
 
         $this->getApplication()
@@ -241,7 +245,9 @@ class Resource extends HttpController
      */
     protected function loadModel(string $resourceName, string $identifier)
     {
-        $model = $this->getRepositoryFromResourceName($resourceName)
+        /* @var GenericRepository $repository */
+        $repository = $this->getRepositoryFromResourceName($resourceName);
+        $model = $repository->setResourceName($resourceName)
             ->loadOne($identifier);
 
         if (!$model) {

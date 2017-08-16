@@ -33,6 +33,10 @@ abstract class BaseController implements ControllerInterface, ApplicationAwareIn
     }
 
 
+    /**
+     * @param string $resourceName
+     * @return \Framework\Base\Repository\BrunoRepositoryInterface
+     */
     public function getRepositoryFromResourceName(string $resourceName)
     {
         return $this->getRepositoryManager()

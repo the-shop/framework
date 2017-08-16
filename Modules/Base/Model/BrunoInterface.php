@@ -82,6 +82,12 @@ interface BrunoInterface
     public function getDatabase();
 
     /**
+     * @param string $collectionName
+     * @return mixed
+     */
+    public function setCollection(string $collectionName);
+
+    /**
      * @return string
      */
     public function getCollection();

@@ -133,6 +133,17 @@ abstract class Bruno implements BrunoInterface
     }
 
     /**
+     * @param string $collection
+     * @return $this
+     */
+    public function setCollection(string $collection)
+    {
+        $this->collection = $collection;
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isNew()
@@ -158,17 +169,6 @@ abstract class Bruno implements BrunoInterface
     public function setDatabase(string $databaseName = 'framework')
     {
         $this->database = $databaseName;
-
-        return $this;
-    }
-
-    /**
-     * @param string $collectionName
-     * @return $this
-     */
-    public function setCollection(string $collectionName = 'generic')
-    {
-        $this->collection = $collectionName;
 
         return $this;
     }

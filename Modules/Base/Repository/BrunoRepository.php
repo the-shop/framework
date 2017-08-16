@@ -146,7 +146,7 @@ class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInter
         return $bruno;
     }
 
-    private function createNewQueryForModel(BrunoInterface $bruno)
+    protected function createNewQueryForModel(BrunoInterface $bruno)
     {
         $query = new MongoQuery();
         $query->setDatabase($bruno->getDatabase());

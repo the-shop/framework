@@ -7,7 +7,25 @@
     },
     "autoload": {
         "psr-4": {
-            "Framework\\": "Modules/"
+            "Framework\\Application\\RestApi\\": "Modules/Application/RestApi/src",
+            "Framework\\Base\\Application\\": "Modules/Base/Application/src",
+            "Framework\\Base\\Database\\": "Modules/Base/Database/src",
+            "Framework\\Base\\Di\\": "Modules/Base/Di/src",
+            "Framework\\Base\\Events\\": "Modules/Base/Events/src",
+            "Framework\\Base\\Manager\\": "Modules/Base/Manager/src",
+            "Framework\\Base\\Model\\": "Modules/Base/Model/src",
+            "Framework\\Base\\Module\\": "Modules/Base/Module/src",
+            "Framework\\Base\\Render\\": "Modules/Base/Render/src",
+            "Framework\\Base\\Repository\\": "Modules/Base/Repository/src",
+            "Framework\\Base\\Request\\": "Modules/Base/Request/src",
+            "Framework\\Base\\Response\\": "Modules/Base/Response/src",
+            "Framework\\Base\\Router\\": "Modules/Base/Router/src",
+            "Framework\\GenericCrud\\Api\\": "Modules/GenericCrud/Api/src",
+            "Framework\\Http\\Controller\\": "Modules/Http/Controller/src",
+            "Framework\\Http\\Render\\": "Modules/Http/Render/src",
+            "Framework\\Http\\Request\\": "Modules/Http/Request/src",
+            "Framework\\Http\\Response\\": "Modules/Http/Response/src",
+            "Framework\\Http\\Router\\": "Modules/Http/Router/src"
         }
     }
 }

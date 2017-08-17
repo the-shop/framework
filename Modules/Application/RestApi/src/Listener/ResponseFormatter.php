@@ -49,6 +49,10 @@ class ResponseFormatter implements ListenerInterface
         return $this;
     }
 
+    /**
+     * @param $record
+     * @return mixed
+     */
     public function formatSingleRecord($record)
     {
         $formatted = $record;

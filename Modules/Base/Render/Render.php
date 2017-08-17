@@ -10,9 +10,4 @@ use Framework\Base\Response\ResponseInterface;
  */
 abstract class Render implements RenderInterface
 {
-    /**
-     * @param ResponseInterface $response
-     * @return mixed
-     */
-    abstract public function render(ResponseInterface $response);
 }

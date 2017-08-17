@@ -13,7 +13,7 @@ use Framework\Base\Model\BrunoInterface;
  * Class BrunoRepository
  * @package Framework\Base\Repository
  */
-class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInterface
+abstract class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInterface
 {
     use ApplicationAwareTrait;
 

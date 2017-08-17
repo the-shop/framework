@@ -3,6 +3,7 @@
 namespace Framework\Http\Controller;
 
 use Framework\Base\Application\BaseController;
+use Framework\Http\Request\Request;
 
 /**
  * Class Http
@@ -15,8 +16,7 @@ class Http extends BaseController
      */
     public function getPost()
     {
-        return $this->getApplication()
-            ->getRequest()
+        return $this->getRequest()
             ->getPost();
     }
 
@@ -25,8 +25,7 @@ class Http extends BaseController
      */
     public function getQuery()
     {
-        return $this->getApplication()
-            ->getRequest()
+        return $this->getRequest()
             ->getQuery();
     }
 
@@ -35,8 +34,19 @@ class Http extends BaseController
      */
     public function getFiles()
     {
-        return $this->getApplication()
-            ->getRequest()
+        return $this->getRequest()
             ->getFiles();
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        /* @var Request $request */
+        $request = $this->getApplication()
+            ->getRequest();
+
+        return $request;
     }
 }

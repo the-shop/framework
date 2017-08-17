@@ -2,7 +2,7 @@
 
 namespace Framework\GenericCrud\Api\Controller;
 
-use Framework\Application\RestApi\NotFoundException;
+use Framework\Application\RestApi\Exception\NotFoundException;
 use Framework\Base\Model\BrunoInterface;
 use Framework\GenericCrud\Api\Model\Generic as GenericModel;
 use Framework\GenericCrud\Api\Model\Generic;

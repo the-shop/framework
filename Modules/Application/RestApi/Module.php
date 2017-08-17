@@ -2,7 +2,7 @@
 
 namespace Framework\Application\RestApi;
 
-use Framework\Application\RestApi\Exception\ExceptionHandler;
+use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Application\BaseApplication;
 use Framework\Base\Module\BaseModule;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Application\RestApi\Exception;
+namespace Framework\Base\Application\Exception;
 
 use Throwable;
 

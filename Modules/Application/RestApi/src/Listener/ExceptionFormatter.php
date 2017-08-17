@@ -4,7 +4,7 @@ namespace Framework\Application\RestApi\Listener;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Application\Exception\NotFoundException;
-use Framework\Base\Events\ListenerInterface;
+use Framework\Base\Event\ListenerInterface;
 use Framework\Http\Response\Response;
 
 /**

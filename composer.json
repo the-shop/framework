@@ -11,7 +11,7 @@
             "Framework\\Base\\Application\\": "Modules/Base/Application/src",
             "Framework\\Base\\Database\\": "Modules/Base/Database/src",
             "Framework\\Base\\Di\\": "Modules/Base/Di/src",
-            "Framework\\Base\\Events\\": "Modules/Base/Events/src",
+            "Framework\\Base\\Event\\": "Modules/Base/Event/src",
             "Framework\\Base\\Manager\\": "Modules/Base/Manager/src",
             "Framework\\Base\\Model\\": "Modules/Base/Model/src",
             "Framework\\Base\\Module\\": "Modules/Base/Module/src",

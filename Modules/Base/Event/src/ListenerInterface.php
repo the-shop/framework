@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Base\Events;
+namespace Framework\Base\Event;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 

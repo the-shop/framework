@@ -4,7 +4,7 @@ namespace Framework\Base\Application;
 
 use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Di\Resolver;
-use Framework\Base\Events\ListenerInterface;
+use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Manager\Repository;
 use Framework\Base\Manager\RepositoryInterface;
 use Framework\Base\Render\RenderInterface;

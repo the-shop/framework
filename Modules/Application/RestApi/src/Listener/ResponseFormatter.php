@@ -3,7 +3,7 @@
 namespace Framework\Application\RestApi\Listener;
 
 use Framework\Base\Application\ApplicationAwareTrait;
-use Framework\Base\Events\ListenerInterface;
+use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Model\BrunoInterface;
 
 /**

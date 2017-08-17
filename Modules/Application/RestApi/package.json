@@ -1,0 +1,9 @@
+{
+  "name": "the-shop/fw-rest-api",
+  "description": "Rest API application implementation using the-shop/fw-* packages",
+  "require": {
+    "php": "^7.1",
+    "the-shop/fw-base": "0.1.0",
+    "the-shop/fw-http": "0.1.0"
+  }
+}

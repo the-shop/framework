@@ -100,12 +100,8 @@ abstract class BaseApplication implements ApplicationInterface
     private $registeredModules = [];
 
     /**
-     * @param RequestInterface $request
-     * @return ResponseInterface
-     */
-    abstract public function handle(RequestInterface $request);
-
-    /**
+     * Has to build instance of RequestInterface, set it to BaseApplication and return it
+     *
      * @return RequestInterface
      */
     abstract public function buildRequest();
@@ -116,6 +112,7 @@ abstract class BaseApplication implements ApplicationInterface
      */
     public function __construct(array $registerModules = [])
     {
+        $this->setExceptionHandler(new ExceptionHandler());
         $this->registerModules($registerModules);
         $this->bootstrap();
     }
@@ -149,6 +146,38 @@ abstract class BaseApplication implements ApplicationInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @return ResponseInterface
+     */
+    public function handle(RequestInterface $request)
+    {
+        $dispatcher = $this->getDispatcher();
+        $dispatcher->register();
+        $dispatcher->parseRequest($this->getRequest());
+
+        $handlerPath = $dispatcher->getHandler();
+
+        $handlerPathParts = explode('::', $handlerPath);
+
+        list($controllerClass, $action) = $handlerPathParts;
+
+        /* @var ControllerInterface $controller */
+        $controller = new $controllerClass();
+        $this->setController($controller);
+        $controller->setApplication($this);
+
+        $parameterValues = array_values($this->getDispatcher()->getRouteParameters());
+
+        $handlerOutput = $controller->{$action}(...$parameterValues);
+
+        $response = new Response();
+        $response->setBody($handlerOutput);
+        $this->setResponse($response);
+
+        return $response;
     }
 
     /**

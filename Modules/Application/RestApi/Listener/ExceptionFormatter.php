@@ -2,8 +2,8 @@
 
 namespace Framework\Application\RestApi\Listener;
 
-use Framework\Application\RestApi\Exception\NotFoundException;
 use Framework\Base\Application\ApplicationAwareTrait;
+use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Events\ListenerInterface;
 use Framework\Http\Response\Response;
 

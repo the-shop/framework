@@ -196,6 +196,7 @@ abstract class BaseApplication implements ApplicationInterface
             foreach ($this->events[$eventName] as $listenerClass) {
                 /* @var ListenerInterface $listener */
                 $listener = new $listenerClass();
+                // TODO: throw exception if $listener not instance of ListenerInterface
                 $listener->setApplication($this);
                 $responses[] = $listener->handle($payload);
             }

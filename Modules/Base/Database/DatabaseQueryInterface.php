@@ -71,6 +71,6 @@ interface DatabaseQueryInterface
 
     public function addAndCondition(string $field, string $condition, $value);
 
-//    TODO:
-//    public function addOrCondition();
+    // TODO: implement
+    // public function addOrCondition();
 }

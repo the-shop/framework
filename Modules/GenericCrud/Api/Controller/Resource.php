@@ -227,6 +227,8 @@ class Resource extends HttpController
 
         $model = $this->loadModel($resourceName, $identifier);
 
+        // TODO: implement
+        throw new \RuntimeException('Not implemented');
         $model->delete();
 
         $this->getApplication()

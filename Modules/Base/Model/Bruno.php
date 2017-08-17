@@ -27,7 +27,7 @@ abstract class Bruno implements BrunoInterface
     /**
      * @var string
      */
-    protected $databaseAddress = '192.168.33.10:27017'; // TODO: use this
+    protected $databaseAddress = '192.168.33.10:27017'; // TODO: extract to .env and use that
 
     /**
      * @var string
@@ -226,6 +226,7 @@ abstract class Bruno implements BrunoInterface
     public function getDirtyAttributes()
     {
         // TODO: Implement getDirtyAttributes() method.
+        throw new \RuntimeException('Not implemented');
     }
 
     /**

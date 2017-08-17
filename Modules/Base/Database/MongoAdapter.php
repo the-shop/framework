@@ -54,7 +54,7 @@ class MongoAdapter implements DatabaseAdapterInterface
     public function getClient()
     {
         if ($this->mongoClient === null) {
-            $this->setClient(new Client());// TODO: config
+            $this->setClient(new Client());
         }
 
         return $this->mongoClient;

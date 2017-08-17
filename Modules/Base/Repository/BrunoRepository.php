@@ -135,14 +135,14 @@ abstract class BrunoRepository implements BrunoRepositoryInterface, ApplicationA
         return $out;
     }
 
-
     /**
      * @param BrunoInterface $bruno
      * @return BrunoInterface
      */
     public function save(BrunoInterface $bruno)
     {
-        // TODO: Implement save() method.
+        // TODO: Implement save() method, let bruno use that
+        throw new \RuntimeException('Not implemented');
         return $bruno;
     }
 

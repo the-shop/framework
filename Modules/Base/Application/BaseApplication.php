@@ -1,8 +1,7 @@
 <?php
 
 namespace Framework\Base\Application;
-
-use Framework\Application\RestApi\ExceptionHandler;
+use Framework\Application\RestApi\Exception\ExceptionHandler;
 use Framework\Base\Di\Resolver;
 use Framework\Base\Events\ListenerInterface;
 use Framework\Base\Manager\Repository;
@@ -81,7 +80,7 @@ abstract class BaseApplication implements ApplicationInterface
     private $resolver = null;
 
     /**
-     * @var ExceptionHandler|null
+     * @var \Framework\Application\RestApi\Exception\ExceptionHandler|null
      */
     private $exceptionHandler = null;
 
@@ -221,7 +220,7 @@ abstract class BaseApplication implements ApplicationInterface
     }
 
     /**
-     * @param ExceptionHandler $exceptionHandler
+     * @param \Framework\Application\RestApi\Exception\ExceptionHandler $exceptionHandler
      * @return $this
      */
     public function setExceptionHandler(ExceptionHandler $exceptionHandler)
@@ -234,7 +233,7 @@ abstract class BaseApplication implements ApplicationInterface
     }
 
     /**
-     * @return ExceptionHandler|null
+     * @return \Framework\Application\RestApi\Exception\ExceptionHandler|null
      */
     public function getExceptionHandler()
     {

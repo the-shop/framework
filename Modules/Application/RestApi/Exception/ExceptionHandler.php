@@ -1,10 +1,9 @@
 <?php
 
-namespace Framework\Application\RestApi;
+namespace Framework\Application\RestApi\Exception;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
-use Framework\Http\Response\Response;
 
 /**
  * Class ExceptionHandler

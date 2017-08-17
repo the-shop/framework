@@ -2,8 +2,9 @@
 
 namespace Framework\Http\Router;
 
-use Framework\Application\RestApi\MethodNotAllowedException;
-use Framework\Application\RestApi\NotFoundException;
+use FastRoute\RouteCollector;
+use Framework\Application\RestApi\Exception\MethodNotAllowedException;
+use Framework\Application\RestApi\Exception\NotFoundException;
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Request\RequestInterface;
@@ -96,7 +97,7 @@ class Dispatcher implements ApplicationAwareInterface
     public function register()
     {
         $routes = $this->routes;
-        $callback = function(\FastRoute\RouteCollector $routeCollector) use ($routes) {
+        $callback = function(RouteCollector $routeCollector) use ($routes) {
             foreach ($this->routes as $route) {
                 list ($method, $path, $handler) = $route;
                 $routeCollector->addRoute(strtoupper($method), $path, $handler);

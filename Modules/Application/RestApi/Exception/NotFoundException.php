@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Application\RestApi;
+namespace Framework\Application\RestApi\Exception;
 
 /**
  * Class NotFoundException

@@ -1,6 +1,7 @@
 <?php
 
 namespace Framework\Base\Application;
+
 use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Di\Resolver;
 use Framework\Base\Events\ListenerInterface;
@@ -8,10 +9,8 @@ use Framework\Base\Manager\Repository;
 use Framework\Base\Manager\RepositoryInterface;
 use Framework\Base\Render\RenderInterface;
 use Framework\Base\Request\RequestInterface;
-use Framework\Http\Request\Request;
-use Framework\Http\Response\Response;
-use Framework\Http\Response\ResponseInterface;
-use Framework\Http\Router\Dispatcher;
+use Framework\Base\Response\ResponseInterface;
+use Framework\Base\Router\DispatcherInterface;
 
 /**
  * Class BaseApplication
@@ -50,17 +49,17 @@ abstract class BaseApplication implements ApplicationInterface
     const EVENT_APPLICATION_RENDER_RESPONSE_POST = 'EVENT\APPLICATION\RENDER_REQUEST_POST';
 
     /**
-     * @var Dispatcher|null
+     * @var DispatcherInterface|null
      */
     private $dispatcher = null;
 
     /**
-     * @var Request|null
+     * @var RequestInterface|null
      */
     private $request = null;
 
     /**
-     * @var Response|null
+     * @var ResponseInterface|null
      */
     private $response = null;
 
@@ -173,9 +172,8 @@ abstract class BaseApplication implements ApplicationInterface
 
         $handlerOutput = $controller->{$action}(...$parameterValues);
 
-        $response = new Response();
+        $response = $this->getResponse();
         $response->setBody($handlerOutput);
-        $this->setResponse($response);
 
         return $response;
     }
@@ -223,9 +221,10 @@ abstract class BaseApplication implements ApplicationInterface
         $responses = [];
         if (array_key_exists($eventName, $this->events) === true) {
             foreach ($this->events[$eventName] as $listenerClass) {
-                /* @var ListenerInterface $listener */
                 $listener = new $listenerClass();
-                // TODO: throw exception if $listener not instance of ListenerInterface
+                if (!($listener instanceof ListenerInterface)) {
+                    throw new \RuntimeException('Listener "' . $listenerClass . '" must implement ListenerInterface.');
+                }
                 $listener->setApplication($this);
                 $responses[] = $listener->handle($payload);
             }
@@ -315,23 +314,22 @@ abstract class BaseApplication implements ApplicationInterface
     }
 
     /**
-     * @return \Framework\Http\Router\Dispatcher
+     * @return \Framework\Base\Router\DispatcherInterface
      */
     public function getDispatcher()
     {
         if ($this->dispatcher === null) {
-            // TODO: support non HTTP routes
-            $this->dispatcher = new Dispatcher();
+            throw new \RuntimeException('Dispatcher object not set.');
         }
 
         return $this->dispatcher;
     }
 
     /**
-     * @param Dispatcher $dispatcher
+     * @param DispatcherInterface $dispatcher
      * @return $this
      */
-    public function setDispatcher(Dispatcher $dispatcher)
+    public function setDispatcher(DispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
 
@@ -339,7 +337,7 @@ abstract class BaseApplication implements ApplicationInterface
     }
 
     /**
-     * @return Request|null
+     * @return RequestInterface|null
      */
     public function getRequest()
     {
@@ -351,10 +349,10 @@ abstract class BaseApplication implements ApplicationInterface
     }
 
     /**
-     * @param Request $request
+     * @param RequestInterface $request
      * @return $this
      */
-    public function setRequest(Request $request) {
+    public function setRequest(RequestInterface $request) {
         $this->request = $request;
 
         return $this;

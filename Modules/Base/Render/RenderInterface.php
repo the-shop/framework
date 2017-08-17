@@ -2,7 +2,7 @@
 
 namespace Framework\Base\Render;
 
-use Framework\Http\Response\ResponseInterface;
+use Framework\Base\Response\ResponseInterface;
 
 /**
  * Interface RenderInterface

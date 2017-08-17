@@ -3,17 +3,18 @@
 namespace Framework\Http\Router;
 
 use FastRoute\RouteCollector;
-use Framework\Application\RestApi\Exception\MethodNotAllowedException;
-use Framework\Application\RestApi\Exception\NotFoundException;
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
+use Framework\Base\Application\Exception\MethodNotAllowedException;
+use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Request\RequestInterface;
+use Framework\Base\Router\DispatcherInterface;
 
 /**
  * Class Dispatcher
  * @package Framework\Http\Router
  */
-class Dispatcher implements ApplicationAwareInterface
+class Dispatcher implements ApplicationAwareInterface, DispatcherInterface
 {
     use ApplicationAwareTrait;
 
@@ -51,7 +52,7 @@ class Dispatcher implements ApplicationAwareInterface
     /**
      * @param RequestInterface $request
      * @return array
-     * @throws MethodNotAllowedException
+     * @throws \Framework\Base\Application\Exception\MethodNotAllowedException
      * @throws \Exception
      */
     public function parseRequest(RequestInterface $request)

@@ -3,9 +3,8 @@
 namespace Framework\Base\Application;
 
 use Framework\Base\Di\Resolver;
-use Framework\Base\Events\ListenerInterface;
 use Framework\Base\Request\RequestInterface;
-use Framework\Http\Response\ResponseInterface;
+use Framework\Base\Response\ResponseInterface;
 
 /**
  * Interface ApplicationInterface
@@ -41,7 +40,7 @@ interface ApplicationInterface
     public function getResponse();
 
     /**
-     * @return \Framework\Http\Router\Dispatcher
+     * @return \Framework\Base\Router\DispatcherInterface
      */
     public function getDispatcher();
 

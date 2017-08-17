@@ -3,8 +3,10 @@
 namespace Framework\Application\RestApi;
 
 use Framework\Base\Application\BaseApplication;
-use Framework\Base\Render\Json;
+use Framework\Http\Render\Json;
 use Framework\Http\Request\Request;
+use Framework\Http\Response\Response;
+use Framework\Http\Router\Dispatcher;
 
 /**
  * Class RestApi
@@ -19,6 +21,8 @@ class RestApi extends BaseApplication
     public function __construct(array $registerModules = [])
     {
         $this->setRenderer(new Json());
+        $this->setDispatcher(new Dispatcher());
+        $this->setResponse(new Response());
 
         parent::__construct($registerModules);
     }

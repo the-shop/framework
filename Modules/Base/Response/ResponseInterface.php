@@ -1,10 +1,10 @@
 <?php
 
-namespace Framework\Http\Response;
+namespace Framework\Base\Response;
 
 /**
  * Interface ResponseInterface
- * @package Framework\Http\Response
+ * @package Framework\Base\Response
  */
 interface ResponseInterface
 {
@@ -23,10 +23,10 @@ interface ResponseInterface
      * @param int $code
      * @return mixed
      */
-    public function setHttpCode(int $code);
+    public function setCode(int $code);
 
     /**
      * @return mixed
      */
-    public function getHttpCode();
+    public function getCode();
 }

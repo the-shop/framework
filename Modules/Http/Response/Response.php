@@ -2,6 +2,8 @@
 
 namespace Framework\Http\Response;
 
+use Framework\Base\Response\ResponseInterface;
+
 /**
  * Class Response
  * @package Framework\Http\Response
@@ -41,7 +43,7 @@ class Response implements ResponseInterface
      * @param int $code
      * @return $this
      */
-    public function setHttpCode(int $code)
+    public function setCode(int $code)
     {
         $this->code = $code;
 
@@ -51,7 +53,7 @@ class Response implements ResponseInterface
     /**
      * @return int
      */
-    public function getHttpCode()
+    public function getCode()
     {
         return $this->code;
     }

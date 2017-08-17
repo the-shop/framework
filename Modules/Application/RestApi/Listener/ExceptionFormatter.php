@@ -25,11 +25,11 @@ class ExceptionFormatter implements ListenerInterface
         $response = new Response();
 
         if ($exception instanceof \RuntimeException) {
-            $response->setHttpCode(500);
+            $response->setCode(500);
         }
 
         if ($exception instanceof NotFoundException) {
-            $response->setHttpCode(404);
+            $response->setCode(404);
         }
 
         $response->setBody([

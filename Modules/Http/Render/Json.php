@@ -1,8 +1,9 @@
 <?php
 
-namespace Framework\Base\Render;
+namespace Framework\Http\Render;
 
-use Framework\Http\Response\ResponseInterface;
+use Framework\Base\Render\Render;
+use Framework\Base\Response\ResponseInterface;
 
 /**
  * Class Json
@@ -18,7 +19,7 @@ class Json extends Render
     {
         $responseBody = $response->getBody();
 
-        http_response_code($response->getHttpCode());
+        http_response_code($response->getCode());
 
         header('Content-type: application/json');
 

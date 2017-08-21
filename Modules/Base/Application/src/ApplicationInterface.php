@@ -3,6 +3,8 @@
 namespace Framework\Base\Application;
 
 use Framework\Base\Di\Resolver;
+use Framework\Base\Logger\LoggerInterface;
+use Framework\Base\Logger\LogInterface;
 use Framework\Base\Request\RequestInterface;
 use Framework\Base\Response\ResponseInterface;
 
@@ -79,4 +81,23 @@ interface ApplicationInterface
      * @return mixed
      */
     public function registerModules(array $moduleClassList = []);
+
+    /**
+     * @param LoggerInterface $logger
+     * @return $this
+     */
+    public function addLogger(LoggerInterface $logger);
+
+    /**
+     * @param LogInterface $log
+     * @return $this
+     */
+    public function log(LogInterface $log);
+
+    /**
+     * @return LoggerInterface[]
+     */
+    public function getLoggers();
+
+
 }

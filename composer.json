@@ -3,7 +3,8 @@
         "lcobucci/jwt": "^3.2",
         "symfony/dotenv": "^3.3",
         "mongodb/mongodb": "^1.1",
-        "nikic/fast-route": "^1.2"
+        "nikic/fast-route": "^1.2",
+        "sentry/sentry": "^1.7"
     },
     "autoload": {
         "psr-4": {

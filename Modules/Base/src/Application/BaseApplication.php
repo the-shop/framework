@@ -5,6 +5,8 @@ namespace Framework\Base\Application;
 use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Di\Resolver;
 use Framework\Base\Event\ListenerInterface;
+use Framework\Base\Logger\LoggerInterface;
+use Framework\Base\Logger\LogInterface;
 use Framework\Base\Manager\Repository;
 use Framework\Base\Manager\RepositoryInterface;
 use Framework\Base\Render\RenderInterface;
@@ -16,8 +18,10 @@ use Framework\Base\Router\DispatcherInterface;
  * Class BaseApplication
  * @package Framework\Base\Application
  */
-abstract class BaseApplication implements ApplicationInterface
+abstract class BaseApplication implements ApplicationInterface, ApplicationAwareInterface
 {
+    use ApplicationAwareTrait;
+
     /**
      * @const string
      */
@@ -97,6 +101,11 @@ abstract class BaseApplication implements ApplicationInterface
      * @var array
      */
     private $registeredModules = [];
+
+    /**
+     * @var LoggerInterface[]
+     */
+    private $loggers = [];
 
     /**
      * Has to build instance of RequestInterface, set it to BaseApplication and return it
@@ -321,7 +330,6 @@ abstract class BaseApplication implements ApplicationInterface
         if ($this->dispatcher === null) {
             throw new \RuntimeException('Dispatcher object not set.');
         }
-
         return $this->dispatcher;
     }
 
@@ -344,7 +352,6 @@ abstract class BaseApplication implements ApplicationInterface
         if ($this->request === null) {
             throw new \RuntimeException('Request object not set.');
         }
-
         return $this->request;
     }
 
@@ -352,7 +359,8 @@ abstract class BaseApplication implements ApplicationInterface
      * @param RequestInterface $request
      * @return $this
      */
-    public function setRequest(RequestInterface $request) {
+    public function setRequest(RequestInterface $request)
+    {
         $this->request = $request;
 
         return $this;
@@ -372,7 +380,8 @@ abstract class BaseApplication implements ApplicationInterface
     /**
      * @return ResponseInterface
      */
-    public function getResponse() {
+    public function getResponse()
+    {
         return $this->response;
     }
 
@@ -404,5 +413,40 @@ abstract class BaseApplication implements ApplicationInterface
             $this->resolver = new Resolver();
         }
         return $this->resolver;
+    }
+
+    /**
+     * @param LogInterface $log
+     * @return $this
+     * @throws \RuntimeException
+     */
+    public function log(LogInterface $log)
+    {
+        if (count($this->getLoggers()) === 0) {
+            throw new \RuntimeException('No Loggers set up');
+        }
+        foreach ($this->loggers as $logger) {
+            $logger->log($log);
+        }
+        return $this;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @return $this
+     */
+    public function addLogger(LoggerInterface $logger)
+    {
+        $this->loggers[] = $logger;
+
+        return $this;
+    }
+
+    /**
+     * @return LoggerInterface[]
+     */
+    public function getLoggers()
+    {
+        return $this->loggers;
     }
 }

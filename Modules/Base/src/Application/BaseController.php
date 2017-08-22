@@ -6,7 +6,7 @@ namespace Framework\Base\Application;
  * Class BaseController
  * @package Framework\Base\Application
  */
-abstract class BaseController implements ControllerInterface, ApplicationAwareInterface
+abstract class BaseController implements ControllerInterface
 {
     use ApplicationAwareTrait;
 

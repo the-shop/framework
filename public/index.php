@@ -10,4 +10,6 @@ $app = new \Framework\RestApi\RestApi([
     \Framework\CrudApi\Module::class
 ]);
 
+$app->addLogger(new \Framework\Application\RestApi\SentryLogger());
+
 $app->run();

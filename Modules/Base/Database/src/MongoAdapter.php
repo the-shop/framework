@@ -69,7 +69,10 @@ class MongoAdapter implements DatabaseAdapterInterface
     public function insertOne(DatabaseQueryInterface $query, array $data = [])
     {
         $result = $this->getClient()
-            ->selectCollection($query->getDatabase(), $query->getCollection())
+            ->selectCollection(
+                $query->getDatabase(),
+                $query->getCollection()
+            )
             ->insertOne($data);
 
         if ($result->getInsertedId()) {
@@ -91,6 +94,7 @@ class MongoAdapter implements DatabaseAdapterInterface
             return $this;
         }
 
+//        $result =
         $this->getClient()
             ->selectCollection(
                 $query->getDatabase(),
@@ -102,6 +106,12 @@ class MongoAdapter implements DatabaseAdapterInterface
             );
 
         // TODO: check if $result reported successful update, throw exception otherwise
+
+//        if ($result->isAcknowledged()) {
+//            return $this;
+//        } else {
+//            throw new \Exception();
+//        }
 
         return $this;
     }
@@ -129,6 +139,7 @@ class MongoAdapter implements DatabaseAdapterInterface
             ->deleteOne($query->build());
 
         return true; // TODO: return true / false depending on `$result` data
+        //return $result->isAcknowledged();
     }
 
     public function loadMultiple(DatabaseQueryInterface $query)

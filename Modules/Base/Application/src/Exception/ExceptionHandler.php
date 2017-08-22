@@ -11,6 +11,8 @@ use Framework\Base\Application\ApplicationAwareTrait;
  */
 class ExceptionHandler implements ApplicationAwareInterface
 {
+    use ApplicationAwareTrait;
+
     /**
      * @const string
      */
@@ -20,8 +22,6 @@ class ExceptionHandler implements ApplicationAwareInterface
      * @const string
      */
     const EVENT_EXCEPTION_HANDLER_HANDLE_POST = 'EVENT\EXCEPTION_HANDLER\HANDLE_POST';
-
-    use ApplicationAwareTrait;
 
     /**
      * @param \Exception $e

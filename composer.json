@@ -3,7 +3,8 @@
         "lcobucci/jwt": "^3.2",
         "symfony/dotenv": "^3.3",
         "mongodb/mongodb": "^1.1",
-        "nikic/fast-route": "^1.2"
+        "nikic/fast-route": "^1.2",
+        "sentry/sentry": "^1.7"
     },
     "autoload": {
         "psr-4": {
@@ -12,6 +13,7 @@
             "Framework\\Base\\Database\\": "Modules/Base/Database/src",
             "Framework\\Base\\Di\\": "Modules/Base/Di/src",
             "Framework\\Base\\Event\\": "Modules/Base/Event/src",
+            "Framework\\Base\\Logger\\": "Modules/Base/Logger/src",
             "Framework\\Base\\Manager\\": "Modules/Base/Manager/src",
             "Framework\\Base\\Model\\": "Modules/Base/Model/src",
             "Framework\\Base\\Module\\": "Modules/Base/Module/src",

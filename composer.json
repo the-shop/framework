@@ -13,8 +13,8 @@
             "Framework\\BaseTest\\": "Modules/Base/test",
             "Framework\\Http\\": "Modules/Http/src",
             "Framework\\HttpTest\\": "Modules/Http/test",
-            "Framework\\GenericCrud\\": "Modules/GenericCrud/src",
-            "Framework\\GenericCrudTest\\": "Modules/GenericCrud/test"
+            "Framework\\CrudApi\\": "Modules/CrudApi/src",
+            "Framework\\CrudApiTest\\": "Modules/CrudApi/test"
         }
     }
 }

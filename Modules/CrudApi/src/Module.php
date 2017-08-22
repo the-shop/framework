@@ -1,15 +1,15 @@
 <?php
 
-namespace Framework\GenericCrud;
+namespace Framework\CrudApi;
 
 use Framework\Base\Database\MongoAdapter;
 use Framework\Base\Module\BaseModule;
-use Framework\GenericCrud\Model\Generic as GenericModel;
-use Framework\GenericCrud\Repository\GenericRepository;
+use Framework\CrudApi\Model\Generic as GenericModel;
+use Framework\CrudApi\Repository\GenericRepository;
 
 /**
  * Class Api
- * @package Framework\GenericCrud
+ * @package Framework\CrudApi
  */
 class Module extends BaseModule
 {
@@ -18,32 +18,32 @@ class Module extends BaseModule
             [
                 'get',
                 '/{resourceName}',
-                '\Framework\GenericCrud\Controller\Resource::loadAll'
+                '\Framework\CrudApi\Controller\Resource::loadAll'
             ],
             [
                 'get',
                 '/{resourceName}/{identifier}',
-                '\Framework\GenericCrud\Controller\Resource::load'
+                '\Framework\CrudApi\Controller\Resource::load'
             ],
             [
                 'post',
                 '/{resourceName}',
-                '\Framework\GenericCrud\Controller\Resource::create'
+                '\Framework\CrudApi\Controller\Resource::create'
             ],
             [
                 'put',
                 '/{resourceName}/{identifier}',
-                '\Framework\GenericCrud\Controller\Resource::update'
+                '\Framework\CrudApi\Controller\Resource::update'
             ],
             [
                 'patch',
                 '/{resourceName}/{identifier}',
-                '\Framework\GenericCrud\Controller\Resource::partialUpdate'
+                '\Framework\CrudApi\Controller\Resource::partialUpdate'
             ],
             [
                 'delete',
                 '/{resourceName}/{identifier}',
-                '\Framework\GenericCrud\Controller\Resource::delete'
+                '\Framework\CrudApi\Controller\Resource::delete'
             ],
         ],
         'resources' => [

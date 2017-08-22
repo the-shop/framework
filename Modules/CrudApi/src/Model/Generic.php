@@ -1,12 +1,12 @@
 <?php
 
-namespace Framework\GenericCrud\Model;
+namespace Framework\CrudApi\Model;
 
 use Framework\Base\Model\Bruno;
 
 /**
  * Class Generic
- * @package Framework\GenericCrud\Model
+ * @package Framework\CrudApi\Model
  */
 class Generic extends Bruno
 {

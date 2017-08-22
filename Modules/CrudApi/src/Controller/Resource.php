@@ -1,79 +1,79 @@
 <?php
 
-namespace Framework\GenericCrud\Controller;
+namespace Framework\CrudApi\Controller;
 
 use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Model\BrunoInterface;
-use Framework\GenericCrud\Model\Generic as GenericModel;
-use Framework\GenericCrud\Model\Generic;
-use Framework\GenericCrud\Repository\GenericRepository;
+use Framework\CrudApi\Model\Generic as GenericModel;
+use Framework\CrudApi\Model\Generic;
+use Framework\CrudApi\Repository\GenericRepository;
 use Framework\Http\Controller\Http as HttpController;
 
 /**
  * Class Resource
- * @package Framework\GenericCrud\Controller
+ * @package Framework\CrudApi\Controller
  */
 class Resource extends HttpController
 {
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_LOAD_ALL_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_LOAD_ALL_PRE';
+    const EVENT_CRUD_API_RESOURCE_LOAD_ALL_PRE = 'EVENT\CRUD_API\RESOURCE_LOAD_ALL_PRE';
 
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_LOAD_ALL_POST = 'EVENT\GENERIC_CRUD\RESOURCE_LOAD_ALL_POST';
+    const EVENT_CRUD_API_RESOURCE_LOAD_ALL_POST = 'EVENT\CRUD_API\RESOURCE_LOAD_ALL_POST';
 
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_LOAD_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_LOAD_PRE';
+    const EVENT_CRUD_API_RESOURCE_LOAD_PRE = 'EVENT\CRUD_API\RESOURCE_LOAD_PRE';
 
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_LOAD_POST = 'EVENT\GENERIC_CRUD\RESOURCE_LOAD_POST';
+    const EVENT_CRUD_API_RESOURCE_LOAD_POST = 'EVENT\CRUD_API\RESOURCE_LOAD_POST';
 
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_CREATE_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_CREATE_PRE';
+    const EVENT_CRUD_API_RESOURCE_CREATE_PRE = 'EVENT\CRUD_API\RESOURCE_CREATE_PRE';
 
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_CREATE_POST = 'EVENT\GENERIC_CRUD\RESOURCE_CREATE_POST';
+    const EVENT_CRUD_API_RESOURCE_CREATE_POST = 'EVENT\CRUD_API\RESOURCE_CREATE_POST';
 
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_UPDATE_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_UPDATE_PRE';
+    const EVENT_CRUD_API_RESOURCE_UPDATE_PRE = 'EVENT\CRUD_API\RESOURCE_UPDATE_PRE';
 
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_UPDATE_POST = 'EVENT\GENERIC_CRUD\RESOURCE_UPDATE_POST';
+    const EVENT_CRUD_API_RESOURCE_UPDATE_POST = 'EVENT\CRUD_API\RESOURCE_UPDATE_POST';
 
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_PARTIAL_UPDATE_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_PARTIAL_UPDATE_PRE';
+    const EVENT_CRUD_API_RESOURCE_PARTIAL_UPDATE_PRE = 'EVENT\CRUD_API\RESOURCE_PARTIAL_UPDATE_PRE';
 
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_PARTIAL_UPDATE_POST = 'EVENT\GENERIC_CRUD\RESOURCE_PARTIAL_UPDATE_POST';
+    const EVENT_CRUD_API_RESOURCE_PARTIAL_UPDATE_POST = 'EVENT\CRUD_API\RESOURCE_PARTIAL_UPDATE_POST';
 
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_DELETE_PRE = 'EVENT\GENERIC_CRUD\RESOURCE_DELETE_PRE';
+    const EVENT_CRUD_API_RESOURCE_DELETE_PRE = 'EVENT\CRUD_API\RESOURCE_DELETE_PRE';
 
     /**
      * @const string
      */
-    const EVENT_GENERIC_CRUD_RESOURCE_DELETE_POST = 'EVENT\GENERIC_CRUD\RESOURCE_DELETE_POST';
+    const EVENT_CRUD_API_RESOURCE_DELETE_POST = 'EVENT\CRUD_API\RESOURCE_DELETE_POST';
 
     /**
      * @param string $resourceName
@@ -83,7 +83,7 @@ class Resource extends HttpController
     {
         $this->getApplication()
             ->triggerEvent(
-                self::EVENT_GENERIC_CRUD_RESOURCE_LOAD_ALL_PRE,
+                self::EVENT_CRUD_API_RESOURCE_LOAD_ALL_PRE,
                 [
                     'resourceName' => $resourceName
                 ]
@@ -95,7 +95,7 @@ class Resource extends HttpController
             ->loadMultiple();
 
         $this->getApplication()
-            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_LOAD_ALL_POST, $models);
+            ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_LOAD_ALL_POST, $models);
 
         return $models;
     }
@@ -109,7 +109,7 @@ class Resource extends HttpController
     {
         $this->getApplication()
             ->triggerEvent(
-                self::EVENT_GENERIC_CRUD_RESOURCE_LOAD_PRE,
+                self::EVENT_CRUD_API_RESOURCE_LOAD_PRE,
                 [
                     'resourceName' => $resourceName,
                     'identifier' => $identifier
@@ -119,7 +119,7 @@ class Resource extends HttpController
         $model = $this->loadModel($resourceName, $identifier);
 
         $this->getApplication()
-            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_LOAD_POST, $model);
+            ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_LOAD_POST, $model);
 
         return $model;
     }
@@ -132,7 +132,7 @@ class Resource extends HttpController
     {
         $this->getApplication()
             ->triggerEvent(
-                self::EVENT_GENERIC_CRUD_RESOURCE_CREATE_PRE,
+                self::EVENT_CRUD_API_RESOURCE_CREATE_PRE,
                 [
                     'resourceName' => $resourceName
                 ]
@@ -144,7 +144,7 @@ class Resource extends HttpController
         $model->save();
 
         $this->getApplication()
-            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_CREATE_POST, $model);
+            ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_CREATE_POST, $model);
 
         return $model;
     }
@@ -157,7 +157,7 @@ class Resource extends HttpController
     public function update(string $resourceName, string $identifier)
     {
         $this->getApplication()
-            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_UPDATE_PRE,
+            ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_UPDATE_PRE,
                 [
                     'resourceName' => $resourceName,
                     'identifier' => $identifier
@@ -172,7 +172,7 @@ class Resource extends HttpController
         $model->save();
 
         $this->getApplication()
-            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_UPDATE_POST, $model);
+            ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_UPDATE_POST, $model);
 
         return $model;
     }
@@ -186,7 +186,7 @@ class Resource extends HttpController
     {
         $this->getApplication()
             ->triggerEvent(
-                self::EVENT_GENERIC_CRUD_RESOURCE_PARTIAL_UPDATE_PRE,
+                self::EVENT_CRUD_API_RESOURCE_PARTIAL_UPDATE_PRE,
                 [
                     'resourceName' => $resourceName,
                     'identifier' => $identifier
@@ -204,7 +204,7 @@ class Resource extends HttpController
         $model->save();
 
         $this->getApplication()
-            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_PARTIAL_UPDATE_POST, $model);
+            ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_PARTIAL_UPDATE_POST, $model);
 
         return $model;
     }
@@ -218,7 +218,7 @@ class Resource extends HttpController
     {
         $this->getApplication()
             ->triggerEvent(
-                self::EVENT_GENERIC_CRUD_RESOURCE_DELETE_PRE,
+                self::EVENT_CRUD_API_RESOURCE_DELETE_PRE,
                 [
                     'resourceName' => $resourceName,
                     'identifier' => $identifier
@@ -232,7 +232,7 @@ class Resource extends HttpController
         $model->delete();
 
         $this->getApplication()
-            ->triggerEvent(self::EVENT_GENERIC_CRUD_RESOURCE_DELETE_POST, $model);
+            ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_DELETE_POST, $model);
 
         return $model;
     }

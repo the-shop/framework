@@ -91,4 +91,12 @@ interface BrunoInterface
      * @return string
      */
     public function getCollection();
+
+    /**
+     * Set allowed attributes of model
+     *
+     * @param array $definition
+     * @return $this
+     */
+    public function defineModelAttributes(array $definition = []);
 }

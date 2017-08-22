@@ -1,32 +1,57 @@
 <?php
 
-namespace Framework\Application\RestApi;
+namespace Framework\RestApi;
 
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
 
+/**
+ * Class SentryLogger
+ * @package Framework\RestApi
+ */
 class SentryLogger implements LoggerInterface
 {
-    private $dsn = 'https://11d94f69523b40d381dcb6c580baab6c:635134caf25940c1af98ff74da4b3fe6@sentry.io/205061';
+    /**
+     * @var string
+     */
+    private $dsn = null;
 
+    /**
+     * @var \Raven_Client
+     */
     private $client;
 
-    public function __construct()
+    /**
+     * SentryLogger constructor.
+     * @param string $dsn
+     */
+    public function __construct(string $dsn)
     {
+        $this->dsn = $dsn;
         $this->client = new \Raven_Client($this->getDsn());
         $this->client->install();
     }
 
+    /**
+     * @return string
+     */
     public function getDsn()
     {
         return $this->dsn;
     }
 
+    /**
+     * @return \Raven_Client
+     */
     public function getClient()
     {
         return $this->client;
     }
 
+    /**
+     * @param LogInterface $log
+     * @return null|string
+     */
     public function log(LogInterface $log)
     {
         if ($log->isException()) {
@@ -38,6 +63,10 @@ class SentryLogger implements LoggerInterface
         return $event;
     }
 
+    /**
+     * @param LogInterface $log
+     * @return null|string
+     */
     private function logMessage(LogInterface $log)
     {
         $eventId = $this->getClient()
@@ -50,6 +79,10 @@ class SentryLogger implements LoggerInterface
         return $eventId;
     }
 
+    /**
+     * @param LogInterface $log
+     * @return null|string
+     */
     private function logException(LogInterface $log)
     {
         $eventId = $this->getClient()

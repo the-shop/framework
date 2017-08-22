@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Application\RestApi\Listener;
+namespace Framework\RestApi\Listener;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Application\Exception\NotFoundException;
@@ -9,7 +9,7 @@ use Framework\Http\Response\Response;
 
 /**
  * Class ExceptionFormatter
- * @package Framework\Application\RestApi\Listener
+ * @package Framework\RestApi\Listener
  */
 class ExceptionFormatter implements ListenerInterface
 {

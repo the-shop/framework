@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\GenericCrud\Api\Repository;
+namespace Framework\GenericCrud\Repository;
 
 use Framework\Base\Database\MongoQuery;
 use Framework\Base\Model\BrunoInterface;
@@ -8,7 +8,7 @@ use Framework\Base\Repository\BrunoRepository;
 
 /**
  * Class GenericRepository
- * @package Framework\GenericCrud\Api\Repository
+ * @package Framework\GenericCrud\Repository
  */
 class GenericRepository extends BrunoRepository
 {

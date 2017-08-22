@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Application\RestApi\Listener;
+namespace Framework\RestApi\Listener;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Event\ListenerInterface;
@@ -8,7 +8,7 @@ use Framework\Base\Model\BrunoInterface;
 
 /**
  * Class ResponseFormatter
- * @package Framework\Application\RestApi\Listener
+ * @package Framework\RestApi\Listener
  */
 class ResponseFormatter implements ListenerInterface
 {

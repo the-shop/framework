@@ -7,7 +7,7 @@ use Framework\Base\Application\ApplicationAwareTrait;
 
 /**
  * Class ExceptionHandler
- * @package Framework\Application\RestApi
+ * @package Framework\RestApi
  */
 class ExceptionHandler implements ApplicationAwareInterface
 {

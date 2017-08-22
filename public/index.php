@@ -5,9 +5,9 @@
  */
 require_once '../vendor/autoload.php';
 
-$app = new \Framework\Application\RestApi\RestApi([
-    \Framework\Application\RestApi\Module::class,
-    \Framework\GenericCrud\Api\Module::class
+$app = new \Framework\RestApi\RestApi([
+    \Framework\RestApi\Module::class,
+    \Framework\GenericCrud\Module::class
 ]);
 
 $app->run();

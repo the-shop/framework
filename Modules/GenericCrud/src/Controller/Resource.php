@@ -1,17 +1,17 @@
 <?php
 
-namespace Framework\GenericCrud\Api\Controller;
+namespace Framework\GenericCrud\Controller;
 
 use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Model\BrunoInterface;
-use Framework\GenericCrud\Api\Model\Generic as GenericModel;
-use Framework\GenericCrud\Api\Model\Generic;
-use Framework\GenericCrud\Api\Repository\GenericRepository;
+use Framework\GenericCrud\Model\Generic as GenericModel;
+use Framework\GenericCrud\Model\Generic;
+use Framework\GenericCrud\Repository\GenericRepository;
 use Framework\Http\Controller\Http as HttpController;
 
 /**
  * Class Resource
- * @package Framework\GenericCrud\Api\Controller
+ * @package Framework\GenericCrud\Controller
  */
 class Resource extends HttpController
 {

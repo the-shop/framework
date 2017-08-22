@@ -4,7 +4,7 @@ namespace Framework\Base\Application\Exception;
 
 /**
  * Class NotFoundException
- * @package Framework\Application\RestApi
+ * @package Framework\RestApi
  */
 class NotFoundException extends \Exception
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace Framework\GenericCrud\Api;
+namespace Framework\GenericCrud;
 
 use Framework\Base\Database\MongoAdapter;
 use Framework\Base\Module\BaseModule;
-use Framework\GenericCrud\Api\Model\Generic as GenericModel;
-use Framework\GenericCrud\Api\Repository\GenericRepository;
+use Framework\GenericCrud\Model\Generic as GenericModel;
+use Framework\GenericCrud\Repository\GenericRepository;
 
 /**
  * Class Api
- * @package Framework\GenericCrud\Api
+ * @package Framework\GenericCrud
  */
 class Module extends BaseModule
 {
@@ -18,32 +18,32 @@ class Module extends BaseModule
             [
                 'get',
                 '/{resourceName}',
-                '\Framework\GenericCrud\Api\Controller\Resource::loadAll'
+                '\Framework\GenericCrud\Controller\Resource::loadAll'
             ],
             [
                 'get',
                 '/{resourceName}/{identifier}',
-                '\Framework\GenericCrud\Api\Controller\Resource::load'
+                '\Framework\GenericCrud\Controller\Resource::load'
             ],
             [
                 'post',
                 '/{resourceName}',
-                '\Framework\GenericCrud\Api\Controller\Resource::create'
+                '\Framework\GenericCrud\Controller\Resource::create'
             ],
             [
                 'put',
                 '/{resourceName}/{identifier}',
-                '\Framework\GenericCrud\Api\Controller\Resource::update'
+                '\Framework\GenericCrud\Controller\Resource::update'
             ],
             [
                 'patch',
                 '/{resourceName}/{identifier}',
-                '\Framework\GenericCrud\Api\Controller\Resource::partialUpdate'
+                '\Framework\GenericCrud\Controller\Resource::partialUpdate'
             ],
             [
                 'delete',
                 '/{resourceName}/{identifier}',
-                '\Framework\GenericCrud\Api\Controller\Resource::delete'
+                '\Framework\GenericCrud\Controller\Resource::delete'
             ],
         ],
         'resources' => [

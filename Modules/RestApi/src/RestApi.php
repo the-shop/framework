@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Application\RestApi;
+namespace Framework\RestApi;
 
 use Framework\Base\Application\BaseApplication;
 use Framework\Http\Render\Json;
@@ -10,7 +10,7 @@ use Framework\Http\Router\Dispatcher;
 
 /**
  * Class RestApi
- * @package Framework\Application\RestApi
+ * @package Framework\RestApi
  */
 class RestApi extends BaseApplication
 {

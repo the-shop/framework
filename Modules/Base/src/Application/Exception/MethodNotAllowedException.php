@@ -6,7 +6,7 @@ use Throwable;
 
 /**
  * Class MethodNotAllowedException
- * @package Framework\Application\RestApi
+ * @package Framework\RestApi
  */
 class MethodNotAllowedException extends \Exception
 {

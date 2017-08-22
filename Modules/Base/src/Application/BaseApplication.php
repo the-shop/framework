@@ -7,6 +7,7 @@ use Framework\Base\Di\Resolver;
 use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
+use Framework\Base\Logger\DummyLogger;
 use Framework\Base\Manager\Repository;
 use Framework\Base\Manager\RepositoryInterface;
 use Framework\Base\Render\RenderInterface;
@@ -423,7 +424,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function log(LogInterface $log)
     {
         if (count($this->getLoggers()) === 0) {
-            throw new \RuntimeException('No Loggers set up');
+            $this->addLogger(new DummyLogger());
         }
         foreach ($this->loggers as $logger) {
             $logger->log($log);

@@ -4,6 +4,7 @@ namespace Framework\Base\Application\Exception;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
+use Framework\Base\Logger\Log;
 
 /**
  * Class ExceptionHandler
@@ -33,7 +34,9 @@ class ExceptionHandler implements ApplicationAwareInterface
 
         $application->triggerEvent(self::EVENT_EXCEPTION_HANDLER_HANDLE_PRE, $e);
 
-        // TODO: Additional handling?
+        $errorLog = new Log($e);
+
+        $application->log($errorLog);
 
         $application->triggerEvent(self::EVENT_EXCEPTION_HANDLER_HANDLE_POST, $e);
 

@@ -2,7 +2,7 @@
 
 namespace Framework\Base\Logger;
 
-abstract class Log implements LogInterface
+class Log implements LogInterface
 {
     /**
      * @var array

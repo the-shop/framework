@@ -1,21 +1,30 @@
 {
-    "require": {
-        "symfony/dotenv": "3.3",
-        "mongodb/mongodb": "1.1",
-        "nikic/fast-route": "1.2",
-        "sentry/sentry": "1.7",
-        "phpunit/phpunit": "6.3"
-    },
-    "autoload": {
-        "psr-4": {
-            "Framework\\RestApi\\": "Modules/RestApi/src",
-            "Framework\\RestApiTest\\": "Modules/RestApi/test",
-            "Framework\\Base\\": "Modules/Base/src",
-            "Framework\\BaseTest\\": "Modules/Base/test",
-            "Framework\\Http\\": "Modules/Http/src",
-            "Framework\\HttpTest\\": "Modules/Http/test",
-            "Application\\": "src",
-            "Test\\": "test"
-        }
+  "require": {
+    "php": "^7.0",
+    "symfony/dotenv": "3.3.6",
+    "mongodb/mongodb": "1.1.2",
+    "nikic/fast-route": "1.2",
+    "sentry/sentry": "1.7.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Framework\\RestApi\\": "Modules/RestApi/src",
+      "Framework\\RestApiTest\\": "Modules/RestApi/test",
+      "Framework\\Base\\": "Modules/Base/src",
+      "Framework\\BaseTest\\": "Modules/Base/test",
+      "Framework\\Http\\": "Modules/Http/src",
+      "Framework\\HttpTest\\": "Modules/Http/test",
+      "Application\\": "src",
+      "Test\\": "test"
     }
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.0",
+    "phpunit/phpunit": "^6.3"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "bash bin/setup.sh"
+    ]
+  }
 }

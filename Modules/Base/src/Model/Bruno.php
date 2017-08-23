@@ -50,6 +50,11 @@ abstract class Bruno implements BrunoInterface
     private $attributes = [];
 
     /**
+     * @var array
+     */
+    private $definedAttributes = [];
+
+    /**
      * @var bool
      */
     private $isNew = true;
@@ -65,7 +70,7 @@ abstract class Bruno implements BrunoInterface
 
         $this->setDatabaseAdapter($mongoAdapter);
 
-        $this->attributes = $attributes;
+        $this->setAttributes($attributes);
     }
 
     /**
@@ -73,7 +78,7 @@ abstract class Bruno implements BrunoInterface
      */
     public function getId()
     {
-        if (isset($this->getDatabaseAttributes()[$this->primaryKey])) {
+        if (isset($this->getDatabaseAttributes()[$this->primaryKey]) === true) {
             return $this->getDatabaseAttributes()[$this->primaryKey];
         }
 
@@ -89,10 +94,10 @@ abstract class Bruno implements BrunoInterface
         $query->setDatabase($this->getDatabase());
         $query->setCollection($this->getCollection());
 
-        if ($this->isNew()) {
+        if ($this->isNew() === true) {
             $id = $this->getDatabaseAdapter()->insertOne($query, $this->getAttributes());
             $this->attributes['_id'] = (string) $id;
-            $this->isNew = false;
+            $this->setIsNew(false);
             $this->dbAttributes = $this->getAttributes();
         } else {
             $this->getDatabaseAdapter()->updateOne($query, $this->getId(), $this->getAttributes());
@@ -198,8 +203,9 @@ abstract class Bruno implements BrunoInterface
      */
     public function setAttributes(array $attributes = [])
     {
-        $this->attributes = $attributes;
-
+        foreach ($attributes as $key => $value) {
+            $this->setAttribute($key, $value);
+        }
         return $this;
     }
 
@@ -210,6 +216,9 @@ abstract class Bruno implements BrunoInterface
      */
     public function setAttribute(string $attribute, $value)
     {
+        if (array_key_exists($attribute, $this->getDefinedAttributes()) === false) {
+            throw new \InvalidArgumentException('Property "' . $attribute . '" not defined');
+        }
         $this->attributes[$attribute] = $value;
 
         return $this;
@@ -246,5 +255,41 @@ abstract class Bruno implements BrunoInterface
     public function getDatabaseAttributes()
     {
         return $this->dbAttributes;
+    }
+
+    public function getDefinedAttributes()
+    {
+        return $this->definedAttributes;
+    }
+
+    public function defineModelAttributes(array $definition = [])
+    {
+        $types = [
+            'string',
+            'int',
+            'integer',
+            'float',
+            'bool',
+            'boolean',
+            'array'
+        ];
+
+        foreach ($definition as $key => $value) {
+            if (is_array($value) === false ||
+                is_string($key) === false
+            ) {
+                throw new \InvalidArgumentException('Attribute "' . $key . '" must be formatted as associative array');
+            }
+            if (isset($value['type']) === false) {
+                throw new \InvalidArgumentException('Attribute "' . $key . '" must have "type" defined');
+            }
+            if (is_array($value['type']) === true ||
+                in_array($value['type'], $types, true) === false
+            ) {
+                throw new \InvalidArgumentException('Unsupported type');
+            }
+            $this->definedAttributes[$key] = $value['type'];
+        }
+        return $this;
     }
 }

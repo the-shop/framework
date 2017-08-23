@@ -32,6 +32,11 @@ interface BrunoInterface
     public function save();
 
     /**
+     * @return BrunoInterface
+     */
+    public function delete();
+
+    /**
      * @param DatabaseAdapterInterface $adapter
      * @return BrunoInterface
      */

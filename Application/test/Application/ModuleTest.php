@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\ApplicationTest;
+namespace ApplicationTest\Application;
 
 use Framework\BaseTest\UnitTest;
 use Framework\RestApi\Module;

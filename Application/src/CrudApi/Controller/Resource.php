@@ -157,7 +157,8 @@ class Resource extends HttpController
     public function update(string $resourceName, string $identifier)
     {
         $this->getApplication()
-            ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_UPDATE_PRE,
+            ->triggerEvent(
+                self::EVENT_CRUD_API_RESOURCE_UPDATE_PRE,
                 [
                     'resourceName' => $resourceName,
                     'identifier' => $identifier

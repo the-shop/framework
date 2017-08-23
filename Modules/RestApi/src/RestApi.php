@@ -32,8 +32,7 @@ class RestApi extends BaseApplication
      */
     public function buildRequest()
     {
-        $request = $this->getResolver()
-            ->resolve(Request::class);
+        $request = new Request();
 
         $request->setPost(isset($_POST) ? $_POST : []);
         $request->setQuery(isset($_GET) ? $_GET : []);

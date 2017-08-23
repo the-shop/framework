@@ -2,10 +2,10 @@
 
 namespace Application\CrudApi;
 
-use Framework\Base\Database\MongoAdapter;
 use Framework\Base\Module\BaseModule;
 use Application\CrudApi\Model\Generic as GenericModel;
 use Application\CrudApi\Repository\GenericRepository;
+use Framework\Base\Mongo\MongoAdapter;
 
 /**
  * Class Api

@@ -1,13 +1,15 @@
 <?php
 
-namespace Framework\Base\Database;
+namespace Framework\Base\Mongo;
 
+use Framework\Base\Database\DatabaseAdapterInterface;
+use Framework\Base\Database\DatabaseQueryInterface;
 use MongoDB\BSON\ObjectID;
 use MongoDB\Client;
 
 /**
  * Class MongoAdapter
- * @package Framework\Base\Database
+ * @package Framework\Base\Mongo
  */
 class MongoAdapter implements DatabaseAdapterInterface
 {

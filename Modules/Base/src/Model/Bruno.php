@@ -3,8 +3,8 @@
 namespace Framework\Base\Model;
 
 use Framework\Base\Database\DatabaseAdapterInterface;
-use Framework\Base\Database\MongoAdapter;
-use Framework\Base\Database\MongoQuery;
+use Framework\Base\Mongo\MongoAdapter;
+use Framework\Base\Mongo\MongoQuery;
 use MongoDB\BSON\ObjectID;
 
 /**

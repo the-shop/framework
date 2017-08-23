@@ -58,11 +58,6 @@ interface ApplicationInterface
     public function getController();
 
     /**
-     * @return Resolver
-     */
-    public function getResolver();
-
-    /**
      * @param string $eventName
      * @param mixed $payload
      * @return mixed
@@ -98,6 +93,4 @@ interface ApplicationInterface
      * @return LoggerInterface[]
      */
     public function getLoggers();
-
-
 }

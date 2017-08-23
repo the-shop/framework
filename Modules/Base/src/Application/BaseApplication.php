@@ -3,13 +3,13 @@
 namespace Framework\Base\Application;
 
 use Framework\Base\Application\Exception\ExceptionHandler;
-use Framework\Base\Di\Resolver;
 use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
 use Framework\Base\Logger\DummyLogger;
 use Framework\Base\Manager\Repository;
 use Framework\Base\Manager\RepositoryInterface;
+use Framework\Base\Mongo\MongoAdapter;
 use Framework\Base\Render\RenderInterface;
 use Framework\Base\Request\RequestInterface;
 use Framework\Base\Response\ResponseInterface;
@@ -77,11 +77,6 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
      * @var RepositoryInterface|null
      */
     private $repositoryManager = null;
-
-    /**
-     * @var Resolver|null
-     */
-    private $resolver = null;
 
     /**
      * @var ExceptionHandler|null
@@ -315,9 +310,9 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function getRepositoryManager()
     {
         if ($this->repositoryManager === null) {
-            $repositoryManager = $this->getResolver()
-                ->resolve(Repository::class);
-            $this->setRepositoryManager($repositoryManager);
+            // TODO: don't depend on single adapter type
+            $repository = new Repository(new MongoAdapter());
+            $this->setRepositoryManager($repository);
         }
 
         return $this->repositoryManager;
@@ -403,17 +398,6 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function getController()
     {
         return $this->controller;
-    }
-
-    /**
-     * @return Resolver
-     */
-    public function getResolver()
-    {
-        if ($this->resolver === null) {
-            $this->resolver = new Resolver();
-        }
-        return $this->resolver;
     }
 
     /**

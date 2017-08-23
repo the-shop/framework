@@ -17,4 +17,12 @@ $dsn = getenv('SENTRY_DSN');
 
 $app->addLogger(new \Framework\RestApi\SentryLogger($dsn));
 
-$app->run();
+try {
+    $app->run();
+} catch (\Exception $e) {
+    $app->getExceptionHandler()
+        ->handle($e);
+
+    $app->getRenderer()
+        ->render($app->getResponse());
+}

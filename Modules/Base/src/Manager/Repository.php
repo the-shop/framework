@@ -5,7 +5,6 @@ namespace Framework\Base\Manager;
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
-use Framework\Base\Database\MongoAdapter;
 use Framework\Base\Repository\BrunoRepositoryInterface;
 use MongoDB\Exception\RuntimeException;
 
@@ -34,9 +33,9 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
 
     /**
      * RepositoryManager constructor.
-     * @param MongoAdapter $adapter
+     * @param DatabaseAdapterInterface $adapter
      */
-    public function __construct(MongoAdapter $adapter)
+    public function __construct(DatabaseAdapterInterface $adapter)
     {
         $this->setDatabaseAdapter($adapter);
     }

@@ -23,7 +23,7 @@ interface DatabaseAdapterInterface
 
     /**
      * @param DatabaseQueryInterface $query
-     * @return mixed
+     * @return \ArrayObject[]
      */
     public function loadMultiple(DatabaseQueryInterface $query);
 

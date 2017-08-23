@@ -1,10 +1,12 @@
 <?php
 
-namespace Framework\Base\Database;
+namespace Framework\Base\Mongo;
+
+use Framework\Base\Database\DatabaseQueryInterface;
 
 /**
  * Class MongoQuery
- * @package Framework\Base\Database
+ * @package Framework\Base\Mongo
  */
 class MongoQuery implements DatabaseQueryInterface
 {

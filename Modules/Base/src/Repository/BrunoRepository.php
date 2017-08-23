@@ -5,9 +5,10 @@ namespace Framework\Base\Repository;
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
-use Framework\Base\Database\MongoQuery;
+use Framework\Base\Database\DatabaseQueryInterface;
 use Framework\Base\Manager\RepositoryInterface;
 use Framework\Base\Model\BrunoInterface;
+use Framework\Base\Mongo\MongoQuery;
 
 /**
  * Class BrunoRepository
@@ -106,7 +107,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface, ApplicationA
     }
 
     /**
-     * @return [BrunoInterface]
+     * @return BrunoInterface[]
      */
     public function loadMultiple()
     {
@@ -146,6 +147,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface, ApplicationA
         return $bruno;
     }
 
+    /**
+     * @param BrunoInterface $bruno
+     * @return DatabaseQueryInterface
+     */
     protected function createNewQueryForModel(BrunoInterface $bruno)
     {
         $query = new MongoQuery();

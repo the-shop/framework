@@ -11,7 +11,7 @@
       "Framework\\RestApi\\": "Modules/RestApi/src",
       "Framework\\RestApiTest\\": "Modules/RestApi/test",
       "Framework\\Base\\": "Modules/Base/src",
-      "Framework\\BaseTest\\": "Modules/Base/src/Test",
+      "Framework\\BaseTest\\": "Modules/Base/test",
       "Framework\\Http\\": "Modules/Http/src",
       "Framework\\HttpTest\\": "Modules/Http/test",
       "Application\\": "Application/src",

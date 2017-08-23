@@ -2,7 +2,7 @@
 
 namespace Framework\RestApiTest\Listener;
 
-use Framework\BaseTest\UnitTest;
+use Framework\Base\Test\UnitTest;
 use Framework\RestApi\Listener\ExceptionFormatter;
 
 class ExceptionFormatterTest extends UnitTest

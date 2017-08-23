@@ -2,14 +2,14 @@
 
 namespace Test\ApplicationTest;
 
+use Framework\BaseTest\UnitTest;
 use Framework\RestApi\Module;
-use Test\BaseTest;
 
 /**
  * Class ModuleTest
  * @package Test\ApplicationTest
  */
-class ModuleTest extends BaseTest
+class ModuleTest extends UnitTest
 {
     public function testModuleIsInstantiable()
     {

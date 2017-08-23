@@ -3,5 +3,8 @@
         <testsuite name="Application">
             <directory>test/Application</directory>
         </testsuite>
+        <testsuite name="Modules/RestApi">
+            <directory>Modules/RestApi/test</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

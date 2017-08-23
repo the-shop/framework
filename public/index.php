@@ -10,7 +10,7 @@ $dotenv->load(__DIR__ . '/../.env');
 
 $app = new \Framework\RestApi\RestApi([
     \Framework\RestApi\Module::class,
-    \Framework\CrudApi\Module::class
+    \Application\CrudApi\Module::class
 ]);
 
 $dsn = getenv('SENTRY_DSN');

@@ -1,10 +1,10 @@
 {
     "require": {
-        "lcobucci/jwt": "^3.2",
-        "symfony/dotenv": "^3.3",
-        "mongodb/mongodb": "^1.1",
-        "nikic/fast-route": "^1.2",
-        "sentry/sentry": "^1.7"
+        "symfony/dotenv": "3.3",
+        "mongodb/mongodb": "1.1",
+        "nikic/fast-route": "1.2",
+        "sentry/sentry": "1.7",
+        "phpunit/phpunit": "6.3"
     },
     "autoload": {
         "psr-4": {
@@ -14,8 +14,8 @@
             "Framework\\BaseTest\\": "Modules/Base/test",
             "Framework\\Http\\": "Modules/Http/src",
             "Framework\\HttpTest\\": "Modules/Http/test",
-            "Framework\\CrudApi\\": "Modules/CrudApi/src",
-            "Framework\\CrudApiTest\\": "Modules/CrudApi/test"
+            "Application\\": "src",
+            "Test\\": "test"
         }
     }
 }

@@ -70,7 +70,7 @@ abstract class Bruno implements BrunoInterface
 
         $this->setDatabaseAdapter($mongoAdapter);
 
-        $this->attributes = $this->setAttributes($attributes);
+        $this->setAttributes($attributes);
     }
 
     /**
@@ -78,7 +78,7 @@ abstract class Bruno implements BrunoInterface
      */
     public function getId()
     {
-        if (isset($this->getDatabaseAttributes()[$this->primaryKey])) {
+        if (isset($this->getDatabaseAttributes()[$this->primaryKey]) === true) {
             return $this->getDatabaseAttributes()[$this->primaryKey];
         }
 
@@ -94,10 +94,10 @@ abstract class Bruno implements BrunoInterface
         $query->setDatabase($this->getDatabase());
         $query->setCollection($this->getCollection());
 
-        if ($this->isNew()) {
+        if ($this->isNew() === true) {
             $id = $this->getDatabaseAdapter()->insertOne($query, $this->getAttributes());
             $this->attributes['_id'] = (string) $id;
-            $this->isNew = false;
+            $this->setIsNew(false);
             $this->dbAttributes = $this->getAttributes();
         } else {
             $this->getDatabaseAdapter()->updateOne($query, $this->getId(), $this->getAttributes());
@@ -216,7 +216,7 @@ abstract class Bruno implements BrunoInterface
      */
     public function setAttribute(string $attribute, $value)
     {
-        if (!array_key_exists($attribute, $this->getDefinedAttributes())) {
+        if (array_key_exists($attribute, $this->getDefinedAttributes()) === false) {
             throw new \InvalidArgumentException('Property "' . $attribute . '" not defined');
         }
         $this->attributes[$attribute] = $value;
@@ -265,17 +265,27 @@ abstract class Bruno implements BrunoInterface
     public function defineModelAttributes(array $definition = [])
     {
         $types = [
-            'string', 'int', 'integer', 'float', 'bool', 'boolean', 'array',
+            'string',
+            'int',
+            'integer',
+            'float',
+            'bool',
+            'boolean',
+            'array'
         ];
 
         foreach ($definition as $key => $value) {
-            if (!is_array($value) || !is_string($key)) {
+            if (is_array($value) === false ||
+                is_string($key) === false
+            ) {
                 throw new \InvalidArgumentException('Attribute "' . $key . '" must be formatted as associative array');
             }
-            if (!isset($value['type'])) {
+            if (isset($value['type']) === false) {
                 throw new \InvalidArgumentException('Attribute "' . $key . '" must have "type" defined');
             }
-            if (is_array($value['type']) || !in_array($value['type'], $types, true)) {
+            if (is_array($value['type']) === true ||
+                in_array($value['type'], $types, true) === false
+            ) {
                 throw new \InvalidArgumentException('Unsupported type');
             }
             $this->definedAttributes[$key] = $value['type'];

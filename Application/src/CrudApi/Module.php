@@ -47,7 +47,7 @@ class Module extends BaseModule
             ],
         ],
         'resources' => [
-            'test' => GenericRepository::class
+
         ],
         'repositories' => [
             GenericModel::class => GenericRepository::class
@@ -67,8 +67,17 @@ class Module extends BaseModule
         $mongoAdapter = new MongoAdapter();
 
         $application->getRepositoryManager()
-            ->registerResources($this->config['resources'])
+            ->registerResources($this->getConfigFromJson('resources'))
             ->registerRepositories($this->config['repositories'])
             ->setDatabaseAdapter($mongoAdapter);
+    }
+
+    /**
+     * @param $fileName
+     * @return mixed
+     */
+    private function getConfigFromJson($fileName)
+    {
+        return json_decode(file_get_contents(__DIR__ . "/config/" . $fileName . ".json"), true);
     }
 }

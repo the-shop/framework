@@ -28,22 +28,24 @@ class ExceptionFormatter implements ListenerInterface
 
         if ($exception instanceof \RuntimeException === true) {
             $response->setCode(500);
+            $errors = [
+                $exception->getMessage()
+            ];
         }
 
         if ($exception instanceof NotFoundException === true) {
             $response->setCode(404);
+            $errors = [
+                $exception->getMessage()
+            ];
         }
 
         if ($exception instanceof ValidationException === true) {
             /**
              * @var ValidationException $exception
              */
-            $errors = [$exception->getFailedValidations()];
+            $errors = $exception->getFailedValidations();
             $response->setCode(400);
-        }
-
-        if (empty($errors) === true) {
-            $errors = [$exception->getMessage()];
         }
 
         $response->setBody([

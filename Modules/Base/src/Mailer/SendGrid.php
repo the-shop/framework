@@ -4,8 +4,8 @@ namespace Framework\Base\Mailer;
 
 use SendGrid as SendGridSender;
 use SendGrid\Content;
-use SendGrid\Email;
-use SendGrid\Mail;
+use SendGrid\Email as EmailAddress;
+use SendGrid\Mail as SendgridEmail;
 
 /**
  * Class SendGrid
@@ -16,22 +16,18 @@ class SendGrid extends Mailer
     public function send()
     {
         $apiKey = getenv('SENDGRID_API_KEY');
-        $sg = new SendGridSender($apiKey, [
-            CURLOPT_FAILONERROR => false,
-            CURLOPT_HTTP200ALIASES => [400],
-            CURLOPT_VERBOSE => false
-        ]);
+        $sg = new SendGridSender($apiKey);
 
         $options = $this->getOptions();
         $emailFrom = $this->getFrom();
         $emailTo = $this->getTo();
 
-        $from = new Email($emailFrom, $emailFrom);
+        $from = new EmailAddress($emailFrom, $emailFrom);
         $subject = $this->getSubject();
-        $to = new Email($emailTo, $emailTo);
+        $to = new EmailAddress($emailTo, $emailTo);
         $content = new Content("text/plain", $this->getTextBody());
 
-        $mail = new Mail($from, $subject, $to, $content);
+        $mail = new SendGridEmail($from, $subject, $to, $content);
         $contentHtml = new Content("text/html", $this->getHtmlBody());
         $mail->addContent($contentHtml);
 

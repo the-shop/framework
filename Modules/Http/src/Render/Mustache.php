@@ -23,7 +23,7 @@ class Mustache extends Render
         $mustacheEngine = new Mustache_Engine(
             [
                 'loader' => new \Mustache_Loader_FilesystemLoader(
-                    $rootPath . getenv('MUSTACHE_TEMPLATES_DIR'),
+                    $rootPath . getenv('MUSTACHE_TEMPLATES_DIR_PATH'),
                     [
                         'extension' => getenv('MUSTACHE_FILE_EXTENSION')
                     ]

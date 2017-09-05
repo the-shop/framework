@@ -98,7 +98,7 @@ class Dispatcher implements ApplicationAwareInterface, DispatcherInterface
     public function register()
     {
         $routes = $this->routes;
-        $callback = function(RouteCollector $routeCollector) use ($routes) {
+        $callback = function (RouteCollector $routeCollector) use ($routes) {
             foreach ($this->routes as $route) {
                 list ($method, $path, $handler) = $route;
                 $routeCollector->addRoute(strtoupper($method), $path, $handler);

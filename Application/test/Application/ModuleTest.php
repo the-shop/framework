@@ -2,7 +2,7 @@
 
 namespace ApplicationTest\Application;
 
-use Framework\BaseTest\UnitTest;
+use Framework\Base\Test\UnitTest;
 use Framework\RestApi\Module;
 
 /**

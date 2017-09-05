@@ -2,13 +2,14 @@
 
 namespace Framework\Base\Model;
 
+use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Database\DatabaseAdapterInterface;
 
 /**
  * Interface BrunoInterface
  * @package Framework\Base\Model
  */
-interface BrunoInterface
+interface BrunoInterface extends ApplicationAwareInterface
 {
     /**
      * @return string

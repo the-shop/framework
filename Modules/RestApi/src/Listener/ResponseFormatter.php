@@ -35,7 +35,7 @@ class ResponseFormatter implements ListenerInterface
                 'data' => $data,
                 'pagination' => [] // TODO:
             ];
-        } elseif ($responseBody instanceof BrunoInterface)  {
+        } elseif ($responseBody instanceof BrunoInterface) {
             $data = $this->formatSingleRecord($responseBody->getAttributes());
             $out = [
                 'data' => $data

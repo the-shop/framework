@@ -27,6 +27,11 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
     private $registeredResources = [];
 
     /**
+     * @var [string]
+     */
+    private $registeredModelFields = [];
+
+    /**
      * @var DatabaseAdapterInterface|null
      */
     private $databaseAdapter = null;
@@ -147,6 +152,19 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         $this->registeredResources = array_merge($this->registeredResources, $resourcesMap);
 
         $this->registeredResources = array_unique($this->registeredResources);
+
+        return $this;
+    }
+
+    /**
+     * @param array $modelFieldsMap
+     * @return $this
+     */
+    public function registerModelFields(array $modelFieldsMap = [])
+    {
+        $this->registeredModelFields = array_merge($this->registeredModelFields, $modelFieldsMap);
+
+        $this->registeredModelFields = array_unique($this->registeredModelFields);
 
         return $this;
     }

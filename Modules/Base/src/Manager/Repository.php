@@ -37,6 +37,11 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
     private $databaseAdapter = null;
 
     /**
+     * @var array
+     */
+    private $modelAdapters = [];
+
+    /**
      * RepositoryManager constructor.
      * @param DatabaseAdapterInterface $adapter
      */
@@ -167,5 +172,24 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         $this->registeredModelFields = array_unique($this->registeredModelFields);
 
         return $this;
+    }
+
+    public function addModelAdapter(string $modelClassName, DatabaseAdapterInterface $adapter)
+    {
+        $this->modelAdapters[$modelClassName][] = $adapter;
+
+        return $this;
+    }
+
+    /**
+     * @param string $modelClassName
+     * @return array
+     */
+    public function getModelAdapters(string $modelClassName)
+    {
+        if (isset($this->modelAdapters[$modelClassName]) === false) {
+            throw new RuntimeException('No registered adapters for ' . $modelClassName);
+        }
+        return $this->modelAdapters[$modelClassName];
     }
 }

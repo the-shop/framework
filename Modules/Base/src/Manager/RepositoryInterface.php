@@ -63,4 +63,17 @@ interface RepositoryInterface
      * @return mixed
      */
     public function getModelClass(string $repositoryClass);
+
+    /**
+     * @param string $modelClassName
+     * @param DatabaseAdapterInterface $adapter
+     * @return mixed
+     */
+    public function addModelAdapter(string $modelClassName, DatabaseAdapterInterface $adapter);
+
+    /**
+     * @param string $modelClassName
+     * @return mixed
+     */
+    public function getModelAdapters(string $modelClassName);
 }

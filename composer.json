@@ -5,6 +5,7 @@
     "mongodb/mongodb": "1.1.2",
     "nikic/fast-route": "1.2",
     "sentry/sentry": "1.7.1",
+    "guzzlehttp/guzzle": "^6.3"
     "sendgrid/sendgrid": "~6.0",
     "mustache/mustache": "^2.12"
   },

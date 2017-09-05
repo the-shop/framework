@@ -2,27 +2,16 @@
 
 namespace Framework\Base\Module;
 
-use Framework\Base\Application\ApplicationInterface;
+use Framework\Base\Application\ApplicationAwareInterface;
 
 /**
  * Interface ModuleInterface
  * @package Framework\Base\Module
  */
-interface ModuleInterface
+interface ModuleInterface extends ApplicationAwareInterface
 {
     /**
      * Bootstrap module
      */
     public function bootstrap();
-
-    /**
-     * @param ApplicationInterface $application
-     * @return mixed
-     */
-    public function setApplication(ApplicationInterface $application);
-
-    /**
-     * @return ApplicationInterface|null
-     */
-    public function getApplication();
 }

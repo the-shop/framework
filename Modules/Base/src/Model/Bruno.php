@@ -2,6 +2,7 @@
 
 namespace Framework\Base\Model;
 
+use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Mongo\MongoAdapter;
 use Framework\Base\Mongo\MongoQuery;
@@ -14,6 +15,18 @@ use MongoDB\BSON\ObjectID;
  */
 abstract class Bruno implements BrunoInterface
 {
+    use ApplicationAwareTrait;
+
+    /**
+     * @const string
+     */
+    const EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE = 'EVENT\MODEL\HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_POST = 'EVENT\MODEL\HANDLE_ATTRIBUTE_VALUE_MODIFY_POST';
+
     /**
      * @var DatabaseAdapterInterface
      */
@@ -212,6 +225,7 @@ abstract class Bruno implements BrunoInterface
     /**
      * @param string $attribute
      * @param mixed $value
+     * @throws \InvalidArgumentException
      * @return $this
      */
     public function setAttribute(string $attribute, $value)
@@ -219,7 +233,22 @@ abstract class Bruno implements BrunoInterface
         if (array_key_exists($attribute, $this->getDefinedAttributes()) === false) {
             throw new \InvalidArgumentException('Property "' . $attribute . '" not defined');
         }
+
+        $this->getApplication()
+            ->triggerEvent(
+                self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
+                [
+                    $attribute => $value
+                ]
+            );
+
         $this->attributes[$attribute] = $value;
+
+        $this->getApplication()
+            ->triggerEvent(
+                self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_POST,
+                $this
+            );
 
         return $this;
     }
@@ -232,6 +261,9 @@ abstract class Bruno implements BrunoInterface
         return $this->attributes;
     }
 
+    /**
+     * @throws \RuntimeException
+     */
     public function getDirtyAttributes()
     {
         // TODO: Implement getDirtyAttributes() method.

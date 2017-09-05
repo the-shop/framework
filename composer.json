@@ -4,16 +4,19 @@
     "symfony/dotenv": "3.3.6",
     "mongodb/mongodb": "1.1.2",
     "nikic/fast-route": "1.2",
-    "sentry/sentry": "1.7.1"
+    "sentry/sentry": "1.7.1",
+    "guzzlehttp/guzzle": "^6.3",
+    "sendgrid/sendgrid": "~6.0",
+    "mustache/mustache": "^2.12"
   },
   "autoload": {
     "psr-4": {
       "Framework\\RestApi\\": "Modules/RestApi/src",
-      "Framework\\RestApiTest\\": "Modules/RestApi/test",
+      "Framework\\RestApi\\Test\\": "Modules/RestApi/test",
       "Framework\\Base\\": "Modules/Base/src",
-      "Framework\\BaseTest\\": "Modules/Base/test",
+      "Framework\\Base\\Test\\": "Modules/Base/test",
       "Framework\\Http\\": "Modules/Http/src",
-      "Framework\\HttpTest\\": "Modules/Http/test",
+      "Framework\\Http\\Test\\": "Modules/Http/test",
       "Application\\": "Application/src",
       "ApplicationTest\\": "Application/test"
     }

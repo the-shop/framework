@@ -3,6 +3,8 @@
 namespace Framework\Base\Application;
 
 use Framework\Base\Application\Exception\ExceptionHandler;
+use Framework\Base\Application\Exception\GuzzleHttpException;
+use Framework\Base\Application\Exception\MethodNotAllowedException;
 use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
@@ -14,6 +16,8 @@ use Framework\Base\Render\RenderInterface;
 use Framework\Base\Request\RequestInterface;
 use Framework\Base\Response\ResponseInterface;
 use Framework\Base\Router\DispatcherInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * Class BaseApplication
@@ -410,7 +414,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         if (count($this->getLoggers()) === 0) {
             $this->addLogger(new DummyLogger());
         }
-        foreach ($this->loggers as $logger) {
+        foreach ($this->getLoggers() as $logger) {
             $logger->log($log);
         }
         return $this;
@@ -433,5 +437,48 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function getLoggers()
     {
         return $this->loggers;
+    }
+
+    /**
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \Framework\Base\Application\Exception\GuzzleHttpException
+     * @throws \Framework\Base\Application\Exception\MethodNotAllowedException
+     */
+    public function httpRequest(string $method, string $uri = '', array $params = [])
+    {
+        $allowedHttpMethods = [
+            'GET',
+            'POST',
+            'PUT',
+            'DELETE',
+            'PATCH',
+            'HEAD',
+            'OPTIONS'
+        ];
+
+        if (is_string($method) === false ||
+            in_array(strtoupper($method), $allowedHttpMethods, true) === false
+        ) {
+            $exception = new MethodNotAllowedException('Http method not allowed');
+            $exception->setAllowedMethods($allowedHttpMethods);
+            throw $exception;
+        }
+
+        $client = new Client();
+
+        try {
+            $response = $client->request($method, $uri, $params);
+        } catch (RequestException $requestException) {
+            if ($requestException->hasResponse() === false) {
+                $message = $requestException->getMessage();
+                $code = null;
+            } else {
+                $message = $requestException->getResponse()->getReasonPhrase();
+                $code = $requestException->getResponse()->getStatusCode();
+            }
+            throw new GuzzleHttpException($message, $code);
+        }
+
+        return $response;
     }
 }

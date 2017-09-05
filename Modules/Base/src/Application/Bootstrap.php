@@ -15,7 +15,7 @@ class Bootstrap
      * @param BaseApplication $application
      * @return $this
      */
-    public function registerModules(array $moduleInterfaceClassNames = [], BaseApplication $application)
+    public function registerModules(array $moduleInterfaceClassNames, BaseApplication $application)
     {
         $this->registerModules = $moduleInterfaceClassNames;
 

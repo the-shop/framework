@@ -46,9 +46,6 @@ class Module extends BaseModule
                 '\Application\CrudApi\Controller\Resource::delete'
             ],
         ],
-        'resources' => [
-            'test' => GenericRepository::class
-        ],
         'repositories' => [
             GenericModel::class => GenericRepository::class
         ]
@@ -66,9 +63,31 @@ class Module extends BaseModule
 
         $mongoAdapter = new MongoAdapter();
 
+        $configuration = $this->generateConfigurationFromJson('models');
+
         $application->getRepositoryManager()
-            ->registerResources($this->config['resources'])
+            ->registerResources($configuration['resources'])
             ->registerRepositories($this->config['repositories'])
+            ->registerModelFields($configuration['modelFields'])
             ->setDatabaseAdapter($mongoAdapter);
+    }
+
+    /**
+     * @param $fileName
+     * @return mixed
+     */
+    private function generateConfigurationFromJson($fileName)
+    {
+        $config = json_decode(file_get_contents(__DIR__ . "/config/" . $fileName . ".json"), true);
+        $generatedConfiguration = [
+            'resources' => [],
+            'modelFields' => []
+        ];
+        foreach ($config as $modelName => $options) {
+            $generatedConfiguration['resources'][$options['collection']] = GenericRepository::class;
+            $generatedConfiguration['modelFields'][$options['collection']] = $options['fields'];
+        }
+
+        return $generatedConfiguration;
     }
 }

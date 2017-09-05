@@ -414,7 +414,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         if (count($this->getLoggers()) === 0) {
             $this->addLogger(new DummyLogger());
         }
-        foreach ($this->loggers as $logger) {
+        foreach ($this->getLoggers() as $logger) {
             $logger->log($log);
         }
         return $this;

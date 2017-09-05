@@ -25,11 +25,33 @@ class SendGrid extends Mailer
         $from = new EmailAddress($emailFrom, $emailFrom);
         $subject = $this->getSubject();
         $to = new EmailAddress($emailTo, $emailTo);
-        $content = new Content("text/plain", $this->getTextBody());
+
+        if ($this->getHtmlBody() === null && $this->getTextBody() === null) {
+            throw new \Exception('Text-plain or html body is required.', 403);
+        }
+
+        $firstContent = null;
+        $secondContent = null;
+
+        switch ($this->getTextBody()) {
+            case (null):
+                $firstContent = ['text/html', $this->getHtmlBody()];
+                break;
+            case (!null):
+                $firstContent = ['text/plain', $this->getTextBody()];
+                if ($this->getHtmlBody()) {
+                    $secondContent = ['text/html', $this->getHtmlBody()];
+                }
+                break;
+        }
+
+        $content = new Content($firstContent[0], $firstContent[1]);
 
         $mail = new SendGridEmail($from, $subject, $to, $content);
-        $contentHtml = new Content("text/html", $this->getHtmlBody());
-        $mail->addContent($contentHtml);
+        if ($secondContent) {
+            $contentHtml = new Content($secondContent[0], $secondContent[1]);
+            $mail->addContent($contentHtml);
+        }
 
         if (array_key_exists('cc', $options) && !empty($options['cc'])) {
             $mail->personalization[0]->addCc(['email' => $options['cc']]);

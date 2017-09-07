@@ -48,17 +48,6 @@ interface RepositoryInterface
     public function registerModelFields(array $modelFieldsMap = []);
 
     /**
-     * @param DatabaseAdapterInterface $adapter
-     * @return $this
-     */
-    public function setDatabaseAdapter(DatabaseAdapterInterface $adapter);
-
-    /**
-     * @return DatabaseAdapterInterface|null
-     */
-    public function getDatabaseAdapter();
-
-    /**
      * @param string $repositoryClass
      * @return mixed
      */

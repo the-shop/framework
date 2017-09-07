@@ -4,7 +4,6 @@ namespace Framework\Base\Model;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
-use Framework\Base\Mongo\MongoAdapter;
 use Framework\Base\Mongo\MongoQuery;
 use MongoDB\BSON\ObjectID;
 
@@ -26,11 +25,6 @@ abstract class Bruno implements BrunoInterface
      * @const string
      */
     const EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_POST = 'EVENT\MODEL\HANDLE_ATTRIBUTE_VALUE_MODIFY_POST';
-
-    /**
-     * @var DatabaseAdapterInterface
-     */
-    protected $databaseAdapter;
 
     /**
      * @var string
@@ -78,11 +72,6 @@ abstract class Bruno implements BrunoInterface
      */
     public function __construct(array $attributes = [])
     {
-        // TODO: depend on interface for adapter
-        $mongoAdapter = new MongoAdapter();
-
-        $this->setDatabaseAdapter($mongoAdapter);
-
         $this->setAttributes($attributes);
     }
 
@@ -107,14 +96,23 @@ abstract class Bruno implements BrunoInterface
         $query->setDatabase($this->getDatabase());
         $query->setCollection($this->getCollection());
 
-        if ($this->isNew() === true) {
-            $id = $this->getDatabaseAdapter()->insertOne($query, $this->getAttributes());
-            $this->attributes['_id'] = (string) $id;
-            $this->setIsNew(false);
-            $this->dbAttributes = $this->getAttributes();
-        } else {
-            $this->getDatabaseAdapter()->updateOne($query, $this->getId(), $this->getAttributes());
-            $this->dbAttributes = $this->getAttributes();
+        $adapters = $this->getDatabaseAdapters();
+        $i = 0;
+        $len = count($adapters);
+
+        foreach ($adapters as $adapter) {
+            if ($this->isNew() === true) {
+                $id = $adapter->insertOne($query, $this->getAttributes());
+                $this->attributes['_id'] = (string) $id;
+                if ($i === $len - 1) { // Check if it's last adapter on the list
+                    $this->setIsNew(false);
+                }
+                $this->dbAttributes = $this->getAttributes();
+            } else {
+                $adapter->updateOne($query, $this->getId(), $this->getAttributes());
+                $this->dbAttributes = $this->getAttributes();
+            }
+            $i++;
         }
 
         return $this;
@@ -129,9 +127,22 @@ abstract class Bruno implements BrunoInterface
         $query->setDatabase($this->getDatabase());
         $query->setCollection($this->getCollection());
         $query->addAndCondition('_id', '$eq', new ObjectID($this->getId()));
-        $this->getDatabaseAdapter()->deleteOne($query);
+
+        $adapters = $this->getDatabaseAdapters();
+
+        foreach ($adapters as $adapter) {
+            $adapter->deleteOne($query);
+        }
 
         return $this;
+    }
+
+    /**
+     * @return DatabaseAdapterInterface
+     */
+    public function getDatabaseAdapters()
+    {
+        return $this->getApplication()->getRepositoryManager()->getModelAdapters($this->collection);
     }
 
     /**
@@ -189,25 +200,6 @@ abstract class Bruno implements BrunoInterface
         $this->database = $databaseName;
 
         return $this;
-    }
-
-    /**
-     * @param DatabaseAdapterInterface $adapter
-     * @return $this
-     */
-    public function setDatabaseAdapter(DatabaseAdapterInterface $adapter)
-    {
-        $this->databaseAdapter = $adapter;
-
-        return $this;
-    }
-
-    /**
-     * @return DatabaseAdapterInterface
-     */
-    public function getDatabaseAdapter()
-    {
-        return $this->databaseAdapter;
     }
 
     /**

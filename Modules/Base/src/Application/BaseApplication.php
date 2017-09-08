@@ -238,6 +238,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
                 $responses[] = $listener->handle($payload);
             }
         }
+
         return $responses;
     }
 
@@ -255,6 +256,14 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         $this->events[$eventName][] = $listenerClass;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEvents()
+    {
+        return $this->events;
     }
 
     /**

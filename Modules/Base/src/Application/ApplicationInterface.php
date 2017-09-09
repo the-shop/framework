@@ -2,7 +2,6 @@
 
 namespace Framework\Base\Application;
 
-use Framework\Base\Di\Resolver;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
 use Framework\Base\Request\RequestInterface;
@@ -93,4 +92,17 @@ interface ApplicationInterface
      * @return LoggerInterface[]
      */
     public function getLoggers();
+
+    /**
+     * Curl Request method
+     *
+     * @param string $method
+     * @param string $uri
+     * @param array $params
+     *
+     * @throws \RuntimeException
+     * @throws \Framework\Base\Application\Exception\GuzzleHttpException
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     */
+    public function httpRequest(string $method, string $uri = '', array $params = []);
 }

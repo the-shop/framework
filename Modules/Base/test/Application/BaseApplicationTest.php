@@ -2,11 +2,14 @@
 
 namespace Framework\BaseTest\Application;
 
+use Framework\Base\Application\Exception\GuzzleHttpException;
+use Framework\Base\Application\Exception\MethodNotAllowedException;
 use Framework\Base\Logger\DummyLogger;
 use Framework\Base\Logger\Log;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Test\UnitTest;
 use Framework\RestApi\SentryLogger;
+use Psr\Http\Message\ResponseInterface;
 
 class BaseApplicationTest extends UnitTest
 {
@@ -38,7 +41,7 @@ class BaseApplicationTest extends UnitTest
     {
         $app = $this->getApplication();
 
-        $this::expectException('Framework\Base\Application\Exception\MethodNotAllowedException');
+        $this::expectException(MethodNotAllowedException::class);
 
         $app->httpRequest('test');
     }
@@ -47,7 +50,7 @@ class BaseApplicationTest extends UnitTest
     {
         $app = $this->getApplication();
 
-        $this::expectException('Framework\Base\Application\Exception\GuzzleHttpException');
+        $this::expectException(GuzzleHttpException::class);
 
         $app->httpRequest('post', 'http://www.google.com');
     }
@@ -56,7 +59,7 @@ class BaseApplicationTest extends UnitTest
     {
         $app = $this->getApplication();
 
-        $this::expectException('Framework\Base\Application\Exception\GuzzleHttpException');
+        $this::expectException(GuzzleHttpException::class);
 
         $app->httpRequest('get', 'http://www.poqwjdoqwidjqowinhdqwiohqwoiqdhwlokiqwndhqwloi.fr');
     }
@@ -66,7 +69,7 @@ class BaseApplicationTest extends UnitTest
         $app = $this->getApplication();
 
         $this::assertInstanceOf(
-            '\Psr\Http\Message\ResponseInterface',
+            ResponseInterface::class,
             $app->httpRequest('get', 'http://www.google.com')
         );
     }

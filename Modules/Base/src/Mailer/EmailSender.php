@@ -72,6 +72,6 @@ class EmailSender
 
     public function send()
     {
-        $this->mailerInterface->send();
+        return $this->mailerInterface->send();
     }
 }

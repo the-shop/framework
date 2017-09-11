@@ -15,3 +15,147 @@ Stack trace:
 #10 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(141): PHPUnit\TextUI\Command->run(Array, true)
 #11 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/phpunit(53): PHPUnit\TextUI\Command::main()
 #12 {main}
+[2017-09-11 14:08:18] Test message
+[2017-09-11 14:08:18] PHPUnit\Runner\Exception: Test exception in /home/laptop02/theShop/VagrantLAMP/Sites/framework/Modules/RestApi/test/Logger/FileLoggerTest.php:32
+Stack trace:
+#0 [internal function]: Framework\RestApiTest\Logger\FileLoggerTest->testFileLoggerExceptionMessage()
+#1 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(1069): ReflectionMethod->invokeArgs(Object(Framework\RestApiTest\Logger\FileLoggerTest), Array)
+#2 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(928): PHPUnit\Framework\TestCase->runTest()
+#3 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestResult.php(695): PHPUnit\Framework\TestCase->runBare()
+#4 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(883): PHPUnit\Framework\TestResult->run(Object(Framework\RestApiTest\Logger\FileLoggerTest))
+#5 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#6 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#7 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#8 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(537): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#9 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(212): PHPUnit\TextUI\TestRunner->doRun(Object(PHPUnit\Framework\TestSuite), Array, true)
+#10 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(141): PHPUnit\TextUI\Command->run(Array, true)
+#11 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/phpunit(53): PHPUnit\TextUI\Command::main()
+#12 {main}
+[2017-09-11 14:09:06] Test message
+[2017-09-11 14:09:06] PHPUnit\Runner\Exception: Test exception in /home/laptop02/theShop/VagrantLAMP/Sites/framework/Modules/RestApi/test/Logger/FileLoggerTest.php:32
+Stack trace:
+#0 [internal function]: Framework\RestApiTest\Logger\FileLoggerTest->testFileLoggerExceptionMessage()
+#1 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(1069): ReflectionMethod->invokeArgs(Object(Framework\RestApiTest\Logger\FileLoggerTest), Array)
+#2 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(928): PHPUnit\Framework\TestCase->runTest()
+#3 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestResult.php(695): PHPUnit\Framework\TestCase->runBare()
+#4 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(883): PHPUnit\Framework\TestResult->run(Object(Framework\RestApiTest\Logger\FileLoggerTest))
+#5 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#6 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#7 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#8 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(537): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#9 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(212): PHPUnit\TextUI\TestRunner->doRun(Object(PHPUnit\Framework\TestSuite), Array, true)
+#10 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(141): PHPUnit\TextUI\Command->run(Array, true)
+#11 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/phpunit(53): PHPUnit\TextUI\Command::main()
+#12 {main}
+[2017-09-11 14:09:48] Test message
+[2017-09-11 14:09:48] PHPUnit\Runner\Exception: Test exception in /home/laptop02/theShop/VagrantLAMP/Sites/framework/Modules/RestApi/test/Logger/FileLoggerTest.php:32
+Stack trace:
+#0 [internal function]: Framework\RestApiTest\Logger\FileLoggerTest->testFileLoggerExceptionMessage()
+#1 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(1069): ReflectionMethod->invokeArgs(Object(Framework\RestApiTest\Logger\FileLoggerTest), Array)
+#2 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(928): PHPUnit\Framework\TestCase->runTest()
+#3 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestResult.php(695): PHPUnit\Framework\TestCase->runBare()
+#4 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(883): PHPUnit\Framework\TestResult->run(Object(Framework\RestApiTest\Logger\FileLoggerTest))
+#5 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#6 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#7 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#8 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(537): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#9 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(212): PHPUnit\TextUI\TestRunner->doRun(Object(PHPUnit\Framework\TestSuite), Array, true)
+#10 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(141): PHPUnit\TextUI\Command->run(Array, true)
+#11 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/phpunit(53): PHPUnit\TextUI\Command::main()
+#12 {main}
+[2017-09-11 14:10:04] Test message
+[2017-09-11 14:10:04] PHPUnit\Runner\Exception: Test exception in /home/laptop02/theShop/VagrantLAMP/Sites/framework/Modules/RestApi/test/Logger/FileLoggerTest.php:32
+Stack trace:
+#0 [internal function]: Framework\RestApiTest\Logger\FileLoggerTest->testFileLoggerExceptionMessage()
+#1 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(1069): ReflectionMethod->invokeArgs(Object(Framework\RestApiTest\Logger\FileLoggerTest), Array)
+#2 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(928): PHPUnit\Framework\TestCase->runTest()
+#3 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestResult.php(695): PHPUnit\Framework\TestCase->runBare()
+#4 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(883): PHPUnit\Framework\TestResult->run(Object(Framework\RestApiTest\Logger\FileLoggerTest))
+#5 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#6 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#7 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#8 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(537): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#9 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(212): PHPUnit\TextUI\TestRunner->doRun(Object(PHPUnit\Framework\TestSuite), Array, true)
+#10 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(141): PHPUnit\TextUI\Command->run(Array, true)
+#11 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/phpunit(53): PHPUnit\TextUI\Command::main()
+#12 {main}
+[2017-09-11 14:11:41] Test message
+[2017-09-11 14:11:41] PHPUnit\Runner\Exception: Test exception in /home/laptop02/theShop/VagrantLAMP/Sites/framework/Modules/RestApi/test/Logger/FileLoggerTest.php:32
+Stack trace:
+#0 [internal function]: Framework\RestApiTest\Logger\FileLoggerTest->testFileLoggerExceptionMessage()
+#1 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(1069): ReflectionMethod->invokeArgs(Object(Framework\RestApiTest\Logger\FileLoggerTest), Array)
+#2 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(928): PHPUnit\Framework\TestCase->runTest()
+#3 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestResult.php(695): PHPUnit\Framework\TestCase->runBare()
+#4 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(883): PHPUnit\Framework\TestResult->run(Object(Framework\RestApiTest\Logger\FileLoggerTest))
+#5 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#6 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#7 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#8 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(537): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#9 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(212): PHPUnit\TextUI\TestRunner->doRun(Object(PHPUnit\Framework\TestSuite), Array, true)
+#10 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(141): PHPUnit\TextUI\Command->run(Array, true)
+#11 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/phpunit(53): PHPUnit\TextUI\Command::main()
+#12 {main}
+[2017-09-11 14:13:56] Test message
+[2017-09-11 14:13:56] PHPUnit\Runner\Exception: Test exception in /home/laptop02/theShop/VagrantLAMP/Sites/framework/Modules/RestApi/test/Logger/FileLoggerTest.php:32
+Stack trace:
+#0 [internal function]: Framework\RestApiTest\Logger\FileLoggerTest->testFileLoggerExceptionMessage()
+#1 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(1069): ReflectionMethod->invokeArgs(Object(Framework\RestApiTest\Logger\FileLoggerTest), Array)
+#2 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(928): PHPUnit\Framework\TestCase->runTest()
+#3 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestResult.php(695): PHPUnit\Framework\TestCase->runBare()
+#4 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(883): PHPUnit\Framework\TestResult->run(Object(Framework\RestApiTest\Logger\FileLoggerTest))
+#5 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#6 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#7 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#8 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(537): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#9 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(212): PHPUnit\TextUI\TestRunner->doRun(Object(PHPUnit\Framework\TestSuite), Array, true)
+#10 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(141): PHPUnit\TextUI\Command->run(Array, true)
+#11 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/phpunit(53): PHPUnit\TextUI\Command::main()
+#12 {main}
+[2017-09-11 14:36:19] Test message
+[2017-09-11 14:36:19] PHPUnit\Runner\Exception: Test exception in /home/laptop02/theShop/VagrantLAMP/Sites/framework/Modules/RestApi/test/Logger/FileLoggerTest.php:32
+Stack trace:
+#0 [internal function]: Framework\RestApiTest\Logger\FileLoggerTest->testFileLoggerExceptionMessage()
+#1 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(1069): ReflectionMethod->invokeArgs(Object(Framework\RestApiTest\Logger\FileLoggerTest), Array)
+#2 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(928): PHPUnit\Framework\TestCase->runTest()
+#3 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestResult.php(695): PHPUnit\Framework\TestCase->runBare()
+#4 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(883): PHPUnit\Framework\TestResult->run(Object(Framework\RestApiTest\Logger\FileLoggerTest))
+#5 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#6 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#7 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#8 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(537): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#9 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(212): PHPUnit\TextUI\TestRunner->doRun(Object(PHPUnit\Framework\TestSuite), Array, true)
+#10 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(141): PHPUnit\TextUI\Command->run(Array, true)
+#11 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/phpunit(53): PHPUnit\TextUI\Command::main()
+#12 {main}
+[2017-09-11 14:42:27] Test message
+[2017-09-11 14:42:27] PHPUnit\Runner\Exception: Test exception in /home/laptop02/theShop/VagrantLAMP/Sites/framework/Modules/RestApi/test/Logger/FileLoggerTest.php:32
+Stack trace:
+#0 [internal function]: Framework\RestApiTest\Logger\FileLoggerTest->testFileLoggerExceptionMessage()
+#1 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(1069): ReflectionMethod->invokeArgs(Object(Framework\RestApiTest\Logger\FileLoggerTest), Array)
+#2 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(928): PHPUnit\Framework\TestCase->runTest()
+#3 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestResult.php(695): PHPUnit\Framework\TestCase->runBare()
+#4 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(883): PHPUnit\Framework\TestResult->run(Object(Framework\RestApiTest\Logger\FileLoggerTest))
+#5 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#6 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#7 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#8 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(537): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#9 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(212): PHPUnit\TextUI\TestRunner->doRun(Object(PHPUnit\Framework\TestSuite), Array, true)
+#10 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(141): PHPUnit\TextUI\Command->run(Array, true)
+#11 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/phpunit(53): PHPUnit\TextUI\Command::main()
+#12 {main}
+[2017-09-11 14:45:01] Test message
+[2017-09-11 14:45:01] PHPUnit\Runner\Exception: Test exception in /home/laptop02/theShop/VagrantLAMP/Sites/framework/Modules/RestApi/test/Logger/FileLoggerTest.php:32
+Stack trace:
+#0 [internal function]: Framework\RestApiTest\Logger\FileLoggerTest->testFileLoggerExceptionMessage()
+#1 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(1069): ReflectionMethod->invokeArgs(Object(Framework\RestApiTest\Logger\FileLoggerTest), Array)
+#2 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(928): PHPUnit\Framework\TestCase->runTest()
+#3 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestResult.php(695): PHPUnit\Framework\TestCase->runBare()
+#4 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestCase.php(883): PHPUnit\Framework\TestResult->run(Object(Framework\RestApiTest\Logger\FileLoggerTest))
+#5 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestCase->run(Object(PHPUnit\Framework\TestResult))
+#6 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#7 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/Framework/TestSuite.php(744): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#8 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(537): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
+#9 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(212): PHPUnit\TextUI\TestRunner->doRun(Object(PHPUnit\Framework\TestSuite), Array, true)
+#10 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/src/TextUI/Command.php(141): PHPUnit\TextUI\Command->run(Array, true)
+#11 /home/laptop02/theShop/VagrantLAMP/Sites/framework/vendor/phpunit/phpunit/phpunit(53): PHPUnit\TextUI\Command::main()
+#12 {main}

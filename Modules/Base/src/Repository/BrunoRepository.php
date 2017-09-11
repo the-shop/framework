@@ -60,7 +60,6 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     public function newModel()
     {
         $modelClass = $this->getModelClassName();
-        $app = $this->getApplication();
 
         /* @var BrunoInterface $model */
         $model = new $modelClass();
@@ -111,11 +110,6 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
             $model->setIsNew(false);
 
             $out[] = $model;
-        }
-
-        // Return null if no document found
-        if (count($out) === 0) {
-            return null;
         }
 
         return $out;

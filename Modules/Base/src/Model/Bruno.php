@@ -97,23 +97,41 @@ abstract class Bruno implements BrunoInterface
         $query->setCollection($this->getCollection());
 
         $adapters = $this->getDatabaseAdapters();
-        $i = 0;
-        $len = count($adapters);
+
+        if ($this->isNew() === true) {
+            $adapterActionParams = [
+                'method' => 'insertOne',
+                'params' => [
+                    $query,
+                    $this->getAttributes(),
+                ],
+            ];
+        } else {
+            $adapterActionParams = [
+                'method' => 'updateOne',
+                'params' => [
+                    $query,
+                    $this->getId(),
+                    $this->getAttributes(),
+                ],
+            ];
+        }
 
         foreach ($adapters as $adapter) {
+            $response = call_user_func_array(
+                [
+                    $adapter,
+                    $adapterActionParams['method'],
+                ],
+                $adapterActionParams['params']
+            );
             if ($this->isNew() === true) {
-                $id = $adapter->insertOne($query, $this->getAttributes());
-                $this->attributes['_id'] = (string) $id;
-                if ($i === $len - 1) { // Check if it's last adapter on the list
-                    $this->setIsNew(false);
-                }
-                $this->dbAttributes = $this->getAttributes();
-            } else {
-                $adapter->updateOne($query, $this->getId(), $this->getAttributes());
-                $this->dbAttributes = $this->getAttributes();
+                $this->attributes['_id'] = (string)$response;
             }
-            $i++;
+            $this->dbAttributes = $this->getAttributes();
         }
+
+        $this->setIsNew(false);
 
         return $this;
     }
@@ -211,6 +229,7 @@ abstract class Bruno implements BrunoInterface
         foreach ($attributes as $key => $value) {
             $this->setAttribute($key, $value);
         }
+
         return $this;
     }
 
@@ -230,7 +249,7 @@ abstract class Bruno implements BrunoInterface
             ->triggerEvent(
                 self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
                 [
-                    $attribute => $value
+                    $attribute => $value,
                 ]
             );
 
@@ -295,7 +314,7 @@ abstract class Bruno implements BrunoInterface
             'float',
             'bool',
             'boolean',
-            'array'
+            'array',
         ];
 
         foreach ($definition as $key => $value) {
@@ -314,6 +333,7 @@ abstract class Bruno implements BrunoInterface
             }
             $this->definedAttributes[$key] = $value['type'];
         }
+
         return $this;
     }
 }

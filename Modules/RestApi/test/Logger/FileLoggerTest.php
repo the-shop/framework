@@ -22,6 +22,8 @@ class FileLoggerTest extends UnitTest
         $logger = new FileLogger();
         $out = $logger->log($log);
         $this->assertEquals($log->getPayload(), $out);
+
+        $this->clearLogFile();
     }
 
     /**
@@ -33,5 +35,20 @@ class FileLoggerTest extends UnitTest
         $logger = new FileLogger();
         $out = $logger->log($log);
         $this->assertEquals($log->getPayload()->__toString(), $out);
+
+        $this->clearLogFile();
+    }
+
+    /**
+     * Clear log file
+     */
+    private function clearLogFile()
+    {
+        $rootPath = str_replace('public', '', getcwd());
+        $directory = getenv('FILE_LOGGER_FILE_DIR_PATH');
+        $file = getenv('FILE_LOGGER_FILE_NAME');
+        $fullPathToLogFileName = $rootPath . $directory . $file;
+
+        file_put_contents($fullPathToLogFileName, '');
     }
 }

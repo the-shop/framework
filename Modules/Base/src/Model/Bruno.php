@@ -5,6 +5,7 @@ namespace Framework\Base\Model;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Mongo\MongoQuery;
+use Framework\Base\Repository\Modifiers\FieldModifierInterface;
 use MongoDB\BSON\ObjectID;
 
 /**
@@ -65,6 +66,11 @@ abstract class Bruno implements BrunoInterface
      * @var bool
      */
     private $isNew = true;
+
+    /**
+     * @var array
+     */
+    private $fieldFilters = [];
 
     /**
      * Bruno constructor.
@@ -253,6 +259,12 @@ abstract class Bruno implements BrunoInterface
                 ]
             );
 
+        if (array_key_exists($attribute, $this->fieldFilters)) {
+            foreach ($this->fieldFilters[$attribute] as $filter) {
+                $value = $filter->modify($value);
+            }
+        }
+
         $this->attributes[$attribute] = $value;
 
         $this->getApplication()
@@ -335,5 +347,29 @@ abstract class Bruno implements BrunoInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $field
+     * @param FieldModifierInterface $filter
+     * @return $this
+     */
+    public function addFieldFilter(string $field, FieldModifierInterface $filter)
+    {
+        if (array_key_exists($field, $this->fieldFilters) === false) {
+            $this->fieldFilters[$field] = [];
+        }
+
+        $this->fieldFilters[$field][] = $filter;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldFilters()
+    {
+        return $this->fieldFilters;
     }
 }

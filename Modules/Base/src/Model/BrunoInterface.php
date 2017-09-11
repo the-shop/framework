@@ -3,6 +3,7 @@
 namespace Framework\Base\Model;
 
 use Framework\Base\Application\ApplicationAwareInterface;
+use Framework\Base\Repository\Modifiers\FieldModifierInterface;
 
 /**
  * Interface BrunoInterface
@@ -93,4 +94,11 @@ interface BrunoInterface extends ApplicationAwareInterface
      * @return $this
      */
     public function defineModelAttributes(array $definition = []);
+
+    /**
+     * @param string $field
+     * @param FieldModifierInterface $filter
+     * @return mixed
+     */
+    public function addFieldFilter(string $field, FieldModifierInterface $filter);
 }

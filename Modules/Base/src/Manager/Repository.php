@@ -41,6 +41,8 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
      */
     private $modelAdapters = [];
 
+    private $authenticatableModels = [];
+
     /**
      * RepositoryManager constructor.
      * @param DatabaseAdapterInterface $adapter
@@ -183,7 +185,7 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
 
     /**
      * @param string $modelClassName
-     * @return array
+     * @return DatabaseAdapterInterface[]
      */
     public function getModelAdapters(string $modelClassName)
     {
@@ -191,5 +193,16 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
             throw new RuntimeException('No registered adapters for ' . $modelClassName);
         }
         return $this->modelAdapters[$modelClassName];
+    }
+
+    public function addAuthenticatableModels(array $modelsConfigs)
+    {
+        $this->authenticatableModels = $modelsConfigs;
+        return $this;
+    }
+
+    public function getAuthenticatableModels()
+    {
+        return $this->authenticatableModels;
     }
 }

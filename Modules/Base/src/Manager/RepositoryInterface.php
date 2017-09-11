@@ -67,7 +67,7 @@ interface RepositoryInterface
     /**
      * @param string $modelClassName
      * @param DatabaseAdapterInterface $adapter
-     * @return mixed
+     * @return $this
      */
     public function addModelAdapter(string $modelClassName, DatabaseAdapterInterface $adapter);
 
@@ -76,4 +76,16 @@ interface RepositoryInterface
      * @return mixed
      */
     public function getModelAdapters(string $modelClassName);
+
+    /**
+     * @param array $modelsConfigs
+     *
+     * @return $this
+     */
+    public function addAuthenticatableModels(array $modelsConfigs);
+
+    /**
+     * @return array
+     */
+    public function getAuthenticatableModels();
 }

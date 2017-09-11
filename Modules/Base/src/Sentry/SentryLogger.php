@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\RestApi;
+namespace Framework\Base\Sentry;
 
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
@@ -22,22 +22,18 @@ class SentryLogger implements LoggerInterface
     private $client;
 
     /**
-     * SentryLogger constructor.
-     * @param string $dsn
-     */
-    public function __construct(string $dsn)
-    {
-        $this->dsn = $dsn;
-        $this->client = new \Raven_Client($this->getDsn());
-        $this->client->install();
-    }
-
-    /**
      * @return string
      */
     public function getDsn()
     {
         return $this->dsn;
+    }
+
+    public function setClient($dsn, string $fullyClassifiedClassName = \Raven_Client::class)
+    {
+        $this->dsn = $dsn;
+        $this->client = new $fullyClassifiedClassName($this->getDsn());
+        $this->client->install();
     }
 
     /**

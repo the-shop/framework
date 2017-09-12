@@ -18,37 +18,42 @@ class Module extends BaseModule
             [
                 'get',
                 '/{resourceName}',
-                '\Application\CrudApi\Controller\Resource::loadAll'
+                '\Application\CrudApi\Controller\Resource::loadAll',
             ],
             [
                 'get',
                 '/{resourceName}/{identifier}',
-                '\Application\CrudApi\Controller\Resource::load'
+                '\Application\CrudApi\Controller\Resource::load',
             ],
             [
                 'post',
                 '/{resourceName}',
-                '\Application\CrudApi\Controller\Resource::create'
+                '\Application\CrudApi\Controller\Resource::create',
             ],
             [
                 'put',
                 '/{resourceName}/{identifier}',
-                '\Application\CrudApi\Controller\Resource::update'
+                '\Application\CrudApi\Controller\Resource::update',
             ],
             [
                 'patch',
                 '/{resourceName}/{identifier}',
-                '\Application\CrudApi\Controller\Resource::partialUpdate'
+                '\Application\CrudApi\Controller\Resource::partialUpdate',
             ],
             [
                 'delete',
                 '/{resourceName}/{identifier}',
-                '\Application\CrudApi\Controller\Resource::delete'
+                '\Application\CrudApi\Controller\Resource::delete',
             ],
         ],
         'repositories' => [
-            GenericModel::class => GenericRepository::class
-        ]
+            GenericModel::class => GenericRepository::class,
+        ],
+        'modelAdapters' => [
+            'users' => [
+                MongoAdapter::class,
+            ],
+        ],
     ];
 
     /**
@@ -61,15 +66,18 @@ class Module extends BaseModule
         $application->getDispatcher()
             ->addRoutes($this->config['routes']);
 
-        $mongoAdapter = new MongoAdapter();
-
         $configuration = $this->generateConfigurationFromJson('models');
 
-        $application->getRepositoryManager()
-            ->registerResources($configuration['resources'])
+        $repositoryManager = $application->getRepositoryManager();
+        $repositoryManager->registerResources($configuration['resources'])
             ->registerRepositories($this->config['repositories'])
-            ->registerModelFields($configuration['modelFields'])
-            ->setDatabaseAdapter($mongoAdapter);
+            ->registerModelFields($configuration['modelFields']);
+
+        foreach ($this->config['modelAdapters'] as $model => $adapters) {
+            foreach ($adapters as $adapter) {
+                $repositoryManager->addModelAdapter($model, new $adapter());
+            }
+        }
     }
 
     /**
@@ -81,7 +89,7 @@ class Module extends BaseModule
         $config = json_decode(file_get_contents(__DIR__ . "/config/" . $fileName . ".json"), true);
         $generatedConfiguration = [
             'resources' => [],
-            'modelFields' => []
+            'modelFields' => [],
         ];
         foreach ($config as $modelName => $options) {
             $generatedConfiguration['resources'][$options['collection']] = GenericRepository::class;

@@ -11,8 +11,6 @@ use Framework\Base\Repository\BrunoRepository;
  */
 class GenericRepository extends BrunoRepository
 {
-    private $resourceName = 'generic';
-
     /**
      * Sets `$resourceName` as the document collection
      *

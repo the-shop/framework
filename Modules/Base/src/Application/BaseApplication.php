@@ -323,8 +323,8 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function getRepositoryManager()
     {
         if ($this->repositoryManager === null) {
-            // TODO: don't depend on single adapter type
-            $repository = new Repository(new MongoAdapter());
+            $repository = new Repository();
+            $repository->setApplication($this);
             $this->setRepositoryManager($repository);
         }
 

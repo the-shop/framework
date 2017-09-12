@@ -71,11 +71,11 @@ class EmailSender
     }
 
     /**
-     * @param $clientFullyClassifiedClassName
+     * @param $client
      */
-    public function setClient($clientFullyClassifiedClassName)
+    public function setClient($client)
     {
-        $this->mailerInterface->setClient($clientFullyClassifiedClassName);
+        $this->mailerInterface->setClient($client);
     }
 
     /**

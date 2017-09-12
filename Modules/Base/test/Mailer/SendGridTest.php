@@ -2,7 +2,7 @@
 
 namespace Framework\BaseTest\Mailer;
 
-use Framework\Base\Mailer\DummyMailerClient;
+use Framework\Base\Test\Mailer\DummySendGridClient;
 use Framework\Base\Mailer\EmailSender;
 use Framework\Base\Mailer\SendGrid;
 use Framework\Base\Test\UnitTest;
@@ -20,7 +20,7 @@ class SendGridTest extends UnitTest
     {
         $sendGrid = new SendGrid();
         $emailSender = new EmailSender($sendGrid);
-        $emailSender->setClient(DummyMailerClient::class);
+        $emailSender->setClient(new DummySendGridClient());
         $emailSender->setFrom('test@test.com');
         $emailSender->setHtmlBody('test');
         $emailSender->setTextBody('test');
@@ -40,7 +40,7 @@ class SendGridTest extends UnitTest
     {
         $sendGrid = new SendGrid();
         $emailSender = new EmailSender($sendGrid);
-        $emailSender->setClient(DummyMailerClient::class);
+        $emailSender->setClient(new DummySendGridClient());
         $emailSender->setTo('test@test.com');
         $emailSender->setHtmlBody('test');
         $emailSender->setTextBody('test');
@@ -60,7 +60,7 @@ class SendGridTest extends UnitTest
     {
         $sendGrid = new SendGrid();
         $emailSender = new EmailSender($sendGrid);
-        $emailSender->setClient(DummyMailerClient::class);
+        $emailSender->setClient(new DummySendGridClient());
         $emailSender->setTo('test@test.com');
         $emailSender->setFrom('test@test.com');
         $emailSender->setHtmlBody('test');
@@ -80,7 +80,7 @@ class SendGridTest extends UnitTest
     {
         $sendGrid = new SendGrid();
         $emailSender = new EmailSender($sendGrid);
-        $emailSender->setClient(DummyMailerClient::class);
+        $emailSender->setClient(new DummySendGridClient());
         $emailSender->setTo('test@test.com');
         $emailSender->setFrom('test@test.com');
         $emailSender->setSubject('test@test.com');
@@ -99,7 +99,7 @@ class SendGridTest extends UnitTest
     {
         $sendGrid = new SendGrid();
         $emailSender = new EmailSender($sendGrid);
-        $emailSender->setClient(DummyMailerClient::class);
+        $emailSender->setClient(new DummySendGridClient());
         $emailSender->setTo('test@test.com');
         $emailSender->setFrom('test@test.com');
         $emailSender->setSubject('test@test.com');

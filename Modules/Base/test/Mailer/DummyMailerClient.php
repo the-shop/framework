@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Base\Mailer;
+namespace Framework\Base\Test\Mailer;
 
 class DummyMailerClient
 {

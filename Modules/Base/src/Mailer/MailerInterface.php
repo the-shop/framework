@@ -47,10 +47,10 @@ interface MailerInterface
     public function setOptions($options);
 
     /**
-     * @param $clientFullyClassifiedClassName
+     * @param $client
      * @return mixed
      */
-    public function setClient(string $clientFullyClassifiedClassName);
+    public function setClient($client);
 
     /**
      * Send email

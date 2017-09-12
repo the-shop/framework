@@ -124,12 +124,12 @@ abstract class Mailer implements MailerInterface
     }
 
     /**
-     * @param string $clientFullyClassifiedClassName
+     * @param $client
      * @return $this
      */
-    public function setClient(string $clientFullyClassifiedClassName)
+    public function setClient($client)
     {
-        $this->client = $clientFullyClassifiedClassName;
+        $this->client = $client;
 
         return $this;
     }

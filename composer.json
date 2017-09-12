@@ -18,7 +18,7 @@
       "Framework\\Http\\": "Modules/Http/src",
       "Framework\\Http\\Test\\": "Modules/Http/test",
       "Application\\": "Application/src",
-      "ApplicationTest\\": "Application/test"
+      "Application\\Test\\": "Application/test"
     }
   },
   "require-dev": {

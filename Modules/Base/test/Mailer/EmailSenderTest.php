@@ -2,8 +2,8 @@
 
 namespace Framework\BaseTest\Mailer;
 
-use Framework\Base\Mailer\DummyMailer;
-use Framework\Base\Mailer\DummyMailerClient;
+use Framework\Base\Test\Mailer\DummyMailer;
+use Framework\Base\Test\Mailer\DummyMailerClient;
 use Framework\Base\Mailer\EmailSender;
 use Framework\Base\Test\UnitTest;
 
@@ -31,7 +31,7 @@ class EmailSenderTest extends UnitTest
 
         $dummyMailer = new DummyMailer();
         $emailSender = new EmailSender($dummyMailer);
-        $emailSender->setClient(DummyMailerClient::class);
+        $emailSender->setClient(new DummyMailerClient());
         $emailSender->setHtmlBody($testData['htmlBody']);
         $emailSender->setTextBody($testData['textBody']);
         $emailSender->setFrom($testData['from']);

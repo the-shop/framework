@@ -1,6 +1,8 @@
 <?php
 
-namespace Framework\Base\Mailer;
+namespace Framework\Base\Test\Mailer;
+
+use Framework\Base\Mailer\Mailer;
 
 /**
  * Class DummyMailer
@@ -13,8 +15,7 @@ class DummyMailer extends Mailer
      */
     public function send()
     {
-        $clientClassName = $this->getClient();
-        $client = new $clientClassName();
+        $client = $this->getClient();
 
         return $client->send(
             $this->getTo(),

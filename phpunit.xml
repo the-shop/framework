@@ -1,7 +1,7 @@
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="Application">
-            <directory>test/Application</directory>
+        <testsuite name="ApplicationTest">
+            <directory>Application/test</directory>
         </testsuite>
         <testsuite name="Modules/RestApi">
             <directory>Modules/RestApi/test</directory>

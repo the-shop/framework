@@ -298,6 +298,7 @@ abstract class Bruno implements BrunoInterface
     {
         $types = [
             'string',
+            'password',
             'int',
             'integer',
             'float',
@@ -318,7 +319,7 @@ abstract class Bruno implements BrunoInterface
             if (is_array($value['type']) === true ||
                 in_array($value['type'], $types, true) === false
             ) {
-                throw new \InvalidArgumentException('Unsupported type');
+                throw new \InvalidArgumentException('Unsupported model attribute type: ' . $value['type']);
             }
             $this->definedAttributes[$key] = $value['type'];
         }

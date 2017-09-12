@@ -7,7 +7,7 @@ use Framework\RestApi\Module;
 
 /**
  * Class ModuleTest
- * @package Test\ApplicationTest
+ * @package ApplicationTest\Application
  */
 class ModuleTest extends UnitTest
 {

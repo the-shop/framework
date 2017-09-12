@@ -48,6 +48,12 @@ interface RepositoryInterface
     public function registerModelFields(array $modelFieldsMap = []);
 
     /**
+     * @param string $modelName
+     * @return array
+     */
+    public function getRegisteredModelFields(string $modelName);
+
+    /**
      * @param DatabaseAdapterInterface $adapter
      * @return $this
      */
@@ -76,4 +82,10 @@ interface RepositoryInterface
      * @return mixed
      */
     public function getModelAdapters(string $modelClassName);
+
+    /**
+     * @param array $modelClassNameToCollection
+     * @return mixed
+     */
+    public function registerModelsToCollection(array $modelClassNameToCollection);
 }

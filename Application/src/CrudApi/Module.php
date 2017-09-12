@@ -67,6 +67,7 @@ class Module extends BaseModule
 
         $application->getRepositoryManager()
             ->registerResources($configuration['resources'])
+            ->registerModelsToCollection($configuration['modelClassToCollection'])
             ->registerRepositories($this->config['repositories'])
             ->registerModelFields($configuration['modelFields'])
             ->setDatabaseAdapter($mongoAdapter);
@@ -85,6 +86,7 @@ class Module extends BaseModule
         ];
         foreach ($config as $modelName => $options) {
             $generatedConfiguration['resources'][$options['collection']] = GenericRepository::class;
+            $generatedConfiguration['modelClassToCollection'][GenericRepository::class] = [$options['collection']];
             $generatedConfiguration['modelFields'][$options['collection']] = $options['fields'];
         }
 

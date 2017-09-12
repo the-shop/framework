@@ -2,6 +2,7 @@
 
 namespace Framework\Base\Repository;
 
+use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Manager\RepositoryInterface;
 use Framework\Base\Model\BrunoInterface;
@@ -10,7 +11,7 @@ use Framework\Base\Model\BrunoInterface;
  * Interface BrunoRepositoryInterface
  * @package Framework\Base\Repository
  */
-interface BrunoRepositoryInterface
+interface BrunoRepositoryInterface extends ApplicationAwareInterface
 {
     /**
      * @param DatabaseAdapterInterface $adapter

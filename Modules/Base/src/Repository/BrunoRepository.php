@@ -14,7 +14,7 @@ use Framework\Base\Mongo\MongoQuery;
  * Class BrunoRepository
  * @package Framework\Base\Repository
  */
-abstract class BrunoRepository implements BrunoRepositoryInterface, ApplicationAwareInterface
+abstract class BrunoRepository implements BrunoRepositoryInterface
 {
     use ApplicationAwareTrait;
 
@@ -27,6 +27,11 @@ abstract class BrunoRepository implements BrunoRepositoryInterface, ApplicationA
      * @var RepositoryInterface|null
      */
     private $repositoryManager = null;
+
+    /**
+     * @var array
+     */
+    private $modelAttributesDefinition = [];
 
     /**
      * @param DatabaseAdapterInterface $adapter
@@ -125,15 +130,27 @@ abstract class BrunoRepository implements BrunoRepositoryInterface, ApplicationA
         foreach ($data as $attributes) {
             $attributes = $attributes->getArrayCopy();
 
+            $modelAttributesDefinition = $this->getModelAttributesDefinition();
+
             $model = new $modelClass();
-            $model->setAttributes($attributes);
-            $model->setDatabaseAttributes($attributes);
-            $model->setIsNew(false);
+            $model->defineModelAttributes($modelAttributesDefinition)
+                ->setApplication($this->getApplication())
+                ->setAttributes($attributes)
+                ->setDatabaseAttributes($attributes)
+                ->setIsNew(false);
 
             $out[] = $model;
         }
 
         return $out;
+    }
+
+    /**
+     * @return array
+     */
+    public function getModelAttributesDefinition()
+    {
+        return $this->modelAttributesDefinition;
     }
 
     /**

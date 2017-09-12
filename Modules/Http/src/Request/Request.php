@@ -2,8 +2,6 @@
 
 namespace Framework\Http\Request;
 
-use Framework\Base\Request\RequestInterface;
-
 /**
  * Class Request
  * @package Framework\Http\Request
@@ -29,6 +27,16 @@ class Request implements RequestInterface
      * @var array
      */
     private $serverInformation = [];
+
+    /**
+     * @var string
+     */
+    private $requestMethod = 'get';
+
+    /**
+     * @var string|null
+     */
+    private $requestUri = null;
 
     /**
      * @param array $get
@@ -85,11 +93,40 @@ class Request implements RequestInterface
     }
 
     /**
+     * @param string $method
+     * @return $this
+     */
+    public function setMethod(string $method)
+    {
+        $this->requestMethod = strtoupper($method);
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getMethod()
     {
-        return isset($this->serverInformation['REQUEST_METHOD']) ? $this->serverInformation['REQUEST_METHOD'] : 'get';
+        $serverInfo = $this->serverInformation;
+        return isset($serverInfo['REQUEST_METHOD']) === true
+            ? strtoupper($serverInfo['REQUEST_METHOD']) : $this->requestMethod;
+    }
+
+    /**
+     * @param string $uri
+     * @return $this
+     */
+    public function setUri(string $uri)
+    {
+        // Normalize $uri, prepend with slash if not there
+        if (strlen($uri) > 0 && $uri[0] !== '/') {
+            $uri = '/' . $uri;
+        }
+
+        $this->requestUri = $uri;
+
+        return $this;
     }
 
     /**
@@ -97,7 +134,8 @@ class Request implements RequestInterface
      */
     public function getUri()
     {
-        return isset($this->serverInformation['REQUEST_URI']) ? $this->serverInformation['REQUEST_URI'] : null;
+        $serverInfo = $this->serverInformation;
+        return isset($serverInfo['REQUEST_URI']) === true ? $serverInfo['REQUEST_URI'] : $this->requestUri;
     }
 
     /**

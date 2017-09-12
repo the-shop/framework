@@ -17,6 +17,7 @@
       "Framework\\Base\\Test\\": "Modules/Base/test",
       "Framework\\Http\\": "Modules/Http/src",
       "Framework\\Http\\Test\\": "Modules/Http/test",
+      "Framework\\Terminal\\": "Modules/Terminal/src",
       "Application\\": "Application/src",
       "ApplicationTest\\": "Application/test"
     }

@@ -27,6 +27,23 @@ class GenericRepository extends BrunoRepository
     }
 
     /**
+     * @return string
+     */
+    public function getResourceName()
+    {
+        return $this->resourceName;
+    }
+
+    /**
+     * @return array
+     */
+    public function getModelAttributesDefinition()
+    {
+        return $this->getRepositoryManager()
+            ->getRegisteredModelFields($this->getResourceName());
+    }
+
+    /**
      * @param BrunoInterface $bruno
      * @return \Framework\Base\Database\DatabaseQueryInterface
      */

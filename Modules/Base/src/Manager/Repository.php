@@ -60,7 +60,7 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         /* @var BrunoRepositoryInterface $repository */
         $repository = new $repositoryClass();
         $repository->setRepositoryManager($this)
-            ->setApplication($this->getApplication());
+                   ->setApplication($this->getApplication());
 
         return $repository;
     }
@@ -81,7 +81,7 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         /* @var BrunoRepositoryInterface $repository */
         $repository = new $repositoryClass();
         $repository->setRepositoryManager($this)
-            ->setApplication($this->getApplication());
+                   ->setApplication($this->getApplication());
 
         return $repository;
     }

@@ -11,7 +11,6 @@ use Framework\Base\Logger\LogInterface;
 use Framework\Base\Logger\DummyLogger;
 use Framework\Base\Manager\Repository;
 use Framework\Base\Manager\RepositoryInterface;
-use Framework\Base\Mongo\MongoAdapter;
 use Framework\Base\Render\RenderInterface;
 use Framework\Base\Request\RequestInterface;
 use Framework\Base\Response\ResponseInterface;

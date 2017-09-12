@@ -74,6 +74,7 @@ abstract class Bruno implements BrunoInterface
 
     /**
      * Bruno constructor.
+     *
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
@@ -131,6 +132,7 @@ abstract class Bruno implements BrunoInterface
                 ],
                 $adapterActionParams['params']
             );
+
             if ($this->isNew() === true) {
                 $this->attributes['_id'] = (string)$response;
             }
@@ -150,10 +152,17 @@ abstract class Bruno implements BrunoInterface
         $query = new MongoQuery();
         $query->setDatabase($this->getDatabase());
         $query->setCollection($this->getCollection());
-        $query->addAndCondition('_id', '$eq', new ObjectID($this->getId()));
+        $query->addAndCondition(
+            '_id',
+            '$eq',
+            new ObjectID($this->getId())
+        );
 
         $adapters = $this->getDatabaseAdapters();
 
+        /**
+         * @var DatabaseAdapterInterface $adapter
+         */
         foreach ($adapters as $adapter) {
             $adapter->deleteOne($query);
         }
@@ -162,11 +171,13 @@ abstract class Bruno implements BrunoInterface
     }
 
     /**
-     * @return DatabaseAdapterInterface
+     * @return DatabaseAdapterInterface[]
      */
     public function getDatabaseAdapters()
     {
-        return $this->getApplication()->getRepositoryManager()->getModelAdapters($this->collection);
+        return $this->getApplication()
+                    ->getRepositoryManager()
+                    ->getModelAdapters($this->collection);
     }
 
     /**
@@ -187,6 +198,7 @@ abstract class Bruno implements BrunoInterface
 
     /**
      * @param string $collection
+     *
      * @return $this
      */
     public function setCollection(string $collection)
@@ -206,6 +218,7 @@ abstract class Bruno implements BrunoInterface
 
     /**
      * @param bool $flag
+     *
      * @return $this
      */
     public function setIsNew(bool $flag = true)
@@ -217,6 +230,7 @@ abstract class Bruno implements BrunoInterface
 
     /**
      * @param string $databaseName
+     *
      * @return $this
      */
     public function setDatabase(string $databaseName = 'framework')
@@ -228,6 +242,7 @@ abstract class Bruno implements BrunoInterface
 
     /**
      * @param array $attributes
+     *
      * @return $this
      */
     public function setAttributes(array $attributes = [])
@@ -243,8 +258,8 @@ abstract class Bruno implements BrunoInterface
      * @param string $attribute
      * @param mixed  $value
      *
-     * @throws \InvalidArgumentException
      * @return $this
+     * @throws \InvalidArgumentException
      */
     public function setAttribute(string $attribute, $value)
     {
@@ -253,12 +268,12 @@ abstract class Bruno implements BrunoInterface
         }
 
         $this->getApplication()
-            ->triggerEvent(
-                self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
-                [
-                    $attribute => $value,
-                ]
-            );
+             ->triggerEvent(
+                 self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
+                 [
+                     $attribute => $value,
+                 ]
+             );
 
         /**
          * @var \Framework\Base\Repository\Modifiers\FieldModifierInterface $filter

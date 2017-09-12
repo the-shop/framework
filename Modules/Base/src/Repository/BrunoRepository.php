@@ -37,7 +37,8 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
      */
     public function getDatabaseAdapters()
     {
-        return $this->getRepositoryManager()->getModelAdapters($this->resourceName);
+        return $this->getRepositoryManager()
+                    ->getModelAdapters($this->resourceName);
     }
 
     /**
@@ -72,7 +73,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         $model = new $modelClass();
 
         $model->defineModelAttributes($modelAttributesDefinition)
-            ->setApplication($this->getApplication());
+              ->setApplication($this->getApplication());
 
         return $model;
     }
@@ -85,7 +86,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         $repositoryClass = get_class($this);
 
         return $this->getRepositoryManager()
-            ->getModelClass($repositoryClass);
+                    ->getModelClass($repositoryClass);
     }
 
     /**
@@ -101,6 +102,9 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
 
         $out = [];
 
+        /**
+         * @var DatabaseAdapterInterface $adapter
+         */
         foreach ($adapters as $adapter) {
             $query = $this->createNewQueryForModel($model);
 
@@ -136,6 +140,9 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         foreach ($adapters as $adapter) {
             $query = $this->createNewQueryForModel($model);
 
+            /**
+             * @var DatabaseAdapterInterface $adapter
+             */
             $data = $adapter
                 ->loadMultiple($query);
 
@@ -146,10 +153,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
 
                 $model = $this->newModel();
                 $model->defineModelAttributes($modelAttributesDefinition)
-                    ->setApplication($this->getApplication())
-                    ->setAttributes($attributes)
-                    ->setDatabaseAttributes($attributes)
-                    ->setIsNew(false);
+                      ->setApplication($this->getApplication())
+                      ->setAttributes($attributes)
+                      ->setDatabaseAttributes($attributes)
+                      ->setIsNew(false);
 
                 $out[] = $model;
             }
@@ -186,6 +193,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         $query = new MongoQuery();
         $query->setDatabase($bruno->getDatabase());
         $query->setCollection($bruno->getCollection());
+
         return $query;
     }
 }

@@ -84,10 +84,11 @@ class Module extends BaseModule
         $configuration = $this->generateConfigurationFromJson('models');
 
         $repositoryManager = $application->getRepositoryManager();
-            $repositoryManager->registerResources($configuration['resources'])
-            ->registerRepositories($this->config['repositories'])
-            ->registerModelFields($configuration['modelFields']);
-            foreach ($this->config['modelAdapters'] as $model => $adapters) {
+        $repositoryManager->registerResources($configuration['resources'])
+                          ->registerRepositories($this->config['repositories'])
+                          ->registerModelFields($configuration['modelFields']);
+
+        foreach ($this->config['modelAdapters'] as $model => $adapters) {
             foreach ($adapters as $adapter) {
                 $repositoryManager->addModelAdapter($model, new $adapter());
             }
@@ -126,7 +127,7 @@ class Module extends BaseModule
             ) {
                 $models[$modelName] = [
                     'strategy' => $params['authStrategy'],
-                    'credentials' => $params['credentials']
+                    'credentials' => $params['credentials'],
                 ];
             }
         }

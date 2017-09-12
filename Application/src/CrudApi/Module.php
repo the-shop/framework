@@ -63,31 +63,39 @@ class Module extends BaseModule
 
         $mongoAdapter = new MongoAdapter();
 
-        $configuration = $this->generateConfigurationFromJson('models');
+        $modelsConfiguration = $this->generateModelsConfiguration($this->readJsonFile('models'));
 
         $application->getRepositoryManager()
-            ->registerResources($configuration['resources'])
+            ->registerResources($modelsConfiguration['resources'])
             ->registerRepositories($this->config['repositories'])
-            ->registerModelFields($configuration['modelFields'])
+            ->registerModelFields($modelsConfiguration['modelFields'])
             ->setDatabaseAdapter($mongoAdapter);
+    }
+
+    /**
+     * @param $modelsConfig
+     * @return array
+     */
+    private function generateModelsConfiguration($modelsConfig)
+    {
+        $generatedConfiguration = [
+            'resources' => [],
+            'modelFields' => []
+        ];
+        foreach ($modelsConfig as $modelName => $options) {
+            $generatedConfiguration['resources'][$options['collection']] = GenericRepository::class;
+            $generatedConfiguration['modelFields'][$options['collection']] = $options['fields'];
+        }
+
+        return $generatedConfiguration;
     }
 
     /**
      * @param $fileName
      * @return mixed
      */
-    private function generateConfigurationFromJson($fileName)
+    private function readJsonFile($fileName)
     {
-        $config = json_decode(file_get_contents(__DIR__ . "/config/" . $fileName . ".json"), true);
-        $generatedConfiguration = [
-            'resources' => [],
-            'modelFields' => []
-        ];
-        foreach ($config as $modelName => $options) {
-            $generatedConfiguration['resources'][$options['collection']] = GenericRepository::class;
-            $generatedConfiguration['modelFields'][$options['collection']] = $options['fields'];
-        }
-
-        return $generatedConfiguration;
+        return json_decode(file_get_contents(__DIR__ . "/config/" . $fileName . ".json"), true);
     }
 }

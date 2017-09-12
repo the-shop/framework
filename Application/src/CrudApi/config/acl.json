@@ -1,0 +1,28 @@
+{
+  "acl": {
+    "admin": {
+      "permission": {
+        "read": true,
+        "write": true,
+        "updateOwn": true,
+        "delete": true
+      }
+    },
+    "standard": {
+      "permission": {
+        "read": true,
+        "write": true,
+        "updateOwn": true,
+        "delete": false
+      }
+    },
+    "guest": {
+      "permission": {
+        "read": true,
+        "write": false,
+        "updateOwn": false,
+        "delete": false
+      }
+    }
+  }
+}

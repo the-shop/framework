@@ -2,6 +2,7 @@
 
 namespace Framework\Base\Test\Event;
 
+use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Test\UnitTest;
 
 /**
@@ -33,6 +34,7 @@ class EventsTest extends UnitTest
     public function testAddNewEventAndListener()
     {
         $app = $this->getApplication();
+        $app->removeEventListeners(ExceptionHandler::EVENT_EXCEPTION_HANDLER_HANDLE_PRE);
         $app->listen(self::TEST_EVENT, TestListener::class);
 
         $this->assertEquals([

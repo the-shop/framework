@@ -134,7 +134,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     {
         try {
             $this->triggerEvent(self::EVENT_APPLICATION_BUILD_REQUEST_PRE);
-            $request = $this->buildRequest();
+            $request = $this->getRequest();
             $this->triggerEvent(self::EVENT_APPLICATION_BUILD_REQUEST_POST);
 
             $this->triggerEvent(self::EVENT_APPLICATION_HANDLE_REQUEST_PRE);
@@ -238,7 +238,6 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
                 $responses[] = $listener->handle($payload);
             }
         }
-
         return $responses;
     }
 
@@ -254,6 +253,19 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         }
 
         $this->events[$eventName][] = $listenerClass;
+
+        return $this;
+    }
+
+    /**
+     * @param string $eventName
+     * @return $this
+     */
+    public function removeEventListeners(string $eventName)
+    {
+        if (isset($this->events[$eventName]) === true) {
+            unset($this->events[$eventName]);
+        }
 
         return $this;
     }
@@ -323,8 +335,8 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function getRepositoryManager()
     {
         if ($this->repositoryManager === null) {
-            // TODO: don't depend on single adapter type
-            $repository = new Repository(new MongoAdapter());
+            $repository = new Repository();
+            $repository->setApplication($this);
             $this->setRepositoryManager($repository);
         }
 
@@ -354,12 +366,12 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
-     * @return RequestInterface|null
+     * @return RequestInterface
      */
     public function getRequest()
     {
         if ($this->request === null) {
-            throw new \RuntimeException('Request object not set.');
+            $this->buildRequest();
         }
         return $this->request;
     }

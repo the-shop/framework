@@ -8,7 +8,7 @@ use Framework\Base\Logger\DummyLogger;
 use Framework\Base\Logger\Log;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Test\UnitTest;
-use Framework\RestApi\SentryLogger;
+use Framework\Base\Sentry\SentryLogger;
 use Psr\Http\Message\ResponseInterface;
 
 class BaseApplicationTest extends UnitTest

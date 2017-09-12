@@ -24,12 +24,12 @@ abstract class Mailer implements MailerInterface
     private $subject;
 
     /**
-     * @var string
+     * @var null
      */
     private $textBody = null;
 
     /**
-     * @var string
+     * @var null
      */
     private $htmlBody = null;
 

@@ -15,60 +15,65 @@ class SendGrid extends Mailer
 {
     public function send()
     {
-        $apiKey = getenv('SENDGRID_API_KEY');
-        $sg = new SendGridSender($apiKey);
+        $clientClassName = $this->getClient();
 
-        $options = $this->getOptions();
         $emailFrom = $this->getFrom();
         $emailTo = $this->getTo();
-
-        $from = new EmailAddress($emailFrom, $emailFrom);
         $subject = $this->getSubject();
-        $to = new EmailAddress($emailTo, $emailTo);
+        $htmlBody = $this->getHtmlBody();
+        $textBody = $this->getTextBody();
+        $options = $this->getOptions();
 
-        if ($this->getHtmlBody() === null && $this->getTextBody() === null) {
-            throw new \Exception('Text-plain or html body is required.', 403);
+        if ($clientClassName === SendGridSender::class) {
+            $apiKey = getenv('SENDGRID_API_KEY');
+            $sg = new $clientClassName($apiKey);
+
+            $from = new EmailAddress($emailFrom, $emailFrom);
+            $to = new EmailAddress($emailTo, $emailTo);
+
+            $firstContent = null;
+            $secondContent = null;
+
+            if ($textBody === null && $htmlBody === null) {
+                throw new \Exception('Text-plain or html body is required.', 403);
+            } elseif ($textBody === null && $htmlBody !== null) {
+                $firstContent = ['text/html', $htmlBody];
+            } elseif ($textBody !== null && $htmlBody === null) {
+                $firstContent = ['text/plain', $textBody];
+            } else {
+                $firstContent = ['text/plain', $textBody];
+                $secondContent = ['text/html', $htmlBody];
+            }
+
+            $content = new Content($firstContent[0], $firstContent[1]);
+
+            $mail = new SendGridEmail($from, $subject, $to, $content);
+            if ($secondContent) {
+                $contentHtml = new Content($secondContent[0], $secondContent[1]);
+                $mail->addContent($contentHtml);
+            }
+
+            if (array_key_exists('cc', $options) && !empty($options['cc'])) {
+                $mail->personalization[0]->addCc(['email' => $options['cc']]);
+            }
+            if (array_key_exists('bcc', $options) && !empty($options['bcc'])) {
+                $mail->personalization[0]->addBcc(['email' => $options['bcc']]);
+            }
+
+            $response = $sg->client->mail()->send()->post($mail);
+
+            $responseMsg = 'Email was successfully sent!';
+            $errors = json_decode($response->body());
+
+            if ($errors) {
+                $responseMsg = $errors->errors[0]->message;
+            }
+
+            return $responseMsg;
         }
 
-        $firstContent = null;
-        $secondContent = null;
+        $client = new $clientClassName();
 
-        switch ($this->getTextBody()) {
-            case (null):
-                $firstContent = ['text/html', $this->getHtmlBody()];
-                break;
-            case (!null):
-                $firstContent = ['text/plain', $this->getTextBody()];
-                if ($this->getHtmlBody()) {
-                    $secondContent = ['text/html', $this->getHtmlBody()];
-                }
-                break;
-        }
-
-        $content = new Content($firstContent[0], $firstContent[1]);
-
-        $mail = new SendGridEmail($from, $subject, $to, $content);
-        if ($secondContent) {
-            $contentHtml = new Content($secondContent[0], $secondContent[1]);
-            $mail->addContent($contentHtml);
-        }
-
-        if (array_key_exists('cc', $options) && !empty($options['cc'])) {
-            $mail->personalization[0]->addCc(['email' => $options['cc']]);
-        }
-        if (array_key_exists('bcc', $options) && !empty($options['bcc'])) {
-            $mail->personalization[0]->addBcc(['email' => $options['bcc']]);
-        }
-
-        $response = $sg->client->mail()->send()->post($mail);
-
-        $responseMsg = 'Email was successfully sent!';
-        $errors = json_decode($response->body());
-
-        if ($errors) {
-            $responseMsg = $errors->errors[0]->message;
-        }
-
-        return $responseMsg;
+        return $client->send($emailTo, $emailFrom, $subject, $textBody, $htmlBody);
     }
 }

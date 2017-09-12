@@ -70,6 +70,17 @@ class EmailSender
         $this->mailerInterface->setOptions($options);
     }
 
+    /**
+     * @param $clientFullyClassifiedClassName
+     */
+    public function setClient($clientFullyClassifiedClassName)
+    {
+        $this->mailerInterface->setClient($clientFullyClassifiedClassName);
+    }
+
+    /**
+     * @return mixed
+     */
     public function send()
     {
         return $this->mailerInterface->send();

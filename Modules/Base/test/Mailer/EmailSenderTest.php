@@ -2,7 +2,7 @@
 
 namespace Framework\BaseTest\Mailer;
 
-use Framework\Base\Mailer\DummyMailer;
+use Framework\Base\Mailer\DummyMailerClient;
 use Framework\Base\Mailer\EmailSender;
 use Framework\Base\Test\UnitTest;
 
@@ -28,7 +28,7 @@ class EmailSenderTest extends UnitTest
             ]
         ];
 
-        $dummyMailer = new DummyMailer();
+        $dummyMailer = new DummyMailerClient();
         $emailSender = new EmailSender($dummyMailer);
         $emailSender->setHtmlBody($testData['htmlBody']);
         $emailSender->setTextBody($testData['textBody']);
@@ -53,7 +53,7 @@ class EmailSenderTest extends UnitTest
      */
     public function testEmailSenderSetOptionsFailInputType()
     {
-        $dummyMailer = new DummyMailer();
+        $dummyMailer = new DummyMailerClient();
         $emailSender = new EmailSender($dummyMailer);
 
         $this->expectException(\Exception::class);
@@ -68,7 +68,7 @@ class EmailSenderTest extends UnitTest
      */
     public function testEmailSenderSetOptionsNotAllowedField()
     {
-        $dummyMailer = new DummyMailer();
+        $dummyMailer = new DummyMailerClient();
         $emailSender = new EmailSender($dummyMailer);
 
         $this->expectException(\Exception::class);

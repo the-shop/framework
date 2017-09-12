@@ -26,13 +26,6 @@ class ExceptionFormatter implements ListenerInterface
         $errors = [];
         $response = new Response();
 
-        if ($exception instanceof \RuntimeException === true) {
-            $response->setCode(500);
-            $errors = [
-                $exception->getMessage()
-            ];
-        }
-
         if ($exception instanceof NotFoundException === true) {
             $response->setCode(404);
             $errors = [
@@ -46,6 +39,20 @@ class ExceptionFormatter implements ListenerInterface
              */
             $errors = $exception->getFailedValidations();
             $response->setCode(400);
+        }
+
+        if ($exception instanceof \RuntimeException === true) {
+            $response->setCode(500);
+            $errors = [
+                $exception->getMessage()
+            ];
+        }
+
+        if ($exception instanceof \Exception === true) {
+            $response->setCode(500);
+            $errors = [
+                $exception->getMessage()
+            ];
         }
 
         $response->setBody([

@@ -26,14 +26,14 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
     private $registeredResources = [];
 
     /**
+     * @var array
+     */
+    private $modelsToCollection = [];
+
+    /**
      * @var [string]
      */
     private $registeredModelFields = [];
-
-    /**
-     * @var DatabaseAdapterInterface|null
-     */
-    private $databaseAdapter = null;
 
     /**
      * @var array
@@ -46,35 +46,8 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
     private $authenticatableModels = [];
 
     /**
-     * RepositoryManager constructor.
-     * @param DatabaseAdapterInterface $adapter
-     */
-    public function __construct(DatabaseAdapterInterface $adapter)
-    {
-        $this->setDatabaseAdapter($adapter);
-    }
-
-    /**
-     * @param DatabaseAdapterInterface $adapter
-     * @return $this
-     */
-    public function setDatabaseAdapter(DatabaseAdapterInterface $adapter)
-    {
-        $this->databaseAdapter = $adapter;
-
-        return $this;
-    }
-
-    /**
-     * @return DatabaseAdapterInterface|null
-     */
-    public function getDatabaseAdapter()
-    {
-        return $this->databaseAdapter;
-    }
-
-    /**
      * @param string $fullyQualifiedClassName
+     *
      * @return BrunoRepositoryInterface
      */
     public function getRepository(string $fullyQualifiedClassName = '')
@@ -86,13 +59,15 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         $repositoryClass = $this->registeredRepositories[$fullyQualifiedClassName];
         /* @var BrunoRepositoryInterface $repository */
         $repository = new $repositoryClass();
-        $repository->setRepositoryManager($this);
+        $repository->setRepositoryManager($this)
+            ->setApplication($this->getApplication());
 
         return $repository;
     }
 
     /**
      * @param string $resourceName
+     *
      * @return BrunoRepositoryInterface
      */
     public function getRepositoryFromResourceName(string $resourceName)
@@ -105,7 +80,8 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         $repositoryClass = $this->registeredResources[$resourceName];
         /* @var BrunoRepositoryInterface $repository */
         $repository = new $repositoryClass();
-        $repository->setRepositoryManager($this);
+        $repository->setRepositoryManager($this)
+            ->setApplication($this->getApplication());
 
         return $repository;
     }
@@ -135,6 +111,7 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
 
     /**
      * @param string $fullyQualifiedClassName
+     *
      * @return $this
      */
     public function registerRepository(string $fullyQualifiedClassName = '')
@@ -148,6 +125,7 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
 
     /**
      * @param array $fullyQualifiedClassNames
+     *
      * @return $this
      */
     public function registerRepositories(array $fullyQualifiedClassNames = [])
@@ -160,7 +138,20 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
     }
 
     /**
+     * @param array $modelClassNameToCollection
+     *
+     * @return $this
+     */
+    public function registerModelsToCollection(array $modelClassNameToCollection)
+    {
+        $this->modelsToCollection = $modelClassNameToCollection;
+
+        return $this;
+    }
+
+    /**
      * @param array $resourcesMap
+     *
      * @return $this
      */
     public function registerResources(array $resourcesMap = [])
@@ -174,6 +165,7 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
 
     /**
      * @param array $modelFieldsMap
+     *
      * @return $this
      */
     public function registerModelFields(array $modelFieldsMap = [])
@@ -183,6 +175,21 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         $this->registeredModelFields = array_unique($this->registeredModelFields);
 
         return $this;
+    }
+
+    /**
+     * @param string $resourceName
+     *
+     * @return array
+     * @throws \RuntimeException
+     */
+    public function getRegisteredModelFields(string $resourceName)
+    {
+        if (isset($this->registeredModelFields[$resourceName]) === false) {
+            throw new \RuntimeException('Model fields definition missing for model name: ' . $resourceName);
+        }
+
+        return $this->registeredModelFields[$resourceName];
     }
 
     /**

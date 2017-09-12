@@ -11,8 +11,6 @@ use Framework\Base\Repository\BrunoRepository;
  */
 class GenericRepository extends BrunoRepository
 {
-    private $resourceName = 'generic';
-
     /**
      * Sets `$resourceName` as the document collection
      *
@@ -24,6 +22,23 @@ class GenericRepository extends BrunoRepository
         $this->resourceName = $resourceName;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResourceName()
+    {
+        return $this->resourceName;
+    }
+
+    /**
+     * @return array
+     */
+    public function getModelAttributesDefinition()
+    {
+        return $this->getRepositoryManager()
+            ->getRegisteredModelFields($this->getResourceName());
     }
 
     /**

@@ -6,7 +6,6 @@ use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Repository\BrunoRepositoryInterface;
-use MongoDB\Exception\RuntimeException;
 
 /**
  * Class Repository
@@ -41,6 +40,9 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
      */
     private $modelAdapters = [];
 
+    /**
+     * @var array
+     */
     private $authenticatableModels = [];
 
     /**
@@ -96,7 +98,8 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
     public function getRepositoryFromResourceName(string $resourceName)
     {
         if (array_key_exists($resourceName, $this->registeredResources) === false) {
-            throw new \RuntimeException('Resource "' . $resourceName . '" not registered in Framework\Base\Manager\Repository');
+            throw new \RuntimeException('Resource "' . $resourceName
+                                        . '" not registered in Framework\Base\Manager\Repository');
         }
 
         $repositoryClass = $this->registeredResources[$resourceName];
@@ -107,6 +110,12 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         return $repository;
     }
 
+    /**
+     * @param string $repositoryClass
+     *
+     * @return int|null|string
+     * @throws \RuntimeException
+     */
     public function getModelClass(string $repositoryClass)
     {
         $foundClass = null;
@@ -118,7 +127,7 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         }
 
         if ($foundClass === null) {
-            throw new RuntimeException('Model class not registered for ' . $repositoryClass);
+            throw new \RuntimeException('Model class not registered for ' . $repositoryClass);
         }
 
         return $foundClass;
@@ -176,6 +185,12 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         return $this;
     }
 
+    /**
+     * @param string                                            $modelClassName
+     * @param \Framework\Base\Database\DatabaseAdapterInterface $adapter
+     *
+     * @return $this
+     */
     public function addModelAdapter(string $modelClassName, DatabaseAdapterInterface $adapter)
     {
         $this->modelAdapters[$modelClassName][] = $adapter;
@@ -185,22 +200,49 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
 
     /**
      * @param string $modelClassName
+     *
      * @return DatabaseAdapterInterface[]
+     * @throws \RuntimeException
      */
     public function getModelAdapters(string $modelClassName)
     {
         if (isset($this->modelAdapters[$modelClassName]) === false) {
-            throw new RuntimeException('No registered adapters for ' . $modelClassName);
+            throw new \RuntimeException('No registered adapters for ' . $modelClassName);
         }
+
         return $this->modelAdapters[$modelClassName];
     }
 
-    public function addAuthenticatableModels(array $modelsConfigs)
+    /**
+     * @param array $modelsConfigs
+     *
+     * @return $this
+     */
+    public function addAuthenticatableModels(array $modelsConfigs = [])
     {
-        $this->authenticatableModels = $modelsConfigs;
+        foreach ($modelsConfigs as $modelName => $params) {
+            $this->addAuthenticatableModel($modelName, $params);
+        }
+
         return $this;
     }
 
+    /**
+     * @param string $modelName
+     * @param array  $params
+     *
+     * @return $this
+     */
+    public function addAuthenticatableModel(string $modelName, array $params = [])
+    {
+        $this->authenticatableModels[$modelName] = $params;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
     public function getAuthenticatableModels()
     {
         return $this->authenticatableModels;

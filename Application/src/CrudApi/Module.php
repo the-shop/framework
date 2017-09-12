@@ -69,21 +69,22 @@ class Module extends BaseModule
                     '\Framework\Base\Auth\Controller\AuthController::authenticate',
                 ]
             );
-            $application->getRepositoryManager()->addAuthenticatableModels($authModelsConfigs);
+            $application->getRepositoryManager()
+                        ->addAuthenticatableModels($authModelsConfigs);
         }
 
         $application->getDispatcher()
-            ->addRoutes($this->config['routes']);
+                    ->addRoutes($this->config['routes']);
 
         $mongoAdapter = new MongoAdapter();
 
         $configuration = $this->generateConfigurationFromJson('models');
 
         $application->getRepositoryManager()
-            ->registerResources($configuration['resources'])
-            ->registerRepositories($this->config['repositories'])
-            ->registerModelFields($configuration['modelFields'])
-            ->setDatabaseAdapter($mongoAdapter);
+                    ->registerResources($configuration['resources'])
+                    ->registerRepositories($this->config['repositories'])
+                    ->registerModelFields($configuration['modelFields'])
+                    ->setDatabaseAdapter($mongoAdapter);
     }
 
     /**
@@ -113,7 +114,8 @@ class Module extends BaseModule
             if (isset($params['authenticatable']) === true &&
                 $params['authenticatable'] === true &&
                 isset($params['authStrategy']) === true &&
-                isset($params['credentials']) === true
+                isset($params['credentials']) === true &&
+                is_array($params['credentials']) === true
             ) {
                 $models[$modelName] = [
                     'strategy' => $params['authStrategy'],

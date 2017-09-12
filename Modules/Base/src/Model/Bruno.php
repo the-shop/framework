@@ -114,12 +114,18 @@ abstract class Bruno implements BrunoInterface
         $query->setCollection($this->getCollection());
 
         if ($this->isNew() === true) {
-            $id = $this->getDatabaseAdapter()->insertOne($query, $this->getAttributes());
+            $id = $this->getDatabaseAdapter()
+                       ->insertOne($query, $this->getAttributes());
             $this->attributes['_id'] = (string) $id;
             $this->setIsNew(false);
             $this->dbAttributes = $this->getAttributes();
         } else {
-            $this->getDatabaseAdapter()->updateOne($query, $this->getId(), $this->getAttributes());
+            $this->getDatabaseAdapter()
+                 ->updateOne(
+                     $query,
+                     $this->getId(),
+                     $this->getAttributes()
+                 );
             $this->dbAttributes = $this->getAttributes();
         }
 
@@ -134,8 +140,13 @@ abstract class Bruno implements BrunoInterface
         $query = new MongoQuery();
         $query->setDatabase($this->getDatabase());
         $query->setCollection($this->getCollection());
-        $query->addAndCondition('_id', '$eq', new ObjectID($this->getId()));
-        $this->getDatabaseAdapter()->deleteOne($query);
+        $query->addAndCondition(
+            '_id',
+            '$eq',
+            new ObjectID($this->getId())
+        );
+        $this->getDatabaseAdapter()
+             ->deleteOne($query);
 
         return $this;
     }
@@ -230,7 +241,8 @@ abstract class Bruno implements BrunoInterface
 
     /**
      * @param string $attribute
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @throws \InvalidArgumentException
      * @return $this
      */
@@ -241,13 +253,16 @@ abstract class Bruno implements BrunoInterface
         }
 
         $this->getApplication()
-            ->triggerEvent(
-                self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
-                [
-                    $attribute => $value
-                ]
-            );
+             ->triggerEvent(
+                 self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
+                 [
+                     $attribute => $value
+                 ]
+             );
 
+        /**
+         * @var \Framework\Base\Repository\Modifiers\FieldModifierInterface $filter
+         */
         if (array_key_exists($attribute, $this->fieldFilters)) {
             foreach ($this->fieldFilters[$attribute] as $filter) {
                 $value = $filter->modify($value);
@@ -257,10 +272,10 @@ abstract class Bruno implements BrunoInterface
         $this->attributes[$attribute] = $value;
 
         $this->getApplication()
-            ->triggerEvent(
-                self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_POST,
-                $this
-            );
+             ->triggerEvent(
+                 self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_POST,
+                 $this
+             );
 
         return $this;
     }

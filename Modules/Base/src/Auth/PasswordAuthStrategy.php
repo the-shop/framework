@@ -28,6 +28,17 @@ class PasswordAuthStrategy extends AuthStrategy
     private $repository;
 
     /**
+     * PasswordAuthStrategy constructor.
+     *
+     * @param array                                               $post
+     * @param \Framework\Base\Repository\BrunoRepositoryInterface $repository
+     */
+    public function __construct(array $post, BrunoRepositoryInterface $repository)
+    {
+        parent::__construct(reset($post), end($post), $repository);
+    }
+
+    /**
      * @param string $id
      *
      * @return $this
@@ -88,13 +99,13 @@ class PasswordAuthStrategy extends AuthStrategy
     }
 
     /**
-     * @param string $hash
+     * @param array $credentials
      *
      * @return \Framework\Base\Model\BrunoInterface|null
      * @throws \Framework\Base\Application\Exception\AuthenticationException
      * @throws \Framework\Base\Application\Exception\NotFoundException
      */
-    public function validate(string $hash)
+    public function validate(array $credentials)
     {
         $model = $this->getRepository()->loadOne($this->getId());
 
@@ -102,7 +113,11 @@ class PasswordAuthStrategy extends AuthStrategy
             throw new NotFoundException('Model not found.');
         }
 
-        if (password_verify($this->getPassword(), $hash) === false) {
+        $authorizationName = end($credentials);
+
+        if (isset($model->$authorizationName) === false ||
+            password_verify($this->getPassword(), $model->$authorizationName) === false
+        ) {
             throw new AuthenticationException('Invalid credentials');
         }
 

@@ -12,6 +12,8 @@ use Framework\Base\Repository\BrunoRepositoryInterface;
 interface AuthStrategyInterface extends ApplicationAwareInterface
 {
     /**
+     * Unique identifier for Model (email, name, id, ....)
+     *
      * @param string $id
      *
      * @return $this
@@ -19,6 +21,8 @@ interface AuthStrategyInterface extends ApplicationAwareInterface
     public function setIdentifier(string $id);
 
     /**
+     * Authorization string (password, token, key, secret...)
+     *
      * @param string $authString
      *
      * @return $this
@@ -26,6 +30,8 @@ interface AuthStrategyInterface extends ApplicationAwareInterface
     public function setAuthorization(string $authString);
 
     /**
+     * Model repository
+     *
      * @param \Framework\Base\Repository\BrunoRepositoryInterface $repository
      *
      * @return $this
@@ -33,11 +39,13 @@ interface AuthStrategyInterface extends ApplicationAwareInterface
     public function setRepository(BrunoRepositoryInterface $repository);
 
     /**
-     * @param string $hash
+     * Validates the auth params
+     *
+     * @param array $credentials
      *
      * @return \Framework\Base\Model\BrunoInterface
      * @throws \Framework\Base\Application\Exception\AuthenticationException
      * @throws \Framework\Base\Application\Exception\NotFoundException
      */
-    public function validate(string $hash);
+    public function validate(array $credentials);
 }

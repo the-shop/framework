@@ -85,6 +85,14 @@ interface RepositoryInterface
     public function addAuthenticatableModels(array $modelsConfigs);
 
     /**
+     * @param string $modelName
+     * @param array  $params
+     *
+     * @return $this
+     */
+    public function addAuthenticatableModel(string $modelName, array $params);
+
+    /**
      * @return array
      */
     public function getAuthenticatableModels();

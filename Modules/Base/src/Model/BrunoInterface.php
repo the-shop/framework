@@ -3,7 +3,7 @@
 namespace Framework\Base\Model;
 
 use Framework\Base\Application\ApplicationAwareInterface;
-use Framework\Base\Database\DatabaseAdapterInterface;
+use Framework\Base\Repository\Modifiers\FieldModifierInterface;
 
 /**
  * Interface BrunoInterface
@@ -36,17 +36,6 @@ interface BrunoInterface extends ApplicationAwareInterface
      * @return BrunoInterface
      */
     public function delete();
-
-    /**
-     * @param DatabaseAdapterInterface $adapter
-     * @return BrunoInterface
-     */
-    public function setDatabaseAdapter(DatabaseAdapterInterface $adapter);
-
-    /**
-     * @return DatabaseAdapterInterface|null
-     */
-    public function getDatabaseAdapter();
 
     /**
      * @return array
@@ -105,4 +94,11 @@ interface BrunoInterface extends ApplicationAwareInterface
      * @return $this
      */
     public function defineModelAttributes(array $definition = []);
+
+    /**
+     * @param string $field
+     * @param FieldModifierInterface $filter
+     * @return mixed
+     */
+    public function addFieldFilter(string $field, FieldModifierInterface $filter);
 }

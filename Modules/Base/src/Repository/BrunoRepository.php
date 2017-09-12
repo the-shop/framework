@@ -2,7 +2,6 @@
 
 namespace Framework\Base\Repository;
 
-use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Database\DatabaseQueryInterface;
@@ -19,9 +18,9 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     use ApplicationAwareTrait;
 
     /**
-     * @var DatabaseAdapterInterface|null
+     * @var string
      */
-    private $adapter = null;
+    protected $resourceName = 'generic';
 
     /**
      * @var RepositoryInterface|null
@@ -34,21 +33,11 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     private $modelAttributesDefinition = [];
 
     /**
-     * @param DatabaseAdapterInterface $adapter
-     * @return $this
-     */
-    public function setDatabaseAdapter(DatabaseAdapterInterface $adapter)
-    {
-        $this->adapter = $adapter;
-        return $this;
-    }
-
-    /**
      * @return DatabaseAdapterInterface|null
      */
-    public function getDatabaseAdapter()
+    public function getDatabaseAdapters()
     {
-        return $this->getRepositoryManager()->getDatabaseAdapter();
+        return $this->getRepositoryManager()->getModelAdapters($this->resourceName);
     }
 
     /**
@@ -71,6 +60,24 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     }
 
     /**
+     * @return BrunoInterface
+     */
+    public function newModel()
+    {
+        $modelClass = $this->getModelClassName();
+
+        $modelAttributesDefinition = $this->getModelAttributesDefinition();
+
+        /* @var BrunoInterface $model */
+        $model = new $modelClass();
+
+        $model->defineModelAttributes($modelAttributesDefinition)
+            ->setApplication($this->getApplication());
+
+        return $model;
+    }
+
+    /**
      * @return string
      */
     public function getModelClassName()
@@ -87,28 +94,34 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
      */
     public function loadOne($identifier)
     {
-        $modelClass = $this->getModelClassName();
-
         /* @var BrunoInterface $model */
-        $model = new $modelClass();
+        $model = $this->newModel();
 
-        $query = $this->createNewQueryForModel($model);
+        $adapters = $this->getDatabaseAdapters();
 
-        $data = $this->getDatabaseAdapter()
-            ->loadOne($query);
+        $out = [];
 
-        // Return null if no document found
-        if ($data === null) {
-            return $data;
+        foreach ($adapters as $adapter) {
+            $query = $this->createNewQueryForModel($model);
+
+            $data = $adapter
+                ->loadOne($query);
+
+
+            if ($data === null) {
+                continue;
+            }
+
+            $attributes = $data->getArrayCopy();
+
+            $model->setAttributes($attributes);
+            $model->setDatabaseAttributes($attributes);
+            $model->setIsNew(false);
+
+            $out[] = $model;
         }
 
-        $attributes = $data->getArrayCopy();
-
-        $model->setAttributes($attributes);
-        $model->setDatabaseAttributes($attributes);
-        $model->setIsNew(false);
-
-        return $model;
+        return $out;
     }
 
     /**
@@ -116,30 +129,30 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
      */
     public function loadMultiple()
     {
-        $modelClass = $this->getModelClassName();
-
-        /* @var BrunoInterface $model */
-        $model = new $modelClass();
-
-        $query = $this->createNewQueryForModel($model);
-
-        $data = $this->getDatabaseAdapter()
-            ->loadMultiple($query);
+        $adapters = $this->getDatabaseAdapters();
 
         $out = [];
-        foreach ($data as $attributes) {
-            $attributes = $attributes->getArrayCopy();
 
-            $modelAttributesDefinition = $this->getModelAttributesDefinition();
+        foreach ($adapters as $adapter) {
+            $query = $this->createNewQueryForModel($model);
 
-            $model = new $modelClass();
-            $model->defineModelAttributes($modelAttributesDefinition)
-                ->setApplication($this->getApplication())
-                ->setAttributes($attributes)
-                ->setDatabaseAttributes($attributes)
-                ->setIsNew(false);
+            $data = $adapter
+                ->loadMultiple($query);
 
-            $out[] = $model;
+            foreach ($data as $attributes) {
+                $attributes = $attributes->getArrayCopy();
+
+                $modelAttributesDefinition = $this->getModelAttributesDefinition();
+
+                $model = $this->newModel();
+                $model->defineModelAttributes($modelAttributesDefinition)
+                    ->setApplication($this->getApplication())
+                    ->setAttributes($attributes)
+                    ->setDatabaseAttributes($attributes)
+                    ->setIsNew(false);
+
+                $out[] = $model;
+            }
         }
 
         return $out;

@@ -54,17 +54,6 @@ interface RepositoryInterface
     public function getRegisteredModelFields(string $modelName);
 
     /**
-     * @param DatabaseAdapterInterface $adapter
-     * @return $this
-     */
-    public function setDatabaseAdapter(DatabaseAdapterInterface $adapter);
-
-    /**
-     * @return DatabaseAdapterInterface|null
-     */
-    public function getDatabaseAdapter();
-
-    /**
      * @param string $repositoryClass
      * @return mixed
      */

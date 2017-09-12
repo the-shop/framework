@@ -2,6 +2,7 @@
 
 namespace Framework\Base\Test;
 
+use Framework\Base\Application\ApplicationInterface;
 use Framework\RestApi\Module;
 use Framework\RestApi\RestApi;
 use PHPUnit\Framework\TestCase;
@@ -30,6 +31,21 @@ class UnitTest extends TestCase
             ]);
 
             $this->application->buildRequest();
+        }
+
+        return $this->application;
+    }
+
+    /**
+     * @param ApplicationInterface|null $application
+     * @return ApplicationInterface|RestApi|null
+     */
+    protected function setApplication(ApplicationInterface $application = null)
+    {
+        if ($application === null) {
+            $this->application = new RestApi();
+        } else {
+            $this->application = $application;
         }
 
         return $this->application;

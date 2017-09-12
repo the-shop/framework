@@ -14,21 +14,20 @@ use Framework\Base\Model\BrunoInterface;
 interface BrunoRepositoryInterface extends ApplicationAwareInterface
 {
     /**
-     * @param DatabaseAdapterInterface $adapter
-     * @return mixed
-     */
-    public function setDatabaseAdapter(DatabaseAdapterInterface $adapter);
-
-    /**
      * @return DatabaseAdapterInterface|null
      */
-    public function getDatabaseAdapter();
+    public function getDatabaseAdapters();
 
     /**
      * @param RepositoryInterface $repositoryManager
      * @return $this
      */
     public function setRepositoryManager(RepositoryInterface $repositoryManager);
+
+    /**
+     * @return mixed
+     */
+    public function newModel();
 
     /**
      * @param $identifier

@@ -166,7 +166,6 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         $dispatcher->register();
         $dispatcher->parseRequest($this->getRequest());
 
-
         $handlerPath = $dispatcher->getHandler();
 
         $handlerPathParts = explode('::', $handlerPath);
@@ -272,6 +271,14 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
+     * @return array
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
      * @param ExceptionHandler $exceptionHandler
      * @return $this
      */
@@ -328,8 +335,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function getRepositoryManager()
     {
         if ($this->repositoryManager === null) {
-            // TODO: don't depend on single adapter type
-            $repository = new Repository(new MongoAdapter());
+            $repository = new Repository();
             $repository->setApplication($this);
             $this->setRepositoryManager($repository);
         }

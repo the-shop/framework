@@ -37,42 +37,9 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
     private $registeredModelFields = [];
 
     /**
-     * @var DatabaseAdapterInterface|null
-     */
-    private $databaseAdapter = null;
-
-    /**
      * @var array
      */
     private $modelAdapters = [];
-
-    /**
-     * RepositoryManager constructor.
-     * @param DatabaseAdapterInterface $adapter
-     */
-    public function __construct(DatabaseAdapterInterface $adapter)
-    {
-        $this->setDatabaseAdapter($adapter);
-    }
-
-    /**
-     * @param DatabaseAdapterInterface $adapter
-     * @return $this
-     */
-    public function setDatabaseAdapter(DatabaseAdapterInterface $adapter)
-    {
-        $this->databaseAdapter = $adapter;
-
-        return $this;
-    }
-
-    /**
-     * @return DatabaseAdapterInterface|null
-     */
-    public function getDatabaseAdapter()
-    {
-        return $this->databaseAdapter;
-    }
 
     /**
      * @param string $fullyQualifiedClassName

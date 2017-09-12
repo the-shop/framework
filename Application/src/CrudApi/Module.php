@@ -63,6 +63,8 @@ class Module extends BaseModule
 
         $mongoAdapter = new MongoAdapter();
 
+        $application->setAclRules($this->readJsonFile('acl'));
+
         $modelsConfiguration = $this->generateModelsConfiguration($this->readJsonFile('models'));
 
         $application->getRepositoryManager()

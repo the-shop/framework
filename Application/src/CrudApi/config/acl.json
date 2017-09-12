@@ -1,28 +1,26 @@
 {
-  "acl": {
-    "admin": {
-      "permission": {
-        "read": true,
-        "write": true,
-        "updateOwn": true,
-        "delete": true
-      }
-    },
-    "standard": {
-      "permission": {
-        "read": true,
-        "write": true,
-        "updateOwn": true,
-        "delete": false
-      }
-    },
-    "guest": {
-      "permission": {
-        "read": true,
-        "write": false,
-        "updateOwn": false,
-        "delete": false
-      }
+  "admin": {
+    "permissions": {
+      "read": true,
+      "write": true,
+      "updateOwn": true,
+      "delete": true
+    }
+  },
+  "standard": {
+    "permissions": {
+      "read": true,
+      "write": true,
+      "updateOwn": true,
+      "delete": false
+    }
+  },
+  "guest": {
+    "permissions": {
+      "read": true,
+      "write": false,
+      "updateOwn": false,
+      "delete": false
     }
   }
 }

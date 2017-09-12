@@ -108,6 +108,11 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     private $loggers = [];
 
     /**
+     * @var array
+     */
+    private $aclRules = [];
+
+    /**
      * Has to build instance of RequestInterface, set it to BaseApplication and return it
      *
      * @return RequestInterface
@@ -489,5 +494,21 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         }
 
         return $response;
+    }
+
+    /**
+     * @param array $acl
+     */
+    public function setAclRules(array $acl = [])
+    {
+        $this->aclRules = $acl;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAclRules()
+    {
+        return $this->aclRules;
     }
 }

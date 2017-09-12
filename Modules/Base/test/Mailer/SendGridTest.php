@@ -22,15 +22,14 @@ class SendGridTest extends UnitTest
         $emailSender = new EmailSender($sendGrid);
         $emailSender->setClient(new DummySendGridClient());
         $emailSender->setFrom('test@test.com');
-        $emailSender->setHtmlBody('test');
+        $emailSender->setHtmlBody('<h1>test</h1>');
         $emailSender->setTextBody('test');
         $emailSender->setSubject('test');
 
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Recipient field "to", "from" and "subject" field must be provided.');
-        $this->expectExceptionCode(403);
-
-        $emailSender->send();
+        $this->assertEquals(
+            'Recipient field "to", "from" and "subject" field must be provided.',
+            $emailSender->send()
+        );
     }
 
     /**
@@ -42,15 +41,14 @@ class SendGridTest extends UnitTest
         $emailSender = new EmailSender($sendGrid);
         $emailSender->setClient(new DummySendGridClient());
         $emailSender->setTo('test@test.com');
-        $emailSender->setHtmlBody('test');
+        $emailSender->setHtmlBody('<h1>test</h1>');
         $emailSender->setTextBody('test');
         $emailSender->setSubject('test');
 
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Recipient field "to", "from" and "subject" field must be provided.');
-        $this->expectExceptionCode(403);
-
-        $emailSender->send();
+        $this->assertEquals(
+            'Recipient field "to", "from" and "subject" field must be provided.',
+            $emailSender->send()
+        );
     }
 
     /**
@@ -63,14 +61,13 @@ class SendGridTest extends UnitTest
         $emailSender->setClient(new DummySendGridClient());
         $emailSender->setTo('test@test.com');
         $emailSender->setFrom('test@test.com');
-        $emailSender->setHtmlBody('test');
+        $emailSender->setHtmlBody('<h1>test</h1>');
         $emailSender->setTextBody('test');
 
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Recipient field "to", "from" and "subject" field must be provided.');
-        $this->expectExceptionCode(403);
-
-        $emailSender->send();
+        $this->assertEquals(
+            'Recipient field "to", "from" and "subject" field must be provided.',
+            $emailSender->send()
+        );
     }
 
     /**
@@ -103,9 +100,12 @@ class SendGridTest extends UnitTest
         $emailSender->setTo('test@test.com');
         $emailSender->setFrom('test@test.com');
         $emailSender->setSubject('test@test.com');
-        $emailSender->setHtmlBody('test');
+        $emailSender->setHtmlBody('<h1>test</h1>');
         $emailSender->setTextBody('test');
 
-        $this->assertEquals('Email was successfully sent!', $emailSender->send());
+        $this->assertEquals(
+            'Email was successfully sent!',
+            $emailSender->send()
+        );
     }
 }

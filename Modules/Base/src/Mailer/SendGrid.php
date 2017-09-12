@@ -43,6 +43,7 @@ class SendGrid extends Mailer
         $content = new Content($firstContent[0], $firstContent[1]);
 
         $mail = new SendGridEmail($from, $subject, $to, $content);
+
         if ($secondContent) {
             $contentHtml = new Content($secondContent[0], $secondContent[1]);
             $mail->addContent($contentHtml);
@@ -59,6 +60,7 @@ class SendGrid extends Mailer
 
         $responseMsg = 'Email was successfully sent!';
         $errors = json_decode($response->body());
+
 
         if ($errors) {
             $responseMsg = $errors->errors[0]->message;

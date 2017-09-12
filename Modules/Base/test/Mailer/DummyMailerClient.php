@@ -2,8 +2,20 @@
 
 namespace Framework\Base\Test\Mailer;
 
+/**
+ * Class DummyMailerClient
+ * @package Framework\Base\Test\Mailer
+ */
 class DummyMailerClient
 {
+    /**
+     * @param $to
+     * @param $from
+     * @param $subject
+     * @param $textBody
+     * @param $htmlBody
+     * @return string
+     */
     public function send($to, $from, $subject, $textBody, $htmlBody)
     {
         if (empty($to) === true || empty($from) === true || empty($subject)) {

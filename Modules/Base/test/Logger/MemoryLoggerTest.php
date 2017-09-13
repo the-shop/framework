@@ -2,22 +2,22 @@
 
 namespace Framework\BaseTest\Logger;
 
-use Framework\Base\Logger\DummyLogger;
+use Framework\Base\Logger\MemoryLogger;
 use Framework\Base\Logger\Log;
 use Framework\Base\Test\UnitTest;
 
-class DummyLoggerTest extends UnitTest
+class MemoryLoggerTest extends UnitTest
 {
     public function testIsInstantiable()
     {
-        $logger = new DummyLogger();
+        $logger = new MemoryLogger();
 
-        $this->assertInstanceOf(DummyLogger::class, $logger);
+        $this->assertInstanceOf(MemoryLogger::class, $logger);
     }
 
     public function testLogging()
     {
-        $logger = new DummyLogger();
+        $logger = new MemoryLogger();
 
         $payload = 'testPayload';
         $log = new Log($payload);

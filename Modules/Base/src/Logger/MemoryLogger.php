@@ -3,10 +3,10 @@
 namespace Framework\Base\Logger;
 
 /**
- * Class Replicant (Dummy Logger)
+ * Class MemoryLogger
  * @package Framework\Base\Logger
  */
-class DummyLogger implements LoggerInterface
+class MemoryLogger implements LoggerInterface
 {
     private $logs = [];
 

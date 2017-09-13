@@ -15,7 +15,7 @@ $app = new \Framework\RestApi\RestApi([
 
 $dsn = getenv('SENTRY_DSN');
 
-//$app->addLogger(new \Framework\RestApi\SentryLogger($dsn));
+$app->addLogger(new \Framework\RestApi\SentryLogger($dsn));
 
 try {
     $app->run();

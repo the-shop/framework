@@ -49,6 +49,11 @@ class Acl implements ListenerInterface
         }
     }
 
+    /**
+     * @param string $requestedRoute
+     * @param array $routesDefinition
+     * @return bool
+     */
     private function checkRoutes(string $requestedRoute, array $routesDefinition = [])
     {
 

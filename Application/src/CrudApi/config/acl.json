@@ -1,67 +1,92 @@
 {
-  "admin": {
-    "routes": {
+  "routes": {
+    "public": {
       "GET": [
-        "/{resourceName}",
-        "/{resourceName}/{identifier}"
-
+        {
+          "route": "/login",
+          "allows": [
+            "admin",
+            "standard",
+            "guest"
+          ]
+        }
+      ],
+      "POST": [],
+      "PUT": [],
+      "PATCH": [],
+      "DELETE": []
+    },
+    "private": {
+      "GET": [
+        {
+          "route": "/{resourceName}",
+          "allows": [
+            "admin",
+            "standard"
+          ]
+        },
+        {
+          "route": "/{resourceName}/{identifier}",
+          "allows": [
+            "admin",
+            "standard"
+          ]
+        }
       ],
       "POST": [
-        "/{resourceName}"
+        {
+          "route": "/{resourceName}",
+          "allows": [
+            "admin",
+            "standard"
+          ]
+        }
       ],
       "PUT": [
-        "/{resourceName}/{identifier}"
+        {
+          "route": "/{resourceName}",
+          "allows": [
+            "admin",
+            "standard"
+          ]
+        },
+        {
+          "route": "/{resourceName}/{identifier}",
+          "allows": [
+            "admin",
+            "standard"
+          ]
+        }
       ],
       "PATCH": [
-        "/{resourceName}/{identifier}"
+        {
+          "route": "/{resourceName}/{identifier}",
+          "allows": [
+            "admin",
+            "standard"
+          ]
+        }
       ],
       "DELETE": [
-        "/{resourceName}/{identifier}"
+        {
+          "route": "/{resourceName}/{identifier}",
+          "allows": [
+            "admin",
+            "standard"
+          ]
+        }
       ]
-    },
-    "permissions": {
-      "read": true,
-      "write": true,
-      "updateOwn": true,
-      "delete": true
     }
   },
-  "standard": {
-    "routes": {
-      "GET": [
-        "/{resourceName}",
-        "/{resourceName}/{identifier}"
-
-      ],
-      "POST": [],
-      "PUT": [],
-      "PATCH": [],
-      "DELETE": []
+  "roles": {
+    "admin": {
+      "permissions": {}
     },
-    "permissions": {
-      "read": true,
-      "write": true,
-      "updateOwn": true,
-      "delete": false
-    }
-  },
-  "guest": {
-    "routes": {
-      "GET": [
-        "/{resourceName}",
-        "/{resourceName}/{identifier}"
-
-      ],
-      "POST": [],
-      "PUT": [],
-      "PATCH": [],
-      "DELETE": []
+    "standard": {
+      "permissions": {}
     },
-    "permissions": {
-      "read": true,
-      "write": false,
-      "updateOwn": false,
-      "delete": false
+    "guest": {
+      "permissions": {}
     }
   }
 }

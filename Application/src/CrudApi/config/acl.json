@@ -1,5 +1,24 @@
 {
   "admin": {
+    "routes": {
+      "GET": [
+        "/{resourceName}",
+        "/{resourceName}/{identifier}"
+
+      ],
+      "POST": [
+        "/{resourceName}"
+      ],
+      "PUT": [
+        "/{resourceName}/{identifier}"
+      ],
+      "PATCH": [
+        "/{resourceName}/{identifier}"
+      ],
+      "DELETE": [
+        "/{resourceName}/{identifier}"
+      ]
+    },
     "permissions": {
       "read": true,
       "write": true,
@@ -8,6 +27,17 @@
     }
   },
   "standard": {
+    "routes": {
+      "GET": [
+        "/{resourceName}",
+        "/{resourceName}/{identifier}"
+
+      ],
+      "POST": [],
+      "PUT": [],
+      "PATCH": [],
+      "DELETE": []
+    },
     "permissions": {
       "read": true,
       "write": true,
@@ -16,6 +46,17 @@
     }
   },
   "guest": {
+    "routes": {
+      "GET": [
+        "/{resourceName}",
+        "/{resourceName}/{identifier}"
+
+      ],
+      "POST": [],
+      "PUT": [],
+      "PATCH": [],
+      "DELETE": []
+    },
     "permissions": {
       "read": true,
       "write": false,

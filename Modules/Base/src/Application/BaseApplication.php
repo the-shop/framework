@@ -497,11 +497,14 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
-     * @param array $acl
+     * @param array $aclConfig
+     * @return $this
      */
-    public function setAclRules(array $acl = [])
+    public function setAclRules(array $aclConfig = [])
     {
-        $this->aclRules = $acl;
+        $this->aclRules = $aclConfig;
+
+        return $this;
     }
 
     /**

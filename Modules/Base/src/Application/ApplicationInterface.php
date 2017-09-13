@@ -107,10 +107,10 @@ interface ApplicationInterface
     public function httpRequest(string $method, string $uri = '', array $params = []);
 
     /**
-     * @param array $acl
+     * @param array $aclConfig
      * @return mixed
      */
-    public function setAclRules(array $acl = []);
+    public function setAclRules(array $aclConfig = []);
 
     /**
      * @return mixed

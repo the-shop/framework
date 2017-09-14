@@ -40,16 +40,17 @@ interface MailerInterface
     public function setHtmlBody($htmlBody);
 
     /**
-     * Send email
-     * @return mixed
-     */
-
-    /**
      * Set additional headers
      * @param $options
      * @return mixed
      */
     public function setOptions($options);
+
+    /**
+     * @param $client
+     * @return mixed
+     */
+    public function setClient($client);
 
     /**
      * Send email

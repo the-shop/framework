@@ -2,8 +2,15 @@
 
 namespace Framework\Base\Application;
 
+/**
+ * Class BaseRegistry
+ * @package Framework\Base\Application
+ */
 class BaseRegistry implements RegistryInterface
 {
+    /**
+     * @var array
+     */
     private $content = [];
 
     /**

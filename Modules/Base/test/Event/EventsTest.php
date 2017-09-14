@@ -23,7 +23,6 @@ class EventsTest extends UnitTest
      */
     public function __construct()
     {
-        $this->setApplication();
         $this->listener = new TestListener();
         parent::__construct();
     }
@@ -34,7 +33,7 @@ class EventsTest extends UnitTest
     public function testAddNewEventAndListener()
     {
         $app = $this->getApplication();
-        $app->removeEventListeners(ExceptionHandler::EVENT_EXCEPTION_HANDLER_HANDLE_PRE);
+        $app->removeAllEventListeners();
         $app->listen(self::TEST_EVENT, TestListener::class);
 
         $this->assertEquals([

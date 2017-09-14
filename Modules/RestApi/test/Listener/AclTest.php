@@ -22,11 +22,6 @@ class AclTest extends UnitTest
      */
     public function testAclRoutePermissionDenied()
     {
-        $application = $this->setApplication(new RestApi([
-            Module::class,
-            DummyCrudApiModule::class,
-        ]));
-
         $aclTestRules = [
             'routes' => [
                 'public' => [
@@ -38,22 +33,17 @@ class AclTest extends UnitTest
             ],
         ];
 
-        $application->setAclRules($aclTestRules);
+        $this->getApplication()->setAclRules($aclTestRules);
 
-        $request = new Request();
-        $serverInformation = $_SERVER;
-        $serverInformation['REQUEST_URI'] = '/test';
-        $serverInformation['REQUEST_METHOD'] = 'GET';
+        $response = $this->makeHttpRequest('GET', '/users');
 
-        $request->setServer($serverInformation);
+        $responseBody = $response->getBody();
 
-        $this->expectException(MethodNotAllowedException::class);
-        $this->expectExceptionCode(403);
+        $this->assertArrayHasKey('error', $responseBody);
+        $this->assertArrayHasKey('errors', $responseBody);
 
-        $application->triggerEvent(
-            self::EVENT_CRUD_API_RESOURCE_LOAD_ALL_PRE,
-            $request
-        );
+        $this->assertEquals(true, $responseBody['error']);
+        $this->assertEquals(403, $response->getCode());
     }
 
     /**
@@ -61,11 +51,6 @@ class AclTest extends UnitTest
      */
     public function testAclRuleAllowed()
     {
-        $application = $this->setApplication(new RestApi([
-            Module::class,
-            DummyCrudApiModule::class,
-        ]));
-
         $aclTestRules = [
             'routes' => [
                 'public' => [
@@ -74,7 +59,7 @@ class AclTest extends UnitTest
                 'private' => [
                     'GET' => [
                         [
-                            'route' => '/test',
+                            'route' => '/users',
                             'allows' => [
                                 'admin'
                             ]
@@ -84,20 +69,10 @@ class AclTest extends UnitTest
             ],
         ];
 
-        $application->setAclRules($aclTestRules);
+        $this->getApplication()->setAclRules($aclTestRules);
 
-        $request = new Request();
-        $serverInformation = $_SERVER;
-        $serverInformation['REQUEST_URI'] = '/test';
-        $serverInformation['REQUEST_METHOD'] = 'GET';
+        $response = $this->makeHttpRequest('GET', '/users');
 
-        $request->setServer($serverInformation);
-
-        $out = $application->triggerEvent(
-            self::EVENT_CRUD_API_RESOURCE_LOAD_ALL_PRE,
-            $request
-        );
-
-        $this->assertInstanceOf(Acl::class, $out[0]);
+        $this->assertEquals(200, $response->getCode());
     }
 }

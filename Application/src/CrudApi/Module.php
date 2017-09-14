@@ -69,8 +69,6 @@ class Module extends BaseModule
         $application->getDispatcher()
             ->addRoutes($this->config['routes']);
 
-        $configuration = $this->generateConfigurationFromJson('models');
-
         $application->setAclRules($this->readJsonFile('acl'));
 
         $modelsConfiguration = $this->generateModelsConfiguration($this->readJsonFile('models'));
@@ -89,16 +87,16 @@ class Module extends BaseModule
             $repositoryManager->setPrimaryAdapter($model, new $primaryAdapter());
         }
 
-        $repositoryManager->registerResources($configuration['resources'])
+        $repositoryManager->registerResources($modelsConfiguration['resources'])
             ->registerRepositories($this->config['repositories'])
-            ->registerModelFields($configuration['modelFields']);
+            ->registerModelFields($modelsConfiguration['modelFields']);
     }
 
     /**
      * @param $modelsConfig
      * @return array
      */
-    private function generateModelsConfiguration($modelsConfig)
+    private function generateModelsConfiguration(array $modelsConfig)
     {
         $generatedConfiguration = [
             'resources' => [],

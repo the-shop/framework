@@ -22,31 +22,31 @@ class Acl implements ListenerInterface
      */
     public function handle($payload)
     {
-        if ($payload instanceof RequestInterface) {
-            $routeParameters = $this->getApplication()->getDispatcher()->getRouteParameters();
-            $method = $payload->getMethod();
-            $uri = $payload->getUri();
+        $request = $this->getApplication()->getRequest();
 
-            foreach ($routeParameters as $param => $value) {
-                $modifiedParam = "{" . $param . "}";
-                $uri = str_replace($value, $modifiedParam, $uri);
-            }
+        $routeParameters = $this->getApplication()->getDispatcher()->getRouteParameters();
+        $method = $request->getMethod();
+        $uri = $request->getUri();
 
-            $aclRoutesRules = $this->getApplication()->getAclRules()['routes'];
-
-            // If route is public and allowed for user role, ALLOW
-            if ($this->checkRoutes($uri, $aclRoutesRules['public'][$method]) === true) {
-                return $this;
-            }
-
-            // If route is private and allowed for user role, ALLOW
-            if ($this->checkRoutes($uri, $aclRoutesRules['private'][$method])) {
-                return $this;
-            }
-
-            // If no rules defined for this route and user role, DENY
-            throw new MethodNotAllowedException('Permission denied.', 403);
+        foreach ($routeParameters as $param => $value) {
+            $modifiedParam = "{" . $param . "}";
+            $uri = str_replace($value, $modifiedParam, $uri);
         }
+
+        $aclRoutesRules = $this->getApplication()->getAclRules()['routes'];
+
+        // If route is public and allowed for user role, ALLOW
+        if ($this->checkRoutes($uri, $aclRoutesRules['public'][$method]) === true) {
+            return $this;
+        }
+
+        // If route is private and allowed for user role, ALLOW
+        if ($this->checkRoutes($uri, $aclRoutesRules['private'][$method])) {
+            return $this;
+        }
+
+        // If no rules defined for this route and user role, DENY
+        throw new MethodNotAllowedException('Permission denied.', 403);
     }
 
     /**

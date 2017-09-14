@@ -25,7 +25,7 @@ interface ApplicationInterface
     public function getRepositoryManager();
 
     /**
-     * @return ResponseInterface
+     * @return RequestInterface
      */
     public function getRequest();
 
@@ -77,6 +77,11 @@ interface ApplicationInterface
     public function removeEventListeners(string $eventName);
 
     /**
+     * @return mixed
+     */
+    public function removeAllEventListeners();
+
+    /**
      * @param LoggerInterface $logger
      * @return $this
      */
@@ -93,6 +98,10 @@ interface ApplicationInterface
      */
     public function getLoggers();
 
+    /**
+     * @param string $serviceClass
+     * @return mixed
+     */
     public function getService(string $serviceClass);
 
     /**

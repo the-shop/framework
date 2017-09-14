@@ -276,6 +276,16 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
+     * @return $this
+     */
+    public function removeAllEventListeners()
+    {
+        $this->events = [];
+
+        return $this;
+    }
+
+    /**
      * @param string $eventName
      * @return $this
      */

@@ -9,7 +9,7 @@ use Framework\Base\Logger\Log;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Test\UnitTest;
 use Framework\Base\Sentry\SentryLogger;
-use Psr\Http\Message\ResponseInterface;
+use Framework\Http\Response\Response;
 
 class BaseApplicationTest extends UnitTest
 {
@@ -70,9 +70,12 @@ class BaseApplicationTest extends UnitTest
     {
         $app = $this->getApplication();
 
+        $response = $app->httpRequest('get', 'http://www.google.com');
+
         $this::assertInstanceOf(
-            ResponseInterface::class,
-            $app->httpRequest('get', 'http://www.google.com')
+            Response::class,
+            $response
         );
+        $this->assertEquals(200, $response->getCode());
     }
 }

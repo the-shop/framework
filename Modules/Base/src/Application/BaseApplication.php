@@ -15,6 +15,7 @@ use Framework\Base\Render\RenderInterface;
 use Framework\Base\Request\RequestInterface;
 use Framework\Base\Response\ResponseInterface;
 use Framework\Base\Router\DispatcherInterface;
+use Framework\Http\Response\Response;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -499,7 +500,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         $client = new Client();
 
         try {
-            $response = $client->request($method, $uri, $params);
+            $guzzleHttpResponse = $client->request($method, $uri, $params);
         } catch (RequestException $requestException) {
             if ($requestException->hasResponse() === false) {
                 $message = $requestException->getMessage();
@@ -510,6 +511,10 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
             }
             throw new GuzzleHttpException($message, $code);
         }
+
+        $response = new Response();
+        $response->setCode($guzzleHttpResponse->getStatusCode());
+        $response->setBody($guzzleHttpResponse->getBody());
 
         return $response;
     }

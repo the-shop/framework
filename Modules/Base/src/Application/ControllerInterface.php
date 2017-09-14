@@ -9,7 +9,7 @@ namespace Framework\Base\Application;
 interface ControllerInterface extends ApplicationAwareInterface
 {
     /**
-     * @return \Framework\Base\Manager\RepositoryInterface
+     * @return \Framework\Base\Manager\RepositoryManagerInterface
      */
     public function getRepositoryManager();
 

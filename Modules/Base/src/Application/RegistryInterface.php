@@ -2,6 +2,10 @@
 
 namespace Framework\Base\Application;
 
+/**
+ * Interface RegistryInterface
+ * @package Framework\Base\Application
+ */
 interface RegistryInterface
 {
     /**
@@ -10,17 +14,17 @@ interface RegistryInterface
      * @param bool $overwrite
      * @return mixed
      */
-    public function register($key, $value, $overwrite = false);
+    public function register(string $key, $value, bool $overwrite = false);
 
     /**
-     * @param $key
+     * @param string $key
      * @return mixed
      */
-    public function get($key);
+    public function get(string $key);
 
     /**
-     * @param $key
+     * @param string $key
      * @return mixed
      */
-    public function delete($key);
+    public function delete(string $key);
 }

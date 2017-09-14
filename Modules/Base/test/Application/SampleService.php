@@ -6,5 +6,8 @@ use Framework\Base\Application\ServiceInterface;
 
 class SampleService implements ServiceInterface
 {
-
+    public function getIdentifier()
+    {
+        return self::class;
+    }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Framework\Base\Repository\Modifiers;
+namespace Framework\Base\Model\Modifiers;
 
 /**
  * Interface FieldModifierInterface
- * @package Framework\Base\Repository\Modifiers
+ * @package Framework\Base\Model\Modifiers
  */
 interface FieldModifierInterface
 {

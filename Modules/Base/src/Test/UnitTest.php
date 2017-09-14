@@ -2,7 +2,10 @@
 
 namespace Framework\Base\Test;
 
+use Application\CrudApi\Controller\Resource;
+use Framework\Base\Application\ApplicationConfiguration;
 use Framework\Base\Application\ApplicationInterface;
+use Framework\RestApi\Listener\Acl;
 use Framework\RestApi\Module;
 use Framework\RestApi\RestApi;
 use PHPUnit\Framework\TestCase;
@@ -30,14 +33,22 @@ class UnitTest extends TestCase
     {
         parent::__construct($name, $data, $dataName);
 
-        $this->application = new RestApi([
+        $appConfig = new ApplicationConfiguration();
+        $appConfig->setRegisteredModules([
             RestApiModule::class,
             CrudApiModule::class
         ]);
 
+        $this->application = new RestApi($appConfig);
+
         // Remove render events from the application
         $this->application->removeEventListeners(BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_PRE);
         $this->application->removeEventListeners(BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_POST);
+
+        $this->application->listen(
+            BaseApplication::EVENT_APPLICATION_HANDLE_REQUEST_PRE,
+            Acl::class
+        );
     }
 
     public function runApplication(RequestInterface $request)
@@ -102,26 +113,7 @@ class UnitTest extends TestCase
     protected function getApplication()
     {
         if ($this->application === null) {
-            $this->application = new RestApi([
-                Module::class
-            ]);
-
             $this->application->buildRequest();
-        }
-
-        return $this->application;
-    }
-
-    /**
-     * @param ApplicationInterface|null $application
-     * @return ApplicationInterface|RestApi|null
-     */
-    protected function setApplication(ApplicationInterface $application = null)
-    {
-        if ($application === null) {
-            $this->application = new RestApi();
-        } else {
-            $this->application = $application;
         }
 
         return $this->application;

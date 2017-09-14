@@ -8,10 +8,10 @@ use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Repository\BrunoRepositoryInterface;
 
 /**
- * Class Repository
+ * Class RepositoryManager
  * @package Framework\Base\Manager
  */
-class Repository implements RepositoryInterface, ApplicationAwareInterface
+class RepositoryManager implements RepositoryManagerInterface, ApplicationAwareInterface
 {
     use ApplicationAwareTrait;
 
@@ -39,6 +39,11 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
      * @var array
      */
     private $modelAdapters = [];
+
+    /**
+     * @var null
+     */
+    private $primaryAdapters = [];
 
     /**
      * @var array
@@ -160,6 +165,13 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
 
         $this->registeredResources = array_unique($this->registeredResources);
 
+        foreach ($resourcesMap as $resourceName => $repository) {
+            if (isset($this->primaryAdapters[$resourceName]) === false) {
+                $adapters = $this->getModelAdapters($resourceName);
+                $this->setPrimaryAdapter($resourceName, reset($adapters));
+            }
+        }
+
         return $this;
     }
 
@@ -218,6 +230,31 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
         }
 
         return $this->modelAdapters[$modelClassName];
+    }
+
+    /**
+     * @param string $modelClassName
+     * @param DatabaseAdapterInterface $adapter
+     * @return $this
+     */
+    public function setPrimaryAdapter(string $modelClassName, DatabaseAdapterInterface $adapter)
+    {
+        $this->primaryAdapters[$modelClassName] = $adapter;
+
+        return $this;
+    }
+
+    /**
+     * @param string $modelClassName
+     * @return mixed
+     */
+    public function getPrimaryAdapter(string $modelClassName)
+    {
+        if (isset($this->primaryAdapters[$modelClassName]) === false) {
+            throw new RuntimeException('No registered primary adapter for ' . $modelClassName);
+        }
+
+        return $this->primaryAdapters[$modelClassName];
     }
 
     /**

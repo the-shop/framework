@@ -20,12 +20,12 @@ interface ApplicationInterface
     public function handle(RequestInterface $request);
 
     /**
-     * @return \Framework\Base\Manager\RepositoryInterface|null
+     * @return \Framework\Base\Manager\RepositoryManagerInterface|null
      */
     public function getRepositoryManager();
 
     /**
-     * @return ResponseInterface
+     * @return RequestInterface
      */
     public function getRequest();
 
@@ -77,10 +77,9 @@ interface ApplicationInterface
     public function removeEventListeners(string $eventName);
 
     /**
-     * @param array $moduleClassList
      * @return mixed
      */
-    public function registerModules(array $moduleClassList = []);
+    public function removeAllEventListeners();
 
     /**
      * @param LoggerInterface $logger
@@ -100,6 +99,17 @@ interface ApplicationInterface
     public function getLoggers();
 
     /**
+     * @param string $serviceClass
+     * @return mixed
+     */
+    public function getService(string $serviceClass);
+
+    /**
+     * @return ApplicationConfiguration
+     */
+    public function getConfiguration();
+
+    /**
      * Curl Request method
      *
      * @param string $method
@@ -111,6 +121,17 @@ interface ApplicationInterface
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
     public function httpRequest(string $method, string $uri = '', array $params = []);
+
+    /**
+     * @param array $aclConfig
+     * @return mixed
+     */
+    public function setAclRules(array $aclConfig = []);
+
+    /**
+     * @return mixed
+     */
+    public function getAclRules();
 
     /**
      * @param string $path

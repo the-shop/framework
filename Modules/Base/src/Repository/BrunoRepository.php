@@ -130,30 +130,31 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
      */
     public function loadMultiple()
     {
-        $adapters = $this->getDatabaseAdapters();
+        /* @var BrunoInterface $model */
+        $model = $this->newModel();
+
+        $adapter = $this->getPrimaryAdapter();
 
         $out = [];
 
-        foreach ($adapters as $adapter) {
-            $query = $this->createNewQueryForModel($model);
+        $query = $this->createNewQueryForModel($model);
 
-            $data = $adapter
-                ->loadMultiple($query);
+        $data = $adapter
+            ->loadMultiple($query);
 
-            foreach ($data as $attributes) {
-                $attributes = $attributes->getArrayCopy();
+        foreach ($data as $attributes) {
+            $attributes = $attributes->getArrayCopy();
 
-                $modelAttributesDefinition = $this->getModelAttributesDefinition();
+            $modelAttributesDefinition = $this->getModelAttributesDefinition();
 
-                $model = $this->newModel();
-                $model->defineModelAttributes($modelAttributesDefinition)
-                    ->setApplication($this->getApplication())
-                    ->setAttributes($attributes)
-                    ->setDatabaseAttributes($attributes)
-                    ->setIsNew(false);
+            $model = $this->newModel();
+            $model->defineModelAttributes($modelAttributesDefinition)
+                ->setApplication($this->getApplication())
+                ->setAttributes($attributes)
+                ->setDatabaseAttributes($attributes)
+                ->setIsNew(false);
 
-                $out[] = $model;
-            }
+            $out[] = $model;
         }
 
         return $out;

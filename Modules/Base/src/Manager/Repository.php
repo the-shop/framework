@@ -44,7 +44,7 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
     /**
      * @var null
      */
-    private $primaryAdapter = [];
+    private $primaryAdapters = [];
 
     /**
      * @param string $fullyQualifiedClassName
@@ -148,6 +148,13 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
 
         $this->registeredResources = array_unique($this->registeredResources);
 
+        foreach ($resourcesMap as $resourceName => $repository) {
+            if (isset($this->primaryAdapters[$resourceName]) === false) {
+                $adapters = $this->getModelAdapters($resourceName);
+                $this->setPrimaryAdapter($resourceName, reset($adapters));
+            }
+        }
+
         return $this;
     }
 
@@ -203,7 +210,7 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
      */
     public function setPrimaryAdapter(string $modelClassName, DatabaseAdapterInterface $adapter)
     {
-        $this->primaryAdapter[$modelClassName] = $adapter;
+        $this->primaryAdapters[$modelClassName] = $adapter;
 
         return $this;
     }
@@ -214,13 +221,10 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
      */
     public function getPrimaryAdapter(string $modelClassName)
     {
-        if (isset($this->primaryAdapter[$modelClassName]) === true) {
-            return $this->primaryAdapter[$modelClassName];
+        if (isset($this->primaryAdapters[$modelClassName]) === false) {
+            throw new RuntimeException('No registered primary adapter for ' . $modelClassName);
         }
 
-        $modelAdapters = $this->getModelAdapters($modelClassName);
-
-        /* If primary adapter is not defined, return first adapter from modelAdapters list */
-        return reset($modelAdapters);
+        return $this->primaryAdapters[$modelClassName];
     }
 }

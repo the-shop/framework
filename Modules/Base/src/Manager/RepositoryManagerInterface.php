@@ -77,4 +77,17 @@ interface RepositoryManagerInterface
      * @return mixed
      */
     public function registerModelsToCollection(array $modelClassNameToCollection);
+
+    /**
+     * @param string $modelClassName
+     * @param DatabaseAdapterInterface $adapter
+     * @return mixed
+     */
+    public function setPrimaryAdapter(string $modelClassName, DatabaseAdapterInterface $adapter);
+
+    /**
+     * @param string $modelClassName
+     * @return mixed
+     */
+    public function getPrimaryAdapter(string $modelClassName);
 }

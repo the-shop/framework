@@ -70,8 +70,19 @@ class EmailSender
         $this->mailerInterface->setOptions($options);
     }
 
+    /**
+     * @param $client
+     */
+    public function setClient($client)
+    {
+        $this->mailerInterface->setClient($client);
+    }
+
+    /**
+     * @return mixed
+     */
     public function send()
     {
-        $this->mailerInterface->send();
+        return $this->mailerInterface->send();
     }
 }

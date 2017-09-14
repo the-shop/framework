@@ -54,6 +54,9 @@ class Module extends BaseModule
                 MongoAdapter::class,
             ],
         ],
+        'primaryModelAdapter' => [
+            'users' => MongoAdapter::class,
+        ]
     ];
 
     /**
@@ -68,34 +71,53 @@ class Module extends BaseModule
 
         $configuration = $this->generateConfigurationFromJson('models');
 
-        $repositoryManager = $application->getRepositoryManager();
-        $repositoryManager->registerResources($configuration['resources'])
-            ->registerRepositories($this->config['repositories'])
-            ->registerModelFields($configuration['modelFields']);
+        $application->setAclRules($this->readJsonFile('acl'));
 
+        $modelsConfiguration = $this->generateModelsConfiguration($this->readJsonFile('models'));
+
+        $repositoryManager = $application->getRepositoryManager();
+
+        // Register model adapters
         foreach ($this->config['modelAdapters'] as $model => $adapters) {
             foreach ($adapters as $adapter) {
                 $repositoryManager->addModelAdapter($model, new $adapter());
             }
         }
+
+        // Register model primary adapters
+        foreach ($this->config['primaryModelAdapter'] as $model => $primaryAdapter) {
+            $repositoryManager->setPrimaryAdapter($model, new $primaryAdapter());
+        }
+
+        $repositoryManager->registerResources($configuration['resources'])
+            ->registerRepositories($this->config['repositories'])
+            ->registerModelFields($configuration['modelFields']);
+    }
+
+    /**
+     * @param $modelsConfig
+     * @return array
+     */
+    private function generateModelsConfiguration($modelsConfig)
+    {
+        $generatedConfiguration = [
+            'resources' => [],
+            'modelFields' => [],
+        ];
+        foreach ($modelsConfig as $modelName => $options) {
+            $generatedConfiguration['resources'][$options['collection']] = GenericRepository::class;
+            $generatedConfiguration['modelFields'][$options['collection']] = $options['fields'];
+        }
+
+        return $generatedConfiguration;
     }
 
     /**
      * @param $fileName
      * @return mixed
      */
-    private function generateConfigurationFromJson($fileName)
+    private function readJsonFile($fileName)
     {
-        $config = json_decode(file_get_contents(__DIR__ . "/config/" . $fileName . ".json"), true);
-        $generatedConfiguration = [
-            'resources' => [],
-            'modelFields' => [],
-        ];
-        foreach ($config as $modelName => $options) {
-            $generatedConfiguration['resources'][$options['collection']] = GenericRepository::class;
-            $generatedConfiguration['modelFields'][$options['collection']] = $options['fields'];
-        }
-
-        return $generatedConfiguration;
+        return json_decode(file_get_contents(__DIR__ . "/config/" . $fileName . ".json"), true);
     }
 }

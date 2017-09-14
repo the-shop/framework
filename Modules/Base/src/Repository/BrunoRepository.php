@@ -3,7 +3,6 @@
 namespace Framework\Base\Repository;
 
 use Framework\Base\Application\ApplicationAwareTrait;
-use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Database\DatabaseQueryInterface;
 use Framework\Base\Manager\RepositoryManagerInterface;
 use Framework\Base\Model\BrunoInterface;
@@ -33,7 +32,15 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     private $modelAttributesDefinition = [];
 
     /**
-     * @return DatabaseAdapterInterface|null
+     * @return mixed
+     */
+    public function getPrimaryAdapter()
+    {
+        return $this->getRepositoryManager()->getPrimaryAdapter($this->resourceName);
+    }
+
+    /**
+     * @return mixed
      */
     public function getDatabaseAdapters()
     {
@@ -97,31 +104,25 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         /* @var BrunoInterface $model */
         $model = $this->newModel();
 
-        $adapters = $this->getDatabaseAdapters();
+        $adapter = $this->getPrimaryAdapter();
 
-        $out = [];
+        $query = $this->createNewQueryForModel($model);
 
-        foreach ($adapters as $adapter) {
-            $query = $this->createNewQueryForModel($model);
-
-            $data = $adapter
-                ->loadOne($query);
+        $data = $adapter
+            ->loadOne($query);
 
 
-            if ($data === null) {
-                continue;
-            }
-
-            $attributes = $data->getArrayCopy();
-
-            $model->setAttributes($attributes);
-            $model->setDatabaseAttributes($attributes);
-            $model->setIsNew(false);
-
-            $out[] = $model;
+        if ($data === null) {
+            return null;
         }
 
-        return $out;
+        $attributes = $data->getArrayCopy();
+
+        $model->setAttributes($attributes);
+        $model->setDatabaseAttributes($attributes);
+        $model->setIsNew(false);
+
+        return $model;
     }
 
     /**
@@ -129,30 +130,31 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
      */
     public function loadMultiple()
     {
-        $adapters = $this->getDatabaseAdapters();
+        /* @var BrunoInterface $model */
+        $model = $this->newModel();
+
+        $adapter = $this->getPrimaryAdapter();
 
         $out = [];
 
-        foreach ($adapters as $adapter) {
-            $query = $this->createNewQueryForModel($model);
+        $query = $this->createNewQueryForModel($model);
 
-            $data = $adapter
-                ->loadMultiple($query);
+        $data = $adapter
+            ->loadMultiple($query);
 
-            foreach ($data as $attributes) {
-                $attributes = $attributes->getArrayCopy();
+        foreach ($data as $attributes) {
+            $attributes = $attributes->getArrayCopy();
 
-                $modelAttributesDefinition = $this->getModelAttributesDefinition();
+            $modelAttributesDefinition = $this->getModelAttributesDefinition();
 
-                $model = $this->newModel();
-                $model->defineModelAttributes($modelAttributesDefinition)
-                    ->setApplication($this->getApplication())
-                    ->setAttributes($attributes)
-                    ->setDatabaseAttributes($attributes)
-                    ->setIsNew(false);
+            $model = $this->newModel();
+            $model->defineModelAttributes($modelAttributesDefinition)
+                ->setApplication($this->getApplication())
+                ->setAttributes($attributes)
+                ->setDatabaseAttributes($attributes)
+                ->setIsNew(false);
 
-                $out[] = $model;
-            }
+            $out[] = $model;
         }
 
         return $out;

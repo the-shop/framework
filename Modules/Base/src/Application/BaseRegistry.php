@@ -32,7 +32,7 @@ class BaseRegistry implements RegistryInterface
 
     /**
      * @param $key
-     * @return mixed
+     * @return ServiceInterface
      */
     public function get($key)
     {

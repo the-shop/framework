@@ -2,10 +2,9 @@
 
 namespace Framework\Base\Mailer;
 
-use SendGrid as SendGridSender;
 use SendGrid\Content;
 use SendGrid\Email as EmailAddress;
-use SendGrid\Mail as SendgridEmail;
+use SendGrid\Mail as SendGridEmail;
 
 /**
  * Class SendGrid
@@ -15,39 +14,36 @@ class SendGrid extends Mailer
 {
     public function send()
     {
-        $apiKey = getenv('SENDGRID_API_KEY');
-        $sg = new SendGridSender($apiKey);
-
-        $options = $this->getOptions();
         $emailFrom = $this->getFrom();
         $emailTo = $this->getTo();
+        $subject = $this->getSubject();
+        $htmlBody = $this->getHtmlBody();
+        $textBody = $this->getTextBody();
+        $options = $this->getOptions();
+
+        $sg = $this->getClient();
 
         $from = new EmailAddress($emailFrom, $emailFrom);
-        $subject = $this->getSubject();
         $to = new EmailAddress($emailTo, $emailTo);
-
-        if ($this->getHtmlBody() === null && $this->getTextBody() === null) {
-            throw new \Exception('Text-plain or html body is required.', 403);
-        }
 
         $firstContent = null;
         $secondContent = null;
 
-        switch ($this->getTextBody()) {
-            case (null):
-                $firstContent = ['text/html', $this->getHtmlBody()];
-                break;
-            case (!null):
-                $firstContent = ['text/plain', $this->getTextBody()];
-                if ($this->getHtmlBody()) {
-                    $secondContent = ['text/html', $this->getHtmlBody()];
-                }
-                break;
+        if ($textBody === null && $htmlBody === null) {
+            throw new \Exception('Text-plain or html body is required.', 403);
+        } elseif ($textBody === null && $htmlBody !== null) {
+            $firstContent = ['text/html', $htmlBody];
+        } elseif ($textBody !== null && $htmlBody === null) {
+            $firstContent = ['text/plain', $textBody];
+        } else {
+            $firstContent = ['text/plain', $textBody];
+            $secondContent = ['text/html', $htmlBody];
         }
 
         $content = new Content($firstContent[0], $firstContent[1]);
 
         $mail = new SendGridEmail($from, $subject, $to, $content);
+
         if ($secondContent) {
             $contentHtml = new Content($secondContent[0], $secondContent[1]);
             $mail->addContent($contentHtml);
@@ -64,6 +60,7 @@ class SendGrid extends Mailer
 
         $responseMsg = 'Email was successfully sent!';
         $errors = json_decode($response->body());
+
 
         if ($errors) {
             $responseMsg = $errors->errors[0]->message;

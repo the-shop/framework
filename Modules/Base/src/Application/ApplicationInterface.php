@@ -77,12 +77,6 @@ interface ApplicationInterface
     public function removeEventListeners(string $eventName);
 
     /**
-     * @param array $moduleClassList
-     * @return mixed
-     */
-    public function registerModules(array $moduleClassList = []);
-
-    /**
      * @param LoggerInterface $logger
      * @return $this
      */
@@ -98,6 +92,13 @@ interface ApplicationInterface
      * @return LoggerInterface[]
      */
     public function getLoggers();
+
+    public function getService(string $serviceClass);
+
+    /**
+     * @return ApplicationConfiguration
+     */
+    public function getConfiguration();
 
     /**
      * Curl Request method

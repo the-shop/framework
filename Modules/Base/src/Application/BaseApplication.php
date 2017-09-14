@@ -15,6 +15,7 @@ use Framework\Base\Render\RenderInterface;
 use Framework\Base\Request\RequestInterface;
 use Framework\Base\Response\ResponseInterface;
 use Framework\Base\Router\DispatcherInterface;
+use Framework\Http\Response\Response;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -97,11 +98,6 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     private $renderer = null;
 
     /**
-     * @var array
-     */
-    private $registeredModules = [];
-
-    /**
      * @var LoggerInterface[]
      */
     private $loggers = [];
@@ -112,6 +108,16 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     private $aclRules = [];
 
     /**
+     * @var ServicesRegistry|null
+     */
+    private $servicesRegistry = null;
+
+    /**
+     * @var ApplicationConfiguration
+     */
+    private $configuration = null;
+
+    /**
      * Has to build instance of RequestInterface, set it to BaseApplication and return it
      *
      * @return RequestInterface
@@ -120,13 +126,35 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
 
     /**
      * BaseApplication constructor.
-     * @param array $registerModules
+     * @param ApplicationConfiguration|null $applicationConfiguration
      */
-    public function __construct(array $registerModules = [])
+    public function __construct(ApplicationConfiguration $applicationConfiguration = null)
     {
+        if ($applicationConfiguration === null) {
+            $applicationConfiguration = new ApplicationConfiguration();
+        }
+
+        $this->configuration = $applicationConfiguration;
+
         $this->setExceptionHandler(new ExceptionHandler());
-        $this->registerModules($registerModules);
         $this->bootstrap();
+    }
+
+    /**
+     * @param string $serviceClass
+     * @return ServiceInterface
+     */
+    public function getService(string $serviceClass)
+    {
+        return $this->servicesRegistry->get($serviceClass);
+    }
+
+    /**
+     * @return ApplicationConfiguration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
     }
 
     /**
@@ -192,33 +220,14 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
-     * @param array $moduleClassList
-     * @return $this
-     */
-    public function registerModules(array $moduleClassList = [])
-    {
-        $this->registeredModules = array_merge($this->registeredModules, $moduleClassList);
-
-        $this->registeredModules = array_unique($this->registeredModules);
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRegisteredModules()
-    {
-        return $this->registeredModules;
-    }
-
-    /**
      * @return Bootstrap
      */
     public function bootstrap()
     {
+        $this->servicesRegistry = new ServicesRegistry();
+
         $bootstrap = new Bootstrap();
-        $registerModules = $this->getRegisteredModules();
+        $registerModules = $this->getConfiguration()->getRegisteredModules();
         $bootstrap->registerModules($registerModules, $this);
 
         return $bootstrap;
@@ -495,7 +504,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         $client = new Client();
 
         try {
-            $response = $client->request($method, $uri, $params);
+            $guzzleHttpResponse = $client->request($method, $uri, $params);
         } catch (RequestException $requestException) {
             if ($requestException->hasResponse() === false) {
                 $message = $requestException->getMessage();
@@ -506,6 +515,10 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
             }
             throw new GuzzleHttpException($message, $code);
         }
+
+        $response = new Response();
+        $response->setCode($guzzleHttpResponse->getStatusCode());
+        $response->setBody($guzzleHttpResponse->getBody());
 
         return $response;
     }

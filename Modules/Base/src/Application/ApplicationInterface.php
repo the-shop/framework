@@ -74,7 +74,8 @@ interface ApplicationInterface
      * @param string $eventName
      * @return mixed
      */
-    public function removeEventListeners(string $eventName);
+    // TODO: implement removeEventListeners method
+    //public function removeEventListeners(string $eventName);
 
     /**
      * @param array $moduleClassList

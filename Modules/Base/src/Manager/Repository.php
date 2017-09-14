@@ -42,6 +42,11 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
     private $modelAdapters = [];
 
     /**
+     * @var null
+     */
+    private $primaryAdapter = [];
+
+    /**
      * @param string $fullyQualifiedClassName
      * @return BrunoRepositoryInterface
      */
@@ -189,5 +194,33 @@ class Repository implements RepositoryInterface, ApplicationAwareInterface
             throw new RuntimeException('No registered adapters for ' . $modelClassName);
         }
         return $this->modelAdapters[$modelClassName];
+    }
+
+    /**
+     * @param string $modelClassName
+     * @param DatabaseAdapterInterface $adapter
+     * @return $this
+     */
+    public function setPrimaryAdapter(string $modelClassName, DatabaseAdapterInterface $adapter)
+    {
+        $this->primaryAdapter[$modelClassName] = $adapter;
+
+        return $this;
+    }
+
+    /**
+     * @param string $modelClassName
+     * @return mixed
+     */
+    public function getPrimaryAdapter(string $modelClassName)
+    {
+        if (isset($this->primaryAdapter[$modelClassName]) === true) {
+            return $this->primaryAdapter[$modelClassName];
+        }
+
+        $modelAdapters = $this->getModelAdapters($modelClassName);
+
+        /* If primary adapter is not defined, return first adapter from modelAdapters list */
+        return reset($modelAdapters);
     }
 }

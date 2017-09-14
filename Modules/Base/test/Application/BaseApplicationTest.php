@@ -4,7 +4,7 @@ namespace Framework\BaseTest\Application;
 
 use Framework\Base\Application\Exception\GuzzleHttpException;
 use Framework\Base\Application\Exception\MethodNotAllowedException;
-use Framework\Base\Logger\DummyLogger;
+use Framework\Base\Logger\MemoryLogger;
 use Framework\Base\Logger\Log;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Test\UnitTest;
@@ -24,13 +24,15 @@ class BaseApplicationTest extends UnitTest
 
         $application->log($log);
 
-        $this->assertContainsOnlyInstancesOf(DummyLogger::class, $application->getLoggers());
+        $this->assertContainsOnlyInstancesOf(MemoryLogger::class, $application->getLoggers());
 
         $this->assertAttributeCount(1, 'loggers', $application);
 
 
         $dsn = getenv('SENTRY_DSN');
-        $application->addLogger(new SentryLogger($dsn));
+        $sl = new SentryLogger();
+        $sl->setClient($dsn, \Raven_Client::class);
+        $application->addLogger($sl);
 
         $this->assertContainsOnlyInstancesOf(LoggerInterface::class, $application->getLoggers());
 

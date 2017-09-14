@@ -8,7 +8,7 @@ use Framework\Base\Application\Exception\MethodNotAllowedException;
 use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
-use Framework\Base\Logger\DummyLogger;
+use Framework\Base\Logger\MemoryLogger;
 use Framework\Base\Manager\Repository;
 use Framework\Base\Manager\RepositoryInterface;
 use Framework\Base\Render\RenderInterface;
@@ -432,7 +432,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function log(LogInterface $log)
     {
         if (count($this->getLoggers()) === 0) {
-            $this->addLogger(new DummyLogger());
+            $this->addLogger(new MemoryLogger());
         }
         foreach ($this->getLoggers() as $logger) {
             $logger->log($log);
@@ -460,9 +460,12 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
+     * @param string $method
+     * @param string $uri
+     * @param array $params
      * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \Framework\Base\Application\Exception\GuzzleHttpException
-     * @throws \Framework\Base\Application\Exception\MethodNotAllowedException
+     * @throws GuzzleHttpException
+     * @throws MethodNotAllowedException
      */
     public function httpRequest(string $method, string $uri = '', array $params = [])
     {

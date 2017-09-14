@@ -6,10 +6,10 @@ use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Repository\BrunoRepositoryInterface;
 
 /**
- * Interface RepositoryInterface
+ * Interface RepositoryManagerInterface
  * @package Framework\Base\Manager
  */
-interface RepositoryInterface
+interface RepositoryManagerInterface
 {
     /**
      * @param string $fullyQualifiedClassName
@@ -77,6 +77,19 @@ interface RepositoryInterface
      * @return mixed
      */
     public function registerModelsToCollection(array $modelClassNameToCollection);
+
+    /**
+     * @param string $modelClassName
+     * @param DatabaseAdapterInterface $adapter
+     * @return mixed
+     */
+    public function setPrimaryAdapter(string $modelClassName, DatabaseAdapterInterface $adapter);
+
+    /**
+     * @param string $modelClassName
+     * @return mixed
+     */
+    public function getPrimaryAdapter(string $modelClassName);
 
     /**
      * @param array $modelsConfigs

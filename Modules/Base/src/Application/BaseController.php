@@ -11,12 +11,12 @@ abstract class BaseController implements ControllerInterface
     use ApplicationAwareTrait;
 
     /**
-     * @return \Framework\Base\Manager\RepositoryInterface
+     * @return \Framework\Base\Manager\RepositoryManagerInterface
      */
     public function getRepositoryManager()
     {
         if ($this->getApplication()->getRepositoryManager() === null) {
-            throw new \RuntimeException('Repository manager not set');
+            throw new \RuntimeException('RepositoryManager manager not set');
         }
 
         return $this->getApplication()->getRepositoryManager();

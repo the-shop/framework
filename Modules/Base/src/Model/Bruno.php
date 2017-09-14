@@ -5,7 +5,7 @@ namespace Framework\Base\Model;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Mongo\MongoQuery;
-use Framework\Base\Repository\Modifiers\FieldModifierInterface;
+use Framework\Base\Model\Modifiers\FieldModifierInterface;
 use MongoDB\BSON\ObjectID;
 
 /**
@@ -280,6 +280,7 @@ abstract class Bruno implements BrunoInterface
          */
         if (array_key_exists($attribute, $this->fieldFilters)) {
             foreach ($this->fieldFilters[$attribute] as $filter) {
+                /* @var FieldModifierInterface $filter */
                 $value = $filter->modify($value);
             }
         }

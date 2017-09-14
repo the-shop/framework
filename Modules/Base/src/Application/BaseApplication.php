@@ -9,12 +9,13 @@ use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
 use Framework\Base\Logger\MemoryLogger;
-use Framework\Base\Manager\Repository;
-use Framework\Base\Manager\RepositoryInterface;
+use Framework\Base\Manager\RepositoryManager;
+use Framework\Base\Manager\RepositoryManagerInterface;
 use Framework\Base\Render\RenderInterface;
 use Framework\Base\Request\RequestInterface;
 use Framework\Base\Response\ResponseInterface;
 use Framework\Base\Router\DispatcherInterface;
+use Framework\Http\Response\Response;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -77,7 +78,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     private $controller = null;
 
     /**
-     * @var RepositoryInterface|null
+     * @var RepositoryManagerInterface|null
      */
     private $repositoryManager = null;
 
@@ -97,14 +98,24 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     private $renderer = null;
 
     /**
-     * @var array
-     */
-    private $registeredModules = [];
-
-    /**
      * @var LoggerInterface[]
      */
     private $loggers = [];
+
+    /**
+     * @var array
+     */
+    private $aclRules = [];
+
+    /**
+     * @var ServicesRegistry|null
+     */
+    private $servicesRegistry = null;
+
+    /**
+     * @var ApplicationConfiguration
+     */
+    private $configuration = null;
 
     /**
      * Has to build instance of RequestInterface, set it to BaseApplication and return it
@@ -115,13 +126,40 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
 
     /**
      * BaseApplication constructor.
-     * @param array $registerModules
+     * @param ApplicationConfiguration|null $applicationConfiguration
      */
-    public function __construct(array $registerModules = [])
+    public function __construct(ApplicationConfiguration $applicationConfiguration = null)
     {
+        if ($applicationConfiguration === null) {
+            $applicationConfiguration = new ApplicationConfiguration();
+        }
+
+        $this->configuration = $applicationConfiguration;
+
         $this->setExceptionHandler(new ExceptionHandler());
-        $this->registerModules($registerModules);
         $this->bootstrap();
+    }
+
+    /**
+     * @param string $serviceClass
+     * @return ServiceInterface
+     */
+    public function getService(string $serviceClass)
+    {
+        return $this->servicesRegistry->get($serviceClass);
+    }
+
+    public function registerService(ServiceInterface $service, bool $overwriteExisting = false)
+    {
+        $this->servicesRegistry->registerService($service, $overwriteExisting);
+    }
+
+    /**
+     * @return ApplicationConfiguration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
     }
 
     /**
@@ -187,33 +225,14 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
-     * @param array $moduleClassList
-     * @return $this
-     */
-    public function registerModules(array $moduleClassList = [])
-    {
-        $this->registeredModules = array_merge($this->registeredModules, $moduleClassList);
-
-        $this->registeredModules = array_unique($this->registeredModules);
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRegisteredModules()
-    {
-        return $this->registeredModules;
-    }
-
-    /**
      * @return Bootstrap
      */
     public function bootstrap()
     {
+        $this->servicesRegistry = new ServicesRegistry();
+
         $bootstrap = new Bootstrap();
-        $registerModules = $this->getRegisteredModules();
+        $registerModules = $this->getConfiguration()->getRegisteredModules();
         $bootstrap->registerModules($registerModules, $this);
 
         return $bootstrap;
@@ -252,6 +271,16 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         }
 
         $this->events[$eventName][] = $listenerClass;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function removeAllEventListeners()
+    {
+        $this->events = [];
 
         return $this;
     }
@@ -318,10 +347,10 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
-     * @param \Framework\Base\Manager\RepositoryInterface $repositoryManager
+     * @param \Framework\Base\Manager\RepositoryManagerInterface $repositoryManager
      * @return $this
      */
-    public function setRepositoryManager(RepositoryInterface $repositoryManager)
+    public function setRepositoryManager(RepositoryManagerInterface $repositoryManager)
     {
         $this->repositoryManager = $repositoryManager;
 
@@ -329,12 +358,12 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
-     * @return \Framework\Base\Manager\RepositoryInterface|null
+     * @return \Framework\Base\Manager\RepositoryManagerInterface|null
      */
     public function getRepositoryManager()
     {
         if ($this->repositoryManager === null) {
-            $repository = new Repository();
+            $repository = new RepositoryManager();
             $repository->setApplication($this);
             $this->setRepositoryManager($repository);
         }
@@ -490,7 +519,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         $client = new Client();
 
         try {
-            $response = $client->request($method, $uri, $params);
+            $guzzleHttpResponse = $client->request($method, $uri, $params);
         } catch (RequestException $requestException) {
             if ($requestException->hasResponse() === false) {
                 $message = $requestException->getMessage();
@@ -502,6 +531,29 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
             throw new GuzzleHttpException($message, $code);
         }
 
+        $response = new Response();
+        $response->setCode($guzzleHttpResponse->getStatusCode());
+        $response->setBody($guzzleHttpResponse->getBody());
+
         return $response;
+    }
+
+    /**
+     * @param array $aclConfig
+     * @return $this
+     */
+    public function setAclRules(array $aclConfig = [])
+    {
+        $this->aclRules = $aclConfig;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAclRules()
+    {
+        return $this->aclRules;
     }
 }

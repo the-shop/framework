@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\BaseTest\Mongo;
+namespace Framework\Base\Test\Mongo;
 
 use Framework\Base\Mongo\MongoAdapter;
 use Framework\Base\Test\UnitTest;

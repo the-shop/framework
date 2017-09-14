@@ -47,6 +47,12 @@ interface MailerInterface
     public function setOptions($options);
 
     /**
+     * @param $client
+     * @return mixed
+     */
+    public function setClient($client);
+
+    /**
      * Send email
      * @return mixed
      */

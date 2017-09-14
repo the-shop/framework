@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\BaseTest\Logger;
+namespace Framework\Base\Test\Logger;
 
 use Framework\Base\Logger\MemoryLogger;
 use Framework\Base\Logger\Log;

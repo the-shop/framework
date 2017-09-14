@@ -96,15 +96,21 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
      */
     private $renderer = null;
 
-    /**
-     * @var array
-     */
-    private $registeredModules = [];
 
     /**
      * @var LoggerInterface[]
      */
     private $loggers = [];
+
+    /**
+     * @var ServicesRegistry|null
+     */
+    private $servicesRegistry = null;
+
+    /**
+     * @var ApplicationConfiguration
+     */
+    private $configuration = null;
 
     /**
      * Has to build instance of RequestInterface, set it to BaseApplication and return it
@@ -115,13 +121,35 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
 
     /**
      * BaseApplication constructor.
-     * @param array $registerModules
+     * @param ApplicationConfiguration|null $applicationConfiguration
      */
-    public function __construct(array $registerModules = [])
+    public function __construct(ApplicationConfiguration $applicationConfiguration = null)
     {
+        if ($applicationConfiguration === null) {
+            $applicationConfiguration = new ApplicationConfiguration();
+        }
+
+        $this->configuration = $applicationConfiguration;
+
         $this->setExceptionHandler(new ExceptionHandler());
-        $this->registerModules($registerModules);
         $this->bootstrap();
+    }
+
+    /**
+     * @param string $serviceClass
+     * @return ServiceInterface
+     */
+    public function getService(string $serviceClass)
+    {
+        return $this->servicesRegistry->get($serviceClass);
+    }
+
+    /**
+     * @return ApplicationConfiguration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
     }
 
     /**
@@ -187,33 +215,14 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
-     * @param array $moduleClassList
-     * @return $this
-     */
-    public function registerModules(array $moduleClassList = [])
-    {
-        $this->registeredModules = array_merge($this->registeredModules, $moduleClassList);
-
-        $this->registeredModules = array_unique($this->registeredModules);
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRegisteredModules()
-    {
-        return $this->registeredModules;
-    }
-
-    /**
      * @return Bootstrap
      */
     public function bootstrap()
     {
+        $this->servicesRegistry = new ServicesRegistry();
+
         $bootstrap = new Bootstrap();
-        $registerModules = $this->getRegisteredModules();
+        $registerModules = $this->getConfiguration()->getRegisteredModules();
         $bootstrap->registerModules($registerModules, $this);
 
         return $bootstrap;

@@ -112,4 +112,15 @@ interface ApplicationInterface
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
     public function httpRequest(string $method, string $uri = '', array $params = []);
+
+    /**
+     * @param array $aclConfig
+     * @return mixed
+     */
+    public function setAclRules(array $aclConfig = []);
+
+    /**
+     * @return mixed
+     */
+    public function getAclRules();
 }

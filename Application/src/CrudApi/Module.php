@@ -71,6 +71,10 @@ class Module extends BaseModule
 
         $configuration = $this->generateConfigurationFromJson('models');
 
+        $application->setAclRules($this->readJsonFile('acl'));
+
+        $modelsConfiguration = $this->generateModelsConfiguration($this->readJsonFile('models'));
+
         $repositoryManager = $application->getRepositoryManager();
 
         // Register model adapters
@@ -91,21 +95,29 @@ class Module extends BaseModule
     }
 
     /**
-     * @param $fileName
-     * @return mixed
+     * @param $modelsConfig
+     * @return array
      */
-    private function generateConfigurationFromJson($fileName)
+    private function generateModelsConfiguration($modelsConfig)
     {
-        $config = json_decode(file_get_contents(__DIR__ . "/config/" . $fileName . ".json"), true);
         $generatedConfiguration = [
             'resources' => [],
             'modelFields' => [],
         ];
-        foreach ($config as $modelName => $options) {
+        foreach ($modelsConfig as $modelName => $options) {
             $generatedConfiguration['resources'][$options['collection']] = GenericRepository::class;
             $generatedConfiguration['modelFields'][$options['collection']] = $options['fields'];
         }
 
         return $generatedConfiguration;
+    }
+
+    /**
+     * @param $fileName
+     * @return mixed
+     */
+    private function readJsonFile($fileName)
+    {
+        return json_decode(file_get_contents(__DIR__ . "/config/" . $fileName . ".json"), true);
     }
 }

@@ -97,11 +97,15 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
      */
     private $renderer = null;
 
-
     /**
      * @var LoggerInterface[]
      */
     private $loggers = [];
+
+    /**
+     * @var array
+     */
+    private $aclRules = [];
 
     /**
      * @var ServicesRegistry|null
@@ -517,5 +521,24 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         $response->setBody($guzzleHttpResponse->getBody());
 
         return $response;
+    }
+
+    /**
+     * @param array $aclConfig
+     * @return $this
+     */
+    public function setAclRules(array $aclConfig = [])
+    {
+        $this->aclRules = $aclConfig;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAclRules()
+    {
+        return $this->aclRules;
     }
 }

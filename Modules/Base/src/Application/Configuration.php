@@ -6,7 +6,7 @@ namespace Framework\Base\Application;
  * Class Configuration
  * @package Framework\Base\Application
  */
-class Configuration
+class Configuration implements ServiceInterface
 {
     /**
      * @var array
@@ -22,6 +22,14 @@ class Configuration
         $this->configuration = $configuration;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getServiceName()
+    {
+        return 'configuration';
     }
 
     /**

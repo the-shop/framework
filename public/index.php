@@ -13,9 +13,7 @@ $app = new \Framework\RestApi\RestApi([
     \Application\CrudApi\Module::class
 ]);
 
-$dsn = getenv('SENTRY_DSN');
-
-//$app->addLogger(new \Framework\RestApi\SentryLogger($dsn));
+$app->addLogger(new \Framework\Base\Logger\MemoryLogger());
 
 try {
     $app->run();

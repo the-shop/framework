@@ -71,6 +71,12 @@ interface ApplicationInterface
     public function listen(string $eventName, string $listenerClass);
 
     /**
+     * @param string $eventName
+     * @return mixed
+     */
+    public function removeEventListeners(string $eventName);
+
+    /**
      * @param array $moduleClassList
      * @return mixed
      */

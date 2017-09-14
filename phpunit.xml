@@ -1,7 +1,7 @@
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="Application">
-            <directory>test/Application</directory>
+        <testsuite name="ApplicationTest">
+            <directory>Application/test</directory>
         </testsuite>
         <testsuite name="Modules/RestApi">
             <directory>Modules/RestApi/test</directory>
@@ -13,5 +13,6 @@
     <php>
         <env name="FILE_LOGGER_FILE_NAME" value="file_logger.log"/>
         <env name="FILE_LOGGER_FILE_DIR_PATH" value="/Modules/RestApi/test/Logger/"/>
+        <env name="FILE_LOGGER_FILE_NAME" value="file_logger.log"/>
     </php>
 </phpunit>

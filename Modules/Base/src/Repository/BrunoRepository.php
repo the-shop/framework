@@ -5,13 +5,13 @@ namespace Framework\Base\Repository;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Database\DatabaseQueryInterface;
-use Framework\Base\Manager\RepositoryInterface;
+use Framework\Base\Manager\RepositoryManagerInterface;
 use Framework\Base\Model\BrunoInterface;
 use Framework\Base\Mongo\MongoQuery;
 
 /**
  * Class BrunoRepository
- * @package Framework\Base\Repository
+ * @package Framework\Base\RepositoryManager
  */
 abstract class BrunoRepository implements BrunoRepositoryInterface
 {
@@ -23,7 +23,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     protected $resourceName = 'generic';
 
     /**
-     * @var RepositoryInterface|null
+     * @var RepositoryManagerInterface|null
      */
     private $repositoryManager = null;
 
@@ -41,10 +41,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     }
 
     /**
-     * @param RepositoryInterface $repositoryManager
+     * @param RepositoryManagerInterface $repositoryManager
      * @return $this
      */
-    public function setRepositoryManager(RepositoryInterface $repositoryManager)
+    public function setRepositoryManager(RepositoryManagerInterface $repositoryManager)
     {
         $this->repositoryManager = $repositoryManager;
 
@@ -52,7 +52,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     }
 
     /**
-     * @return RepositoryInterface|null
+     * @return RepositoryManagerInterface|null
      */
     public function getRepositoryManager()
     {

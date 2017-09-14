@@ -9,8 +9,8 @@ use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
 use Framework\Base\Logger\MemoryLogger;
-use Framework\Base\Manager\Repository;
-use Framework\Base\Manager\RepositoryInterface;
+use Framework\Base\Manager\RepositoryManager;
+use Framework\Base\Manager\RepositoryManagerInterface;
 use Framework\Base\Render\RenderInterface;
 use Framework\Base\Request\RequestInterface;
 use Framework\Base\Response\ResponseInterface;
@@ -77,7 +77,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     private $controller = null;
 
     /**
-     * @var RepositoryInterface|null
+     * @var RepositoryManagerInterface|null
      */
     private $repositoryManager = null;
 
@@ -318,10 +318,10 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
-     * @param \Framework\Base\Manager\RepositoryInterface $repositoryManager
+     * @param \Framework\Base\Manager\RepositoryManagerInterface $repositoryManager
      * @return $this
      */
-    public function setRepositoryManager(RepositoryInterface $repositoryManager)
+    public function setRepositoryManager(RepositoryManagerInterface $repositoryManager)
     {
         $this->repositoryManager = $repositoryManager;
 
@@ -329,12 +329,12 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
-     * @return \Framework\Base\Manager\RepositoryInterface|null
+     * @return \Framework\Base\Manager\RepositoryManagerInterface|null
      */
     public function getRepositoryManager()
     {
         if ($this->repositoryManager === null) {
-            $repository = new Repository();
+            $repository = new RepositoryManager();
             $repository->setApplication($this);
             $this->setRepositoryManager($repository);
         }

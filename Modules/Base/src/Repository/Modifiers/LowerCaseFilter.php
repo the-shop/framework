@@ -4,7 +4,7 @@ namespace Framework\Base\Repository\Modifiers;
 
 /**
  * Class LowerCaseFilter
- * @package Framework\Base\Repository\Modifiers
+ * @package Framework\Base\RepositoryManager\Modifiers
  */
 class LowerCaseFilter implements FieldModifierInterface
 {

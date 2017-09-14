@@ -14,17 +14,12 @@ class Configuration
     private $configuration = [];
 
     /**
-     * @param string $sectionName
+     * Configuration constructor.
      * @param array $configuration
-     * @return $this
      */
-    public function register(string $sectionName, array $configuration = [])
+    public function __construct(array $configuration = [])
     {
-        if (empty($section) === true) {
-            throw new \RuntimeException('Configuration section name must be defined');
-        }
-
-        $this->configuration[$sectionName] = $configuration;
+        $this->configuration = $configuration;
 
         return $this;
     }

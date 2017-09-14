@@ -140,10 +140,8 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
 
         $query = $this->createNewQueryForModel($model);
 
-            /**
-             * @var DatabaseAdapterInterface $adapter
-             */$data = $adapter
-                ->loadMultiple($query);
+        $data = $adapter
+            ->loadMultiple($query);
 
         foreach ($data as $attributes) {
             $attributes = $attributes->getArrayCopy();

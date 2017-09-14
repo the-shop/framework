@@ -107,6 +107,11 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     private $loggers = [];
 
     /**
+     * @var null|string
+     */
+    private $rootPath = null;
+
+    /**
      * Has to build instance of RequestInterface, set it to BaseApplication and return it
      *
      * @return RequestInterface
@@ -119,6 +124,14 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
      */
     public function __construct(array $registerModules = [])
     {
+        /**
+         * @todo move root path definition to ConfigService once its implemented
+         */
+        $this->setRootPath(
+            realpath(
+                dirname(__DIR__, 4)
+            )
+        );
         $this->setExceptionHandler(new ExceptionHandler());
         $this->registerModules($registerModules);
         $this->bootstrap();
@@ -503,5 +516,25 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         }
 
         return $response;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function setRootPath(string $path)
+    {
+        $this->rootPath = $path;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getRootPath()
+    {
+        return $this->rootPath;
     }
 }

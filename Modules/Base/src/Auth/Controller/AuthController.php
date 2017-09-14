@@ -3,6 +3,8 @@
 namespace Framework\Base\Auth\Controller;
 
 use Firebase\JWT\JWT;
+use Framework\Base\Application\Exception\AuthenticationException;
+use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Http\Controller\Http;
 
 /**
@@ -20,15 +22,15 @@ class AuthController extends Http
     {
         $authModels = $this->getRepositoryManager()->getAuthenticatableModels();
         $post = $this->getPost();
-        $model = null;
+        $model = $exception = null;
         $attemptStrategies = [];
 
-        foreach ($authModels as $modelName => $params) {
+        foreach ($authModels as $resourceName => $params) {
             if (in_array($params['credentials'], array_keys($post), true) === true &&
                 count($post) === count($params['credentials'])
             ) {
                 $attemptStrategies[] = [
-                    'repository' => $this->getRepositoryFromResourceName($modelName),
+                    'repository' => $this->getRepositoryFromResourceName($resourceName),
                     'class' => '\\Framework\\Base\\Auth\\' . ucfirst(strtolower($params['strategy'])) . 'AuthStrategy',
                     'credentials' => $params['credentials'],
                 ];
@@ -50,15 +52,15 @@ class AuthController extends Http
                  */
                 $auth = new $strategy['class']($post, $strategy['repository']);
                 $model = $auth->validate($strategy['credentials']);
-            } catch (\Exception $exception) {
-                /**
-                 * @todo implement handling distinction between invalid credentials and similar but wrong strategy
-                 */
+            } catch (AuthenticationException $e) {
+                $exception = $e;
+            } catch (NotFoundException $e) {
+                $exception = $e;
             }
         }
 
         if ($model === null) {
-            throw new \RuntimeException('No auth mechanism matched');
+            throw $exception;
         }
 
         /**
@@ -68,7 +70,9 @@ class AuthController extends Http
         $payload = array(
             'iss' => 'framework.the-shop.io',
             'exp' => time() + 3600,
-            'sub' => $model->getId(),
+            'modelId' => $model->getId(),
+            'resourceName' => $model->getCollection(),
+            'aclRole' => '',
         );
         $alg = 'HS256';
         $jwt = JWT::encode($payload, $key, $alg);

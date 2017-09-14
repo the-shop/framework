@@ -111,4 +111,16 @@ interface ApplicationInterface
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
     public function httpRequest(string $method, string $uri = '', array $params = []);
+
+    /**
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function setRootPath(string $path);
+
+    /**
+     * @return null|string
+     */
+    public function getRootPath();
 }

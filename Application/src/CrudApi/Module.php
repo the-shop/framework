@@ -63,24 +63,6 @@ class Module extends BaseModule
     {
         $application = $this->getApplication();
 
-        $authModelsConfigs = $this->getAuthenticatables();
-
-        if (empty($authModelsConfigs) === false) {
-            array_unshift(
-                $this->config['routes'],
-                [
-                    'post',
-                    '/login',
-                    '\Framework\Base\Auth\Controller\AuthController::authenticate',
-                ]
-            );
-            $application->getRepositoryManager()
-                        ->addAuthenticatableModels($authModelsConfigs);
-        }
-
-        $application->getDispatcher()
-                    ->addRoutes($this->config['routes']);
-
         $configuration = $this->generateConfigurationFromJson('models');
 
         $repositoryManager = $application->getRepositoryManager();
@@ -112,25 +94,5 @@ class Module extends BaseModule
         }
 
         return $generatedConfiguration;
-    }
-
-    private function getAuthenticatables()
-    {
-        $models = [];
-        $config = json_decode(file_get_contents(__DIR__ . "/config/models.json"), true);
-        foreach ($config as $modelName => $params) {
-            if (isset($params['authenticatable']) === true &&
-                $params['authenticatable'] === true &&
-                isset($params['authStrategy']) === true &&
-                isset($params['credentials']) === true &&
-                is_array($params['credentials']) === true
-            ) {
-                $models[$modelName] = [
-                    'strategy' => $params['authStrategy'],
-                    'credentials' => $params['credentials'],
-                ];
-            }
-        }
-        return $models;
     }
 }

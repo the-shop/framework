@@ -54,6 +54,9 @@ class Module extends BaseModule
                 MongoAdapter::class,
             ],
         ],
+        'primaryModelAdapter' => [
+            'users' => MongoAdapter::class,
+        ]
     ];
 
     /**
@@ -69,15 +72,22 @@ class Module extends BaseModule
         $configuration = $this->generateConfigurationFromJson('models');
 
         $repositoryManager = $application->getRepositoryManager();
-        $repositoryManager->registerResources($configuration['resources'])
-            ->registerRepositories($this->config['repositories'])
-            ->registerModelFields($configuration['modelFields']);
 
+        // Register model adapters
         foreach ($this->config['modelAdapters'] as $model => $adapters) {
             foreach ($adapters as $adapter) {
                 $repositoryManager->addModelAdapter($model, new $adapter());
             }
         }
+
+        // Register model primary adapters
+        foreach ($this->config['primaryModelAdapter'] as $model => $primaryAdapter) {
+            $repositoryManager->setPrimaryAdapter($model, new $primaryAdapter());
+        }
+
+        $repositoryManager->registerResources($configuration['resources'])
+            ->registerRepositories($this->config['repositories'])
+            ->registerModelFields($configuration['modelFields']);
     }
 
     /**

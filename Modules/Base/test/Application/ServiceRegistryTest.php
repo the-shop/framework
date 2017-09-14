@@ -9,14 +9,15 @@ class ServiceRegistryTest extends UnitTest
 {
     public function testRegisterWithServiceInterface()
     {
-        $key = 'sampleService';
         $val = new SampleService();
+
+        $key = SampleService::class;
 
         $registry = new ServicesRegistry();
 
         $this->assertAttributeCount(0, 'content', $registry);
 
-        $registry->registerService($key, $val);
+        $registry->registerService($val);
 
         $this->assertAttributeCount(1, 'content', $registry);
 

@@ -9,27 +9,26 @@ namespace Framework\Base\Application;
 class ServicesRegistry extends BaseRegistry
 {
     /**
-     * @param $key
      * @param ServiceInterface $service
      * @param bool $overwrite
      * @return $this
      */
-    public function registerService($key, ServiceInterface $service, $overwrite = false)
+    public function registerService(ServiceInterface $service, bool $overwrite = false)
     {
-        $this->register($key, $service, $overwrite);
+        $this->register($service->getIdentifier(), $service, $overwrite);
 
         return $this;
     }
 
     /**
-     * Same functionality as in BaseRegistry but does validation of $value interface
+     * Same functionality as in BaseRegistry but does validation of $value's interface
      *
-     * @param $key
+     * @param string $key
      * @param $value
      * @param bool $overwrite
      * @return BaseRegistry
      */
-    public function register($key, $value, $overwrite = false)
+    public function register(string $key, $value, bool $overwrite = false)
     {
         if ($value instanceof ServiceInterface) {
             return parent::register($key, $value, $overwrite);

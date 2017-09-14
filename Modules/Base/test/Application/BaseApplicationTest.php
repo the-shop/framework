@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\BaseTest\Application;
+namespace Framework\Base\Test\Application;
 
 use Framework\Base\Application\Exception\GuzzleHttpException;
 use Framework\Base\Application\Exception\MethodNotAllowedException;

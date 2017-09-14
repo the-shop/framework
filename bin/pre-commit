@@ -5,7 +5,7 @@ STAGED_FILES_CMD=`git diff --cached --name-only --diff-filter=ACMR HEAD | grep \
 
 # Run unit tests
 echo "Running unit tests..."
-phpunit
+./vendor/bin/phpunit
 
 # Determine if a file list is passed
 if [ "$#" -eq 1 ]

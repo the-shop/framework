@@ -6,10 +6,10 @@ use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Repository\BrunoRepositoryInterface;
 
 /**
- * Interface RepositoryInterface
+ * Interface RepositoryManagerInterface
  * @package Framework\Base\Manager
  */
-interface RepositoryInterface
+interface RepositoryManagerInterface
 {
     /**
      * @param string $fullyQualifiedClassName

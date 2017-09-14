@@ -20,7 +20,7 @@ interface ApplicationInterface
     public function handle(RequestInterface $request);
 
     /**
-     * @return \Framework\Base\Manager\RepositoryInterface|null
+     * @return \Framework\Base\Manager\RepositoryManagerInterface|null
      */
     public function getRepositoryManager();
 

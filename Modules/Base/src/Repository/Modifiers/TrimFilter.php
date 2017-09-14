@@ -4,7 +4,7 @@ namespace Framework\Base\Repository\Modifiers;
 
 /**
  * Class TrimFilter
- * @package Framework\Base\Repository\Modifiers
+ * @package Framework\Base\RepositoryManager\Modifiers
  */
 class TrimFilter implements FieldModifierInterface
 {

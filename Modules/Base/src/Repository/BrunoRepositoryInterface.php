@@ -4,7 +4,7 @@ namespace Framework\Base\Repository;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Database\DatabaseAdapterInterface;
-use Framework\Base\Manager\RepositoryInterface;
+use Framework\Base\Manager\RepositoryManagerInterface;
 use Framework\Base\Model\BrunoInterface;
 
 /**
@@ -19,10 +19,10 @@ interface BrunoRepositoryInterface extends ApplicationAwareInterface
     public function getDatabaseAdapters();
 
     /**
-     * @param RepositoryInterface $repositoryManager
+     * @param RepositoryManagerInterface $repositoryManager
      * @return $this
      */
-    public function setRepositoryManager(RepositoryInterface $repositoryManager);
+    public function setRepositoryManager(RepositoryManagerInterface $repositoryManager);
 
     /**
      * @return mixed

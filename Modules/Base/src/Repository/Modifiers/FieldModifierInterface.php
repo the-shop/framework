@@ -4,7 +4,7 @@ namespace Framework\Base\Repository\Modifiers;
 
 /**
  * Interface FieldModifierInterface
- * @package Framework\Base\Repository\Modifiers
+ * @package Framework\Base\RepositoryManager\Modifiers
  */
 interface FieldModifierInterface
 {

@@ -9,10 +9,10 @@ use Framework\Base\Repository\BrunoRepositoryInterface;
 use MongoDB\Exception\RuntimeException;
 
 /**
- * Class Repository
+ * Class RepositoryManager
  * @package Framework\Base\Manager
  */
-class Repository implements RepositoryInterface, ApplicationAwareInterface
+class RepositoryManager implements RepositoryManagerInterface, ApplicationAwareInterface
 {
     use ApplicationAwareTrait;
 

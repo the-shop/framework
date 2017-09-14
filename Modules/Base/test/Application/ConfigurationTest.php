@@ -14,17 +14,17 @@ class ConfigurationTest extends UnitTest
     public function testSetGet()
     {
         $config = new Configuration();
-        $config->setValue('test', 'value');
+        $config->setPathValue('test', 'value');
 
         $this->assertEquals(['test' => 'value'], $config->getAll());
 
-        $config->setValue('test.nested.value', ['array', 'value']);
+        $config->setPathValue('test.nested.value', ['array', 'value']);
 
         // Overwrite
         $this->assertEquals(['test' => ['nested' => ['value' => ['array', 'value']]]], $config->getAll());
 
         // Write in parallel
-        $config->setValue('parallel.nested.value', ['array2', 'value2']);
+        $config->setPathValue('parallel.nested.value', ['array2', 'value2']);
 
         $this->assertEquals([
             'test' =>
@@ -48,6 +48,6 @@ class ConfigurationTest extends UnitTest
         ], $config->getAll());
 
         // Test get at path
-        $this->assertEquals('value2', $config->getValue('parallel.nested.value.1'));
+        $this->assertEquals('value2', $config->getPathValue('parallel.nested.value.1'));
     }
 }

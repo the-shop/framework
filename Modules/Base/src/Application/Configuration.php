@@ -6,7 +6,7 @@ namespace Framework\Base\Application;
  * Class Configuration
  * @package Framework\Base\Application
  */
-class Configuration implements ServiceInterface
+class Configuration implements ConfigurationInterface
 {
     /**
      * @var array
@@ -15,11 +15,11 @@ class Configuration implements ServiceInterface
 
     /**
      * Configuration constructor.
-     * @param array $configuration
+     * @param array $configurationValues
      */
-    public function __construct(array $configuration = [])
+    public function __construct(array $configurationValues = [])
     {
-        $this->configuration = $configuration;
+        $this->configuration = $configurationValues;
 
         return $this;
     }
@@ -27,9 +27,9 @@ class Configuration implements ServiceInterface
     /**
      * @return string
      */
-    public function getServiceName()
+    public function getIdentifier()
     {
-        return 'configuration';
+        return self::class;
     }
 
     /**
@@ -37,7 +37,7 @@ class Configuration implements ServiceInterface
      * @param $value
      * @return $this
      */
-    public function setValue(string $dotPath, $value)
+    public function setPathValue(string $dotPath, $value)
     {
         $arrayPath = explode('.', $dotPath);
 
@@ -50,7 +50,7 @@ class Configuration implements ServiceInterface
      * @param string $dotPath
      * @return mixed
      */
-    public function getValue(string $dotPath)
+    public function getPathValue(string $dotPath)
     {
         $arrayPath = explode('.', $dotPath);
 

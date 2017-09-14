@@ -8,5 +8,5 @@ namespace Framework\Base\Application;
  */
 interface ServiceInterface
 {
-    public function getServiceName();
+    public function getIdentifier();
 }

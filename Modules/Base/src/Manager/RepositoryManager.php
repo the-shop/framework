@@ -121,9 +121,15 @@ class RepositoryManager implements RepositoryManagerInterface, ApplicationAwareI
      */
     public function registerRepository(string $fullyQualifiedClassName = '')
     {
+        /**@todo unify implementation with `registerRepositories()` */
+
         array_push($this->registeredRepositories, $fullyQualifiedClassName);
 
-        $this->registeredRepositories = array_unique($this->registeredRepositories);
+        /**@todo implement `array_unique()` differently
+         *          since its not meant to work on multidimensional arrays
+         *          and it has big impact on performance
+         */
+        $this->registeredRepositories = array_unique($this->registeredRepositories, SORT_REGULAR);
 
         return $this;
     }
@@ -137,7 +143,11 @@ class RepositoryManager implements RepositoryManagerInterface, ApplicationAwareI
     {
         $this->registeredRepositories = array_merge($this->registeredRepositories, $fullyQualifiedClassNames);
 
-        $this->registeredRepositories = array_unique($this->registeredRepositories);
+        /**@todo implement `array_unique()` differently
+         *          since its not meant to work on multidimensional arrays
+         *          and it has big impact on performance
+         */
+//        $this->registeredRepositories = array_unique($this->registeredRepositories, SORT_REGULAR);
 
         return $this;
     }
@@ -161,9 +171,13 @@ class RepositoryManager implements RepositoryManagerInterface, ApplicationAwareI
      */
     public function registerResources(array $resourcesMap = [])
     {
-        $this->registeredResources = array_merge($this->registeredResources, $resourcesMap);
+        $this->registeredResources = array_merge_recursive($this->registeredResources, $resourcesMap);
 
-        $this->registeredResources = array_unique($this->registeredResources);
+        /**@todo implement `array_unique()` differently
+         *          since its not meant to work on multidimensional arrays
+         *          and it has big impact on performance
+         */
+//        $this->registeredRepositories = array_unique($this->registeredRepositories, SORT_REGULAR);
 
         foreach ($resourcesMap as $resourceName => $repository) {
             if (isset($this->primaryAdapters[$resourceName]) === false) {
@@ -184,7 +198,11 @@ class RepositoryManager implements RepositoryManagerInterface, ApplicationAwareI
     {
         $this->registeredModelFields = array_merge($this->registeredModelFields, $modelFieldsMap);
 
-        $this->registeredModelFields = array_unique($this->registeredModelFields);
+        /**@todo implement `array_unique()` differently
+         *          since its not meant to work on multidimensional arrays
+         *          and it has big impact on performance
+         */
+//        $this->registeredModelFields = array_unique($this->registeredModelFields, SORT_REGULAR);
 
         return $this;
     }
@@ -251,7 +269,7 @@ class RepositoryManager implements RepositoryManagerInterface, ApplicationAwareI
     public function getPrimaryAdapter(string $modelClassName)
     {
         if (isset($this->primaryAdapters[$modelClassName]) === false) {
-            throw new RuntimeException('No registered primary adapter for ' . $modelClassName);
+            throw new \RuntimeException('No registered primary adapter for ' . $modelClassName);
         }
 
         return $this->primaryAdapters[$modelClassName];

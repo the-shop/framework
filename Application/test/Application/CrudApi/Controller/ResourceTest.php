@@ -20,6 +20,7 @@ class ResourceTest extends UnitTest
                 'GET' => [],
                 'POST' => [],
                 'PUT' => [],
+                'PATCH' => [],
             ],
             'private' => [
                 'GET' => [
@@ -39,6 +40,14 @@ class ResourceTest extends UnitTest
                     ],
                 ],
                 'PUT' => [
+                    [
+                        'route' => '/{resourceName}/{identifier}',
+                        'allows' => [
+                            'admin',
+                        ],
+                    ],
+                ],
+                'PATCH' => [
                     [
                         'route' => '/{resourceName}/{identifier}',
                         'allows' => [
@@ -170,6 +179,75 @@ class ResourceTest extends UnitTest
                 'name' => 'updated test name',
                 'email' => 'updatedtest@test.com',
                 'company' => 'test company',
+            ]
+        );
+
+        $responseBody = $response->getBody();
+
+        $this->assertArrayHasKey('error', $responseBody);
+        $this->assertArrayHasKey('errors', $responseBody);
+
+        $this->assertEquals(true, $responseBody['error']);
+        $this->assertEquals('Property "company" not defined.', $responseBody['errors'][0]);
+        $this->assertEquals(500, $response->getCode());
+    }
+
+    /**
+     * Test resource controller update partial one model - success
+     * @depends testUpdateOneModel
+     * @param Generic $model
+     * @return mixed
+     */
+    public function testUpdatePartialOneModel(Generic $model)
+    {
+        $this->getApplication()->setAclRules($this->aclRules);
+
+        $modelId = $model->getId();
+
+        $route = '/users/' . $modelId;
+
+        $response = $this->makeHttpRequest(
+            'PATCH',
+            $route,
+            [
+                'name' => 'partial updated test name',
+                'email' => 'partialupdated@test.com',
+            ]
+        );
+
+        $updatedModel = $response->getBody();
+
+        $modelAttributes = $updatedModel->getAttributes();
+
+        $this->assertNotEmpty($updatedModel);
+        $this->assertEquals('partial updated test name', $modelAttributes['name']);
+        $this->assertEquals('partialupdated@test.com', $modelAttributes['email']);
+        $this->assertEquals($modelId, $modelAttributes['_id']);
+        $this->assertEquals(200, $response->getCode());
+
+        return $updatedModel;
+    }
+
+    /**
+     * Test resource controller - update one model - undefined attribute - fail
+     * @depends testUpdatePartialOneModel
+     * @param Generic $model
+     */
+    public function testPartialUpdateOneModelUndefinedAttribute(Generic $model)
+    {
+        $this->getApplication()->setAclRules($this->aclRules);
+
+        $modelId = $model->getId();
+
+        $route = '/users/' . $modelId;
+
+        $response = $this->makeHttpRequest(
+            'PATCH',
+            $route,
+            [
+                'name' => 'partial updated test name',
+                'email' => 'partialupdated@test.com',
+                'company' => 'test company'
             ]
         );
 

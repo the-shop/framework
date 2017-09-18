@@ -21,6 +21,7 @@ class ResourceTest extends UnitTest
                 'POST' => [],
                 'PUT' => [],
                 'PATCH' => [],
+                'DELETE' => [],
             ],
             'private' => [
                 'GET' => [
@@ -48,6 +49,14 @@ class ResourceTest extends UnitTest
                     ],
                 ],
                 'PATCH' => [
+                    [
+                        'route' => '/{resourceName}/{identifier}',
+                        'allows' => [
+                            'admin',
+                        ],
+                    ],
+                ],
+                'DELETE' => [
                     [
                         'route' => '/{resourceName}/{identifier}',
                         'allows' => [
@@ -100,6 +109,7 @@ class ResourceTest extends UnitTest
      * Resource controller -  test load one model - model found
      * @depends testCreateModel
      * @param Generic $model
+     * @return mixed;
      */
     public function testLoadOneModel(Generic $model)
     {
@@ -111,21 +121,23 @@ class ResourceTest extends UnitTest
 
         $response = $this->makeHttpRequest('GET', $route);
 
-        $responseBody = $response->getBody();
+        $loadedModel = $response->getBody();
 
-        $modelAttributes = $responseBody->getAttributes();
+        $modelAttributes = $loadedModel->getAttributes();
 
-        $this->assertNotEmpty($responseBody);
+        $this->assertNotEmpty($loadedModel);
         $this->assertEquals('test', $modelAttributes['name']);
         $this->assertEquals('test@test.com', $modelAttributes['email']);
         $this->assertEquals($modelId, $modelAttributes['_id']);
         $this->assertEquals(200, $response->getCode());
+
+        return $loadedModel;
     }
 
     /**
      *
      * Resource controller - test update one model - success
-     * @depends testCreateModel
+     * @depends testLoadOneModel
      * @param Generic $model
      * @return mixed
      */
@@ -259,5 +271,38 @@ class ResourceTest extends UnitTest
         $this->assertEquals(true, $responseBody['error']);
         $this->assertEquals('Property "company" not defined.', $responseBody['errors'][0]);
         $this->assertEquals(500, $response->getCode());
+    }
+
+    /**
+     * Resource controller test - delete one model - successfully
+     * @depends testUpdatePartialOneModel
+     * @param Generic $model
+     */
+    public function testDeleteOneModel(Generic $model)
+    {
+        $this->getApplication()->setAclRules($this->aclRules);
+
+        $modelId = $model->getId();
+
+        $route = '/users/' . $modelId;
+
+        $response = $this->makeHttpRequest('DELETE', $route);
+
+        $responseBody = $response->getBody();
+
+        $modelAttributes = $responseBody->getAttributes();
+
+        $this->assertNotEmpty($responseBody);
+        $this->assertEquals('partial updated test name', $modelAttributes['name']);
+        $this->assertEquals('partialupdated@test.com', $modelAttributes['email']);
+        $this->assertEquals($modelId, $modelAttributes['_id']);
+        $this->assertEquals(200, $response->getCode());
+
+        $loadDeletedModel = $this->getApplication()
+            ->getRepositoryManager()
+            ->getRepositoryFromResourceName('users')
+            ->loadOne($modelId);
+
+        $this->assertEquals(null, $loadDeletedModel);
     }
 }

@@ -14,6 +14,17 @@ use Framework\Base\Model\BrunoInterface;
 interface BrunoRepositoryInterface extends ApplicationAwareInterface
 {
     /**
+     * @param string $resourceName
+     * @return BrunoRepositoryInterface;
+     */
+    public function setResourceName(string $resourceName);
+
+    /**
+     * @return string
+     */
+    public function getResourceName();
+
+    /**
      * @return DatabaseAdapterInterface|null
      */
     public function getDatabaseAdapters();

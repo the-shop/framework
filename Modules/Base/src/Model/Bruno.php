@@ -264,7 +264,7 @@ abstract class Bruno implements BrunoInterface
     public function setAttribute(string $attribute, $value)
     {
         if (array_key_exists($attribute, $this->getDefinedAttributes()) === false) {
-            throw new \InvalidArgumentException('Property "' . $attribute . '" not defined');
+            throw new \InvalidArgumentException('Property "' . $attribute . '" not defined.');
         }
 
         $this->getApplication()

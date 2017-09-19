@@ -41,6 +41,10 @@ class RestApi extends BaseApplication
         $request->setFiles(isset($_FILES) ? $_FILES : []);
         $request->setServer($_SERVER);
 
+        if (isset($_SERVER['REQUEST_URI']) === true) {
+            $request->setUri($_SERVER['REQUEST_URI']);
+        }
+
         unset($_POST);
         unset($_GET);
         unset($_FILES);

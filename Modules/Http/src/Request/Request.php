@@ -124,6 +124,11 @@ class Request implements RequestInterface
             $uri = '/' . $uri;
         }
 
+        // Strip query string (?foo=bar)
+        if (($pos = strpos($uri, '?')) !== false) {
+            $uri = substr($uri, 0, $pos);
+        }
+
         $this->requestUri = $uri;
 
         return $this;
@@ -134,8 +139,7 @@ class Request implements RequestInterface
      */
     public function getUri()
     {
-        $serverInfo = $this->serverInformation;
-        return isset($serverInfo['REQUEST_URI']) === true ? $serverInfo['REQUEST_URI'] : $this->requestUri;
+        return $this->requestUri;
     }
 
     /**

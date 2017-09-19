@@ -15,8 +15,6 @@ use Framework\RestApi\RestApi;
  */
 class AclTest extends UnitTest
 {
-    const EVENT_CRUD_API_RESOURCE_LOAD_ALL_PRE = 'EVENT\CRUD_API\RESOURCE_LOAD_ALL_PRE';
-
     /**
      * Test acl listener for routes, user has got no permission for requested route - exception
      */
@@ -59,11 +57,11 @@ class AclTest extends UnitTest
                 'private' => [
                     'GET' => [
                         [
-                            'route' => '/users',
+                            'route' => '/{resourceName}',
                             'allows' => [
-                                'admin'
-                            ]
-                        ]
+                                'admin',
+                            ],
+                        ],
                     ],
                 ],
             ],

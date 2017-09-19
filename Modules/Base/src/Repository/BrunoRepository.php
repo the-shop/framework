@@ -33,6 +33,27 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     private $modelAttributesDefinition = [];
 
     /**
+     * Sets `$resourceName` as the document collection
+     *
+     * @param string $resourceName
+     * @return $this
+     */
+    public function setResourceName(string $resourceName)
+    {
+        $this->resourceName = $resourceName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResourceName()
+    {
+        return $this->resourceName;
+    }
+
+    /**
      * @return mixed
      */
     public function getPrimaryAdapter()

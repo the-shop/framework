@@ -27,13 +27,6 @@ class Acl implements ListenerInterface
         $routeParameters = $this->getApplication()->getDispatcher()->getRouteParameters();
         $method = $request->getMethod();
         $uri = $request->getUri();
-        $queryParams = $request->getQuery();
-
-        // If queryParams exists cut them from uri so we can get registered route
-        if (empty($queryParams) === false) {
-            $queryString = '?' . key($queryParams);
-            $uri = substr($uri, 0, strpos($uri, $queryString));
-        }
 
         // Transform uri to actually registered route so we can compare that route with acl
         foreach ($routeParameters as $param => $value) {

@@ -23,12 +23,12 @@ class AuthController extends Http
         $model = null;
         $attemptStrategies = [];
 
-        foreach ($authModels as $modelName => $params) {
+        foreach ($authModels as $repoName => $params) {
             if (in_array($params['credentials'], array_keys($post), true) === true &&
                 count($post) === count($params['credentials'])
             ) {
                 $attemptStrategies[] = [
-                    'repository' => $this->getRepositoryFromResourceName($modelName),
+                    'repository' => $this->getRepositoryFromResourceName($repoName),
                     'class' => '\\Framework\\Base\\Auth\\' . ucfirst(strtolower($params['strategy'])) . 'AuthStrategy',
                     'credentials' => $params['credentials'],
                 ];

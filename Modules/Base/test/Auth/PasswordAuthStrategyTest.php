@@ -2,10 +2,11 @@
 
 namespace Framework\Base\Test\Auth;
 
-use Application\CrudApi\Model\Generic;
-use Application\CrudApi\Repository\GenericRepository;
+use Framework\Base\Application\Exception\AuthenticationException;
 use Framework\Base\Auth\PasswordAuthStrategy;
 use Framework\Base\Test\TestDatabaseAdapter;
+use Framework\Base\Test\TestModel;
+use Framework\Base\Test\TestRepository;
 use Framework\Base\Test\UnitTest;
 
 class PasswordAuthStrategyTest extends UnitTest
@@ -13,7 +14,7 @@ class PasswordAuthStrategyTest extends UnitTest
     public function testIsInstantiableAndSettersAndGetters()
     {
         $post = ['two', 'elements'];
-        $repository = new GenericRepository();
+        $repository = new TestRepository();
 
         $strategy = new PasswordAuthStrategy($post, $repository);
 
@@ -24,13 +25,54 @@ class PasswordAuthStrategyTest extends UnitTest
         $this::assertEquals($post[1], $strategy->getPassword());
     }
 
-    public function testValidation()
+    public function testValidationSucess()
     {
-        $authModel['tests'] = ['strategy' => 'Password','credentials' => ['email','password']];
+        $data = $this->getValidationTestData();
+        $repository = $data[0];
+        $authModel = $data[1];
+
+        $post = ['email' => 'test@test.com','password' => 'pw123'];
+        $strategy = new PasswordAuthStrategy($post, $repository);
+
+        $this::assertInstanceOf(
+            TestModel::class,
+            $strategy->validate($authModel['tests']['credentials'])
+        );
+    }
+//
+//    public function testValidationModelNotFound()
+//    {
+//        $data = $this->getValidationTestData();
+//        $repository = $data[0];
+//        $authModel = $data[1];
+//
+//        $post = ['email' => 'test@testic.com','password' => 'pw123'];
+//        $strategy = new PasswordAuthStrategy($post, $repository);
+//
+//        $this::expectException(NotFoundException::class);
+//        $strategy->validate($authModel['tests']['credentials']);
+//    }
+
+    public function testvalidationInvalidCredentials()
+    {
+        $data = $this->getValidationTestData();
+        $repository = $data[0];
+        $authModel = $data[1];
+
+        $post = ['email' => 'test@test.com','password' => 'pw1234'];
+        $strategy = new PasswordAuthStrategy($post, $repository);
+
+        $this::expectException(AuthenticationException::class);
+        $strategy->validate($authModel['tests']['credentials']);
+    }
+
+    protected function getValidationTestData()
+    {
+        $authModel['tests'] = ['strategy' => 'Password', 'credentials' => ['email', 'password']];
         $fields['tests'] = ["email" => ["label" => "Email", "type" => "string",],
-                            "password" =>["label" => "Password","type" => "password"]];
-        $resource = ['tests' => GenericRepository::class,];
-        $post = ['email' => 'test','password' => 'pw123'];
+                            "password" =>["label" => "Password", "type" => "password"]];
+        $repository = [TestModel::class => TestRepository::class];
+        $resource = ['tests' => TestRepository::class];
 
         $adapter = new TestDatabaseAdapter();
 
@@ -38,6 +80,7 @@ class PasswordAuthStrategyTest extends UnitTest
              ->getRepositoryManager()
              ->addModelAdapter('tests', $adapter)
              ->setPrimaryAdapter('tests', $adapter)
+             ->registerRepositories($repository)
              ->registerResources($resource)
              ->registerModelFields($fields)
              ->addAuthenticatableModels($authModel);
@@ -47,20 +90,20 @@ class PasswordAuthStrategyTest extends UnitTest
                            ->getRepositoryManager()
                            ->getRepositoryFromResourceName('tests');
 
-        $result = new Generic();
-        $strategy = new PasswordAuthStrategy($post, $repository);
-        $result->setResourceName('tests');
+        $model = new TestModel();
 
-        $result->defineModelAttributes($fields['tests']);
-        $result->setApplication($this->getApplication());
-        $result->setCollection('tests');
-        $result->setAttribute('email', 'test');
-        $result->setAttribute('password', 'pw123');
+        $model->defineModelAttributes($fields['tests']);
+        $model->setApplication($this->getApplication());
+        $model->setAttribute('email', 'test@test.com');
+        $model->setAttribute('password', password_hash('pw123', PASSWORD_BCRYPT));
+        $adapter->setLoadOneResult([
+            'email' => $model->getAttributes()['email'],
+            'password' => $model->getAttributes()['password'],
+            ]);
 
-        $adapter->setLoadOneResult($result);
-
-        $this::assertEquals(1, 1);
-
-//        $strategy->validate($authModel['tests']['credentials']);
+        return [
+            $repository,
+            $authModel
+        ];
     }
 }

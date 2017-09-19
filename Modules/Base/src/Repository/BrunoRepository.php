@@ -109,15 +109,12 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
 
         $query = $this->createNewQueryForModel($model);
 
-        $data = $adapter
+        $attributes = $adapter
             ->loadOne($query);
 
-
-        if ($data === null) {
+        if ($attributes === null) {
             return null;
         }
-
-        $attributes = $data->getArrayCopy();
 
         $model->setAttributes($attributes);
         $model->setDatabaseAttributes($attributes);
@@ -144,8 +141,6 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
             ->loadMultiple($query);
 
         foreach ($data as $attributes) {
-            $attributes = $attributes->getArrayCopy();
-
             $modelAttributesDefinition = $this->getModelAttributesDefinition();
 
                 $model = $this->newModel();

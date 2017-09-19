@@ -135,7 +135,7 @@ class RepositoryManager implements RepositoryManagerInterface, ApplicationAwareI
     }
 
     /**
-     * @param array $fullyQualifiedClassNames
+     * @param array $fullyQualifiedClassNames modelClass => repoClass
      *
      * @return $this
      */

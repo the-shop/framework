@@ -145,7 +145,7 @@ class Module extends BaseModule
                 isset($params['credentials']) === true &&
                 is_array($params['credentials']) === true
             ) {
-                $models[$modelName] = [
+                $models[$params['collection']] = [
                     'strategy' => $params['authStrategy'],
                     'credentials' => $params['credentials'],
                 ];

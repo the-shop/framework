@@ -2,20 +2,21 @@
 
 namespace Framework\Base\Terminal;
 
-use Framework\Base\Application\ApplicationInterface;
+use Framework\Base\Application\ApplicationConfiguration;
 use Framework\Base\Application\BaseApplication;
+use Framework\Base\Terminal\Router\Dispatcher;
 
 /**
- * Class Terminal
- * @package Framework\Base\Terminal
+ * Class TerminalApp
+ * @package Framework\Base\TerminalApp
  */
-class Terminal extends BaseApplication
+class TerminalApp extends BaseApplication
 {
     /**
-     * Terminal constructor.
-     * @param ApplicationInterface|null $applicationConfiguration
+     * TerminalApp constructor.
+     * @param ApplicationConfiguration|null $applicationConfiguration
      */
-    public function __construct(ApplicationInterface $applicationConfiguration = null)
+    public function __construct(ApplicationConfiguration $applicationConfiguration = null)
     {
         parent::__construct($applicationConfiguration);
     }

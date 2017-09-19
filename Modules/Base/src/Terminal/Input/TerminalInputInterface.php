@@ -4,7 +4,7 @@ namespace Framework\Base\Terminal\Input;
 
 /**
  * Interface TerminalInputInterface
- * @package Framework\Base\Terminal\Input
+ * @package Framework\Base\TerminalApp\Input
  */
 interface TerminalInputInterface
 {
@@ -20,10 +20,10 @@ interface TerminalInputInterface
     public function getInputCommand();
 
     /**
-     * @param array $arguments
-     * @return TerminalInputInterface
+     * @param array $options
+     * @return mixed
      */
-    public function setInputOptions(array $arguments);
+    public function setInputOptions(array $options = []);
 
     /**
      * @return mixed

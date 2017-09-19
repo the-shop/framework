@@ -4,7 +4,7 @@ namespace Framework\Base\Terminal\Input;
 
 /**
  * Class TerminalInput
- * @package Framework\Base\Terminal\Input
+ * @package Framework\Base\TerminalApp\Input
  */
 class TerminalInput implements TerminalInputInterface
 {

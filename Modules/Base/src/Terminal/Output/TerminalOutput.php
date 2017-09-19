@@ -4,7 +4,7 @@ namespace Framework\Base\Terminal\Output;
 
 /**
  * Class TerminalOutput
- * @package Framework\Base\Terminal\Output
+ * @package Framework\Base\TerminalApp\Output
  */
 class TerminalOutput implements TerminalOutputInterface
 {
@@ -34,12 +34,12 @@ class TerminalOutput implements TerminalOutputInterface
     }
 
     /**
-     * @param array $outputMessages
+     * @param array $messages
      * @return $this
      */
-    public function setOutputMessages(array $outputMessages = [])
+    public function setOutputMessages(array $messages = [])
     {
-        $this->outputMessages = $outputMessages;
+        $this->outputMessages = $messages;
 
         return $this;
     }

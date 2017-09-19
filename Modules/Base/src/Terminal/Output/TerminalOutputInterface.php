@@ -4,7 +4,7 @@ namespace Framework\Base\Terminal\Output;
 
 /**
  * Interface TerminalOutputInterface
- * @package Framework\Base\Terminal\Output
+ * @package Framework\Base\TerminalApp\Output
  */
 interface TerminalOutputInterface
 {
@@ -12,7 +12,7 @@ interface TerminalOutputInterface
      * @param array $messages
      * @return mixed
      */
-    public function setOutputMessages(array $messages);
+    public function setOutputMessages(array $messages = []);
 
     /**
      * @return mixed
@@ -24,5 +24,5 @@ interface TerminalOutputInterface
      * @param bool $newline
      * @return mixed
      */
-    public function writeOutput(string $message, bool $newline);
+    public function writeOutput(string $message, bool $newline = false);
 }

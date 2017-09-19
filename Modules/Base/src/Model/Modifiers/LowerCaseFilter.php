@@ -1,10 +1,10 @@
 <?php
 
-namespace Framework\Base\Repository\Modifiers;
+namespace Framework\Base\Model\Modifiers;
 
 /**
  * Class LowerCaseFilter
- * @package Framework\Base\RepositoryManager\Modifiers
+ * @package Framework\Base\Model\Modifiers
  */
 class LowerCaseFilter implements FieldModifierInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\BaseTest\Mailer;
+namespace Framework\Base\Test\Mailer;
 
 use Framework\Base\Test\Mailer\DummySendGridClient;
 use Framework\Base\Mailer\EmailSender;

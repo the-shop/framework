@@ -1,10 +1,10 @@
 <?php
 
-namespace Framework\RestApiTest\Logger;
+namespace Framework\RestApi\Test\Logger;
 
-use Framework\Base\Logger\DummyClient;
 use Framework\Base\Logger\Log;
 use Framework\Base\Sentry\SentryLogger;
+use Framework\Base\Test\Logger\DummyClient;
 use Framework\Base\Test\UnitTest;
 
 /**

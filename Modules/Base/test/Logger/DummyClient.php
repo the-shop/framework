@@ -1,11 +1,7 @@
 <?php
 
-namespace Framework\Base\Logger;
+namespace Framework\Base\Test\Logger;
 
-/**
- * Class DummyClient
- * @package Framework\RestApiTest\Logger
- */
 /**
  * Class DummyClient
  * @package Framework\RestApiTest\Logger

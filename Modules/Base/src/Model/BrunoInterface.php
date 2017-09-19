@@ -3,7 +3,7 @@
 namespace Framework\Base\Model;
 
 use Framework\Base\Application\ApplicationAwareInterface;
-use Framework\Base\Repository\Modifiers\FieldModifierInterface;
+use Framework\Base\Model\Modifiers\FieldModifierInterface;
 
 /**
  * Interface BrunoInterface

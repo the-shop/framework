@@ -1,10 +1,10 @@
 <?php
 
-namespace Framework\Base\Repository\Modifiers;
+namespace Framework\Base\Model\Modifiers;
 
 /**
  * Class TrimFilter
- * @package Framework\Base\RepositoryManager\Modifiers
+ * @package Framework\Base\Model\Modifiers
  */
 class TrimFilter implements FieldModifierInterface
 {

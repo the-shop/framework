@@ -124,7 +124,10 @@ class Request implements RequestInterface
             $uri = '/' . $uri;
         }
 
-        $uri = $this->stripUri($uri);
+        // Strip query string (?foo=bar)
+        if (($pos = strpos($uri, '?')) !== false) {
+            $uri = substr($uri, 0, $pos);
+        }
 
         $this->requestUri = $uri;
 
@@ -136,9 +139,7 @@ class Request implements RequestInterface
      */
     public function getUri()
     {
-        $serverInfo = $this->serverInformation;
-        return isset($serverInfo['REQUEST_URI']) === true ? $this->stripUri($serverInfo['REQUEST_URI']) :
-            $this->requestUri;
+        return $this->requestUri;
     }
 
     /**
@@ -150,19 +151,5 @@ class Request implements RequestInterface
         $this->serverInformation = $serverInformationMap;
 
         return $this;
-    }
-
-    /**
-     * @param string $uri
-     * @return bool|string
-     */
-    private function stripUri(string $uri)
-    {
-        // Strip query string (?foo=bar)
-        if (($pos = strpos($uri, '?')) !== false) {
-            $uri = substr($uri, 0, $pos);
-        }
-
-        return $uri;
     }
 }

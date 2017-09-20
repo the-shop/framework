@@ -66,8 +66,23 @@ class Module extends BaseModule
     {
         $application = $this->getApplication();
 
+        $authModelsConfigs = $this->getAuthenticatables();
+
+        if (empty($authModelsConfigs) === false) {
+            array_unshift(
+                $this->config['routes'],
+                [
+                    'post',
+                    '/login',
+                    '\Framework\Base\Auth\Controller\AuthController::authenticate',
+                ]
+            );
+            $application->getRepositoryManager()
+                        ->addAuthenticatableModels($authModelsConfigs);
+        }
+
         $application->getDispatcher()
-            ->addRoutes($this->config['routes']);
+                    ->addRoutes($this->config['routes']);
 
         $application->setAclRules($this->readJsonFile('acl'));
 
@@ -117,5 +132,25 @@ class Module extends BaseModule
     private function readJsonFile($fileName)
     {
         return json_decode(file_get_contents(__DIR__ . "/config/" . $fileName . ".json"), true);
+    }
+
+    private function getAuthenticatables()
+    {
+        $models = [];
+        $config = json_decode(file_get_contents(__DIR__ . "/config/models.json"), true);
+        foreach ($config as $modelName => $params) {
+            if (isset($params['authenticatable']) === true &&
+                $params['authenticatable'] === true &&
+                isset($params['authStrategy']) === true &&
+                isset($params['credentials']) === true &&
+                is_array($params['credentials']) === true
+            ) {
+                $models[$params['collection']] = [
+                    'strategy' => $params['authStrategy'],
+                    'credentials' => $params['credentials'],
+                ];
+            }
+        }
+        return $models;
     }
 }

@@ -78,7 +78,7 @@ interface BrunoInterface extends ApplicationAwareInterface
 
     /**
      * @param string $collectionName
-     * @return mixed
+     * @return BrunoInterface
      */
     public function setCollection(string $collectionName);
 

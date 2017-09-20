@@ -162,7 +162,7 @@ class MongoAdapter implements DatabaseAdapterInterface
 
         $out = [];
         foreach ($queryResults as $result) {
-            $out[] = $result;
+            $out[] = $result->getArrayCopy();
         }
 
         return $out;

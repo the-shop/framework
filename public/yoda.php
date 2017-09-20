@@ -7,8 +7,8 @@ $dotenv->load(__DIR__ . '/../.env');
 
 $appConfig = new \Framework\Base\Application\ApplicationConfiguration();
 $appConfig->setRegisteredModules([
-    \Framework\RestApi\Module::class,
-    \Application\CrudApi\Module::class
+    \Application\CrudApi\Module::class,
+    \Framework\Base\Terminal\Module::class
 ]);
 
 $app = new \Framework\Base\Terminal\TerminalApp($appConfig);

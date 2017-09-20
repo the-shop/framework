@@ -91,8 +91,7 @@ class Resource extends HttpController
 
         /* @var GenericRepository $repository */
         $repository = $this->getRepositoryFromResourceName($resourceName);
-        $models = $repository->setResourceName($resourceName)
-            ->loadMultiple();
+        $models = $repository->loadMultiple();
 
         $this->getApplication()
             ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_LOAD_ALL_POST, $models);
@@ -138,10 +137,12 @@ class Resource extends HttpController
                 ]
             );
 
-        $model = new GenericModel();
-        $model->setResourceName($resourceName);
-        $model->setAttributes($this->getPost());
-        $model->save();
+        $model = $this->getApplication()
+            ->getRepositoryManager()
+            ->getRepositoryFromResourceName($resourceName)
+            ->newModel()
+            ->setAttributes($this->getPost())
+            ->save();
 
         $this->getApplication()
             ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_CREATE_POST, $model);
@@ -248,8 +249,7 @@ class Resource extends HttpController
     {
         /* @var GenericRepository $repository */
         $repository = $this->getRepositoryFromResourceName($resourceName);
-        $model = $repository->setResourceName($resourceName)
-            ->loadOne($identifier);
+        $model = $repository->loadOne($identifier);
 
         if (!$model) {
             throw new NotFoundException('Model not found.');

@@ -7,10 +7,11 @@ use Framework\Base\Database\DatabaseQueryInterface;
 use Framework\Base\Manager\RepositoryManagerInterface;
 use Framework\Base\Model\BrunoInterface;
 use Framework\Base\Mongo\MongoQuery;
+use MongoDB\BSON\ObjectID;
 
 /**
  * Class BrunoRepository
- * @package Framework\Base\RepositoryManager
+ * @package Framework\Base\Repository
  */
 abstract class BrunoRepository implements BrunoRepositoryInterface
 {
@@ -30,6 +31,27 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
      * @var array
      */
     private $modelAttributesDefinition = [];
+
+    /**
+     * Sets `$resourceName` as the document collection
+     *
+     * @param string $resourceName
+     * @return $this
+     */
+    public function setResourceName(string $resourceName)
+    {
+        $this->resourceName = $resourceName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResourceName()
+    {
+        return $this->resourceName;
+    }
 
     /**
      * @return mixed
@@ -79,6 +101,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         $model = new $modelClass();
 
         $model->defineModelAttributes($modelAttributesDefinition)
+            ->setCollection($this->resourceName)
             ->setApplication($this->getApplication());
 
         return $model;
@@ -107,10 +130,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         $adapter = $this->getPrimaryAdapter();
 
         $query = $this->createNewQueryForModel($model);
+        $query->addAndCondition('_id', '$eq', new ObjectID($identifier));
 
         $data = $adapter
             ->loadOne($query);
-
 
         if ($data === null) {
             return null;

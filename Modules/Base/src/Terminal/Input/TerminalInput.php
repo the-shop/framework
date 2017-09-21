@@ -11,6 +11,9 @@ use Framework\Base\Request\RequestInterface;
  */
 class TerminalInput implements TerminalInputInterface
 {
+    const REQUIRED_ARG = 'required_argument';
+    const OPTIONAL_ARG = 'optional_argument';
+
     use ApplicationAwareTrait;
     /**
      * @var string
@@ -41,6 +44,10 @@ class TerminalInput implements TerminalInputInterface
     }
 
     /**
+     * Input arguments that have "=" (equality) symbol are considered as input arguments.
+     * If input argument is surrounded with brackets "[]", it will be considered as optional
+     * parameter.
+     * All other parameters, without equality symbol will not be validated and will be ignored.
      * @param array $arguments
      * @return $this
      */
@@ -54,7 +61,7 @@ class TerminalInput implements TerminalInputInterface
             if (stripos($argument, '=') !== false
                 && stripos($argument, '[') === false
             ) {
-                $formattedParam = $this->formatInputArgument($argument);
+                $formattedParam = $this->formatInputArgument($argument, self::REQUIRED_ARG);
                 $requiredParams = array_merge($requiredParams, $formattedParam);
             }
             // Set optional parameter
@@ -62,7 +69,7 @@ class TerminalInput implements TerminalInputInterface
                 && substr($argument, -1) === ']'
                 && stripos($argument, '=') !== false
             ) {
-                $formattedParam = $this->formatInputArgument($argument, true);
+                $formattedParam = $this->formatInputArgument($argument, self::OPTIONAL_ARG);
                 $optionalParams = array_merge($optionalParams, $formattedParam);
             }
         }
@@ -102,28 +109,36 @@ class TerminalInput implements TerminalInputInterface
 
     /**
      * @param $argument
-     * @param bool $optional
+     * @param $argumentType
      * @return array
      */
-    private function formatInputArgument($argument, $optional = false)
+    private function formatInputArgument($argument, $argumentType)
     {
-        if ($optional !== false) {
+        $argParts = [];
+
+        // Parse optional argument, remove brackets "[", "]", remove "=" and set key <-> value pair
+        if ($argumentType === self::OPTIONAL_ARG) {
             $removedFirstBracket = str_replace('[', '', $argument);
             $removedBrackets = str_replace(']', '', $removedFirstBracket);
             $argParts = explode('=', $removedBrackets);
-        } else {
+        }
+
+        // Parse required argument, remove "=" and set key <-> value pair
+        if ($argumentType === self::REQUIRED_ARG) {
             $argParts = explode('=', $argument);
         }
 
+        // Format argument key <-> value pair to lowercase
         $formattedParameter = [strtolower($argParts[0]) => $argParts[1]];
 
+        // Check if some parts of argument are missing
         $exceptionMessage = '';
         if (empty($argParts[0]) === true && empty($argParts[1])) {
             $exceptionMessage = 'Invalid input! Argument should be passed as <key=value>';
         } elseif (empty($argParts[0]) === true) {
-            $exceptionMessage = 'Invalid argument! Value <' . $argParts[1] . '> is passed without key!';
+            $exceptionMessage = 'Invalid argument! Key is missing for value <' . $argParts[1] . '>';
         } elseif (empty($argParts[1]) === true) {
-            $exceptionMessage = 'Invalid argument! Key <' . $argParts[0] . '> is passed without value!';
+            $exceptionMessage = 'Invalid argument! Value is missing for key <' . $argParts[0] . '>';
         }
 
         if (empty($exceptionMessage) !== true) {

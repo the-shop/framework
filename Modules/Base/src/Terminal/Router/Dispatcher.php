@@ -63,6 +63,7 @@ class Dispatcher implements DispatcherInterface
      */
     public function parseRequest(RequestInterface $request)
     {
+        // Parse input arguments
         $inputHandler = new TerminalInput($request);
         $commandName = $inputHandler->getInputCommand();
 
@@ -74,8 +75,8 @@ class Dispatcher implements DispatcherInterface
             );
         }
 
-        // Let's grab route defined parameters, required and optional, cast them to lowercase
-        // so we can compare it with input arguments
+        /* Let's grab route defined parameters, required and optional, cast them to lowercase
+         so we can compare it with input arguments */
         $definedRequiredParams = array_map(
             'strtolower',
             $this->getRoutes()[$commandName]['requiredParams']

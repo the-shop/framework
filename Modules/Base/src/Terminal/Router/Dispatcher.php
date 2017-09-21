@@ -2,18 +2,27 @@
 
 namespace Framework\Base\Terminal\Router;
 
-use Framework\Base\Terminal\Input\TerminalInputInterface;
+use Framework\Base\Application\ApplicationAwareTrait;
+use Framework\Base\Request\RequestInterface;
+use Framework\Base\Router\DispatcherInterface;
+use Framework\Base\Terminal\Input\TerminalInput;
 
 /**
  * Class Dispatcher
  * @package Framework\Base\Terminal\Router
  */
-class Dispatcher implements TerminalDispatcherInterface
+class Dispatcher implements DispatcherInterface
 {
+    use ApplicationAwareTrait;
     /**
      * @var array
      */
     private $routes = [];
+
+    /**
+     * @var array
+     */
+    private $routeParameters = [];
 
     /**
      * @var
@@ -28,6 +37,15 @@ class Dispatcher implements TerminalDispatcherInterface
         return $this->routes;
     }
 
+    public function register()
+    {
+    }
+
+    public function getRouteParameters(): array
+    {
+        return $this->routeParameters;
+    }
+
     /**
      * @param array $routesDefinition
      * @return $this
@@ -40,12 +58,23 @@ class Dispatcher implements TerminalDispatcherInterface
     }
 
     /**
-     * @param TerminalInputInterface $terminalInput
+     * @param RequestInterface $request
      * @return $this
      */
-    public function parseRequest(TerminalInputInterface $terminalInput)
+    public function parseRequest(RequestInterface $request)
     {
-        // TODO: implement
+        $inputHandler = new TerminalInput($request);
+        $commandName = $inputHandler->getInputCommand();
+
+        if (array_key_exists($commandName, $this->getRoutes()) === false) {
+            throw new \InvalidArgumentException('Command name ' . $commandName . ' is not registered.', 404);
+        }
+
+        $inputParams = $inputHandler->getInputParameters();
+        $this->routeParameters['command'] = $commandName;
+
+        $this->setHandler($this->getRoutes()[$commandName]['handler']);
+
         return $this;
     }
 

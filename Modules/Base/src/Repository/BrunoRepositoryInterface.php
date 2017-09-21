@@ -36,7 +36,7 @@ interface BrunoRepositoryInterface extends ApplicationAwareInterface
     public function setRepositoryManager(RepositoryManagerInterface $repositoryManager);
 
     /**
-     * @return mixed
+     * @return BrunoInterface
      */
     public function newModel();
 

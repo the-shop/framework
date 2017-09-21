@@ -2,7 +2,9 @@
 
 namespace Framework\Base\Terminal\Commands;
 
-interface CommandInterface
+use Framework\Base\Application\ApplicationAwareInterface;
+
+interface CommandInterface extends ApplicationAwareInterface
 {
     public function handle();
 }

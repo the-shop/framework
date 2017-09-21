@@ -3,24 +3,25 @@
 namespace Framework\Base\Terminal\Output;
 
 /**
- * Class Colors
+ * Class ColorFormatter
  * @package Framework\Base\Terminal\Output
  */
-class Colors
+class ColorFormatter
 {
     /**
      * @var array
      */
-    private $foreground_colors = array();
+    private $foreground_colors = [];
     /**
      * @var array
      */
-    private $background_colors = array();
+    private $background_colors = [];
 
     /**
-     * Colors constructor.
+     * ColorFormatter constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Set up shell colors
         $this->foreground_colors['black'] = '0;30';
         $this->foreground_colors['dark_gray'] = '1;30';
@@ -56,7 +57,8 @@ class Colors
      * @param null $background_color
      * @return string
      */
-    public function getColoredString($string, $foreground_color = null, $background_color = null) {
+    public function getColoredString($string, $foreground_color = null, $background_color = null)
+    {
         $colored_string = "";
 
         // Check if given foreground color found
@@ -69,7 +71,7 @@ class Colors
         }
 
         // Add string and end coloring
-        $colored_string .=  $string . "\033[0m";
+        $colored_string .= $string . "\033[0m";
 
         return $colored_string;
     }
@@ -78,7 +80,8 @@ class Colors
      * Returns all foreground color names
      * @return array
      */
-    public function getForegroundColors() {
+    public function getForegroundColors()
+    {
         return array_keys($this->foreground_colors);
     }
 
@@ -86,7 +89,8 @@ class Colors
      * Returns all background color names
      * @return array
      */
-    public function getBackgroundColors() {
+    public function getBackgroundColors()
+    {
         return array_keys($this->background_colors);
     }
 }

@@ -19,7 +19,7 @@ interface RepositoryManagerInterface
 
     /**
      * @param string $resourceName
-     * @return mixed
+     * @return BrunoRepositoryInterface
      */
     public function getRepositoryFromResourceName(string $resourceName);
 

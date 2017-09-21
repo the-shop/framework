@@ -2,11 +2,13 @@
 
 namespace Framework\Base\Terminal\Input;
 
+use Framework\Base\Application\ApplicationAwareInterface;
+
 /**
  * Interface TerminalInputInterface
  * @package Framework\Base\TerminalApp\Input
  */
-interface TerminalInputInterface
+interface TerminalInputInterface extends ApplicationAwareInterface
 {
     /**
      * @param string $argument
@@ -20,13 +22,13 @@ interface TerminalInputInterface
     public function getInputCommand();
 
     /**
-     * @param array $options
+     * @param array $arguments
      * @return mixed
      */
-    public function setInputOptions(array $options = []);
+    public function setInputParameters(array $arguments = []);
 
     /**
      * @return mixed
      */
-    public function getInputOptions();
+    public function getInputParameters();
 }

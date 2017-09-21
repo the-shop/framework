@@ -66,13 +66,51 @@ class Dispatcher implements DispatcherInterface
         $inputHandler = new TerminalInput($request);
         $commandName = $inputHandler->getInputCommand();
 
+        // Let's check if command is registered
         if (array_key_exists($commandName, $this->getRoutes()) === false) {
-            throw new \InvalidArgumentException('Command name ' . $commandName . ' is not registered.', 404);
+            throw new \InvalidArgumentException(
+                'Command name ' . $commandName . ' is not registered.',
+                404
+            );
         }
 
-        $inputParams = $inputHandler->getInputParameters();
-        $this->routeParameters['command'] = $commandName;
+        // Let's grab route defined parameters, required and optional, cast them to lowercase
+        // so we can compare it with input arguments
+        $definedRequiredParams = array_map(
+            'strtolower',
+            $this->getRoutes()[$commandName]['requiredParams']
+        );
+        $definedOptionalParams = array_map(
+            'strtolower',
+            $this->getRoutes()[$commandName]['optionalParams']
+        );
 
+        // Let's grab input arguments
+        $inputRequiredParams = $inputHandler->getInputParameters()['requiredParams'];
+        $inputOptionalParams = $inputHandler->getInputParameters()['optionalParams'];
+
+        $routeParameters = [];
+
+        // Compare route defined required parameters with input required arguments
+        foreach ($definedRequiredParams as $definedParam) {
+            if (array_key_exists($definedParam, $inputRequiredParams) === false) {
+                throw new \InvalidArgumentException('Invalid required arguments.', 403);
+            }
+            $routeParameters[$definedParam] = $inputRequiredParams[$definedParam];
+        }
+
+        // Compare route defined required parameters with input required arguments
+        foreach ($definedOptionalParams as $definedOptionalParam) {
+            if (array_key_exists($definedOptionalParam, $inputOptionalParams) === false) {
+                throw new \InvalidArgumentException('Invalid optional arguments.', 403);
+            }
+            $routeParameters[$definedOptionalParam] = $inputOptionalParams[$definedOptionalParam];
+        }
+
+        // Set route parameters
+        $this->routeParameters = $routeParameters;
+
+        // Set route handler
         $this->setHandler($this->getRoutes()[$commandName]['handler']);
 
         return $this;

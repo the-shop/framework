@@ -20,7 +20,7 @@ class TerminalInput implements TerminalInputInterface
     /**
      * @var array
      */
-    private $arguments = [];
+    private $parameters = [];
 
     /**
      * TerminalInput constructor.
@@ -46,21 +46,29 @@ class TerminalInput implements TerminalInputInterface
      */
     public function setInputParameters(array $arguments = [])
     {
+        $requiredParams = [];
+        $optionalParams = [];
+
         foreach ($arguments as $argument) {
+            // Set required parameter
             if (stripos($argument, '=') !== false
                 && stripos($argument, '[') === false
             ) {
                 $formattedParam = $this->formatInputArgument($argument);
-                $this->arguments = array_merge($this->arguments, $formattedParam);
+                $requiredParams = array_merge($requiredParams, $formattedParam);
             }
+            // Set optional parameter
             if (substr($argument, 0, strlen('[')) === '['
                 && substr($argument, -1) === ']'
                 && stripos($argument, '=') !== false
             ) {
                 $formattedParam = $this->formatInputArgument($argument, true);
-                $this->arguments = array_merge($this->arguments, $formattedParam);
+                $optionalParams = array_merge($optionalParams, $formattedParam);
             }
         }
+
+        $this->parameters['requiredParams'] = $requiredParams;
+        $this->parameters['optionalParams'] = $optionalParams;
 
         return $this;
     }
@@ -70,7 +78,7 @@ class TerminalInput implements TerminalInputInterface
      */
     public function getInputParameters()
     {
-        return $this->arguments;
+        return $this->parameters;
     }
 
     /**
@@ -107,7 +115,7 @@ class TerminalInput implements TerminalInputInterface
             $argParts = explode('=', $argument);
         }
 
-        $formattedParameter = [$argParts[0] => $argParts[1]];
+        $formattedParameter = [strtolower($argParts[0]) => $argParts[1]];
 
         $exceptionMessage = '';
         if (empty($argParts[0]) === true && empty($argParts[1])) {

@@ -23,9 +23,11 @@ class Module extends BaseModule
             'test' => [
                 'handler' => Test::class,
                 'requiredParams' => [
-                    'testParam',
+                    'testParam1',
+                    'testParam2'
                 ],
                 'optionalParams' => [
+                    'testing',
                     'testOptionalParam',
                 ],
             ],

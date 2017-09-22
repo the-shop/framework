@@ -31,11 +31,13 @@ class TerminalApp extends BaseApplication
 
     public function handle()
     {
-        $handlerPath = $this->getDispatcher()->getHandler();
+        $dispatcher = $this->getDispatcher();
+        $handlerPath = $dispatcher->getHandler();
 
         $handler = new $handlerPath();
         $handler->setApplication($this);
-        $handlerOutput = $handler->handle();
+        $parameterValues = array_values($dispatcher->getRouteParameters());
+        $handlerOutput = $handler->handle(...$parameterValues);
 
         $response = $this->getResponse();
 

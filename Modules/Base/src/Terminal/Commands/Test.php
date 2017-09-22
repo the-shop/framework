@@ -8,20 +8,12 @@ use Framework\Base\Application\ApplicationAwareTrait;
  * Class Test
  * @package Framework\Base\Terminal\Commands
  */
-class Test implements CommandInterface
+class Test
 {
     use ApplicationAwareTrait;
 
-    /**
-     * @return string
-     */
-    public function handle()
+    public function handle($testParam, $optionalParam = null)
     {
-        return $this->getApplication()
-            ->getRepositoryManager()
-            ->getRepositoryFromResourceName('users')
-            ->newModel()
-            ->setAttribute('name', 'testing')
-            ->save();
+        return new \stdClass();
     }
 }

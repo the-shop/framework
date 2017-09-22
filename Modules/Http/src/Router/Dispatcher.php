@@ -50,6 +50,14 @@ class Dispatcher implements ApplicationAwareInterface, DispatcherInterface
     }
 
     /**
+     * @return array
+     */
+    public function getRoutes()
+    {
+        return $this->routes;
+    }
+
+    /**
      * @param RequestInterface $request
      * @return array
      * @throws \Framework\Base\Application\Exception\MethodNotAllowedException

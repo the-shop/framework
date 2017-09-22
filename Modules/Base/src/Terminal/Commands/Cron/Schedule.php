@@ -13,7 +13,7 @@ class Schedule
      *
      * @var string
      */
-    public $cronTimeExpression = '* * * * * *';
+    public $cronTimeExpression = '* * * * *';
 
     /**
      * Set the cronTimeExpression expression for the event.
@@ -44,7 +44,7 @@ class Schedule
      */
     public function hourly()
     {
-        return $this->setCronTimeExpression('0 * * * * *');
+        return $this->setCronTimeExpression('0 * * * *');
     }
 
     /**
@@ -54,7 +54,7 @@ class Schedule
      */
     public function daily()
     {
-        return $this->setCronTimeExpression('0 0 * * * *');
+        return $this->setCronTimeExpression('0 0 * * *');
     }
 
     /**
@@ -184,7 +184,7 @@ class Schedule
      */
     public function weekly()
     {
-        return $this->setCronTimeExpression('0 0 * * 0 *');
+        return $this->setCronTimeExpression('0 0 * * 0');
     }
 
     /**
@@ -208,7 +208,7 @@ class Schedule
      */
     public function monthly()
     {
-        return $this->setCronTimeExpression('0 0 1 * * *');
+        return $this->setCronTimeExpression('0 0 1 * *');
     }
 
     /**
@@ -232,7 +232,7 @@ class Schedule
      */
     public function quarterly()
     {
-        return $this->setCronTimeExpression('0 0 1 */3 *');
+        return $this->setCronTimeExpression('0 0 1 */3');
     }
 
     /**
@@ -242,7 +242,7 @@ class Schedule
      */
     public function yearly()
     {
-        return $this->setCronTimeExpression('0 0 1 1 * *');
+        return $this->setCronTimeExpression('0 0 1 1 *');
     }
 
     /**
@@ -252,7 +252,7 @@ class Schedule
      */
     public function everyMinute()
     {
-        return $this->setCronTimeExpression('* * * * * *');
+        return $this->setCronTimeExpression('* * * * *');
     }
 
     /**
@@ -262,7 +262,7 @@ class Schedule
      */
     public function everyFiveMinutes()
     {
-        return $this->setCronTimeExpression('*/5 * * * * *');
+        return $this->setCronTimeExpression('*/5 * * * *');
     }
 
     /**
@@ -272,7 +272,7 @@ class Schedule
      */
     public function everyTenMinutes()
     {
-        return $this->setCronTimeExpression('*/10 * * * * *');
+        return $this->setCronTimeExpression('*/10 * * * *');
     }
 
     /**
@@ -282,7 +282,7 @@ class Schedule
      */
     public function everyThirtyMinutes()
     {
-        return $this->setCronTimeExpression('0,30 * * * * *');
+        return $this->setCronTimeExpression('0,30 * * * *');
     }
 
     /**

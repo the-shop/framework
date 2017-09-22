@@ -2,43 +2,22 @@
 
 namespace Framework\Base\Terminal\Commands\Cron;
 
-use Framework\Base\Application\ApplicationAwareTrait;
 use DateTime;
+use Framework\Base\Application\ApplicationAwareInterface;
+use Framework\Base\Application\ApplicationAwareTrait;
 
 /**
- * Class CronJob
+ * Class CronJobsHandler
  * @package Framework\Base\Terminal\Commands\Cron
  */
-class CronJob extends Schedule
+class CronJobsHandler implements ApplicationAwareInterface
 {
     use ApplicationAwareTrait;
 
     /**
      * @var array
      */
-    private $registeredJobs = [];
-
-    /**
-     * All cron jobs should be registered (added) in this method.
-     * At the end method runs all cron jobs.
-     */
-    public function handle()
-    {
-        /*--------------------------- REGISTER CRON JOBS HERE ------------------------*/
-
-        $this->addCronJob(
-            'test',
-            $this->everyMinute()->getCronTimeExpression(),
-            [
-                'testParam' => 'test required param',
-                'testOptionalParam' => 'test optional param',
-            ]
-        );
-        
-        /*-----------------------------------------------------------------------------*/
-
-        return $this->runCronJobs();
-    }
+    protected $registeredJobs = [];
 
     /**
      * @return array
@@ -69,6 +48,14 @@ class CronJob extends Schedule
             );
         }
 
+        // Let's check if there are enough required params passed
+        if (count($parameters) < count($routes[$commandName]['requiredParams'])) {
+            throw new \InvalidArgumentException(
+                'Not enough requiredParams passed for ' . $commandName . ' command',
+                404
+            );
+        }
+
         // Add cron job to registeredJobs
         $this->registeredJobs[] = [
             'commandName' => $commandName,
@@ -82,8 +69,9 @@ class CronJob extends Schedule
 
     /**
      * Run registered cron jobs
+     * @return array
      */
-    private function runCronJobs()
+    protected function runCronJobs()
     {
         $outPutMessages = [];
         $cronJobs = $this->getRegisteredJobs();
@@ -99,8 +87,8 @@ class CronJob extends Schedule
 
                 $outPutMessages[$job['commandName']] = [
                     'COMMAND DONE! STATUS CODE 200.',
-                    'Response: ' => $output
-                    ];
+                    'Response: ' => $output,
+                ];
             }
         }
 
@@ -109,7 +97,7 @@ class CronJob extends Schedule
 
     /**
      * Parse cron expression and compare it to current time return true if cron job needs to run
-     * or return false if cron job expression does'nt match current time
+     * or return false if cron job expression doesn't match current time
      * @param $currentTime
      * @param $cronTab
      * @return mixed

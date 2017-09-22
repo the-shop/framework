@@ -6,7 +6,7 @@ namespace Framework\Base\Terminal\Commands\Cron;
  * Class Schedule
  * @package Framework\Base\Terminal\Commands\Cron
  */
-class Schedule
+class Schedule extends CronJobsHandler
 {
     /**
      * The cronTimeExpression expression representing the event's frequency.

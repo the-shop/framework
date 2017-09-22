@@ -5,7 +5,7 @@ namespace Framework\Base\Terminal;
 use Framework\Base\Application\BaseApplication;
 use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Module\BaseModule;
-use Framework\Base\Terminal\Commands\Cron\CronJob;
+use Framework\Base\Terminal\Commands\CronJob;
 use Framework\Base\Terminal\Commands\Test;
 use Framework\RestApi\Listener\ExceptionFormatter;
 use Framework\RestApi\Listener\ResponseFormatter;

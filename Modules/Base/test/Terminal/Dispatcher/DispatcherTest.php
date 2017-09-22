@@ -2,8 +2,8 @@
 
 namespace Framework\Base\Test\Terminal\Dispatcher;
 
-use Framework\Base\Terminal\Commands\TestCommand;
 use Framework\Base\Terminal\Router\Dispatcher;
+use Framework\Base\Test\Terminal\Commands\DummyCommand;
 use Framework\Base\Test\UnitTest;
 use Framework\Http\Request\Request;
 
@@ -18,7 +18,7 @@ class DispatcherTest extends UnitTest
      */
     private $routes = [
         'test' => [
-            'handler' => TestCommand::class,
+            'handler' => DummyCommand::class,
             'requiredParams' => [
                 'testParam',
                 'testParam2',
@@ -151,7 +151,7 @@ class DispatcherTest extends UnitTest
             $dispatcher->getRouteParameters()
         );
         $this->assertEquals(
-            TestCommand::class,
+            DummyCommand::class,
             $dispatcher->getHandler()
         );
     }

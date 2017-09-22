@@ -52,7 +52,7 @@ class CronJobsHandler implements ApplicationAwareInterface
         if (count($parameters) < count($routes[$commandName]['requiredParams'])) {
             throw new \InvalidArgumentException(
                 'Not enough requiredParams passed for ' . $commandName . ' command',
-                404
+                403
             );
         }
 
@@ -71,7 +71,7 @@ class CronJobsHandler implements ApplicationAwareInterface
      * Run registered cron jobs
      * @return array
      */
-    protected function runCronJobs()
+    public function runCronJobs()
     {
         $outPutMessages = [];
         $cronJobs = $this->getRegisteredJobs();

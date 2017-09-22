@@ -5,6 +5,7 @@ namespace Framework\Base\Terminal;
 use Framework\Base\Application\BaseApplication;
 use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Module\BaseModule;
+use Framework\Base\Terminal\Commands\Cron\CronJob;
 use Framework\Base\Terminal\Commands\Test;
 use Framework\RestApi\Listener\ExceptionFormatter;
 use Framework\RestApi\Listener\ResponseFormatter;
@@ -20,14 +21,17 @@ class Module extends BaseModule
      */
     private $config = [
         'routes' => [
+            'cron:job' => [
+                'handler' => CronJob::class,
+                'requiredParams' => [],
+                'optionalParams' => [],
+            ],
             'test' => [
                 'handler' => Test::class,
                 'requiredParams' => [
-                    'testParam1',
-                    'testParam2'
+                    'testParam'
                 ],
                 'optionalParams' => [
-                    'testing',
                     'testOptionalParam',
                 ],
             ],

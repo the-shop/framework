@@ -34,7 +34,7 @@ class TerminalOutput implements TerminalOutputInterface
     public function __construct($stream)
     {
         if (is_resource($stream) === false || ('stream' === get_resource_type($stream)) === false) {
-            throw new \InvalidArgumentException('The TerminalOutput class needs a stream as its first argument.');
+            throw new \InvalidArgumentException('The TerminalOutput class needs a stream as its first argument.', 404);
         }
 
         $this->setColorFormatter(new ColorFormatter());
@@ -76,7 +76,7 @@ class TerminalOutput implements TerminalOutputInterface
         $statusMessage = 'Status code: ' . $responseCode;
 
         if ($responseCode === 200) {
-            $statusMessage .= ' command DONE.';
+            $statusMessage .= ' command DONE!';
             $responseMessage =
                 $colorFormatter->getColoredString(
                     'Response: ',

@@ -100,7 +100,7 @@ class Dispatcher implements DispatcherInterface
             $routeParameters[$definedParam] = $inputRequiredParams[$definedParam];
         }
 
-        // Compare route defined required parameters with input required arguments
+        // Compare route defined optional parameters with input optional arguments
         foreach ($definedOptionalParams as $definedOptionalParam) {
             if (array_key_exists($definedOptionalParam, $inputOptionalParams) === false) {
                 throw new \InvalidArgumentException('Invalid optional arguments.', 403);

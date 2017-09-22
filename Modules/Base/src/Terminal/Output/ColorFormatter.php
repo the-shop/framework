@@ -83,7 +83,7 @@ class ColorFormatter
      */
     public function getForegroundColors()
     {
-        return array_keys($this->foreground_colors);
+        return $this->foreground_colors;
     }
 
     /**
@@ -92,6 +92,6 @@ class ColorFormatter
      */
     public function getBackgroundColors()
     {
-        return array_keys($this->background_colors);
+        return $this->background_colors;
     }
 }

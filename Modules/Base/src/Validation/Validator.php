@@ -51,12 +51,12 @@ class Validator implements ValidatorInterface
 
     /**
      * @param $value
-     * @param $rule
+     * @param string $rule
      * @return $this
      */
-    public function addValidation($value, $rule)
+    public function addValidation($value, string $rule)
     {
-        $validation = $this->translate($rule);
+        $validation = $this->translate(strtolower($rule));
         $this->validations[] = new $validation($value);
 
         return $this;

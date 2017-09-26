@@ -3,10 +3,12 @@
 namespace Application\CrudApi\Controller;
 
 use Framework\Base\Application\Exception\NotFoundException;
+use Framework\Base\Application\Exception\ValidationException;
 use Framework\Base\Model\BrunoInterface;
 use Application\CrudApi\Model\Generic as GenericModel;
 use Application\CrudApi\Model\Generic;
 use Application\CrudApi\Repository\GenericRepository;
+use Framework\Base\Validation\Validator;
 use Framework\Http\Controller\Http as HttpController;
 
 /**
@@ -256,5 +258,35 @@ class Resource extends HttpController
         }
 
         return $model;
+    }
+
+    /**
+     * @param string $resourceName
+     * @param array $parameters
+     * @return $this
+     * @throws \HttpException
+     */
+    private function validateInput(string $resourceName, array $parameters = [])
+    {
+        $registeredModelFields = $this->getApplication()->getRepositoryManager()
+        ->getRegisteredModelFields($resourceName);
+
+        $validator = new Validator();
+
+        foreach ($registeredModelFields as $fieldName => $options) {
+            if (array_key_exists($fieldName, $parameters) && isset($options['validation'])) {
+                foreach ($options['validation'] as $validationRule) {
+                    $validator->addValidation($parameters[$fieldName], $validationRule);
+                }
+            }
+        }
+
+        try {
+            $validator->validate();
+        } catch (ValidationException $e) {
+            throw new \HttpException('Malformed Input', 400);
+        }
+
+        return $this;
     }
 }

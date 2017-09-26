@@ -10,10 +10,10 @@ interface ValidatorInterface
 {
     /**
      * @param $value
-     * @param $rule
+     * @param string $rule
      * @return mixed
      */
-    public function addValidation($value, $rule);
+    public function addValidation($value, string $rule);
 
     /**
      * @return $this

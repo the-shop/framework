@@ -153,4 +153,17 @@ class Module extends BaseModule
         }
         return $models;
     }
+
+    private function getDirContents($path)
+    {
+        $rii = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+
+        $files = [];
+        foreach ($rii as $file) {
+            if ($file->isDir() === false) {
+                $files[] = $file->getPathname();
+            }
+        }
+        return $files;
+    }
 }

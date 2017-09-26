@@ -35,14 +35,12 @@ class ApplicationConfiguration extends Configuration
     }
 
     /**
-     * @param array $configuration
+     * @param array $configMap
      * @return $this
      */
-    public function setModulesConfiguration(array $configuration)
+    public function setModulesConfiguration(array $configMap)
     {
-        $this->modulesConfiguration = array_merge($configuration);
-
-        $this->modulesConfiguration = array_unique($this->modulesConfiguration);
+        $this->modulesConfiguration = array_merge($this->modulesConfiguration, $configMap);
 
         return $this;
     }

@@ -180,4 +180,12 @@ class Request implements RequestInterface
 
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getServer()
+    {
+        return $this->serverInformation;
+    }
 }

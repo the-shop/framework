@@ -7,10 +7,11 @@ use Framework\Base\Database\DatabaseQueryInterface;
 use Framework\Base\Manager\RepositoryManagerInterface;
 use Framework\Base\Model\BrunoInterface;
 use Framework\Base\Mongo\MongoQuery;
+use MongoDB\BSON\ObjectID;
 
 /**
  * Class BrunoRepository
- * @package Framework\Base\RepositoryManager
+ * @package Framework\Base\Repository
  */
 abstract class BrunoRepository implements BrunoRepositoryInterface
 {
@@ -32,7 +33,28 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     private $modelAttributesDefinition = [];
 
     /**
-     * @return mixed
+     * Sets `$resourceName` as the document collection
+     *
+     * @param string $resourceName
+     * @return $this
+     */
+    public function setResourceName(string $resourceName)
+    {
+        $this->resourceName = $resourceName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResourceName()
+    {
+        return $this->resourceName;
+    }
+
+    /**
+     * @return \Framework\Base\Database\DatabaseAdapterInterface
      */
     public function getPrimaryAdapter()
     {
@@ -80,6 +102,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         $model = new $modelClass();
 
         $model->defineModelAttributes($modelAttributesDefinition)
+              ->setCollection($this->resourceName)
               ->setApplication($this->getApplication());
 
         return $model;
@@ -102,22 +125,22 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
      */
     public function loadOne($identifier)
     {
-        /* @var BrunoInterface $model */
         $model = $this->newModel();
-
         $adapter = $this->getPrimaryAdapter();
 
-        $query = $this->createNewQueryForModel($model);
-
-        $data = $adapter
-            ->loadOne($query);
-
-
-        if ($data === null) {
-            return null;
+        if ($identifier instanceof DatabaseQueryInterface === false) {
+            $query = $this->createNewQueryForModel($model);
+            $query->addAndCondition($model->getPrimaryKey(), '=', $identifier);
+        } else {
+            $query = $identifier;
         }
 
-        $attributes = $data->getArrayCopy();
+        $attributes = $adapter
+            ->loadOne($query);
+
+        if ($attributes === null) {
+            return null;
+        }
 
         $model->setAttributes($attributes);
         $model->setDatabaseAttributes($attributes);
@@ -127,35 +150,63 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     }
 
     /**
-     * @return BrunoInterface[]
+     * @param array $keyValues
+     *
+     * @return \Framework\Base\Model\BrunoInterface|null
      */
-    public function loadMultiple()
+    public function loadOneBy(array $keyValues = [])
     {
-        /* @var BrunoInterface $model */
         $model = $this->newModel();
+        $query = $this->createNewQueryForModel($model);
 
+        foreach ($keyValues as $key => $identifier) {
+            $query->addAndCondition($key, '=', $identifier);
+        }
+
+        $attributes = $this->getPrimaryAdapter()
+                           ->loadOne($query);
+
+        if ($attributes === null) {
+            return null;
+        }
+
+        $model->setAttributes($attributes);
+        $model->setDatabaseAttributes($attributes);
+        $model->setIsNew(false);
+
+        return $model;
+    }
+
+    /**
+     * @param $identifiers
+     *
+     * @return []|BrunoInterface[]
+     */
+    public function loadMultiple($identifiers = []): array
+    {
+        $model = $this->newModel();
         $adapter = $this->getPrimaryAdapter();
-
         $out = [];
 
-        $query = $this->createNewQueryForModel($model);
+        if ($identifiers instanceof DatabaseQueryInterface === false) {
+            $query = $this->createNewQueryForModel($model);
+            foreach ($identifiers as $identifier) {
+                $query->addAndCondition($model->getPrimaryKey(), '=', $identifier);
+            }
+        } else {
+            $query = $identifiers;
+        }
 
         $data = $adapter
             ->loadMultiple($query);
 
         foreach ($data as $attributes) {
-            $attributes = $attributes->getArrayCopy();
+            $model = $this->newModel();
+            $model->setAttributes($attributes)
+                  ->setDatabaseAttributes($attributes)
+                  ->setIsNew(false);
 
-            $modelAttributesDefinition = $this->getModelAttributesDefinition();
-
-                $model = $this->newModel();
-                $model->defineModelAttributes($modelAttributesDefinition)
-                    ->setApplication($this->getApplication())
-                    ->setAttributes($attributes)
-                    ->setDatabaseAttributes($attributes)
-                    ->setIsNew(false);
-
-            $out[] = $model;
+            $out[$model->getId()] = $model;
         }
 
         return $out;
@@ -182,11 +233,14 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
 
     /**
      * @param BrunoInterface $bruno
+     *
      * @return DatabaseQueryInterface
      */
-    protected function createNewQueryForModel(BrunoInterface $bruno)
+    protected function createNewQueryForModel(BrunoInterface $bruno): DatabaseQueryInterface
     {
-        $query = new MongoQuery();
+        $query = $this->getPrimaryAdapter()
+                      ->newQuery();
+
         $query->setDatabase($bruno->getDatabase());
         $query->setCollection($bruno->getCollection());
 

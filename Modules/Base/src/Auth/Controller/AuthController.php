@@ -26,7 +26,7 @@ class AuthController extends Http
         $attemptStrategies = [];
 
         foreach ($authModels as $resourceName => $params) {
-            if (in_array($params['credentials'], array_keys($post), true) === true &&
+            if (count(array_diff($params['credentials'], array_keys($post))) === 0 &&
                 count($post) === count($params['credentials'])
             ) {
                 $attemptStrategies[] = [
@@ -67,14 +67,15 @@ class AuthController extends Http
          * @todo implement key generation, adjustable time on token expiration, algorithm selection
          */
         $key = 'rV)7Djb{DpEpY5ex';
+        JWT::$timestamp = time();
         $payload = array(
             'iss' => 'framework.the-shop.io',
-            'exp' => time() + 3600,
+            'exp' => JWT::$timestamp + 3600,
             'modelId' => $model->getId(),
             'resourceName' => $model->getCollection(),
             'aclRole' => '',
         );
-        $alg = 'HS256';
+        $alg = 'HS384';
         $jwt = JWT::encode($payload, $key, $alg);
 
         return $jwt;

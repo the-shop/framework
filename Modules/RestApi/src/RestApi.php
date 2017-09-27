@@ -36,14 +36,24 @@ class RestApi extends BaseApplication
     {
         $request = new Request();
 
-        $request->setPost(isset($_POST) ? $_POST : []);
-        $request->setQuery(isset($_GET) ? $_GET : []);
-        $request->setFiles(isset($_FILES) ? $_FILES : []);
-        $request->setServer($_SERVER);
+        $helperRequest = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+
+        $request->setServer($helperRequest->server->all());
+
+        $request->setPost($helperRequest->request->all());
+        $request->setQuery($helperRequest->query->all());
+        $request->setFiles($helperRequest->files->all());
+        $request->setCookies($helperRequest->cookies->all());
+        $request->setUri($helperRequest->getRequestUri());
+
+        if ($request->getMethod() === 'PUT' || $request->getMethod() === 'PATCH') {
+            $request->setPost($request->getQuery());
+        }
 
         unset($_POST);
         unset($_GET);
         unset($_FILES);
+        unset($_COOKIE);
 
         $this->setRequest($request);
 

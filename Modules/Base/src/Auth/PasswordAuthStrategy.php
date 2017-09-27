@@ -107,7 +107,7 @@ class PasswordAuthStrategy extends AuthStrategy
      */
     public function validate(array $credentials)
     {
-        $model = $this->getRepository()->loadOne($this->getId());
+        $model = $this->getRepository()->loadOneBy(['email' => $this->getId()]);
 
         if ($model === null) {
             throw new NotFoundException('Model not found.');
@@ -115,8 +115,8 @@ class PasswordAuthStrategy extends AuthStrategy
 
         $authorizationName = end($credentials);
 
-        if (isset($model->$authorizationName) === false ||
-            password_verify($this->getPassword(), $model->$authorizationName) === false
+        if (isset($model->getAttributes()[$authorizationName]) === false ||
+            password_verify($this->getPassword(), $model->getAttributes()[$authorizationName]) === false
         ) {
             throw new AuthenticationException('Invalid credentials');
         }

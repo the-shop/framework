@@ -43,14 +43,15 @@ class Module extends BaseModule
         $authModelsConfigs = $this->getAuthenticatables($application);
 
         if (empty($authModelsConfigs) === false) {
-            $this->config['routes'] = [
-                'get',
+            $this->config['routes'][] = [
+                'post',
                 '/login',
                 '\Framework\Base\Auth\Controller\AuthController::authenticate',
             ];
             $application->getDispatcher()
-                        ->addRoutes($this->config['routes'])
-                        ->getRepositoryManager()
+                        ->addRoutes($this->config['routes']);
+
+            $application->getRepositoryManager()
                         ->addAuthenticatableModels($authModelsConfigs);
         }
     }

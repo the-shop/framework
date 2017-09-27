@@ -19,7 +19,7 @@ interface RepositoryManagerInterface
 
     /**
      * @param string $resourceName
-     * @return mixed
+     * @return BrunoRepositoryInterface
      */
     public function getRepositoryFromResourceName(string $resourceName);
 
@@ -43,7 +43,7 @@ interface RepositoryManagerInterface
 
     /**
      * @param array $modelFieldsMap
-     * @return mixed
+     * @return $this
      */
     public function registerModelFields(array $modelFieldsMap = []);
 
@@ -74,14 +74,15 @@ interface RepositoryManagerInterface
 
     /**
      * @param array $modelClassNameToCollection
-     * @return mixed
+     * @return $this
      */
     public function registerModelsToCollection(array $modelClassNameToCollection);
 
     /**
      * @param string $modelClassName
      * @param DatabaseAdapterInterface $adapter
-     * @return mixed
+     *
+     * @return \Framework\Base\Manager\RepositoryManagerInterface
      */
     public function setPrimaryAdapter(string $modelClassName, DatabaseAdapterInterface $adapter);
 

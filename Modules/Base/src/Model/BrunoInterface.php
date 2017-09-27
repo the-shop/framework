@@ -12,9 +12,14 @@ use Framework\Base\Model\Modifiers\FieldModifierInterface;
 interface BrunoInterface extends ApplicationAwareInterface
 {
     /**
-     * @return string
+     * @return string|null
      */
     public function getId();
+
+    /**
+     * @return string|null
+     */
+    public function getPrimaryKey();
 
     /**
      * @return bool
@@ -78,7 +83,7 @@ interface BrunoInterface extends ApplicationAwareInterface
 
     /**
      * @param string $collectionName
-     * @return mixed
+     * @return BrunoInterface
      */
     public function setCollection(string $collectionName);
 

@@ -40,6 +40,16 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     /**
      * @const string
      */
+    const EVENT_APPLICATION_PARSE_REQUEST_PRE = 'EVENT\APPLICATION\PARSE_REQUEST_PRE';
+
+    /**
+     * @const string
+     */
+    const EVENT_APPLICATION_PARSE_REQUEST_POST = 'EVENT\APPLICATION\PARSE_REQUEST_POST';
+
+    /**
+     * @const string
+     */
     const EVENT_APPLICATION_HANDLE_REQUEST_PRE = 'EVENT\APPLICATION\HANDLE_REQUEST_PRE';
 
     /**
@@ -187,8 +197,12 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
             $request = $this->getRequest();
             $this->triggerEvent(self::EVENT_APPLICATION_BUILD_REQUEST_POST);
 
+            $this->triggerEvent(self::EVENT_APPLICATION_PARSE_REQUEST_PRE);
+            $this->parseRequest($request);
+            $this->triggerEvent(self::EVENT_APPLICATION_PARSE_REQUEST_POST);
+
             $this->triggerEvent(self::EVENT_APPLICATION_HANDLE_REQUEST_PRE);
-            $response = $this->handle($request);
+            $response = $this->handle();
             $this->triggerEvent(self::EVENT_APPLICATION_HANDLE_REQUEST_POST);
 
             $this->triggerEvent(self::EVENT_APPLICATION_RENDER_RESPONSE_PRE);
@@ -208,13 +222,23 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
 
     /**
      * @param RequestInterface $request
-     * @return ResponseInterface
+     * @return $this
      */
-    public function handle(RequestInterface $request)
+    public function parseRequest(RequestInterface $request)
     {
         $dispatcher = $this->getDispatcher();
         $dispatcher->register();
-        $dispatcher->parseRequest($this->getRequest());
+        $dispatcher->parseRequest($request);
+
+        return $this;
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function handle()
+    {
+        $dispatcher = $this->getDispatcher();
 
         $handlerPath = $dispatcher->getHandler();
 

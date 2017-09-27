@@ -4,6 +4,7 @@ namespace Framework\Base\Repository;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Database\DatabaseAdapterInterface;
+use Framework\Base\Database\DatabaseQueryInterface;
 use Framework\Base\Manager\RepositoryManagerInterface;
 use Framework\Base\Model\BrunoInterface;
 
@@ -13,6 +14,17 @@ use Framework\Base\Model\BrunoInterface;
  */
 interface BrunoRepositoryInterface extends ApplicationAwareInterface
 {
+    /**
+     * @param string $resourceName
+     * @return BrunoRepositoryInterface;
+     */
+    public function setResourceName(string $resourceName);
+
+    /**
+     * @return string
+     */
+    public function getResourceName();
+
     /**
      * @return DatabaseAdapterInterface|null
      */
@@ -25,7 +37,7 @@ interface BrunoRepositoryInterface extends ApplicationAwareInterface
     public function setRepositoryManager(RepositoryManagerInterface $repositoryManager);
 
     /**
-     * @return mixed
+     * @return \Framework\Base\Model\BrunoInterface
      */
     public function newModel();
 
@@ -36,13 +48,27 @@ interface BrunoRepositoryInterface extends ApplicationAwareInterface
     public function loadOne($identifier);
 
     /**
+     * @param array $keyValues
+     *
+     * @return BrunoInterface|null
+     */
+    public function loadOneBy(array $keyValues);
+
+    /**
+     * @param $identifiers
+     *
      * @return BrunoInterface[]
      */
-    public function loadMultiple();
+    public function loadMultiple($identifiers);
 
     /**
      * @param BrunoInterface $bruno
      * @return BrunoInterface
      */
     public function save(BrunoInterface $bruno);
+
+    /**
+     * @return DatabaseAdapterInterface
+     */
+    public function getPrimaryAdapter();
 }

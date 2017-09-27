@@ -14,10 +14,9 @@ use Framework\Base\Response\ResponseInterface;
 interface ApplicationInterface
 {
     /**
-     * @param RequestInterface $request
      * @return ResponseInterface
      */
-    public function handle(RequestInterface $request);
+    public function handle();
 
     /**
      * @return \Framework\Base\Manager\RepositoryManagerInterface|null
@@ -106,6 +105,7 @@ interface ApplicationInterface
 
     /**
      * @return ApplicationConfiguration
+     * @todo return ConfigurationInterface ??
      */
     public function getConfiguration();
 

@@ -83,12 +83,20 @@ abstract class Bruno implements BrunoInterface
     }
 
     /**
-     * @return bool|null
+     * @return null|string
+     */
+    public function getPrimaryKey()
+    {
+        return $this->primaryKey;
+    }
+
+    /**
+     * @return string|null
      */
     public function getId()
     {
-        if (isset($this->getDatabaseAttributes()[$this->primaryKey]) === true) {
-            return $this->getDatabaseAttributes()[$this->primaryKey];
+        if (isset($this->getDatabaseAttributes()[$this->getPrimaryKey()]) === true) {
+            return $this->getDatabaseAttributes()[$this->getPrimaryKey()];
         }
 
         return null;
@@ -155,7 +163,7 @@ abstract class Bruno implements BrunoInterface
         $query->addAndCondition(
             '_id',
             '$eq',
-            new ObjectID($this->getId())
+            $this->getId()
         );
 
         $adapters = $this->getDatabaseAdapters();
@@ -264,7 +272,7 @@ abstract class Bruno implements BrunoInterface
     public function setAttribute(string $attribute, $value)
     {
         if (array_key_exists($attribute, $this->getDefinedAttributes()) === false) {
-            throw new \InvalidArgumentException('Property "' . $attribute . '" not defined');
+            throw new \InvalidArgumentException('Property "' . $attribute . '" not defined.');
         }
 
         $this->getApplication()
@@ -275,9 +283,6 @@ abstract class Bruno implements BrunoInterface
                  ]
              );
 
-        /**
-         * @var \Framework\Base\Repository\Modifiers\FieldModifierInterface $filter
-         */
         if (array_key_exists($attribute, $this->fieldFilters)) {
             foreach ($this->fieldFilters[$attribute] as $filter) {
                 /* @var FieldModifierInterface $filter */

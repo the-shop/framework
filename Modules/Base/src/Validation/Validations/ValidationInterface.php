@@ -2,11 +2,13 @@
 
 namespace Framework\Base\Validation\Validations;
 
+use Framework\Base\Application\ApplicationAwareInterface;
+
 /**
  * Interface ValidationInterface
  * @package Framework\Base\Validation\Validations
  */
-interface ValidationInterface
+interface ValidationInterface extends ApplicationAwareInterface
 {
     /**
      * @return bool

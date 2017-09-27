@@ -15,26 +15,15 @@
       },
       "name": {
         "label": "Name",
-        "type": "string",
-        "validation": [
-          "string"
-        ]
+        "type": "string"
       },
       "email": {
         "label": "Email",
-        "type": "string",
-        "validation": [
-          "email",
-          "unique",
-          "string"
-        ]
+        "type": "string"
       },
       "password": {
         "label": "Password",
-        "type": "password",
-        "validation": [
-          "string"
-        ]
+        "type": "password"
       },
       "newPassword": {
         "label": "New Password",

@@ -2,6 +2,7 @@
 
 namespace Framework\Base\Validation;
 
+use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Application\Exception\ValidationException;
 use Framework\Base\Validation\Validations\AlphabeticValidation;
 use Framework\Base\Validation\Validations\ArrayValidation;
@@ -11,6 +12,7 @@ use Framework\Base\Validation\Validations\FloatValidation;
 use Framework\Base\Validation\Validations\IntegerValidation;
 use Framework\Base\Validation\Validations\NonEmptyValidation;
 use Framework\Base\Validation\Validations\StringValidation;
+use Framework\Base\Validation\Validations\UniqueValidation;
 use Framework\Base\Validation\Validations\ValidationInterface;
 
 /**
@@ -19,6 +21,8 @@ use Framework\Base\Validation\Validations\ValidationInterface;
  */
 class Validator implements ValidatorInterface
 {
+    use ApplicationAwareTrait;
+
     /**
      * @var ValidationInterface[]
      */
@@ -47,6 +51,7 @@ class Validator implements ValidatorInterface
         'array' => ArrayValidation::class,
         'nonempty' => NonEmptyValidation::class,
         'email' => EmailValidation::class,
+        'unique' => UniqueValidation::class,
     ];
 
     /**
@@ -57,7 +62,13 @@ class Validator implements ValidatorInterface
     public function addValidation($value, string $rule)
     {
         $validation = $this->translate(strtolower($rule));
-        $this->validations[] = new $validation($value);
+        $validationInstance = new $validation($value);
+
+        if ($validationInstance instanceof UniqueValidation) {
+            $validationInstance->setApplication($this->getApplication());
+        }
+
+        $this->validations[] = $validationInstance;
 
         return $this;
     }

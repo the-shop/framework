@@ -5,8 +5,6 @@ namespace Application\CrudApi\Controller;
 use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Application\Exception\ValidationException;
 use Framework\Base\Model\BrunoInterface;
-use Application\CrudApi\Model\Generic as GenericModel;
-use Application\CrudApi\Model\Generic;
 use Application\CrudApi\Repository\GenericRepository;
 use Framework\Base\Validation\Validator;
 use Framework\Http\Controller\Http as HttpController;
@@ -87,7 +85,7 @@ class Resource extends HttpController
             ->triggerEvent(
                 self::EVENT_CRUD_API_RESOURCE_LOAD_ALL_PRE,
                 [
-                    'resourceName' => $resourceName
+                    'resourceName' => $resourceName,
                 ]
             );
 
@@ -113,7 +111,7 @@ class Resource extends HttpController
                 self::EVENT_CRUD_API_RESOURCE_LOAD_PRE,
                 [
                     'resourceName' => $resourceName,
-                    'identifier' => $identifier
+                    'identifier' => $identifier,
                 ]
             );
 
@@ -135,9 +133,11 @@ class Resource extends HttpController
             ->triggerEvent(
                 self::EVENT_CRUD_API_RESOURCE_CREATE_PRE,
                 [
-                    'resourceName' => $resourceName
+                    'resourceName' => $resourceName,
                 ]
             );
+
+        $this->validateInput($resourceName, $this->getPost());
 
         $model = $this->getApplication()
             ->getRepositoryManager()
@@ -164,13 +164,15 @@ class Resource extends HttpController
                 self::EVENT_CRUD_API_RESOURCE_UPDATE_PRE,
                 [
                     'resourceName' => $resourceName,
-                    'identifier' => $identifier
+                    'identifier' => $identifier,
                 ]
             );
 
         $model = $this->loadModel($resourceName, $identifier);
 
         $postParams = $this->getPost();
+
+        $this->validateInput($resourceName, $postParams);
 
         $model->setAttributes($postParams);
         $model->save();
@@ -193,13 +195,15 @@ class Resource extends HttpController
                 self::EVENT_CRUD_API_RESOURCE_PARTIAL_UPDATE_PRE,
                 [
                     'resourceName' => $resourceName,
-                    'identifier' => $identifier
+                    'identifier' => $identifier,
                 ]
             );
 
         $model = $this->loadModel($resourceName, $identifier);
 
         $postParams = $this->getPost();
+
+        $this->validateInput($resourceName, $postParams);
 
         foreach ($postParams as $attribute => $value) {
             $model->setAttribute($attribute, $value);
@@ -225,7 +229,7 @@ class Resource extends HttpController
                 self::EVENT_CRUD_API_RESOURCE_DELETE_PRE,
                 [
                     'resourceName' => $resourceName,
-                    'identifier' => $identifier
+                    'identifier' => $identifier,
                 ]
             );
 
@@ -262,21 +266,39 @@ class Resource extends HttpController
 
     /**
      * @param string $resourceName
-     * @param array $parameters
+     * @param array $requestParameters
      * @return $this
      * @throws \HttpException
      */
-    private function validateInput(string $resourceName, array $parameters = [])
+    private function validateInput(string $resourceName, array $requestParameters = [])
     {
-        $registeredModelFields = $this->getApplication()->getRepositoryManager()
-        ->getRegisteredModelFields($resourceName);
+        $app = $this->getApplication();
 
-        $validator = new Validator();
+        // Get registered model fields
+        $registeredModelFields = $app->getRepositoryManager()
+            ->getRegisteredModelFields($resourceName);
 
+        // Make new validator instance and attach app to it
+        $validator = (new Validator())->setApplication($app);
+
+        // Loop through registeredModelFields and see if there are any fields that have validation
+        // rule defined
         foreach ($registeredModelFields as $fieldName => $options) {
-            if (array_key_exists($fieldName, $parameters) && isset($options['validation'])) {
+            if ((array_key_exists($fieldName, $requestParameters)) === true
+                && isset($options['validation']) === true
+            ) {
+                $value = $requestParameters[$fieldName];
                 foreach ($options['validation'] as $validationRule) {
-                    $validator->addValidation($parameters[$fieldName], $validationRule);
+                    /* If field has got unique validation rule, set value as
+                    array with fieldName => value, and resourceName so we can make query to DB
+                    */
+                    if (($validationRule === 'unique') === true) {
+                        $value = [
+                            $fieldName => $requestParameters[$fieldName],
+                            'resourceName' => $resourceName
+                        ];
+                    }
+                        $validator->addValidation($value, $validationRule);
                 }
             }
         }

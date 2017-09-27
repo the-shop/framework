@@ -4,7 +4,6 @@ namespace Framework\RestApi;
 
 use Framework\Base\Application\ApplicationConfiguration;
 use Framework\Base\Application\BaseApplication;
-use Framework\Base\Application\ConfigurationInterface;
 use Framework\Http\Render\Json;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;

@@ -3,9 +3,7 @@
 namespace Framework\Base\Test\Auth\Controller;
 
 use Firebase\JWT\JWT;
-use Framework\Base\Test\TestDatabaseAdapter;
 use Framework\Base\Test\TestModel;
-use Framework\Base\Test\TestRepository;
 use Framework\Base\Test\UnitTest;
 use Framework\Http\Response\Response;
 

@@ -6,8 +6,6 @@ use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseQueryInterface;
 use Framework\Base\Manager\RepositoryManagerInterface;
 use Framework\Base\Model\BrunoInterface;
-use Framework\Base\Mongo\MongoQuery;
-use MongoDB\BSON\ObjectID;
 
 /**
  * Class BrunoRepository

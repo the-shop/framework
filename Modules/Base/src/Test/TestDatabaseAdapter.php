@@ -33,11 +33,6 @@ class TestDatabaseAdapter implements DatabaseAdapterInterface
         return $this->loadOneResult;
     }
 
-    public function loadOneBy($array = [])
-    {
-        return $this->loadOneResult;
-    }
-
     /**
      * @param $value
      *

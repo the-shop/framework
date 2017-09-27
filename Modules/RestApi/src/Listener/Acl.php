@@ -5,7 +5,6 @@ namespace Framework\RestApi\Listener;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Application\Exception\MethodNotAllowedException;
 use Framework\Base\Event\ListenerInterface;
-use Framework\Base\Request\RequestInterface;
 
 /**
  * Class Acl

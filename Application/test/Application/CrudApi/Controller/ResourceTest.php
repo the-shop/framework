@@ -1,6 +1,6 @@
 <?php
 
-namespace ApplicationTest\Application\CrudApi\Controller;
+namespace Application\Test\Application\CrudApi\Controller;
 
 use Application\CrudApi\Model\Generic;
 use Framework\Base\Test\UnitTest;

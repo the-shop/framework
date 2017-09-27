@@ -5,7 +5,6 @@ namespace Framework\Base\Test\Auth;
 use Framework\Base\Application\Exception\AuthenticationException;
 use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Auth\PasswordAuthStrategy;
-use Framework\Base\Test\TestDatabaseAdapter;
 use Framework\Base\Test\TestModel;
 use Framework\Base\Test\TestRepository;
 use Framework\Base\Test\UnitTest;

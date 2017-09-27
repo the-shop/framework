@@ -4,8 +4,6 @@ namespace Application\CrudApi\Controller;
 
 use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Model\BrunoInterface;
-use Application\CrudApi\Model\Generic as GenericModel;
-use Application\CrudApi\Model\Generic;
 use Application\CrudApi\Repository\GenericRepository;
 use Framework\Http\Controller\Http as HttpController;
 

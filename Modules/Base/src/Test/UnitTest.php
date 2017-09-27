@@ -2,11 +2,8 @@
 
 namespace Framework\Base\Test;
 
-use Application\CrudApi\Controller\Resource;
 use Framework\Base\Application\ApplicationConfiguration;
-use Framework\Base\Application\ApplicationInterface;
 use Framework\RestApi\Listener\Acl;
-use Framework\RestApi\Module;
 use Framework\RestApi\RestApi;
 use PHPUnit\Framework\TestCase;
 use Application\CrudApi\Module as CrudApiModule;
@@ -106,8 +103,7 @@ class UnitTest extends TestCase
         string $path,
         array $parameters = [],
         array $files = []
-    )
-    {
+    ) {
         // Normalize input
         $method = strtoupper($method);
 

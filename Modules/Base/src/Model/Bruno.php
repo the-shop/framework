@@ -6,7 +6,6 @@ use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Mongo\MongoQuery;
 use Framework\Base\Model\Modifiers\FieldModifierInterface;
-use MongoDB\BSON\ObjectID;
 
 /**
  * Base Model for database

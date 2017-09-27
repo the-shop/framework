@@ -4,7 +4,6 @@ namespace Framework\Base\Repository;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Database\DatabaseAdapterInterface;
-use Framework\Base\Database\DatabaseQueryInterface;
 use Framework\Base\Manager\RepositoryManagerInterface;
 use Framework\Base\Model\BrunoInterface;
 

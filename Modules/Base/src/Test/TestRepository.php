@@ -19,6 +19,6 @@ class TestRepository extends BrunoRepository
 
     public function loadOneBy(array $keyValues = [])
     {
-        return $this->getPrimaryAdapter()->loadOneBy();
+        return $this->getPrimaryAdapter()->loadOne(new TestDatabaseQuery());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace ApplicationTest\Application\CrudApi\Controller;
 
+use Application\CrudApi\Controller\Resource;
 use Application\CrudApi\Model\Generic;
 use Framework\Base\Test\UnitTest;
 
@@ -304,5 +305,82 @@ class ResourceTest extends UnitTest
             ->loadOne($modelId);
 
         $this->assertEquals(null, $loadDeletedModel);
+    }
+
+    /**
+     * Test resource controller validate input method - success
+     */
+    public function testResourceControllerValidateInputSuccess()
+    {
+        $testModelDefinition = [
+            'users' => [
+                'name' => [
+                    'type' => 'string',
+                ],
+                'email' => [
+                    'type' => 'string',
+                    'validation' => [
+                        'email',
+                        'string',
+                        'unique'
+                    ]
+                ]
+            ]
+        ];
+
+        $app = $this->getApplication();
+        $app->getRepositoryManager()->registerModelFields($testModelDefinition);
+
+        $resourceController = (new Resource())->setApplication($app);
+        $out = $resourceController->validateInput(
+            'users',
+            [
+                'name' => 'testing',
+                'email' => 'testing@test.com'
+            ]
+        );
+
+        $this->assertInstanceOf(Resource::class, $out);
+    }
+
+    /**
+     * Test resource controller validate input method - failed - exception
+     */
+    public function testResourceControllerValidateInputFail()
+    {
+        $testModelDefinition = [
+            'users' => [
+                'name' => [
+                    'type' => 'string',
+                    'validation' => [
+                        'string'
+                    ]
+                ],
+                'email' => [
+                    'type' => 'string',
+                    'validation' => [
+                        'email',
+                        'string'
+                    ]
+                ]
+            ]
+        ];
+
+        $app = $this->getApplication();
+        $app->getRepositoryManager()->registerModelFields($testModelDefinition);
+
+        $resourceController = (new Resource())->setApplication($app);
+
+        $this->expectExceptionCode(400);
+        $this->expectExceptionMessage('Malformed input.');
+        $this->expectException(\RuntimeException::class);
+
+        $resourceController->validateInput(
+            'users',
+            [
+                'name' => [],
+                'email' => 'testing@test.com'
+            ]
+        );
     }
 }

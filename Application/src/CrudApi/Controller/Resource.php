@@ -139,9 +139,7 @@ class Resource extends HttpController
 
         $this->validateInput($resourceName, $this->getPost());
 
-        $model = $this->getApplication()
-            ->getRepositoryManager()
-            ->getRepositoryFromResourceName($resourceName)
+        $model = $this->getRepositoryFromResourceName($resourceName)
             ->newModel()
             ->setAttributes($this->getPost())
             ->save();
@@ -270,7 +268,7 @@ class Resource extends HttpController
      * @return $this
      * @throws \HttpException
      */
-    private function validateInput(string $resourceName, array $requestParameters = [])
+    public function validateInput(string $resourceName, array $requestParameters = [])
     {
         $app = $this->getApplication();
 
@@ -306,7 +304,7 @@ class Resource extends HttpController
         try {
             $validator->validate();
         } catch (ValidationException $e) {
-            throw new \HttpException('Malformed Input', 400);
+            throw new \RuntimeException('Malformed input.', 400);
         }
 
         return $this;

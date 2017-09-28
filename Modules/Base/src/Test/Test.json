@@ -1,6 +1,6 @@
 {
-  "User": {
-    "collection": "users",
+  "Test": {
+    "collection": "tests",
     "authenticatable": true,
     "authStrategy": "password",
     "credentials": [

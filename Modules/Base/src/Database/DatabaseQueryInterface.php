@@ -68,7 +68,13 @@ interface DatabaseQueryInterface
      */
     public function getOffset();
 
-
+    /**
+     * @param string $field
+     * @param string $condition
+     * @param        $value
+     *
+     * @return void
+     */
     public function addAndCondition(string $field, string $condition, $value);
 
     // TODO: implement

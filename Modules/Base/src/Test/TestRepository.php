@@ -16,4 +16,9 @@ class TestRepository extends BrunoRepository
         return $this->getRepositoryManager()
                     ->getRegisteredModelFields($this->resourceName);
     }
+
+    public function loadOneBy(array $keyValues = [])
+    {
+        return $this->getPrimaryAdapter()->loadOne(new TestDatabaseQuery());
+    }
 }

@@ -2,12 +2,7 @@
 
 namespace Framework\RestApi\Test\Listener;
 
-use Framework\Base\Application\Exception\MethodNotAllowedException;
 use Framework\Base\Test\UnitTest;
-use Framework\Http\Request\Request;
-use Framework\RestApi\Listener\Acl;
-use Framework\RestApi\Module;
-use Framework\RestApi\RestApi;
 
 /**
  * Class AclTest

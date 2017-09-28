@@ -6,7 +6,7 @@
 require_once '../vendor/autoload.php';
 
 $dotenv = new \Symfony\Component\Dotenv\Dotenv();
-$dotenv->load(__DIR__ . '/../.env');
+$dotenv->load(realpath(dirname(__DIR__) . '/.env'));
 
 $appConfig = new \Framework\Base\Application\ApplicationConfiguration();
 $appConfig->setRegisteredModules([

@@ -105,6 +105,7 @@ interface ApplicationInterface
 
     /**
      * @return ApplicationConfiguration
+     * @todo return ConfigurationInterface ??
      */
     public function getConfiguration();
 
@@ -131,4 +132,16 @@ interface ApplicationInterface
      * @return mixed
      */
     public function getAclRules();
+
+    /**
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function setRootPath(string $path);
+
+    /**
+     * @return null|string
+     */
+    public function getRootPath();
 }

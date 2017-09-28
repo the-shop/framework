@@ -71,11 +71,11 @@ class MongoAdapter implements DatabaseAdapterInterface
     public function insertOne(DatabaseQueryInterface $query, array $data = [])
     {
         $result = $this->getClient()
-            ->selectCollection(
-                $query->getDatabase(),
-                $query->getCollection()
-            )
-            ->insertOne($data);
+                       ->selectCollection(
+                           $query->getDatabase(),
+                           $query->getCollection()
+                       )
+                       ->insertOne($data);
 
         if ($result->getInsertedId()) {
             return $result->getInsertedId();
@@ -96,24 +96,21 @@ class MongoAdapter implements DatabaseAdapterInterface
             return $this;
         }
 
-//        $result =
+        if (array_key_exists('_id', $updateData)) {
+            unset($updateData['_id']);
+        }
+
         $this->getClient()
-            ->selectCollection(
-                $query->getDatabase(),
-                $query->getCollection()
-            )
-            ->updateOne(
-                ['_id' => new ObjectID($identifier)],
-                ['$set' => $updateData]
-            );
+             ->selectCollection(
+                 $query->getDatabase(),
+                 $query->getCollection()
+             )
+             ->updateOne(
+                 ['_id' => new ObjectID($identifier)],
+                 ['$set' => $updateData]
+             );
 
         // TODO: check if $result reported successful update, throw exception otherwise
-
-//        if ($result->isAcknowledged()) {
-//            return $this;
-//        } else {
-//            throw new \Exception();
-//        }
 
         return $this;
     }
@@ -141,7 +138,6 @@ class MongoAdapter implements DatabaseAdapterInterface
             ->deleteOne($query->build());
 
         return true; // TODO: return true / false depending on `$result` data
-        //return $result->isAcknowledged();
     }
 
     public function loadMultiple(DatabaseQueryInterface $query)
@@ -162,9 +158,22 @@ class MongoAdapter implements DatabaseAdapterInterface
 
         $out = [];
         foreach ($queryResults as $result) {
+            if (isset($result['_id']) === true &&
+                $result['_id'] instanceof ObjectID === true
+            ) {
+                $result['_id'] = (string) $result['_id'];
+            }
             $out[] = $result->getArrayCopy();
         }
 
         return $out;
+    }
+
+    /**
+     * @return \Framework\Base\Database\DatabaseQueryInterface
+     */
+    public function newQuery(): DatabaseQueryInterface
+    {
+        return new MongoQuery();
     }
 }

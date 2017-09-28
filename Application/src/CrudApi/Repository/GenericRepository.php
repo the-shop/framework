@@ -2,6 +2,7 @@
 
 namespace Application\CrudApi\Repository;
 
+use Framework\Base\Database\DatabaseQueryInterface;
 use Framework\Base\Model\BrunoInterface;
 use Framework\Base\Repository\BrunoRepository;
 
@@ -22,9 +23,10 @@ class GenericRepository extends BrunoRepository
 
     /**
      * @param BrunoInterface $bruno
+     *
      * @return \Framework\Base\Database\DatabaseQueryInterface
      */
-    protected function createNewQueryForModel(BrunoInterface $bruno)
+    protected function createNewQueryForModel(BrunoInterface $bruno): DatabaseQueryInterface
     {
         $bruno->setCollection($this->resourceName);
 

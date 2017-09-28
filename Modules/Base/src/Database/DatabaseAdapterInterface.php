@@ -56,4 +56,9 @@ interface DatabaseAdapterInterface
      * @return DatabaseAdapterInterface|null
      */
     public function getDatabaseAdapter();
+
+    /**
+     * @return \Framework\Base\Database\DatabaseQueryInterface
+     */
+    public function newQuery(): DatabaseQueryInterface;
 }

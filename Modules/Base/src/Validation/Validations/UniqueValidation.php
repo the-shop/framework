@@ -29,13 +29,16 @@ class UniqueValidation extends Validation
         $identifierValue = reset($value);
         $identifier = key($value);
 
-        //TODO: implement this call after loadOneBy() is implemented on @BrunoRepositoryInterface
-//        $model = $this->getApplication()
-//            ->getRepositoryManager()
-//            ->getRepositoryFromResourceName($value['resourceName'])
-//            ->loadOneBy([$identifier => $identifierValue]);
 
-        // Return true if no model is found, return false if model is found
+        $model = $this->getApplication()
+            ->getRepositoryManager()
+            ->getRepositoryFromResourceName($value['resourceName'])
+            ->loadOneBy([$identifier => $identifierValue]);
+
+        if ($model) {
+            return false;
+        }
+
         return true;
     }
 
@@ -44,6 +47,6 @@ class UniqueValidation extends Validation
      */
     public function getRuleName()
     {
-        return 'isString';
+        return 'isUnique';
     }
 }

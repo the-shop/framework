@@ -29,9 +29,14 @@ class Request implements RequestInterface
     private $serverInformation = [];
 
     /**
+     * @var array
+     */
+    private $cookies = [];
+
+    /**
      * @var string
      */
-    private $requestMethod = 'get';
+    private $requestMethod = 'GET';
 
     /**
      * @var string|null
@@ -42,7 +47,7 @@ class Request implements RequestInterface
      * @param array $get
      * @return $this
      */
-    public function setQuery($get = [])
+    public function setQuery(array $get = [])
     {
         $this->queryParams = $get;
         return $this;
@@ -60,9 +65,21 @@ class Request implements RequestInterface
      * @param array $post
      * @return $this
      */
-    public function setPost($post = [])
+    public function setPost(array $post = [])
     {
         $this->postParams = $post;
+        return $this;
+    }
+
+    /**
+     * @param array $cookies
+     *
+     * @return $this
+     */
+    public function setCookies(array $cookies = [])
+    {
+        $this->cookies = $cookies;
+
         return $this;
     }
 
@@ -78,7 +95,7 @@ class Request implements RequestInterface
      * @param array $files
      * @return $this
      */
-    public function setFiles($files = [])
+    public function setFiles(array $files = [])
     {
         $this->fileParams = $files;
         return $this;
@@ -90,6 +107,14 @@ class Request implements RequestInterface
     public function getFiles()
     {
         return $this->fileParams;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCookies()
+    {
+        return $this->cookies;
     }
 
     /**
@@ -108,9 +133,7 @@ class Request implements RequestInterface
      */
     public function getMethod()
     {
-        $serverInfo = $this->serverInformation;
-        return isset($serverInfo['REQUEST_METHOD']) === true
-            ? strtoupper($serverInfo['REQUEST_METHOD']) : $this->requestMethod;
+        return $this->requestMethod;
     }
 
     /**
@@ -150,6 +173,19 @@ class Request implements RequestInterface
     {
         $this->serverInformation = $serverInformationMap;
 
+        $requestMethod = isset($serverInformationMap['REQUEST_METHOD']) === true
+            ? strtoupper($serverInformationMap['REQUEST_METHOD']) : 'GET';
+
+        $this->setMethod($requestMethod);
+
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getServer()
+    {
+        return $this->serverInformation;
     }
 }

@@ -128,6 +128,11 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     private $configuration = null;
 
     /**
+     * @var null|string
+     */
+    private $rootPath = null;
+
+    /**
      * Has to build instance of RequestInterface, set it to BaseApplication and return it
      *
      * @return RequestInterface
@@ -145,6 +150,14 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         }
 
         $this->configuration = $applicationConfiguration;
+        /**
+         * @todo move root path definition to ConfigService once its implemented
+         */
+        $this->setRootPath(
+            realpath(
+                dirname(__DIR__, 4)
+            )
+        );
 
         $this->setExceptionHandler(new ExceptionHandler());
         $this->bootstrap();
@@ -579,5 +592,25 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function getAclRules()
     {
         return $this->aclRules;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function setRootPath(string $path)
+    {
+        $this->rootPath = $path;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getRootPath()
+    {
+        return $this->rootPath;
     }
 }

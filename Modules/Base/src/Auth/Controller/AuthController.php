@@ -3,6 +3,8 @@
 namespace Framework\Base\Auth\Controller;
 
 use Firebase\JWT\JWT;
+use Framework\Base\Application\Exception\AuthenticationException;
+use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Http\Controller\Http;
 
 /**
@@ -20,15 +22,15 @@ class AuthController extends Http
     {
         $authModels = $this->getRepositoryManager()->getAuthenticatableModels();
         $post = $this->getPost();
-        $model = null;
+        $model = $exception = null;
         $attemptStrategies = [];
 
-        foreach ($authModels as $repoName => $params) {
-            if (in_array($params['credentials'], array_keys($post), true) === true &&
+        foreach ($authModels as $resourceName => $params) {
+            if (count(array_diff($params['credentials'], array_keys($post))) === 0 &&
                 count($post) === count($params['credentials'])
             ) {
                 $attemptStrategies[] = [
-                    'repository' => $this->getRepositoryFromResourceName($repoName),
+                    'repository' => $this->getRepositoryFromResourceName($resourceName),
                     'class' => '\\Framework\\Base\\Auth\\' . ucfirst(strtolower($params['strategy'])) . 'AuthStrategy',
                     'credentials' => $params['credentials'],
                 ];
@@ -50,27 +52,30 @@ class AuthController extends Http
                  */
                 $auth = new $strategy['class']($post, $strategy['repository']);
                 $model = $auth->validate($strategy['credentials']);
-            } catch (\Exception $exception) {
-                /**
-                 * @todo implement handling distinction between invalid credentials and similar but wrong strategy
-                 */
+            } catch (AuthenticationException $e) {
+                $exception = $e;
+            } catch (NotFoundException $e) {
+                $exception = $e;
             }
         }
 
         if ($model === null) {
-            throw new \RuntimeException('No auth mechanism matched');
+            throw $exception;
         }
 
         /**
          * @todo implement key generation, adjustable time on token expiration, algorithm selection
          */
         $key = 'rV)7Djb{DpEpY5ex';
+        JWT::$timestamp = time();
         $payload = array(
             'iss' => 'framework.the-shop.io',
-            'exp' => time() + 3600,
-            'sub' => $model->getId(),
+            'exp' => JWT::$timestamp + 3600,
+            'modelId' => $model->getId(),
+            'resourceName' => $model->getCollection(),
+            'aclRole' => '',
         );
-        $alg = 'HS256';
+        $alg = 'HS384';
         $jwt = JWT::encode($payload, $key, $alg);
 
         return $jwt;

@@ -3,6 +3,7 @@
 namespace Framework\Base\Mongo;
 
 use Framework\Base\Database\DatabaseQueryInterface;
+use MongoDB\BSON\ObjectID;
 
 /**
  * Class MongoQuery
@@ -10,11 +11,34 @@ use Framework\Base\Database\DatabaseQueryInterface;
  */
 class MongoQuery implements DatabaseQueryInterface
 {
+    /**
+     * @var string
+     */
     private $database = '';
+
+    /**
+     * @var string
+     */
     private $collection = '';
+
+    /**
+     * @var string
+     */
     private $offset = '';
+
+    /**
+     * @var string
+     */
     private $limit = '';
+
+    /**
+     * @var array
+     */
     private $selectFields = [];
+
+    /**
+     * @var array
+     */
     private $conditions = [];
 
     /**
@@ -25,11 +49,26 @@ class MongoQuery implements DatabaseQueryInterface
         return $this->conditions;
     }
 
+    /**
+     * @param string $field
+     * @param string $operation
+     * @param        $value
+     *
+     * @return void
+     */
     public function addAndCondition(string $field, string $operation, $value)
     {
+        if ($operation === '=') {
+            $operation = '$eq';
+        }
+
+        if ($field === '_id') {
+            $value = new ObjectID($value);
+        }
+
         $queryPart = [$field => [$operation => $value]];
 
-        $this->conditions = array_merge($this->conditions, $queryPart);
+        $this->conditions = array_merge_recursive($this->conditions, $queryPart);
     }
 
     /**

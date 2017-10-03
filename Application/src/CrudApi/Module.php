@@ -66,27 +66,18 @@ class Module extends BaseModule
     {
         $application = $this->getApplication();
 
-        $authModelsConfigs = $this->getAuthenticatables();
-
-        if (empty($authModelsConfigs) === false) {
-            array_unshift(
-                $this->config['routes'],
-                [
-                    'post',
-                    '/login',
-                    '\Framework\Base\Auth\Controller\AuthController::authenticate',
-                ]
-            );
-            $application->getRepositoryManager()
-                        ->addAuthenticatableModels($authModelsConfigs);
-        }
-
         $application->getDispatcher()
                     ->addRoutes($this->config['routes']);
 
-        $application->setAclRules($this->readJsonFile('acl'));
+        $application->setAclRules($this->readDecodedJsonFile(
+            $application->getRootPath() . '/Application/src/CrudApi/config/acl.json'
+        ));
 
-        $modelsConfiguration = $this->generateModelsConfiguration($this->readJsonFile('models'));
+        $modelsConfiguration = $this->generateModelsConfiguration(
+            $this->readDecodedJsonFile(
+                $application->getRootPath() . '/Application/src/CrudApi/config/models.json'
+            )
+        );
 
         $repositoryManager = $application->getRepositoryManager();
 
@@ -103,8 +94,8 @@ class Module extends BaseModule
         }
 
         $repositoryManager->registerResources($modelsConfiguration['resources'])
-            ->registerRepositories($this->config['repositories'])
-            ->registerModelFields($modelsConfiguration['modelFields']);
+                          ->registerRepositories($this->config['repositories'])
+                          ->registerModelFields($modelsConfiguration['modelFields']);
     }
 
     /**

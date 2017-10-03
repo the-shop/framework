@@ -7,6 +7,7 @@
       "email",
       "password"
     ],
+    "aclRoleField" : "role",
     "fields": {
       "_id": {
         "label": "ID",
@@ -32,6 +33,10 @@
       "repeatNewPassword": {
         "label": "Repeat New Password",
         "type": "password"
+      },
+      "role": {
+        "label": "Role",
+        "type": "string"
       },
       "token": {
         "label": "Token",

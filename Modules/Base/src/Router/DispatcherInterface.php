@@ -24,6 +24,11 @@ interface DispatcherInterface
     public function getHandler();
 
     /**
+     * @return array
+     */
+    public function getRoutes();
+
+    /**
      * @return mixed
      */
     public function getRouteParameters();

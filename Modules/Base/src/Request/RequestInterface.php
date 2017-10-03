@@ -15,6 +15,11 @@ interface RequestInterface
     public function setServer(array $serverInformationMap = []);
 
     /**
+     * @return array
+     */
+    public function getServer();
+
+    /**
      * @return mixed
      */
     public function getUri();

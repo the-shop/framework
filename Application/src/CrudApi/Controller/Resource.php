@@ -135,8 +135,7 @@ class Resource extends HttpController
                 ]
             );
 
-        $model = $this->getApplication()
-            ->getRepositoryManager()
+        $model = $this->getRepositoryManager()
             ->getRepositoryFromResourceName($resourceName)
             ->newModel();
 

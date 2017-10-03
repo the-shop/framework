@@ -36,7 +36,7 @@ interface BrunoRepositoryInterface extends ApplicationAwareInterface
     public function setRepositoryManager(RepositoryManagerInterface $repositoryManager);
 
     /**
-     * @return BrunoInterface
+     * @return \Framework\Base\Model\BrunoInterface
      */
     public function newModel();
 
@@ -47,13 +47,27 @@ interface BrunoRepositoryInterface extends ApplicationAwareInterface
     public function loadOne($identifier);
 
     /**
+     * @param array $keyValues
+     *
+     * @return BrunoInterface|null
+     */
+    public function loadOneBy(array $keyValues);
+
+    /**
+     * @param $identifiers
+     *
      * @return BrunoInterface[]
      */
-    public function loadMultiple();
+    public function loadMultiple($identifiers);
 
     /**
      * @param BrunoInterface $bruno
      * @return BrunoInterface
      */
     public function save(BrunoInterface $bruno);
+
+    /**
+     * @return DatabaseAdapterInterface
+     */
+    public function getPrimaryAdapter();
 }

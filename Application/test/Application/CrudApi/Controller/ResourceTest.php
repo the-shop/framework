@@ -1,6 +1,6 @@
 <?php
 
-namespace ApplicationTest\Application\CrudApi\Controller;
+namespace Application\Test\Application\CrudApi\Controller;
 
 use Application\CrudApi\Controller\Resource;
 use Application\CrudApi\Model\Generic;
@@ -69,15 +69,6 @@ class ResourceTest extends UnitTest
         ],
     ];
 
-    public function testGetAllUser()
-    {
-        $response = $this->makeHttpRequest('GET', '/users');
-
-        $responseBody = $response->getBody();
-
-        $this->assertNotEmpty($responseBody);
-    }
-
     /**
      * Test resource create one model - success
      */
@@ -104,6 +95,15 @@ class ResourceTest extends UnitTest
         $this->assertEquals(200, $response->getCode());
 
         return $createdModel;
+    }
+
+    public function testGetAllUsers()
+    {
+        $response = $this->makeHttpRequest('GET', '/users');
+
+        $responseBody = $response->getBody();
+
+        $this->assertNotEmpty($responseBody);
     }
 
     /**

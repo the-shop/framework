@@ -12,9 +12,14 @@ use Framework\Base\Model\Modifiers\FieldModifierInterface;
 interface BrunoInterface extends ApplicationAwareInterface
 {
     /**
-     * @return string
+     * @return string|null
      */
     public function getId();
+
+    /**
+     * @return string|null
+     */
+    public function getPrimaryKey();
 
     /**
      * @return bool

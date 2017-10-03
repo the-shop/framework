@@ -2,11 +2,8 @@
 
 namespace Framework\Base\Test;
 
-use Application\CrudApi\Controller\Resource;
 use Framework\Base\Application\ApplicationConfiguration;
-use Framework\Base\Application\ApplicationInterface;
 use Framework\RestApi\Listener\Acl;
-use Framework\RestApi\Module;
 use Framework\RestApi\RestApi;
 use PHPUnit\Framework\TestCase;
 use Application\CrudApi\Module as CrudApiModule;
@@ -29,15 +26,34 @@ class UnitTest extends TestCase
      */
     private $application = null;
 
+    /**
+     * @var array
+     */
+    private $authModel = [];
+
+    /**
+     * @var array
+     */
+    private $fields = [];
+
+    /**
+     * UnitTest constructor.
+     *
+     * @param null   $name
+     * @param array  $data
+     * @param string $dataName
+     */
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
         $appConfig = new ApplicationConfiguration();
-        $appConfig->setRegisteredModules([
-            RestApiModule::class,
-            CrudApiModule::class
-        ]);
+        $appConfig->setRegisteredModules(
+            [
+                RestApiModule::class,
+                CrudApiModule::class
+            ]
+        );
 
         $this->application = new RestApi($appConfig);
 
@@ -51,6 +67,11 @@ class UnitTest extends TestCase
         );
     }
 
+    /**
+     * @param \Framework\Base\Request\RequestInterface $request
+     *
+     * @return \Framework\RestApi\RestApi|null
+     */
     public function runApplication(RequestInterface $request)
     {
         $app = $this->application;
@@ -72,8 +93,9 @@ class UnitTest extends TestCase
     /**
      * @param string $method
      * @param string $path
-     * @param array $parameters
-     * @param array $files
+     * @param array  $parameters
+     * @param array  $files
+     *
      * @return \Framework\Base\Response\ResponseInterface
      */
     public function makeHttpRequest(
@@ -88,7 +110,7 @@ class UnitTest extends TestCase
         // Build basic http request
         $request = new Request();
         $request->setMethod($method)
-            ->setUri($path);
+                ->setUri($path);
 
         switch ($method) {
             case 'DELETE':
@@ -104,7 +126,7 @@ class UnitTest extends TestCase
         }
 
         return $this->runApplication($request)
-            ->getResponse();
+                    ->getResponse();
     }
 
     /**
@@ -117,5 +139,46 @@ class UnitTest extends TestCase
         }
 
         return $this->application;
+    }
+
+    /**
+     * Register Test Adapter, Repository, Resource, Model Fields, Auth Model
+     *
+     * @return void
+     */
+    public function loadTestClasses()
+    {
+        $this->authModel['tests'] = ['strategy' => 'Password', 'credentials' => ['email', 'password']];
+        $this->fields['tests'] = ["email" => ["label" => "Email", "type" => "string",],
+                            "password" =>["label" => "Password", "type" => "password"]];
+        $repository = [TestModel::class => TestRepository::class];
+        $resource = ['tests' => TestRepository::class];
+
+        $adapter = new TestDatabaseAdapter();
+
+        $this->getApplication()
+             ->getRepositoryManager()
+             ->addModelAdapter('tests', $adapter)
+             ->setPrimaryAdapter('tests', $adapter)
+             ->registerRepositories($repository)
+             ->registerResources($resource)
+             ->registerModelFields($this->fields)
+             ->addAuthenticatableModels($this->authModel);
+    }
+
+    /**
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAuthModel()
+    {
+        return $this->authModel;
     }
 }

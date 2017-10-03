@@ -4,7 +4,6 @@ namespace Framework\RestApi;
 
 use Framework\Base\Application\ApplicationConfiguration;
 use Framework\Base\Application\BaseApplication;
-use Framework\Base\Application\ConfigurationInterface;
 use Framework\Http\Render\Json;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
@@ -36,18 +35,24 @@ class RestApi extends BaseApplication
     {
         $request = new Request();
 
-        $request->setPost(isset($_POST) ? $_POST : []);
-        $request->setQuery(isset($_GET) ? $_GET : []);
-        $request->setFiles(isset($_FILES) ? $_FILES : []);
-        $request->setServer($_SERVER);
+        $helperRequest = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
-        if (isset($_SERVER['REQUEST_URI']) === true) {
-            $request->setUri($_SERVER['REQUEST_URI']);
+        $request->setServer($helperRequest->server->all());
+
+        $request->setPost($helperRequest->request->all());
+        $request->setQuery($helperRequest->query->all());
+        $request->setFiles($helperRequest->files->all());
+        $request->setCookies($helperRequest->cookies->all());
+        $request->setUri($helperRequest->getRequestUri());
+
+        if ($request->getMethod() === 'PUT' || $request->getMethod() === 'PATCH') {
+            $request->setPost($request->getQuery());
         }
 
         unset($_POST);
         unset($_GET);
         unset($_FILES);
+        unset($_COOKIE);
 
         $this->setRequest($request);
 

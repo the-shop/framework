@@ -7,6 +7,9 @@ use Framework\Base\Database\DatabaseQueryInterface;
 
 class TestDatabaseAdapter implements DatabaseAdapterInterface
 {
+    /**
+     * @var null
+     */
     private $loadOneResult = null;
 
     /**
@@ -30,6 +33,11 @@ class TestDatabaseAdapter implements DatabaseAdapterInterface
         return $this->loadOneResult;
     }
 
+    /**
+     * @param $value
+     *
+     * @return $this
+     */
     public function setLoadOneResult($value)
     {
         $this->loadOneResult = $value;
@@ -92,5 +100,13 @@ class TestDatabaseAdapter implements DatabaseAdapterInterface
     public function getDatabaseAdapter()
     {
         return 'Not implemented';
+    }
+
+    /**
+     * @return \Framework\Base\Database\DatabaseQueryInterface
+     */
+    public function newQuery(): DatabaseQueryInterface
+    {
+        return new TestDatabaseQuery();
     }
 }

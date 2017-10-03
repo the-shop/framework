@@ -66,6 +66,32 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
+     * @param string $path
+     * @return $this
+     */
+    public function readFromPhp(string $path)
+    {
+        $config = include $path;
+
+        $this->configuration = array_merge($this->configuration, $config);
+
+        return $this;
+    }
+
+    /**
+     * @param string $path
+     * @return $this
+     */
+    public function readFromJson(string $path)
+    {
+        $config = json_decode(file_get_contents($path), true);
+
+        $this->configuration = array_merge($this->configuration, $config);
+
+        return $this;
+    }
+
+    /**
      * @param $array
      * @param array $pathParts
      * @param null $value

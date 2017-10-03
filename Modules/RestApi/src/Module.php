@@ -66,13 +66,13 @@ class Module extends BaseModule
         $models = [];
 
         $config = $this->readDecodedJsonFile(
-            $application->getRootPath() . '/Application/src/CrudApi/config/models.json'
+            $application->getRootPath() . '/Application/config/models.json'
         );
 
         if ($config === null) {
             throw new \RuntimeException('Config file missing');
         }
-        foreach ($config as $modelName => $params) {
+        foreach ($config['models'] as $modelName => $params) {
             if (isset($params['authenticatable']) === true &&
                 $params['authenticatable'] === true &&
                 isset($params['authStrategy']) === true &&

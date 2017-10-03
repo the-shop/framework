@@ -66,17 +66,17 @@ class Module extends BaseModule
     {
         $application = $this->getApplication();
 
+        $configDirPath = $application->getRootPath() . '/Application/config/';
+        $this->setModuleConfiguration($configDirPath);
+        $appConfig = $application->getConfiguration();
+
         $application->getDispatcher()
                     ->addRoutes($this->config['routes']);
 
-        $application->setAclRules($this->readDecodedJsonFile(
-            $application->getRootPath() . '/Application/src/CrudApi/config/acl.json'
-        ));
+        $application->setAclRules($appConfig->getPathValue('acl'));
 
         $modelsConfiguration = $this->generateModelsConfiguration(
-            $this->readDecodedJsonFile(
-                $application->getRootPath() . '/Application/src/CrudApi/config/models.json'
-            )
+            $appConfig->getPathValue('models')
         );
 
         $repositoryManager = $application->getRepositoryManager();
@@ -114,47 +114,5 @@ class Module extends BaseModule
         }
 
         return $generatedConfiguration;
-    }
-
-    /**
-     * @param $fileName
-     * @return mixed
-     */
-    private function readJsonFile($fileName)
-    {
-        return json_decode(file_get_contents(__DIR__ . "/config/" . $fileName . ".json"), true);
-    }
-
-    private function getAuthenticatables()
-    {
-        $models = [];
-        $config = json_decode(file_get_contents(__DIR__ . "/config/models.json"), true);
-        foreach ($config as $modelName => $params) {
-            if (isset($params['authenticatable']) === true &&
-                $params['authenticatable'] === true &&
-                isset($params['authStrategy']) === true &&
-                isset($params['credentials']) === true &&
-                is_array($params['credentials']) === true
-            ) {
-                $models[$params['collection']] = [
-                    'strategy' => $params['authStrategy'],
-                    'credentials' => $params['credentials'],
-                ];
-            }
-        }
-        return $models;
-    }
-
-    private function getDirContents($path)
-    {
-        $rii = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
-
-        $files = [];
-        foreach ($rii as $file) {
-            if ($file->isDir() === false) {
-                $files[] = $file->getPathname();
-            }
-        }
-        return $files;
     }
 }

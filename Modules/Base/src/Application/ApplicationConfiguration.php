@@ -14,11 +14,6 @@ class ApplicationConfiguration extends Configuration
     private $registeredModules = [];
 
     /**
-     * @var array
-     */
-    private $modulesConfiguration = [];
-
-    /**
      * @param array $modules
      */
     public function setRegisteredModules(array $modules)
@@ -32,24 +27,5 @@ class ApplicationConfiguration extends Configuration
     public function getRegisteredModules()
     {
         return $this->registeredModules;
-    }
-
-    /**
-     * @param array $configMap
-     * @return $this
-     */
-    public function setModulesConfiguration(array $configMap)
-    {
-        $this->modulesConfiguration = array_merge($this->modulesConfiguration, $configMap);
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getModulesConfiguration()
-    {
-        return $this->modulesConfiguration;
     }
 }

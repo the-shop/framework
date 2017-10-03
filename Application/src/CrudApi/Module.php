@@ -3,9 +3,7 @@
 namespace Application\CrudApi;
 
 use Framework\Base\Module\BaseModule;
-use Application\CrudApi\Model\Generic as GenericModel;
 use Application\CrudApi\Repository\GenericRepository;
-use Framework\Base\Mongo\MongoAdapter;
 
 /**
  * Class Api
@@ -13,52 +11,6 @@ use Framework\Base\Mongo\MongoAdapter;
  */
 class Module extends BaseModule
 {
-    private $config = [
-        'routes' => [
-            [
-                'get',
-                '/{resourceName}',
-                '\Application\CrudApi\Controller\Resource::loadAll',
-            ],
-            [
-                'get',
-                '/{resourceName}/{identifier}',
-                '\Application\CrudApi\Controller\Resource::load',
-            ],
-            [
-                'post',
-                '/{resourceName}',
-                '\Application\CrudApi\Controller\Resource::create',
-            ],
-            [
-                'put',
-                '/{resourceName}/{identifier}',
-                '\Application\CrudApi\Controller\Resource::update',
-            ],
-            [
-                'patch',
-                '/{resourceName}/{identifier}',
-                '\Application\CrudApi\Controller\Resource::partialUpdate',
-            ],
-            [
-                'delete',
-                '/{resourceName}/{identifier}',
-                '\Application\CrudApi\Controller\Resource::delete',
-            ],
-        ],
-        'repositories' => [
-            GenericModel::class => GenericRepository::class,
-        ],
-        'modelAdapters' => [
-            'users' => [
-                MongoAdapter::class,
-            ],
-        ],
-        'primaryModelAdapter' => [
-            'users' => MongoAdapter::class,
-        ]
-    ];
-
     /**
      * @inheritdoc
      */
@@ -66,35 +18,42 @@ class Module extends BaseModule
     {
         $application = $this->getApplication();
 
+        // Let's read all files from module config folder and set to Configuration
         $configDirPath = $application->getRootPath() . '/Application/config/';
         $this->setModuleConfiguration($configDirPath);
         $appConfig = $application->getConfiguration();
 
+        // Add routes to dispatcher
         $application->getDispatcher()
-                    ->addRoutes($this->config['routes']);
+                    ->addRoutes($appConfig->getPathValue('routes'));
 
+        // Add acl rules
         $application->setAclRules($appConfig->getPathValue('acl'));
 
+        // Format models configuration
         $modelsConfiguration = $this->generateModelsConfiguration(
             $appConfig->getPathValue('models')
         );
 
         $repositoryManager = $application->getRepositoryManager();
 
+        $modelAdapters = $appConfig->getPathValue('modelAdapters');
         // Register model adapters
-        foreach ($this->config['modelAdapters'] as $model => $adapters) {
+        foreach ($modelAdapters as $model => $adapters) {
             foreach ($adapters as $adapter) {
                 $repositoryManager->addModelAdapter($model, new $adapter());
             }
         }
 
+        $primaryModelAdapter = $appConfig->getPathValue('primaryModelAdapter');
         // Register model primary adapters
-        foreach ($this->config['primaryModelAdapter'] as $model => $primaryAdapter) {
+        foreach ($primaryModelAdapter as $model => $primaryAdapter) {
             $repositoryManager->setPrimaryAdapter($model, new $primaryAdapter());
         }
 
+        // Register resources, repositories and model fields
         $repositoryManager->registerResources($modelsConfiguration['resources'])
-                          ->registerRepositories($this->config['repositories'])
+                          ->registerRepositories($appConfig->getPathValue('repositories'))
                           ->registerModelFields($modelsConfiguration['modelFields']);
     }
 

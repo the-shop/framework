@@ -3,12 +3,7 @@
 namespace Framework\RestApi;
 
 use Framework\Base\Application\ApplicationInterface;
-use Framework\Base\Application\Exception\ExceptionHandler;
-use Framework\Base\Application\BaseApplication;
 use Framework\Base\Module\BaseModule;
-use Framework\RestApi\Listener\Acl;
-use Framework\RestApi\Listener\ExceptionFormatter;
-use Framework\RestApi\Listener\ResponseFormatter;
 
 /**
  * Class Module
@@ -17,42 +12,41 @@ use Framework\RestApi\Listener\ResponseFormatter;
 class Module extends BaseModule
 {
     /**
-     * @var array
-     */
-    private $config = [
-        'listeners' => [
-            BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_PRE =>
-                ResponseFormatter::class,
-            ExceptionHandler::EVENT_EXCEPTION_HANDLER_HANDLE_PRE =>
-                ExceptionFormatter::class,
-            BaseApplication::EVENT_APPLICATION_HANDLE_REQUEST_PRE =>
-                Acl::class
-        ]
-    ];
-
-    /**
      * @inheritdoc
-    */
+     */
     public function bootstrap()
     {
         $application = $this->getApplication();
-        foreach ($this->config['listeners'] as $event => $handlerClass) {
+
+        // Let's read all files from module config folder and set to Configuration
+        $configDirPath = $application->getRootPath() . '/Modules/RestApi/config/';
+        $this->setModuleConfiguration($configDirPath);
+        $appConfig = $application->getConfiguration();
+
+        // Add listeners to application
+        foreach ($appConfig->getPathValue('listeners') as $event => $handlerClass) {
             $application->listen($event, $handlerClass);
         }
 
         $authModelsConfigs = $this->getAuthenticatables($application);
 
         if (empty($authModelsConfigs) === false) {
-            $this->config['routes'][] = [
-                'post',
-                '/login',
-                '\Framework\Base\Auth\Controller\AuthController::authenticate',
-            ];
+            $appConfig->setPathValue(
+                'routes',
+                [
+                    [
+                        'post',
+                        '/login',
+                        '\Framework\Base\Auth\Controller\AuthController::authenticate',
+                    ],
+                ]
+            );
+
             $application->getDispatcher()
-                        ->addRoutes($this->config['routes']);
+                ->addRoutes($appConfig->getPathValue('routes'));
 
             $application->getRepositoryManager()
-                        ->addAuthenticatableModels($authModelsConfigs);
+                ->addAuthenticatableModels($authModelsConfigs);
         }
     }
 
@@ -88,6 +82,7 @@ class Module extends BaseModule
                 $models[$params['collection']]['aclRole'] = $params['aclRoleField'];
             }
         }
+
         return $models;
     }
 }

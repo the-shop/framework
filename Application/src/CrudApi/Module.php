@@ -6,7 +6,7 @@ use Framework\Base\Module\BaseModule;
 use Application\CrudApi\Repository\GenericRepository;
 
 /**
- * Class Api
+ * Class Module
  * @package Application\CrudApi
  */
 class Module extends BaseModule

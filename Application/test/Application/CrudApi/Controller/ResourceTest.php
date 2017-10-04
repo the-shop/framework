@@ -2,6 +2,7 @@
 
 namespace Application\Test\Application\CrudApi\Controller;
 
+use Application\CrudApi\Controller\Resource;
 use Application\CrudApi\Model\Generic;
 use Framework\Base\Test\UnitTest;
 
@@ -75,12 +76,14 @@ class ResourceTest extends UnitTest
     {
         $this->getApplication()->setAclRules($this->aclRules);
 
+        $email = $this->generateRandomEmail();
+
         $response = $this->makeHttpRequest(
             'POST',
             '/users',
             [
                 'name' => 'test',
-                'email' => 'test@test.com',
+                'email' => $email,
             ]
         );
 
@@ -90,7 +93,7 @@ class ResourceTest extends UnitTest
 
         $this->assertNotEmpty($createdModel);
         $this->assertEquals('test', $modelAttributes['name']);
-        $this->assertEquals('test@test.com', $modelAttributes['email']);
+        $this->assertEquals($email, $modelAttributes['email']);
         $this->assertEquals(200, $response->getCode());
 
         return $createdModel;
@@ -116,6 +119,7 @@ class ResourceTest extends UnitTest
         $this->getApplication()->setAclRules($this->aclRules);
 
         $modelId = $model->getId();
+        $att = $model->getAttributes();
 
         $route = '/users/' . $modelId;
 
@@ -127,7 +131,7 @@ class ResourceTest extends UnitTest
 
         $this->assertNotEmpty($loadedModel);
         $this->assertEquals('test', $modelAttributes['name']);
-        $this->assertEquals('test@test.com', $modelAttributes['email']);
+        $this->assertEquals($att['email'], $modelAttributes['email']);
         $this->assertEquals($modelId, $modelAttributes['_id']);
         $this->assertEquals(200, $response->getCode());
 
@@ -149,12 +153,14 @@ class ResourceTest extends UnitTest
 
         $route = '/users/' . $modelId;
 
+        $newEmail = $this->generateRandomEmail();
+
         $response = $this->makeHttpRequest(
             'PUT',
             $route,
             [
                 'name' => 'updated test name',
-                'email' => 'updatedtest@test.com',
+                'email' => $newEmail,
             ]
         );
 
@@ -164,7 +170,7 @@ class ResourceTest extends UnitTest
 
         $this->assertNotEmpty($updatedModel);
         $this->assertEquals('updated test name', $modelAttributes['name']);
-        $this->assertEquals('updatedtest@test.com', $modelAttributes['email']);
+        $this->assertEquals($newEmail, $modelAttributes['email']);
         $this->assertEquals($modelId, $modelAttributes['_id']);
         $this->assertEquals(200, $response->getCode());
 
@@ -181,6 +187,7 @@ class ResourceTest extends UnitTest
         $this->getApplication()->setAclRules($this->aclRules);
 
         $modelId = $model->getId();
+        $newEmail = $this->generateRandomEmail(20);
 
         $route = '/users/' . $modelId;
 
@@ -189,7 +196,7 @@ class ResourceTest extends UnitTest
             $route,
             [
                 'name' => 'updated test name',
-                'email' => 'updatedtest@test.com',
+                'email' => $newEmail,
                 'company' => 'test company',
             ]
         );
@@ -218,12 +225,14 @@ class ResourceTest extends UnitTest
 
         $route = '/users/' . $modelId;
 
+        $newEmail = $this->generateRandomEmail();
+
         $response = $this->makeHttpRequest(
             'PATCH',
             $route,
             [
                 'name' => 'partial updated test name',
-                'email' => 'partialupdated@test.com',
+                'email' => $newEmail,
             ]
         );
 
@@ -233,7 +242,7 @@ class ResourceTest extends UnitTest
 
         $this->assertNotEmpty($updatedModel);
         $this->assertEquals('partial updated test name', $modelAttributes['name']);
-        $this->assertEquals('partialupdated@test.com', $modelAttributes['email']);
+        $this->assertEquals($newEmail, $modelAttributes['email']);
         $this->assertEquals($modelId, $modelAttributes['_id']);
         $this->assertEquals(200, $response->getCode());
 
@@ -250,6 +259,7 @@ class ResourceTest extends UnitTest
         $this->getApplication()->setAclRules($this->aclRules);
 
         $modelId = $model->getId();
+        $newEmail = $this->generateRandomEmail(20);
 
         $route = '/users/' . $modelId;
 
@@ -258,8 +268,8 @@ class ResourceTest extends UnitTest
             $route,
             [
                 'name' => 'partial updated test name',
-                'email' => 'partialupdated@test.com',
-                'company' => 'test company'
+                'email' => $newEmail,
+                'company' => 'test company',
             ]
         );
 
@@ -283,6 +293,7 @@ class ResourceTest extends UnitTest
         $this->getApplication()->setAclRules($this->aclRules);
 
         $modelId = $model->getId();
+        $att = $model->getAttributes();
 
         $route = '/users/' . $modelId;
 
@@ -294,7 +305,7 @@ class ResourceTest extends UnitTest
 
         $this->assertNotEmpty($responseBody);
         $this->assertEquals('partial updated test name', $modelAttributes['name']);
-        $this->assertEquals('partialupdated@test.com', $modelAttributes['email']);
+        $this->assertEquals($att['email'], $modelAttributes['email']);
         $this->assertEquals($modelId, $modelAttributes['_id']);
         $this->assertEquals(200, $response->getCode());
 
@@ -304,5 +315,162 @@ class ResourceTest extends UnitTest
             ->loadOne($modelId);
 
         $this->assertEquals(null, $loadDeletedModel);
+    }
+
+    /**
+     * Test resource controller validate input method - success
+     */
+    public function testResourceControllerValidateInputSuccess()
+    {
+        $testModelDefinition = [
+            'users' => [
+                'name' => [
+                    'type' => 'string',
+                ],
+                'email' => [
+                    'type' => 'string',
+                    'validation' => [
+                        'email',
+                        'string',
+                    ],
+                ],
+            ],
+        ];
+
+        $app = $this->getApplication();
+        $app->getRepositoryManager()->registerModelFields($testModelDefinition);
+
+        $resourceController = (new Resource())->setApplication($app);
+        $out = $resourceController->validateInput(
+            'users',
+            [
+                'name' => 'testing',
+                'email' => 'testing@test.com',
+            ]
+        );
+
+        $this->assertInstanceOf(Resource::class, $out);
+    }
+
+    /**
+     * Test resource controller validate input method - failed - exception
+     */
+    public function testResourceControllerValidateInputFail()
+    {
+        $testModelDefinition = [
+            'users' => [
+                'name' => [
+                    'type' => 'string',
+                    'validation' => [
+                        'string',
+                    ],
+                ],
+                'email' => [
+                    'type' => 'string',
+                    'validation' => [
+                        'email',
+                        'string',
+                    ],
+                ],
+            ],
+        ];
+
+        $app = $this->getApplication();
+        $app->getRepositoryManager()->registerModelFields($testModelDefinition);
+
+        $resourceController = (new Resource())->setApplication($app);
+
+        $this->expectExceptionCode(400);
+        $this->expectExceptionMessage('Malformed input.');
+        $this->expectException(\RuntimeException::class);
+
+        $resourceController->validateInput(
+            'users',
+            [
+                'name' => [],
+                'email' => 'testing@test.com',
+            ]
+        );
+    }
+
+    /**
+     * Validate unique validation - model found - throw exception
+     */
+    public function testResourceValidateInputFailUnique()
+    {
+        $testModelDefinition = [
+            'users' => [
+                '_id' => [
+                    'label' => 'ID',
+                    'type' => 'string',
+                    'disabled' => true,
+                ],
+                'name' => [
+                    'type' => 'string',
+                    'validation' => [
+                        'string',
+                    ],
+                ],
+                'email' => [
+                    'type' => 'string',
+                    'validation' => [
+                        'email',
+                        'string',
+                        'unique',
+                    ],
+                ],
+            ],
+        ];
+
+        $app = $this->getApplication();
+        $app->getRepositoryManager()->registerModelFields($testModelDefinition);
+
+        $resourceController = (new Resource())->setApplication($app);
+
+        $email = $this->generateRandomEmail(15);
+
+        $model = $app->getRepositoryManager()
+            ->getRepositoryFromResourceName('users')
+            ->newModel();
+
+        $model->setAttributes([
+            'name' => 'testing',
+            'email' => $email,
+        ]);
+        $model->save();
+
+
+        $this->expectExceptionCode(400);
+        $this->expectExceptionMessage('Malformed input.');
+        $this->expectException(\RuntimeException::class);
+
+        $resourceController->validateInput(
+            'users',
+            [
+                'name' => [],
+                'email' => $email,
+            ]
+        );
+    }
+
+    /**
+     * Helper method for generating random E-mail
+     * @param int $length
+     * @return string
+     */
+    private function generateRandomEmail(int $length = 10)
+    {
+        // Generate random email
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $email = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $email .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        $email .= '@test.com';
+
+        return $email;
     }
 }

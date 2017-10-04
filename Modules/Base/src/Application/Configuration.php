@@ -66,6 +66,46 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
+     * @param string $path
+     * @return $this
+     */
+    public function readFromPhp(string $path)
+    {
+        if (is_file($path) === false) {
+            throw new \RuntimeException(
+                'Unable to open php file' . $path . ' file not found!',
+                404
+            );
+        }
+
+        $config = include $path;
+
+        $this->configuration = array_merge($this->configuration, $config);
+
+        return $this;
+    }
+
+    /**
+     * @param string $path
+     * @return $this
+     */
+    public function readFromJson(string $path)
+    {
+        if (is_file($path) === false) {
+            throw new \RuntimeException(
+                'Unable to open json file' . $path . ' file not found!',
+                404
+            );
+        }
+
+        $config = json_decode(file_get_contents($path), true);
+
+        $this->configuration = array_merge($this->configuration, $config);
+
+        return $this;
+    }
+
+    /**
      * @param $array
      * @param array $pathParts
      * @param null $value

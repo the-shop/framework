@@ -15,6 +15,7 @@
   "autoload": {
     "psr-4": {
       "Framework\\RestApi\\": "Modules/RestApi/src",
+      "Framework\\RestApi\\Configuration": "Modules/RestApi/config",
       "Framework\\RestApi\\Test\\": "Modules/RestApi/test",
       "Framework\\Base\\": "Modules/Base/src",
       "Framework\\Base\\Test\\": "Modules/Base/test",
@@ -22,6 +23,7 @@
       "Framework\\Http\\Test\\": "Modules/Http/test",
       "Framework\\Terminal\\": "Modules/Terminal/src",
       "Application\\": "Application/src",
+      "Application\\Configuration\\": "Application/config",
       "Application\\Test\\": "Application/test"
     }
   },

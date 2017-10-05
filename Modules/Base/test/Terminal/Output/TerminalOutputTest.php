@@ -33,7 +33,7 @@ class TerminalOutputTest extends UnitTest
      */
     public function testTerminalOutputMessage()
     {
-        $stream = fopen('php://stdout', 'w');
+        $stream = fopen(__DIR__ . '/outputMessages.txt', 'w');
         $outputHandler = new TerminalOutput($stream);
 
         $response = new Response();
@@ -68,6 +68,8 @@ class TerminalOutputTest extends UnitTest
             ],
             $outputHandler->getOutputMessages()
         );
+
+        $this->clearOutputFile();
     }
 
     /**
@@ -75,7 +77,7 @@ class TerminalOutputTest extends UnitTest
      */
     public function testTerminalOutputMessageException()
     {
-        $stream = fopen('php://stdout', 'w');
+        $stream = fopen(__DIR__ . '/outputMessages.txt', 'w');
         $outputHandler = new TerminalOutput($stream);
 
         $response = new Response();
@@ -113,5 +115,15 @@ class TerminalOutputTest extends UnitTest
             ],
             $outputHandler->getOutputMessages()
         );
+
+        $this->clearOutputFile();
+    }
+
+    /**
+     * Clear output messages from file
+     */
+    private function clearOutputFile()
+    {
+        file_put_contents(__DIR__ . '/outputMessages.txt', '');
     }
 }

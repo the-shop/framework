@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Base\Terminal\Commands\Cron;
+namespace Framework\Terminal\Commands\Cron;
 
 /**
  * Class Schedule

@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Base\Terminal\Commands;
+namespace Framework\Terminal\Commands;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use PhpAmqpLib\Channel\AMQPChannel;

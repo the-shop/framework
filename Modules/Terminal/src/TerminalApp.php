@@ -1,11 +1,11 @@
 <?php
 
-namespace Framework\Base\Terminal;
+namespace Framework\Terminal;
 
 use Framework\Base\Application\ApplicationConfiguration;
 use Framework\Base\Application\BaseApplication;
-use Framework\Base\Terminal\Output\TerminalOutput;
-use Framework\Base\Terminal\Router\Dispatcher;
+use Framework\Terminal\Output\TerminalOutput;
+use Framework\Terminal\Router\Dispatcher;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
 

@@ -22,6 +22,7 @@
       "Framework\\Http\\": "Modules/Http/src",
       "Framework\\Http\\Test\\": "Modules/Http/test",
       "Framework\\Terminal\\": "Modules/Terminal/src",
+      "Framework\\Terminal\\Configuration\\": "Modules/Terminal/config",
       "Application\\": "Application/src",
       "Application\\Configuration\\": "Application/config",
       "Application\\Test\\": "Application/test"

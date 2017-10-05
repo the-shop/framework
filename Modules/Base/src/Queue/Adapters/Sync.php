@@ -15,5 +15,14 @@ class Sync implements QueueAdapterInterface
      */
     public function handle(string $queueName = '', array $payload = [])
     {
+        $taskResponse = call_user_func_array(
+            [
+                $payload['taskClassPath'],
+                $payload['method'],
+            ],
+            $payload['parameters']
+        );
+
+        return $taskResponse;
     }
 }

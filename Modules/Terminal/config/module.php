@@ -17,15 +17,13 @@ return [
         ],
         'queue:worker' => [
             'handler' => QueueWorker::class,
-            'requiredParams' => [
-                'queueName'
-            ],
+            'requiredParams' => [],
             'optionalParams' => [],
         ],
         'test' => [
             'handler' => Test::class,
             'requiredParams' => [
-                'testParam'
+                'testParam',
             ],
             'optionalParams' => [
                 'testOptionalParam',
@@ -38,5 +36,5 @@ return [
         ExceptionHandler::EVENT_EXCEPTION_HANDLER_HANDLE_PRE =>
             ExceptionFormatter::class,
     ],
-    'queue' => [],
+    'queueNames' => [],
 ];

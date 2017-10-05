@@ -25,7 +25,8 @@ class Module extends BaseModule
         $application->getDispatcher()
             ->addRoutes($appConfig->getPathValue('routes'));
 
-        foreach ($appConfig->getPathValue('listeners') as $event => $handlerClass) {
+        $listeners = $appConfig->getPathValue('listeners');
+        foreach ($listeners as $event => $handlerClass) {
             $this->getApplication()->listen($event, $handlerClass);
         }
     }

@@ -9,7 +9,8 @@
     "sendgrid/sendgrid": "~6.0",
     "mustache/mustache": "^2.12",
     "firebase/php-jwt": "^5.0",
-    "symfony/http-foundation": "^3.3"
+    "symfony/http-foundation": "^3.3",
+    "videlalvaro/php-amqplib": "^2.7"
   },
   "autoload": {
     "psr-4": {

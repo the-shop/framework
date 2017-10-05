@@ -10,11 +10,12 @@ use PhpAmqpLib\Message\AMQPMessage;
  * Class RabbitMQ
  * @package Framework\Base\Queue\Adapters
  */
-class RabbitMQ
+class RabbitMQ implements QueueAdapterInterface
 {
     /**
      * @param string $queueName
      * @param array $payload
+     * @return bool
      */
     public function handle(string $queueName, array $payload = [])
     {
@@ -22,10 +23,10 @@ class RabbitMQ
          * Create a connection to RabbitAMQP
          */
         $connection = new AMQPStreamConnection(
-            'localhost',    #host - host name where the RabbitMQ server is running
-            5672,           #port - port number of the service, 5672 is the default
-            'guest',        #user - username to connect to server
-            'guest'         #password
+            getenv('RABBIT_MQ_HOST', 'localhost'),    #host
+            getenv('RABBIT_MQ_PORT', 5672),    #port
+            getenv('RABBIT_MQ_USER', 'guest'),    #user
+            getenv('RABBIT_MQ_PASSWORD', 'guest')    #password
         );
 
         /** @var $channel AMQPChannel */
@@ -34,12 +35,18 @@ class RabbitMQ
         $channel->queue_declare(
             $queueName,    #queue name - Queue names may be up to 255 bytes of UTF-8 characters
             false,          #passive - can use this to check whether an exchange exists without modifying the server state
-            false,          #durable - make sure that RabbitMQ will never lose our queue if a crash occurs - the queue will survive a broker restart
+            true,          #durable - make sure that RabbitMQ will never lose our queue if a
+            # crash occurs - the queue will survive a broker restart
             false,          #exclusive - used by only one connection and the queue will be deleted when that connection closes
             false           #autodelete - queue is deleted when last consumer unSubscribes
         );
 
-        $msg = new AMQPMessage($payload);
+        $msg = new AMQPMessage(
+            $payload,
+            [
+                'delivery mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT
+            ]
+        );
 
         $channel->basic_publish(
             $msg,           #message
@@ -49,5 +56,7 @@ class RabbitMQ
 
         $channel->close();
         $connection->close();
+
+        return true;
     }
 }

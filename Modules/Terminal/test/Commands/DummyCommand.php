@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Base\Test\Terminal\Commands;
+namespace Framework\Terminal\Test\Commands;
 
 use Framework\Base\Test\UnitTest;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework\Base\Test\Terminal\Input;
+namespace Framework\Terminal\Test\Input;
 
-use Framework\Base\Terminal\Input\TerminalInput;
+use Framework\Terminal\Input\TerminalInput;
 use Framework\Base\Test\UnitTest;
 use Framework\Http\Request\Request;
 

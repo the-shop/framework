@@ -1,9 +1,9 @@
 <?php
 
-namespace Framework\Base\Test\Terminal\Commands;
+namespace Framework\Terminal\Test\Commands;
 
-use Framework\Base\Terminal\Commands\CronJob;
-use Framework\Base\Terminal\Router\Dispatcher;
+use Framework\Terminal\Commands\CronJob;
+use Framework\Terminal\Router\Dispatcher;
 use Framework\Base\Test\UnitTest;
 use InvalidArgumentException;
 

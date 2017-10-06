@@ -9,6 +9,9 @@
         <testsuite name="Modules/Base">
             <directory>Modules/Base/test</directory>
         </testsuite>
+        <testsuite name="Modules/Terminal">
+            <directory>Modules/Terminal/test</directory>
+        </testsuite>
     </testsuites>
     <php>
         <env name="FILE_LOGGER_FILE_NAME" value="file_logger.log"/>

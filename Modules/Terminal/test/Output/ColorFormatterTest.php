@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework\Base\Test\Terminal\Output;
+namespace Framework\Terminal\Test\Output;
 
-use Framework\Base\Terminal\Output\ColorFormatter;
+use Framework\Terminal\Output\ColorFormatter;
 use Framework\Base\Test\UnitTest;
 
 /**

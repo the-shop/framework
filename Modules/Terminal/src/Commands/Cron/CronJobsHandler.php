@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Base\Terminal\Commands\Cron;
+namespace Framework\Terminal\Commands\Cron;
 
 use DateTime;
 use Framework\Base\Application\ApplicationAwareInterface;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework\Base\Terminal\Commands;
+namespace Framework\Terminal\Commands;
 
-use Framework\Base\Terminal\Commands\Cron\Schedule;
+use Framework\Terminal\Commands\Cron\Schedule;
 
 /**
  * Class CronJob

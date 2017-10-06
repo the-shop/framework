@@ -1,10 +1,10 @@
 <?php
 
-namespace Framework\Base\Terminal\Output;
+namespace Framework\Terminal\Output;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Render\RenderInterface;
-use Framework\Base\Terminal\Input\TerminalInputInterface;
+use Framework\Terminal\Input\TerminalInputInterface;
 
 /**
  * Interface TerminalOutputInterface

@@ -1,11 +1,11 @@
 <?php
 
-namespace Framework\Base\Terminal\Router;
+namespace Framework\Terminal\Router;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Request\RequestInterface;
 use Framework\Base\Router\DispatcherInterface;
-use Framework\Base\Terminal\Input\TerminalInput;
+use Framework\Terminal\Input\TerminalInput;
 
 /**
  * Class Dispatcher

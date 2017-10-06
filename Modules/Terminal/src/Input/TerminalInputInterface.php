@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Base\Terminal\Input;
+namespace Framework\Terminal\Input;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 

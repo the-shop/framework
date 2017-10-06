@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Base\Terminal\Output;
+namespace Framework\Terminal\Output;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Response\ResponseInterface;

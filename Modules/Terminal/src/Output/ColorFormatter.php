@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Base\Terminal\Output;
+namespace Framework\Terminal\Output;
 
 /**
  * Class ColorFormatter

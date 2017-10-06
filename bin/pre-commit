@@ -4,8 +4,15 @@ PROJECT=`php -r "echo dirname(dirname(dirname(realpath('$0'))));"`
 STAGED_FILES_CMD=`git diff --cached --name-only --diff-filter=ACMR HEAD | grep \\\\.php`
 
 # Run unit tests
-echo "Running unit tests..."
+echo "Running unit tests...";
 ./vendor/bin/phpunit
+
+# Reject the commit in case of unit test failures
+if [ $? != 0 ];
+then
+	echo "$(tput setaf 1) $(tput setab 7) Unit tests have failures. Commit rejected!$(tput sgr 0)"
+	exit 1
+fi;
 
 # Determine if a file list is passed
 if [ "$#" -eq 1 ]

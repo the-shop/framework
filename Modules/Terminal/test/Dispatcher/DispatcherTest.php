@@ -1,9 +1,9 @@
 <?php
 
-namespace Framework\Base\Test\Terminal\Dispatcher;
+namespace Framework\Terminal\Test\Dispatcher;
 
-use Framework\Base\Terminal\Router\Dispatcher;
-use Framework\Base\Test\Terminal\Commands\DummyCommand;
+use Framework\Terminal\Router\Dispatcher;
+use Framework\Terminal\Test\Commands\DummyCommand;
 use Framework\Base\Test\UnitTest;
 use Framework\Http\Request\Request;
 

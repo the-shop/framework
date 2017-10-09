@@ -1,9 +1,9 @@
 <?php
 
-namespace Framework\Base\Test\Terminal\Output;
+namespace Framework\Terminal\Test\Output;
 
-use Framework\Base\Terminal\Output\ColorFormatter;
-use Framework\Base\Terminal\Output\TerminalOutput;
+use Framework\Terminal\Output\ColorFormatter;
+use Framework\Terminal\Output\TerminalOutput;
 use Framework\Base\Test\UnitTest;
 use Framework\Http\Response\Response;
 use InvalidArgumentException;

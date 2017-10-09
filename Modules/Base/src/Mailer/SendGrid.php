@@ -2,6 +2,7 @@
 
 namespace Framework\Base\Mailer;
 
+use Framework\Base\Application\Exception\ValidationException;
 use SendGrid\Content;
 use SendGrid\Email as EmailAddress;
 use SendGrid\Mail as SendGridEmail;
@@ -61,9 +62,14 @@ class SendGrid extends Mailer
         $responseMsg = 'Email was successfully sent!';
         $errors = json_decode($response->body());
 
-
         if ($errors) {
-            $responseMsg = $errors->errors[0]->message;
+            $errorMessages = [];
+            foreach ($errors->errors as $error) {
+                $errorMessages[$error->field] = $error->message;
+            }
+            $exception = new ValidationException();
+            $exception->setFailedValidations($errorMessages);
+            throw $exception;
         }
 
         return $responseMsg;

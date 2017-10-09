@@ -153,6 +153,9 @@ class MongoAdapter implements DatabaseAdapterInterface
                     'projection' => $query->getSelectFields(),
                     'skip' => (int) $query->getOffset(),
                     'limit' => (int) $query->getLimit(),
+                    'sort' => [
+                        $query->getOrderBy() => $query->getOrderDirection() === 'asc' ? -1 : 1
+                    ]
                 ]
             );
 

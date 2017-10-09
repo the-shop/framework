@@ -125,4 +125,41 @@ class TestDatabaseQuery implements DatabaseQueryInterface
     {
         return 'Not implemented';
     }
+
+    public function whereInArrayCondition(string $field, $value = [])
+    {
+        return 'Not implemented';
+    }
+
+    /**
+     * @param string $identifier
+     * @return void
+     */
+    public function setOrderBy(string $identifier)
+    {
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderBy()
+    {
+        return 'Not implemented';
+    }
+
+    /**
+     * @param string $orderDirection
+     * @return void
+     */
+    public function setOrderDirection(string $orderDirection)
+    {
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderDirection()
+    {
+        return 'Not implemented';
+    }
 }

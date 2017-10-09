@@ -68,21 +68,20 @@ class MongoQuery implements DatabaseQueryInterface
      */
     public function addAndCondition(string $field, string $operation, $value)
     {
-        if ($operation === '=') {
-            $operation = '$eq';
-        }
-
-        if ($operation === 'like') {
-            /** @var  $operation \MongoDB\BSON\Regex */
-            $operation = new Regex(".*" . $value . ".*", "i");
-        }
-
-        if ($operation === '>=') {
-            $operation = '$gte';
-        }
-
-        if ($operation === '<=') {
-            $operation = '$lte';
+        switch ($operation) {
+            case '=':
+                $operation = '$eq';
+                break;
+            case '>=':
+                $operation = '$gte';
+                break;
+            case '<=':
+                $operation = '$lte';
+                break;
+            case 'like':
+                /** @var  $operation \MongoDB\BSON\Regex */
+                $operation = new Regex(".*" . $value . ".*", "i");
+                break;
         }
 
         if ($field === '_id') {

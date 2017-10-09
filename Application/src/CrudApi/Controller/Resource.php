@@ -91,6 +91,10 @@ class Resource extends HttpController
 
         /* @var GenericRepository $repository */
         $repository = $this->getRepositoryFromResourceName($resourceName);
+        $query = $repository->getPrimaryAdapter()
+            ->newQuery();
+
+        $query->setCollection($repository->getResourceName());
         $models = $repository->loadMultiple();
 
         $this->getApplication()

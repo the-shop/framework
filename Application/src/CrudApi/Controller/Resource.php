@@ -4,8 +4,10 @@ namespace Application\CrudApi\Controller;
 
 use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Application\Exception\ValidationException;
+use Framework\Base\Database\DatabaseQueryInterface;
 use Framework\Base\Model\BrunoInterface;
 use Application\CrudApi\Repository\GenericRepository;
+use Framework\Base\Repository\BrunoRepositoryInterface;
 use Framework\Base\Validation\Validator;
 use Framework\Http\Controller\Http as HttpController;
 
@@ -91,7 +93,10 @@ class Resource extends HttpController
 
         /* @var GenericRepository $repository */
         $repository = $this->getRepositoryFromResourceName($resourceName);
-        $models = $repository->loadMultiple();
+
+        $query = $this->buildFilteredQuery($repository);
+
+        $models = $repository->loadMultiple($query);
 
         $this->getApplication()
             ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_LOAD_ALL_POST, $models);
@@ -293,10 +298,10 @@ class Resource extends HttpController
                     if (($validationRule === 'unique') === true) {
                         $value = [
                             $fieldName => $requestParameters[$fieldName],
-                            'resourceName' => $resourceName
+                            'resourceName' => $resourceName,
                         ];
                     }
-                        $validator->addValidation($value, $validationRule);
+                    $validator->addValidation($value, $validationRule);
                 }
             }
         }
@@ -308,5 +313,132 @@ class Resource extends HttpController
         }
 
         return $this;
+    }
+
+    /**
+     * @param BrunoRepositoryInterface $repository
+     * @return \Framework\Base\Database\DatabaseQueryInterface
+     * @throws ValidationException
+     */
+    private function buildFilteredQuery(BrunoRepositoryInterface $repository
+    ): DatabaseQueryInterface
+    {
+        $query = $repository->getPrimaryAdapter()
+            ->newQuery();
+
+        // Default query params values
+        $orderBy = $repository->getModelPrimaryKey();
+        $orderDirection = 'desc';
+        $offset = 0;
+        $limit = 100;
+
+        $errors = [];
+
+        $allParams = $this->getRequest()->getQuery();
+
+        // Validate query params based on request params
+        if (empty($allParams) !== true) {
+            $skipParams = [
+                'orderBy',
+                'orderDirection',
+                'offset',
+                'limit',
+                'looseSearch',
+            ];
+
+            // Set operator like if request has looseSearch
+            $operator = '=';
+            if (array_key_exists('looseSearch', $allParams) === true) {
+                $operator = 'like';
+            }
+
+            foreach ($allParams as $key => $value) {
+                if (in_array($key, $skipParams)) {
+                    continue;
+                }
+
+                // Check if value has "range" delimiter and set query
+                if (is_array($value) === false && strpos($value, '>=<')) {
+                    $values = explode('>=<', $value);
+                    $trimmedValues = array_map('trim', $values);
+                    $query->addAndCondition(
+                        $key,
+                        '>=',
+                        ctype_digit($trimmedValues[0]) ? (int)$trimmedValues[0] : $trimmedValues[0]
+                    );
+                    $query->addAndCondition(
+                        $key,
+                        '<=',
+                        ctype_digit($trimmedValues[1]) ? (int)$trimmedValues[1] : $trimmedValues[1]
+                    );
+
+                    if (count($trimmedValues) > 2) {
+                        $errors[] = 'Range search must be between two values.';
+                    }
+                    continue;
+                }
+
+                // Check if value is array
+                if (is_array($value)) {
+                    $query->whereInArrayCondition($key, $value);
+                } else {
+                    if ($value === 'false') {
+                        $value = false;
+                    } elseif ($value === 'true') {
+                        $value = true;
+                    } elseif ($value === 'null') {
+                        $value = null;
+                    }
+
+                    $query->addAndCondition($key, $operator, $value);
+                }
+            }
+        }
+
+        // Check if request has orderBy, orderDirection, offset or limit field and set query
+        if (array_key_exists('orderBy', $allParams) === true) {
+            $orderBy = $allParams['orderBy'];
+        }
+
+        if (array_key_exists('orderDirection', $allParams) === true) {
+            if (strtolower(substr($allParams['orderDirection'], 0, 3)) === 'asc' ||
+                strtolower(substr($allParams['orderDirection'], 0, 4)) === 'desc'
+            ) {
+                $orderDirection = $allParams['orderDirection'];
+            } else {
+                $errors[] = 'Invalid orderDirection input.';
+            }
+        }
+
+        if (array_key_exists('offset', $allParams) === true) {
+            if (ctype_digit($allParams['offset']) && $allParams['offset'] >= 0) {
+                $offset = (int)$allParams['offset'];
+            } else {
+                $errors[] = 'Invalid offset input.';
+            }
+        }
+
+        if (array_key_exists('limit', $allParams)) {
+            if (ctype_digit($allParams['limit']) && $allParams['limit'] >= 0) {
+                $limit = (int)$allParams['limit'];
+            } else {
+                $errors[] = 'Invalid limit input.';
+            }
+        }
+
+        if (count($errors) > 0) {
+            $exception = new ValidationException();
+            $exception->setFailedValidations($errors);
+            throw $exception;
+        }
+
+        $query->setDatabase(getenv('DATABASE_NAME', 'framework'));
+        $query->setCollection($repository->getResourceName());
+        $query->setLimit($limit);
+        $query->setOffset($offset);
+        $query->setOrderBy($orderBy);
+        $query->setOrderDirection($orderDirection);
+
+        return $query;
     }
 }

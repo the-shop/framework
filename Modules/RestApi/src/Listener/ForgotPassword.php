@@ -39,7 +39,7 @@ class ForgotPassword implements ListenerInterface
             }
         }
     }
-    
+
     private function sendPasswordResetEmail($payload)
     {
         $profileAttributes = $payload->getAttributes();

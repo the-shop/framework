@@ -52,6 +52,14 @@
           "label": "Password Forgot",
           "type": "boolean"
         },
+        "passwordResetToken": {
+          "label": "Password Reset Token",
+          "type": "string"
+        },
+        "passwordResetTime": {
+          "label": "Password Reset Time",
+          "type": "integer"
+        },
         "customField": {
           "label": "Custom options field",
           "type": "array",

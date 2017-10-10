@@ -7,6 +7,8 @@ use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Mailer\EmailSender;
 use Framework\Base\Mailer\SendGrid;
+use Framework\Base\Queue\Adapters\Sync;
+use Framework\Base\Queue\TaskQueue;
 
 class ConfirmRegistration implements ListenerInterface
 {
@@ -17,13 +19,19 @@ class ConfirmRegistration implements ListenerInterface
         if ($payload instanceof Generic && $payload->getCollection() === 'users') {
             $profileAttributes = $payload->getAttributes();
 
+            $appConfiguration = $this->getApplication()
+                ->getConfiguration();
             $emailSender = new EmailSender(new SendGrid());
-            $emailSender->setClient(new \SendGrid(getenv('SENDGRID_API_KEY')));
+            $emailSender->setClient(
+                new \SendGrid($appConfiguration->getPathValue('env.SENDGRID_API_KEY'))
+            );
             $emailSender->setFrom(
-                getenv('PRIVATE_MAIL_FROMM')
+                $appConfiguration
+                    ->getPathValue('env.PRIVATE_MAIL_FROM')
             );
             $emailSender->setSubject(
-                getenv('PRIVATE_MAIL_SUBJECTT')
+                $appConfiguration
+                    ->getPathValue('env.PRIVATE_MAIL_SUBJECT')
             );
             $emailSender->setTo($profileAttributes['email']);
             $emailSender->setTextBody('You have been successfully registered!');
@@ -37,7 +45,16 @@ class ConfirmRegistration implements ListenerInterface
                 </html>
                 "
             );
-            $emailSender->send();
+            TaskQueue::addTaskToQueue(
+                'email',
+                Sync::class,
+                [
+                    'taskClassPath' => $emailSender,
+                    'method' => 'send',
+                    'parameters' => []
+
+                ]
+            );
         }
 
         return $this;

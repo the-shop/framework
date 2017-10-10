@@ -48,6 +48,10 @@
           "label": "Is Active",
           "type": "boolean"
         },
+        "passwordForgot": {
+          "label": "Password Forgot",
+          "type": "boolean"
+        },
         "customField": {
           "label": "Custom options field",
           "type": "array",

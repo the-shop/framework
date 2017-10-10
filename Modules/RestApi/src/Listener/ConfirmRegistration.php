@@ -16,7 +16,9 @@ class ConfirmRegistration implements ListenerInterface
 
     public function handle($payload)
     {
-        if ($payload instanceof Generic && $payload->getCollection() === 'users') {
+        if (($payload instanceof Generic) === true
+            && ($payload->getCollection() === 'users') === true
+        ) {
             $profileAttributes = $payload->getAttributes();
 
             $appConfiguration = $this->getApplication()
@@ -51,8 +53,7 @@ class ConfirmRegistration implements ListenerInterface
                 [
                     'taskClassPath' => $emailSender,
                     'method' => 'send',
-                    'parameters' => []
-
+                    'parameters' => [],
                 ]
             );
         }

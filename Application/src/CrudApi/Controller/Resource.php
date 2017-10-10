@@ -326,8 +326,15 @@ class Resource extends HttpController
         $query = $repository->getPrimaryAdapter()
             ->newQuery();
 
+        // Convert resourceName name to model name like it's defined in configuration
+        $modelName = ucfirst(substr($repository->getResourceName(), 0, -1));
+
+        $primaryKey = $this->getApplication()
+            ->getConfiguration()
+            ->getPathValue("models.{$modelName}.primaryKey");
+
         // Default query params values
-        $orderBy = '_id';
+        $orderBy = $primaryKey;
         $orderDirection = 'desc';
         $offset = 0;
         $limit = 100;

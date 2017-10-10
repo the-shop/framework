@@ -92,6 +92,17 @@ abstract class Bruno implements BrunoInterface
     }
 
     /**
+     * @param string $primaryKey
+     * @return $this
+     */
+    public function setPrimaryKey(string $primaryKey)
+    {
+        $this->primaryKey = $primaryKey;
+
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getId()
@@ -370,6 +381,7 @@ abstract class Bruno implements BrunoInterface
             ) {
                 throw new \InvalidArgumentException('Unsupported model attribute type: ' . $value['type']);
             }
+
             $this->definedAttributes[$key] = $value['type'];
         }
 

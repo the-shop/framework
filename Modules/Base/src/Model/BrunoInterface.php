@@ -22,6 +22,12 @@ interface BrunoInterface extends ApplicationAwareInterface
     public function getPrimaryKey();
 
     /**
+     * @param string $primaryKey
+     * @return BrunoInterface
+     */
+    public function setPrimaryKey(string $primaryKey);
+
+    /**
      * @return bool
      */
     public function isNew();

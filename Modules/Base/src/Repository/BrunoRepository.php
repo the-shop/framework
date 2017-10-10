@@ -99,7 +99,13 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         /* @var BrunoInterface $model */
         $model = new $modelClass();
 
+        // Convert resourceName name to model name like it's defined in configuration
+        $modelName = ucfirst(substr($this->resourceName, 0, -1));
+
         $model->defineModelAttributes($modelAttributesDefinition)
+              ->setPrimaryKey($this->getApplication()
+                  ->getConfiguration()
+                  ->getPathValue("models.{$modelName}.primaryKey"))
               ->setCollection($this->resourceName)
               ->setApplication($this->getApplication());
 

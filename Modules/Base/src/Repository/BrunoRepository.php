@@ -99,13 +99,8 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         /* @var BrunoInterface $model */
         $model = new $modelClass();
 
-        // Convert resourceName name to model name like it's defined in configuration
-        $modelName = ucfirst(substr($this->resourceName, 0, -1));
-
         $model->defineModelAttributes($modelAttributesDefinition)
-              ->setPrimaryKey($this->getApplication()
-                  ->getConfiguration()
-                  ->getPathValue("models.{$modelName}.primaryKey"))
+              ->setPrimaryKey($this->getModelPrimaryKey())
               ->setCollection($this->resourceName)
               ->setApplication($this->getApplication());
 
@@ -121,6 +116,19 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
 
         return $this->getRepositoryManager()
                     ->getModelClass($repositoryClass);
+    }
+
+    /**
+     * @return string
+     */
+    public function getModelPrimaryKey()
+    {
+        // Convert resourceName name to model name like it's defined in configuration
+        $modelName = ucfirst(substr($this->getResourceName(), 0, -1));
+
+        return $this->getApplication()
+            ->getConfiguration()
+            ->getPathValue("models.{$modelName}.primaryKey");
     }
 
     /**

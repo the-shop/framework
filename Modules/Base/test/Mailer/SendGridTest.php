@@ -2,7 +2,7 @@
 
 namespace Framework\Base\Test\Mailer;
 
-use Framework\Base\Test\Mailer\DummySendGridClient;
+use Framework\Base\Application\Exception\ValidationException;
 use Framework\Base\Mailer\EmailSender;
 use Framework\Base\Mailer\SendGrid;
 use Framework\Base\Test\UnitTest;
@@ -26,10 +26,9 @@ class SendGridTest extends UnitTest
         $emailSender->setTextBody('test');
         $emailSender->setSubject('test');
 
-        $this->assertEquals(
-            'Recipient field "to", "from" and "subject" field must be provided.',
-            $emailSender->send()
-        );
+        $this->expectException(ValidationException::class);
+
+        $emailSender->send();
     }
 
     /**
@@ -45,10 +44,9 @@ class SendGridTest extends UnitTest
         $emailSender->setTextBody('test');
         $emailSender->setSubject('test');
 
-        $this->assertEquals(
-            'Recipient field "to", "from" and "subject" field must be provided.',
-            $emailSender->send()
-        );
+        $this->expectException(ValidationException::class);
+
+        $out = $emailSender->send();
     }
 
     /**
@@ -64,10 +62,9 @@ class SendGridTest extends UnitTest
         $emailSender->setHtmlBody('<h1>test</h1>');
         $emailSender->setTextBody('test');
 
-        $this->assertEquals(
-            'Recipient field "to", "from" and "subject" field must be provided.',
-            $emailSender->send()
-        );
+        $this->expectException(ValidationException::class);
+
+        $emailSender->send();
     }
 
     /**

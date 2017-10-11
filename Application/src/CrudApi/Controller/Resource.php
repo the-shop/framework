@@ -167,7 +167,7 @@ class Resource extends HttpController
                 self::EVENT_CRUD_API_RESOURCE_UPDATE_PRE,
                 [
                     'resourceName' => $resourceName,
-                    'identifier' => $identifier,
+                    'identifier' => $identifier
                 ]
             );
 

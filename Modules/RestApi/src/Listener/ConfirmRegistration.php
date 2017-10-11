@@ -2,11 +2,11 @@
 
 namespace Framework\RestApi\Listener;
 
-use Application\CrudApi\Model\Generic;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Mailer\EmailSender;
 use Framework\Base\Mailer\SendGrid;
+use Framework\Base\Model\BrunoInterface;
 use Framework\Base\Queue\Adapters\Sync;
 use Framework\Base\Queue\TaskQueue;
 
@@ -16,7 +16,7 @@ class ConfirmRegistration implements ListenerInterface
 
     public function handle($payload)
     {
-        if (($payload instanceof Generic) === true
+        if (($payload instanceof BrunoInterface) === true
             && ($payload->getCollection() === 'users') === true
         ) {
             $profileAttributes = $payload->getAttributes();
@@ -47,7 +47,8 @@ class ConfirmRegistration implements ListenerInterface
                 </html>
                 "
             );
-            TaskQueue::addTaskToQueue(
+
+            return TaskQueue::addTaskToQueue(
                 'email',
                 Sync::class,
                 [
@@ -57,7 +58,5 @@ class ConfirmRegistration implements ListenerInterface
                 ]
             );
         }
-
-        return $this;
     }
 }

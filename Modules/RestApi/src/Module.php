@@ -39,6 +39,16 @@ class Module extends BaseModule
                         '/login',
                         '\Framework\Base\Auth\Controller\AuthController::authenticate',
                     ],
+                    [
+                        'post',
+                        '/forgotPassword',
+                        '\Framework\Base\Auth\Controller\AuthController::forgotPassword',
+                    ],
+                    [
+                        'post',
+                        '/resetPassword',
+                        '\Framework\Base\Auth\Controller\AuthController::resetPassword',
+                    ]
                 ]
             );
 

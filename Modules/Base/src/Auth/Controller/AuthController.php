@@ -2,7 +2,6 @@
 
 namespace Framework\Base\Auth\Controller;
 
-use Application\CrudApi\Model\Generic;
 use Firebase\JWT\JWT;
 use Framework\Base\Application\Exception\AuthenticationException;
 use Framework\Base\Application\Exception\NotFoundException;
@@ -13,7 +12,6 @@ use Framework\Base\Model\Modifiers\HashFilter;
 use Framework\Base\Queue\Adapters\Sync;
 use Framework\Base\Queue\TaskQueue;
 use Framework\Http\Controller\Http;
-use Framework\Http\Request\Request;
 
 /**
  * Class AuthController
@@ -91,15 +89,14 @@ class AuthController extends Http
     }
 
     /**
-     * @param Request $request
      * @return string
      * @throws NotFoundException
      * @throws \Exception
      */
-    public function forgotPassword(Request $request)
+    public function forgotPassword()
     {
         // Check if there is email field
-        $postParams = $request->getPost();
+        $postParams = $this->getPost();
         if (array_key_exists('email', $postParams) === false) {
             throw new NotFoundException('Email field missing.', 404);
         }
@@ -152,15 +149,15 @@ class AuthController extends Http
     }
 
     /**
-     * @param Request $request
      * @return string
      * @throws NotFoundException
      * @throws \Exception
      * @throws \HttpRuntimeException
+     * @throws \InvalidArgumentException
      */
-    public function resetPassword(Request $request)
+    public function resetPassword()
     {
-        $postParams = $request->getPost();
+        $postParams = $this->getPost();
 
         // Check if token is provided
         if (array_key_exists('token', $postParams) === false) {
@@ -186,6 +183,17 @@ class AuthController extends Http
             throw new \HttpRuntimeException('Token has expired.', 400);
         }
 
+        if (array_key_exists('newPassword', $postParams) === false
+            || array_key_exists('repeatNewPassword', $postParams) === false
+            || empty($postParams['newPassword']) === true
+            || empty($postParams['repeatNewPassword']) === true
+        ) {
+            throw new \InvalidArgumentException(
+                'newPassword and repeatNewPassword fields must be provided and must not be empty!',
+                403
+            );
+        }
+
         $newPassword = $postParams['newPassword'];
         $repeatNewPassword = $postParams['repeatNewPassword'];
 
@@ -194,6 +202,8 @@ class AuthController extends Http
             throw new \InvalidArgumentException('Passwords mismatch');
         }
 
+        // Reset token and set new password
+        $model->setAttribute('passwordResetToken', '');
         $model->addFieldFilter('password', new HashFilter());
         $model->setAttribute('password', $newPassword);
 

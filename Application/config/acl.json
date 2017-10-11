@@ -20,6 +20,22 @@
               "standard",
               "guest"
             ]
+          },
+          {
+            "route": "/forgotPassword",
+            "allows": [
+              "admin",
+              "standard",
+              "guest"
+            ]
+          },
+          {
+            "route": "/resetPassword",
+            "allows": [
+              "admin",
+              "standard",
+              "guest"
+            ]
           }
         ],
         "PUT": [],

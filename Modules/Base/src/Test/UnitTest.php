@@ -2,6 +2,7 @@
 
 namespace Framework\Base\Test;
 
+use Application\CrudApi\Controller\Resource;
 use Framework\Base\Application\ApplicationConfiguration;
 use Framework\RestApi\Listener\Acl;
 use Framework\RestApi\RestApi;
@@ -60,6 +61,8 @@ class UnitTest extends TestCase
         // Remove render events from the application
         $this->application->removeEventListeners(BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_PRE);
         $this->application->removeEventListeners(BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_POST);
+
+        $this->application->removeEventListeners(Resource::EVENT_CRUD_API_RESOURCE_CREATE_POST);
 
         $this->application->listen(
             BaseApplication::EVENT_APPLICATION_HANDLE_REQUEST_PRE,

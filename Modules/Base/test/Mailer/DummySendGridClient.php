@@ -58,6 +58,7 @@ class DummySendGridClient
 
         if (empty($to) === true || empty($from) === true || empty($subject) === true) {
             $error = new \stdClass();
+            $error->field = 'recipient.to.from.subject';
             $error->message = 'Recipient field "to", "from" and "subject" field must be provided.';
             $errors[] = $error;
         }

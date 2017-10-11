@@ -33,14 +33,12 @@ class TaskQueue
          */
         $adapter = new $adapterFullyQualifiedClassName();
         if ($adapter instanceof QueueAdapterInterface) {
-            $adapter->handle($queueName, $payload);
+            return $adapter->handle($queueName, $payload);
         } else {
             throw new InvalidArgumentException(
                 'Wrong adapter. Must be instance of QueueAdapterInterface.',
                 403
             );
         }
-
-        return true;
     }
 }

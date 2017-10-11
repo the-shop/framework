@@ -34,7 +34,7 @@ abstract class Bruno implements BrunoInterface
     /**
      * @var string
      */
-    protected $databaseAddress = '192.168.33.10:27017'; // TODO: extract to .env and use that
+    protected $databaseAddress = '192.168.33.10:27017';
 
     /**
      * @var string
@@ -79,6 +79,8 @@ abstract class Bruno implements BrunoInterface
     public function __construct(array $attributes = [])
     {
         $this->setAttributes($attributes);
+        $this->databaseAddress = getenv('DATABASE_ADDRESS', '192.168.33.10:27017');
+        $this->database = getenv('DATABASE_NAME', 'framework');
     }
 
     /**
@@ -87,6 +89,17 @@ abstract class Bruno implements BrunoInterface
     public function getPrimaryKey()
     {
         return $this->primaryKey;
+    }
+
+    /**
+     * @param string $primaryKey
+     * @return $this
+     */
+    public function setPrimaryKey(string $primaryKey)
+    {
+        $this->primaryKey = $primaryKey;
+
+        return $this;
     }
 
     /**
@@ -368,6 +381,7 @@ abstract class Bruno implements BrunoInterface
             ) {
                 throw new \InvalidArgumentException('Unsupported model attribute type: ' . $value['type']);
             }
+
             $this->definedAttributes[$key] = $value['type'];
         }
 

@@ -9,6 +9,7 @@
         "password"
       ],
       "aclRoleField": "role",
+      "primaryKey": "_id",
       "fields": {
         "_id": {
           "label": "ID",

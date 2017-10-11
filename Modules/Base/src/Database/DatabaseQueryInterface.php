@@ -77,6 +77,35 @@ interface DatabaseQueryInterface
      */
     public function addAndCondition(string $field, string $condition, $value);
 
+    /**
+     * @param string $field
+     * @param $value
+     * @return void
+     */
+    public function whereInArrayCondition(string $field, $value = []);
+
+    /**
+     * @param string $identifier
+     * @return void
+     */
+    public function setOrderBy(string $identifier);
+
+    /**
+     * @return string
+     */
+    public function getOrderBy();
+
+    /**
+     * @param string $orderDirection
+     * @return void
+     */
+    public function setOrderDirection(string $orderDirection);
+
+    /**
+     * @return string
+     */
+    public function getOrderDirection();
+
     // TODO: implement
     // public function addOrCondition();
 }

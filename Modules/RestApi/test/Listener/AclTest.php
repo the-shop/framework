@@ -52,7 +52,7 @@ class AclTest extends UnitTest
                 'private' => [
                     'GET' => [
                         [
-                            'route' => '/api/v1/{resourceName}',
+                            'route' => '/{resourceName}',
                             'allows' => [
                                 'admin',
                             ],

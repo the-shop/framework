@@ -27,7 +27,7 @@ class ResourceTest extends UnitTest
             'private' => [
                 'GET' => [
                     [
-                        'route' => '/api/v1/{resourceName}/{identifier}',
+                        'route' => '/{resourceName}/{identifier}',
                         'allows' => [
                             'admin',
                         ],
@@ -35,7 +35,7 @@ class ResourceTest extends UnitTest
                 ],
                 'POST' => [
                     [
-                        'route' => '/api/v1/{resourceName}',
+                        'route' => '/{resourceName}',
                         'allows' => [
                             'admin',
                         ],
@@ -43,7 +43,7 @@ class ResourceTest extends UnitTest
                 ],
                 'PUT' => [
                     [
-                        'route' => '/api/v1/{resourceName}/{identifier}',
+                        'route' => '/{resourceName}/{identifier}',
                         'allows' => [
                             'admin',
                         ],
@@ -51,7 +51,7 @@ class ResourceTest extends UnitTest
                 ],
                 'PATCH' => [
                     [
-                        'route' => '/api/v1/{resourceName}/{identifier}',
+                        'route' => '/{resourceName}/{identifier}',
                         'allows' => [
                             'admin',
                         ],
@@ -59,7 +59,7 @@ class ResourceTest extends UnitTest
                 ],
                 'DELETE' => [
                     [
-                        'route' => '/api/v1/{resourceName}/{identifier}',
+                        'route' => '/{resourceName}/{identifier}',
                         'allows' => [
                             'admin',
                         ],
@@ -101,7 +101,7 @@ class ResourceTest extends UnitTest
 
     public function testGetAllUsers()
     {
-        $response = $this->makeHttpRequest('GET', '/users');
+        $response = $this->makeHttpRequest('GET', '/api/v1/users');
 
         $responseBody = $response->getBody();
 

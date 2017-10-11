@@ -2,10 +2,11 @@
 
 namespace Framework\Base\Router;
 
+use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ControllerInterface;
 use Framework\Base\Request\RequestInterface;
 
-interface DispatcherInterface
+interface DispatcherInterface extends ApplicationAwareInterface
 {
     /**
      * @return mixed

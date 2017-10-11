@@ -4,7 +4,7 @@
       "public": {
         "GET": [
           {
-            "route": "/api/v1/login",
+            "route": "/login",
             "allows": [
               "admin",
               "standard",
@@ -14,7 +14,7 @@
         ],
         "POST": [
           {
-            "route": "/api/v1/login",
+            "route": "/login",
             "allows": [
               "admin",
               "standard",
@@ -22,7 +22,7 @@
             ]
           },
           {
-            "route": "/api/v1/forgotPassword",
+            "route": "/forgotPassword",
             "allows": [
               "admin",
               "standard",
@@ -30,7 +30,7 @@
             ]
           },
           {
-            "route": "/api/v1/resetPassword",
+            "route": "/resetPassword",
             "allows": [
               "admin",
               "standard",
@@ -45,14 +45,14 @@
       "private": {
         "GET": [
           {
-            "route": "/api/v1/{resourceName}",
+            "route": "/{resourceName}",
             "allows": [
               "admin",
               "standard"
             ]
           },
           {
-            "route": "/api/v1/{resourceName}/{identifier}",
+            "route": "/{resourceName}/{identifier}",
             "allows": [
               "admin",
               "standard"
@@ -61,7 +61,7 @@
         ],
         "POST": [
           {
-            "route": "/api/v1/{resourceName}",
+            "route": "/{resourceName}",
             "allows": [
               "admin",
               "standard"
@@ -70,14 +70,14 @@
         ],
         "PUT": [
           {
-            "route": "/api/v1/{resourceName}",
+            "route": "/{resourceName}",
             "allows": [
               "admin",
               "standard"
             ]
           },
           {
-            "route": "/api/v1/{resourceName}/{identifier}",
+            "route": "/{resourceName}/{identifier}",
             "allows": [
               "admin",
               "standard"
@@ -86,7 +86,7 @@
         ],
         "PATCH": [
           {
-            "route": "/api/v1/{resourceName}/{identifier}",
+            "route": "/{resourceName}/{identifier}",
             "allows": [
               "admin",
               "standard"
@@ -95,7 +95,7 @@
         ],
         "DELETE": [
           {
-            "route": "/api/v1/{resourceName}/{identifier}",
+            "route": "/{resourceName}/{identifier}",
             "allows": [
               "admin",
               "standard"

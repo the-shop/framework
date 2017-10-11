@@ -22,7 +22,7 @@
             ]
           },
           {
-            "route": "/forgotPassword",
+            "route": "/api/v1/forgotPassword",
             "allows": [
               "admin",
               "standard",
@@ -30,7 +30,7 @@
             ]
           },
           {
-            "route": "/resetPassword",
+            "route": "/api/v1/resetPassword",
             "allows": [
               "admin",
               "standard",

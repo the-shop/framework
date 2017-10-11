@@ -7,7 +7,6 @@ use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Application\BaseApplication;
 use Application\CrudApi\Controller\Resource;
 use Framework\RestApi\Listener\ConfirmRegistration;
-use Framework\RestApi\Listener\ForgotPassword;
 
 return [
     'listeners' => [
@@ -18,9 +17,7 @@ return [
         BaseApplication::EVENT_APPLICATION_HANDLE_REQUEST_PRE =>
             Acl::class,
         Resource::EVENT_CRUD_API_RESOURCE_CREATE_POST =>
-        ConfirmRegistration::class,
-        Resource::EVENT_CRUD_API_RESOURCE_UPDATE_POST =>
-        ForgotPassword::class
+        ConfirmRegistration::class
     ],
     'env' => [
         'SENTRY_DSN' => getenv('SENTRY_DSN'),

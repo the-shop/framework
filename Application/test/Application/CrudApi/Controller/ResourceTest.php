@@ -27,7 +27,7 @@ class ResourceTest extends UnitTest
             'private' => [
                 'GET' => [
                     [
-                        'route' => '/{resourceName}/{identifier}',
+                        'route' => '/api/v1/{resourceName}/{identifier}',
                         'allows' => [
                             'admin',
                         ],
@@ -35,7 +35,7 @@ class ResourceTest extends UnitTest
                 ],
                 'POST' => [
                     [
-                        'route' => '/{resourceName}',
+                        'route' => '/api/v1/{resourceName}',
                         'allows' => [
                             'admin',
                         ],
@@ -43,7 +43,7 @@ class ResourceTest extends UnitTest
                 ],
                 'PUT' => [
                     [
-                        'route' => '/{resourceName}/{identifier}',
+                        'route' => '/api/v1/{resourceName}/{identifier}',
                         'allows' => [
                             'admin',
                         ],
@@ -51,7 +51,7 @@ class ResourceTest extends UnitTest
                 ],
                 'PATCH' => [
                     [
-                        'route' => '/{resourceName}/{identifier}',
+                        'route' => '/api/v1/{resourceName}/{identifier}',
                         'allows' => [
                             'admin',
                         ],
@@ -59,7 +59,7 @@ class ResourceTest extends UnitTest
                 ],
                 'DELETE' => [
                     [
-                        'route' => '/{resourceName}/{identifier}',
+                        'route' => '/api/v1/{resourceName}/{identifier}',
                         'allows' => [
                             'admin',
                         ],
@@ -80,7 +80,7 @@ class ResourceTest extends UnitTest
 
         $response = $this->makeHttpRequest(
             'POST',
-            '/users',
+            '/api/v1/users',
             [
                 'name' => 'test',
                 'email' => $email,
@@ -121,7 +121,7 @@ class ResourceTest extends UnitTest
         $modelId = $model->getId();
         $att = $model->getAttributes();
 
-        $route = '/users/' . $modelId;
+        $route = '/api/v1/users/' . $modelId;
 
         $response = $this->makeHttpRequest('GET', $route);
 
@@ -151,7 +151,7 @@ class ResourceTest extends UnitTest
 
         $modelId = $model->getId();
 
-        $route = '/users/' . $modelId;
+        $route = '/api/v1/users/' . $modelId;
 
         $newEmail = $this->generateRandomEmail();
 
@@ -189,7 +189,7 @@ class ResourceTest extends UnitTest
         $modelId = $model->getId();
         $newEmail = $this->generateRandomEmail(20);
 
-        $route = '/users/' . $modelId;
+        $route = '/api/v1/users/' . $modelId;
 
         $response = $this->makeHttpRequest(
             'PUT',
@@ -223,7 +223,7 @@ class ResourceTest extends UnitTest
 
         $modelId = $model->getId();
 
-        $route = '/users/' . $modelId;
+        $route = '/api/v1/users/' . $modelId;
 
         $newEmail = $this->generateRandomEmail();
 
@@ -261,7 +261,7 @@ class ResourceTest extends UnitTest
         $modelId = $model->getId();
         $newEmail = $this->generateRandomEmail(20);
 
-        $route = '/users/' . $modelId;
+        $route = '/api/v1/users/' . $modelId;
 
         $response = $this->makeHttpRequest(
             'PATCH',
@@ -295,7 +295,7 @@ class ResourceTest extends UnitTest
         $modelId = $model->getId();
         $att = $model->getAttributes();
 
-        $route = '/users/' . $modelId;
+        $route = '/api/v1/users/' . $modelId;
 
         $response = $this->makeHttpRequest('DELETE', $route);
 

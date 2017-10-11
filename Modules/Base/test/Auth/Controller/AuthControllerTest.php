@@ -30,7 +30,7 @@ class AuthControllerTest extends UnitTest
             'password' => 'test123',
         ];
 
-        $response = $this->makeHttpRequest('POST', '/login', $post);
+        $response = $this->makeHttpRequest('POST', '/api/v1/login', $post);
 
         $this::assertInstanceOf(Response::class, $response);
         $this::assertInternalType('string', $response->getBody());
@@ -68,7 +68,7 @@ class AuthControllerTest extends UnitTest
             'oneTooMany' => 'fail',
         ];
 
-        $response = $this->makeHttpRequest('POST', '/login', $post);
+        $response = $this->makeHttpRequest('POST', '/api/v1/login', $post);
 
         $this::assertEquals('Auth strategy not registered', $response->getBody()['errors'][0]);
         $this::assertEquals(500, $response->getCode());
@@ -79,7 +79,7 @@ class AuthControllerTest extends UnitTest
              ->getRepositoryManager()
              ->addAuthenticatableModels($authModel);
 
-        $response = $this->makeHttpRequest('POST', '/login', $post);
+        $response = $this->makeHttpRequest('POST', '/api/v1/login', $post);
 
         $this::assertEquals('Strategy not implemented', $response->getBody()['errors'][0]);
         $this::assertEquals(500, $response->getCode());

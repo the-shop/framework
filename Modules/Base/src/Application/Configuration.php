@@ -80,7 +80,7 @@ class Configuration implements ConfigurationInterface
 
         $config = include $path;
 
-        $this->configuration = array_merge($this->configuration, $config);
+        $this->configuration = array_merge_recursive($this->configuration, $config);
 
         return $this;
     }
@@ -100,7 +100,7 @@ class Configuration implements ConfigurationInterface
 
         $config = json_decode(file_get_contents($path), true);
 
-        $this->configuration = array_merge($this->configuration, $config);
+        $this->configuration = array_merge_recursive($this->configuration, $config);
 
         return $this;
     }

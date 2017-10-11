@@ -103,9 +103,17 @@ class Dispatcher implements ApplicationAwareInterface, DispatcherInterface
     {
         $routes = $this->routes;
         $callback = function (RouteCollector $routeCollector) use ($routes) {
-            foreach ($this->routes as $route) {
+            foreach ($this->routes['withoutPrefix'] as $route) {
                 list ($method, $path, $handler) = $route;
                 $routeCollector->addRoute(strtoupper($method), $path, $handler);
+            }
+            foreach ($this->routes['withPrefix'] as $prefix => $routesArray) {
+                $routeCollector->addGroup($prefix, function (RouteCollector $r) use ($routesArray) {
+                    foreach ($routesArray as $route) {
+                        list ($method, $path, $handler) = $route;
+                        $r->addRoute(strtoupper($method), $path, $handler);
+                    }
+                });
             }
         };
 

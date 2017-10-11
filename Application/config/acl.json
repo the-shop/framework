@@ -4,7 +4,7 @@
       "public": {
         "GET": [
           {
-            "route": "/login",
+            "route": "/api/v1/login",
             "allows": [
               "admin",
               "standard",
@@ -14,7 +14,7 @@
         ],
         "POST": [
           {
-            "route": "/login",
+            "route": "/api/v1/login",
             "allows": [
               "admin",
               "standard",
@@ -29,14 +29,14 @@
       "private": {
         "GET": [
           {
-            "route": "/{resourceName}",
+            "route": "/api/v1/{resourceName}",
             "allows": [
               "admin",
               "standard"
             ]
           },
           {
-            "route": "/{resourceName}/{identifier}",
+            "route": "/api/v1/{resourceName}/{identifier}",
             "allows": [
               "admin",
               "standard"
@@ -45,7 +45,7 @@
         ],
         "POST": [
           {
-            "route": "/{resourceName}",
+            "route": "/api/v1/{resourceName}",
             "allows": [
               "admin",
               "standard"
@@ -54,14 +54,14 @@
         ],
         "PUT": [
           {
-            "route": "/{resourceName}",
+            "route": "/api/v1/{resourceName}",
             "allows": [
               "admin",
               "standard"
             ]
           },
           {
-            "route": "/{resourceName}/{identifier}",
+            "route": "/api/v1/{resourceName}/{identifier}",
             "allows": [
               "admin",
               "standard"
@@ -70,7 +70,7 @@
         ],
         "PATCH": [
           {
-            "route": "/{resourceName}/{identifier}",
+            "route": "/api/v1/{resourceName}/{identifier}",
             "allows": [
               "admin",
               "standard"
@@ -79,7 +79,7 @@
         ],
         "DELETE": [
           {
-            "route": "/{resourceName}/{identifier}",
+            "route": "/api/v1/{resourceName}/{identifier}",
             "allows": [
               "admin",
               "standard"

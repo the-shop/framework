@@ -6,35 +6,40 @@ use Application\CrudApi\Repository\GenericRepository;
 
 return [
     'routes' => [
-        [
-            'get',
-            '/{resourceName}',
-            '\Application\CrudApi\Controller\Resource::loadAll',
-        ],
-        [
-            'get',
-            '/{resourceName}/{identifier}',
-            '\Application\CrudApi\Controller\Resource::load',
-        ],
-        [
-            'post',
-            '/{resourceName}',
-            '\Application\CrudApi\Controller\Resource::create',
-        ],
-        [
-            'put',
-            '/{resourceName}/{identifier}',
-            '\Application\CrudApi\Controller\Resource::update',
-        ],
-        [
-            'patch',
-            '/{resourceName}/{identifier}',
-            '\Application\CrudApi\Controller\Resource::partialUpdate',
-        ],
-        [
-            'delete',
-            '/{resourceName}/{identifier}',
-            '\Application\CrudApi\Controller\Resource::delete',
+        'withoutPrefix' => [],
+        'withPrefix' => [
+            '/api/v1' => [
+                [
+                    'get',
+                    '/{resourceName}',
+                    '\Application\CrudApi\Controller\Resource::loadAll',
+                ],
+                [
+                    'get',
+                    '/{resourceName}/{identifier}',
+                    '\Application\CrudApi\Controller\Resource::load',
+                ],
+                [
+                    'post',
+                    '/{resourceName}',
+                    '\Application\CrudApi\Controller\Resource::create',
+                ],
+                [
+                    'put',
+                    '/{resourceName}/{identifier}',
+                    '\Application\CrudApi\Controller\Resource::update',
+                ],
+                [
+                    'patch',
+                    '/{resourceName}/{identifier}',
+                    '\Application\CrudApi\Controller\Resource::partialUpdate',
+                ],
+                [
+                    'delete',
+                    '/{resourceName}/{identifier}',
+                    '\Application\CrudApi\Controller\Resource::delete',
+                ],
+            ],
         ],
     ],
     'repositories' => [

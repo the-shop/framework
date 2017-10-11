@@ -32,15 +32,18 @@ class Module extends BaseModule
 
         if (empty($authModelsConfigs) === false) {
             $appConfig->setPathValue(
-                'routes',
+                'routes.withPrefix',
                 [
-                    [
-                        'post',
-                        '/login',
-                        '\Framework\Base\Auth\Controller\AuthController::authenticate',
+                    '/api/v1' => [
+                        [
+                            'post',
+                            '/login',
+                            '\Framework\Base\Auth\Controller\AuthController::authenticate',
+                        ],
                     ],
                 ]
             );
+            $appConfig->setPathValue('routes.withoutPrefix', []);
 
             $application->getDispatcher()
                 ->addRoutes($appConfig->getPathValue('routes'));

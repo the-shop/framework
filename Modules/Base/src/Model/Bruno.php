@@ -370,7 +370,9 @@ abstract class Bruno implements BrunoInterface
             'bool',
             'boolean',
             'array',
+            'num',
             'numeric',
+            'alpha_num',
             'alpha_numeric',
             'alpha_dash'
         ];

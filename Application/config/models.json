@@ -15,7 +15,8 @@
           "label": "ID",
           "type": "string",
           "disabled": true,
-          "required": false
+          "required": false,
+          "default": ""
         },
         "name": {
           "label": "Name",
@@ -23,7 +24,8 @@
           "required": true,
           "validation": [
             "string"
-          ]
+          ],
+          "default": ""
         },
         "email": {
           "label": "Email",
@@ -33,7 +35,8 @@
             "string",
             "email",
             "unique"
-          ]
+          ],
+          "default": ""
         },
         "password": {
           "label": "Password",
@@ -41,7 +44,8 @@
           "required": true,
           "validation": [
             "string"
-          ]
+          ],
+          "default": null
         },
         "newPassword": {
           "label": "New Password",
@@ -49,7 +53,8 @@
           "required": false,
           "validation": [
             "string"
-          ]
+          ],
+          "default": null
         },
         "repeatNewPassword": {
           "label": "Repeat New Password",
@@ -57,7 +62,8 @@
           "required": false,
           "validation": [
             "string"
-          ]
+          ],
+          "default": null
         },
         "role": {
           "label": "Role",
@@ -65,7 +71,8 @@
           "required": false,
           "validation": [
             "string"
-          ]
+          ],
+          "default": ""
         },
         "employeeRole": {
           "label": "Employee Role",
@@ -73,7 +80,8 @@
           "required": false,
           "validation": [
             "string"
-          ]
+          ],
+          "default": ""
         },
         "employee": {
           "label": "Employee",
@@ -81,7 +89,8 @@
           "required": false,
           "validation": [
             "boolean"
-          ]
+          ],
+          "default": false
         },
         "skills": {
           "label": "Skills",
@@ -89,7 +98,8 @@
           "required": false,
           "validation":  [
             "array"
-          ]
+          ],
+          "default": []
         },
         "minimumsMissed": {
           "label": "Minimums Missed",
@@ -97,7 +107,8 @@
           "required": false,
           "validation": [
             "integer"
-          ]
+          ],
+          "default": 0
         },
         "valid": {
           "label": "Valid",
@@ -105,7 +116,8 @@
           "required": false,
           "validation": [
             "boolean"
-          ]
+          ],
+          "default": false
         },
         "xp_id": {
           "label": "Xp ID",
@@ -113,7 +125,8 @@
           "required": false,
           "validation": [
             "alphanumeric"
-          ]
+          ],
+          "default": ""
         },
         "xp": {
           "label": "Xp",
@@ -121,7 +134,8 @@
           "required": false,
           "validation": [
             "numeric"
-          ]
+          ],
+          "default": 0
         },
         "slack": {
           "label": "Slack",
@@ -129,7 +143,8 @@
           "required": false,
           "validation": [
             "alpha_dash"
-          ]
+          ],
+          "default": ""
         },
         "github": {
           "label": "GitHub",
@@ -137,7 +152,8 @@
           "required": false,
           "validation": [
             "alpha_dash"
-          ]
+          ],
+          "default": ""
         },
         "trello": {
           "label": "Trello",
@@ -145,13 +161,15 @@
           "required": false,
           "validation": [
             "alpha_dash"
-          ]
+          ],
+          "default": ""
         },
         "token": {
           "label": "Token",
           "type": "string",
           "disabled": true,
-          "required": false
+          "required": false,
+          "default": ""
         },
         "active": {
           "label": "Is Active",
@@ -159,22 +177,26 @@
           "required": false,
           "validation": [
             "boolean"
-          ]
+          ],
+          "default": false
         },
         "passwordForgot": {
           "label": "Password Forgot",
           "type": "boolean",
-          "required": false
+          "required": false,
+          "default": false
         },
         "passwordResetToken": {
           "label": "Password Reset Token",
           "type": "string",
-          "required": false
+          "required": false,
+          "default": ""
         },
         "passwordResetTime": {
           "label": "Password Reset Time",
           "type": "integer",
-          "required": false
+          "required": false,
+          "default": 0
         },
         "customField": {
           "label": "Custom options field",
@@ -183,7 +205,8 @@
             "option1": "Option 1",
             "option2": "Option 2"
           },
-          "required": false
+          "required": false,
+          "default": []
         }
       }
     }

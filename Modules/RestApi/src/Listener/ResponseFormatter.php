@@ -72,7 +72,7 @@ class ResponseFormatter implements ListenerInterface
 
             foreach ($definedModelAttributes as $attribute => $options) {
                 if (array_key_exists($attribute, $modelAttributes) === false) {
-                    $modelAttributes[$attribute] = null;
+                    $modelAttributes[$attribute] = $options['default'];
                 }
             }
 

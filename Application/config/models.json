@@ -67,6 +67,86 @@
             "string"
           ]
         },
+        "employeeRole": {
+          "label": "Employee Role",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ]
+        },
+        "employee": {
+          "label": "Employee",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ]
+        },
+        "skills": {
+          "label": "Skills",
+          "type": "array",
+          "required": false,
+          "validation":  [
+            "array"
+          ]
+        },
+        "minimumsMissed": {
+          "label": "Minimums Missed",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ]
+        },
+        "valid": {
+          "label": "Valid",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ]
+        },
+        "xp_id": {
+          "label": "Xp ID",
+          "type": "alpha_numeric",
+          "required": false,
+          "validation": [
+            "alphanumeric"
+          ]
+        },
+        "xp": {
+          "label": "Xp",
+          "type": "numeric",
+          "required": false,
+          "validation": [
+            "numeric"
+          ]
+        },
+        "slack": {
+          "label": "Slack",
+          "type": "alpha_dash",
+          "required": false,
+          "validation": [
+            "alpha_dash"
+          ]
+        },
+        "github": {
+          "label": "GitHub",
+          "type": "alpha_dash",
+          "required": false,
+          "validation": [
+            "alpha_dash"
+          ]
+        },
+        "trello": {
+          "label": "Trello",
+          "type": "alpha_dash",
+          "required": false,
+          "validation": [
+            "alpha_dash"
+          ]
+        },
         "token": {
           "label": "Token",
           "type": "string",

@@ -370,6 +370,9 @@ abstract class Bruno implements BrunoInterface
             'bool',
             'boolean',
             'array',
+            'numeric',
+            'alpha_numeric',
+            'alpha_dash'
         ];
 
         foreach ($definition as $key => $value) {

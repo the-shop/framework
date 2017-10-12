@@ -167,7 +167,7 @@ class Resource extends HttpController
                 self::EVENT_CRUD_API_RESOURCE_UPDATE_PRE,
                 [
                     'resourceName' => $resourceName,
-                    'identifier' => $identifier
+                    'identifier' => $identifier,
                 ]
             );
 
@@ -276,6 +276,7 @@ class Resource extends HttpController
     public function validateInput(string $resourceName, array $requestParameters = [])
     {
         $app = $this->getApplication();
+        $requestMethod = $this->getRequest()->getMethod();
 
         // Get registered model fields
         $registeredModelFields = $app->getRepositoryManager()
@@ -284,17 +285,35 @@ class Resource extends HttpController
         // Make new validator instance and attach app to it
         $validator = (new Validator())->setApplication($app);
 
-        // Loop through registeredModelFields and see if there are any fields that have validation
-        // rule defined
+        /* Loop through registeredModelFields and see if there are any fields that have validation
+           rule defined */
         foreach ($registeredModelFields as $fieldName => $options) {
+            /* If request method is "POST", "PUT" or "DELETE" check if requestParameters are
+            missing field that's defined as required */
+            if (array_key_exists($fieldName, $requestParameters) === false) {
+                switch ($requestMethod) {
+                    case 'POST':
+                        $this->validateRequiredField($fieldName, $options);
+                        break;
+                    case 'PUT':
+                        $this->validateRequiredField($fieldName, $options);
+                        break;
+                    case 'DELETE':
+                        $this->validateRequiredField($fieldName, $options);
+                        break;
+                    case 'PATCH':
+                        continue;
+                }
+            }
+            /* Check if registeredModel field exists in request params and validate input if
+               validation rule is defined for that specific model field */
             if ((array_key_exists($fieldName, $requestParameters)) === true
                 && isset($options['validation']) === true
             ) {
                 $value = $requestParameters[$fieldName];
                 foreach ($options['validation'] as $validationRule) {
                     /* If field has got unique validation rule, set value as
-                    array with fieldName => value, and resourceName so we can make query to DB
-                    */
+                       array with fieldName => value, and resourceName so we can make query to DB */
                     if (($validationRule === 'unique') === true) {
                         $value = [
                             $fieldName => $requestParameters[$fieldName],
@@ -313,6 +332,24 @@ class Resource extends HttpController
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $fieldName
+     * @param array $options
+     */
+    private function validateRequiredField(string $fieldName, array $options = [])
+    {
+        // Throw exception if required field is not defined - assume that is required = TRUE
+        if (array_key_exists('required', $options) === false) {
+            throw new \InvalidArgumentException($fieldName . ' field is required!', 404);
+        }
+        // Throw exception if field required = TRUE
+        if (array_key_exists('required', $options) === true
+            && $options['required'] === true
+        ) {
+            throw new \InvalidArgumentException($fieldName . ' field is required!', 404);
+        }
     }
 
     /**

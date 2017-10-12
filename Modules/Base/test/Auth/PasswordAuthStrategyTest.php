@@ -74,7 +74,7 @@ class PasswordAuthStrategyTest extends UnitTest
         $model->defineModelAttributes($this->getFields()['tests']);
         $model->setApplication($this->getApplication());
         $model->setAttribute('email', 'test@test.com');
-        $model->setAttribute('password', password_hash('pw123', PASSWORD_BCRYPT));
+        $model->setAttribute('password', 'pw123');
 
         $repository->getPrimaryAdapter()->setLoadOneResult($model);
 

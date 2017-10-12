@@ -22,7 +22,7 @@ class AuthControllerTest extends UnitTest
         $model->defineModelAttributes($this->getFields()['tests']);
         $model->setApplication($this->getApplication());
         $model->setAttribute('email', 'test@test.com');
-        $model->setAttribute('password', password_hash('test123', PASSWORD_BCRYPT));
+        $model->setAttribute('password', 'test123');
 
         $repository->getPrimaryAdapter()->setLoadOneResult($model);
         $post = [
@@ -59,7 +59,7 @@ class AuthControllerTest extends UnitTest
         $model->defineModelAttributes($this->getFields()['tests']);
         $model->setApplication($this->getApplication());
         $model->setAttribute('email', 'test@test.com');
-        $model->setAttribute('password', password_hash('test123', PASSWORD_BCRYPT));
+        $model->setAttribute('password', 'test123');
 
         $repository->getPrimaryAdapter()->setLoadOneResult($model);
         $post = [

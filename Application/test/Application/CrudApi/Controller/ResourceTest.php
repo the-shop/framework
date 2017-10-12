@@ -5,6 +5,7 @@ namespace Application\Test\Application\CrudApi\Controller;
 use Application\CrudApi\Controller\Resource;
 use Application\CrudApi\Model\Generic;
 use Framework\Base\Test\UnitTest;
+use Framework\Http\Request\Request;
 
 /**
  * Class ResourceTest
@@ -84,6 +85,7 @@ class ResourceTest extends UnitTest
             [
                 'name' => 'test',
                 'email' => $email,
+                'password' => 'test'
             ]
         );
 
@@ -340,6 +342,11 @@ class ResourceTest extends UnitTest
         $app = $this->getApplication();
         $app->getRepositoryManager()->registerModelFields($testModelDefinition);
 
+        // Set request and method
+        $request = new Request();
+        $request->setMethod('PUT');
+        $app->setRequest($request);
+
         $resourceController = (new Resource())->setApplication($app);
         $out = $resourceController->validateInput(
             'users',
@@ -378,6 +385,11 @@ class ResourceTest extends UnitTest
         $app = $this->getApplication();
         $app->getRepositoryManager()->registerModelFields($testModelDefinition);
 
+        // Set request and method
+        $request = new Request();
+        $request->setMethod('POST');
+        $app->setRequest($request);
+
         $resourceController = (new Resource())->setApplication($app);
 
         $this->expectExceptionCode(400);
@@ -389,6 +401,7 @@ class ResourceTest extends UnitTest
             [
                 'name' => [],
                 'email' => 'testing@test.com',
+                'password' => 'test'
             ]
         );
     }
@@ -424,6 +437,11 @@ class ResourceTest extends UnitTest
 
         $app = $this->getApplication();
         $app->getRepositoryManager()->registerModelFields($testModelDefinition);
+
+        // Set request and method
+        $request = new Request();
+        $request->setMethod('PUT');
+        $app->setRequest($request);
 
         $resourceController = (new Resource())->setApplication($app);
 

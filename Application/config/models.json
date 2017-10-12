@@ -14,52 +14,87 @@
         "_id": {
           "label": "ID",
           "type": "string",
-          "disabled": true
+          "disabled": true,
+          "required": false
         },
         "name": {
           "label": "Name",
-          "type": "string"
+          "type": "string",
+          "required": true,
+          "validation": [
+            "string"
+          ]
         },
         "email": {
           "label": "Email",
-          "type": "string"
+          "type": "string",
+          "required": true,
+          "validation": [
+            "string",
+            "email",
+            "unique"
+          ]
         },
         "password": {
           "label": "Password",
-          "type": "password"
+          "type": "password",
+          "required": true,
+          "validation": [
+            "string"
+          ]
         },
         "newPassword": {
           "label": "New Password",
-          "type": "password"
+          "type": "password",
+          "required": false,
+          "validation": [
+            "string"
+          ]
         },
         "repeatNewPassword": {
           "label": "Repeat New Password",
-          "type": "password"
+          "type": "password",
+          "required": false,
+          "validation": [
+            "string"
+          ]
         },
         "role": {
           "label": "Role",
-          "type": "string"
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ]
         },
         "token": {
           "label": "Token",
           "type": "string",
-          "disabled": true
+          "disabled": true,
+          "required": false
         },
         "active": {
           "label": "Is Active",
-          "type": "boolean"
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ]
         },
         "passwordForgot": {
           "label": "Password Forgot",
-          "type": "boolean"
+          "type": "boolean",
+          "required": false
         },
         "passwordResetToken": {
           "label": "Password Reset Token",
-          "type": "string"
+          "type": "string",
+          "required": false
         },
         "passwordResetTime": {
           "label": "Password Reset Time",
-          "type": "integer"
+          "type": "integer",
+          "required": false
         },
         "customField": {
           "label": "Custom options field",
@@ -67,7 +102,8 @@
           "options": {
             "option1": "Option 1",
             "option2": "Option 2"
-          }
+          },
+          "required": false
         }
       }
     }

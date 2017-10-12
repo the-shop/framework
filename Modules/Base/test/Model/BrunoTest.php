@@ -21,7 +21,6 @@ class BrunoTest extends UnitTest
             ->getRepositoryManager()
             ->getRepositoryFromResourceName('users')
             ->newModel()
-            ->addFieldFilter('password', new HashFilter())
             ->addFieldFilter('name', new LowerCaseFilter())
             ->addFieldFilter('email', new TrimFilter())
             ->setAttributes([

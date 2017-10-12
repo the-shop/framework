@@ -4,6 +4,7 @@ namespace Framework\Base\Model;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
+use Framework\Base\Model\Modifiers\HashFilter;
 use Framework\Base\Mongo\MongoQuery;
 use Framework\Base\Model\Modifiers\FieldModifierInterface;
 
@@ -294,6 +295,10 @@ abstract class Bruno implements BrunoInterface
                      $attribute => $value,
                  ]
              );
+
+        if (($attribute === 'password') === true) {
+            $this->addFieldFilter('password', new HashFilter());
+        }
 
         if (array_key_exists($attribute, $this->fieldFilters)) {
             foreach ($this->fieldFilters[$attribute] as $filter) {

@@ -163,6 +163,7 @@ class ResourceTest extends UnitTest
             [
                 'name' => 'updated test name',
                 'email' => $newEmail,
+                'password' => 'test'
             ]
         );
 
@@ -199,6 +200,7 @@ class ResourceTest extends UnitTest
             [
                 'name' => 'updated test name',
                 'email' => $newEmail,
+                'password' => 'test',
                 'company' => 'test company',
             ]
         );
@@ -417,6 +419,7 @@ class ResourceTest extends UnitTest
                     'label' => 'ID',
                     'type' => 'string',
                     'disabled' => true,
+                    'required' => false,
                 ],
                 'name' => [
                     'type' => 'string',

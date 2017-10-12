@@ -296,7 +296,7 @@ abstract class Bruno implements BrunoInterface
                  ]
              );
 
-        if (($attribute === 'password') === true) {
+        if ($attribute === 'password') {
             $this->addFieldFilter('password', new HashFilter());
         }
 

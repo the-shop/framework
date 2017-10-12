@@ -288,17 +288,22 @@ class Resource extends HttpController
         /* Loop through registeredModelFields and see if there are any fields that have validation
            rule defined */
         foreach ($registeredModelFields as $fieldName => $options) {
-            /* If request method is "POST" check if registeredModel field has got required field and
-               check if is set to true, or check if there is no required field which is assumed that
-               is required = true, throw exception if post params doesn't have required key
-               passed */
-            if (($requestMethod === 'POST') === true
-                && array_key_exists($fieldName, $requestParameters) === false
-                && (array_key_exists('required', $options) === false ||
-                    (array_key_exists('required', $options) === true
-                    && $options['required'] === true))
-            ) {
-                throw new \InvalidArgumentException($fieldName . ' field is required!', 404);
+            /* If request method is "POST", "PUT" or "DELETE" check if requestParameters are
+            missing field that's defined as required */
+            if (array_key_exists($fieldName, $requestParameters) === false) {
+                switch ($requestMethod) {
+                    case 'POST':
+                        $this->validateRequiredField($fieldName, $options);
+                        break;
+                    case 'PUT':
+                        $this->validateRequiredField($fieldName, $options);
+                        break;
+                    case 'DELETE':
+                        $this->validateRequiredField($fieldName, $options);
+                        break;
+                    case 'PATCH':
+                        continue;
+                }
             }
             /* Check if registeredModel field exists in request params and validate input if
                validation rule is defined for that specific model field */
@@ -327,6 +332,24 @@ class Resource extends HttpController
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $fieldName
+     * @param array $options
+     */
+    private function validateRequiredField(string $fieldName, array $options = [])
+    {
+        // Throw exception if required field is not defined - assume that is required = TRUE
+        if (array_key_exists('required', $options) === false) {
+            throw new \InvalidArgumentException($fieldName . ' field is required!', 404);
+        }
+        // Throw exception if field required = TRUE
+        if (array_key_exists('required', $options) === true
+            && $options['required'] === true
+        ) {
+            throw new \InvalidArgumentException($fieldName . ' field is required!', 404);
+        }
     }
 
     /**

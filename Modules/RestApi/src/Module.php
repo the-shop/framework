@@ -48,7 +48,7 @@ class Module extends BaseModule
                         'post',
                         '/resetPassword',
                         '\Framework\Base\Auth\Controller\AuthController::resetPassword',
-                    ]
+                    ],
                 ]
             );
 

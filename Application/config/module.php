@@ -5,6 +5,7 @@ use Framework\Base\Mongo\MongoAdapter;
 use Application\CrudApi\Repository\GenericRepository;
 
 return [
+    'routePrefix' => '/api/v1',
     'routes' => [
         [
             'get',

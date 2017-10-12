@@ -14,7 +14,7 @@ use Framework\Base\Router\DispatcherInterface;
  * Class Dispatcher
  * @package Framework\Http\Router
  */
-class Dispatcher implements ApplicationAwareInterface, DispatcherInterface
+class Dispatcher implements DispatcherInterface
 {
     use ApplicationAwareTrait;
 
@@ -102,11 +102,16 @@ class Dispatcher implements ApplicationAwareInterface, DispatcherInterface
     public function register()
     {
         $routes = $this->routes;
-        $callback = function (RouteCollector $routeCollector) use ($routes) {
-            foreach ($this->routes as $route) {
-                list ($method, $path, $handler) = $route;
-                $routeCollector->addRoute(strtoupper($method), $path, $handler);
-            }
+        $routePrefix = $this->getApplication()
+            ->getConfiguration()
+            ->getPathValue('routePrefix');
+        $callback = function (RouteCollector $routeCollector) use ($routes, $routePrefix) {
+            $routeCollector->addGroup($routePrefix, function (RouteCollector $r) use ($routes) {
+                foreach ($routes as $route) {
+                    list ($method, $path, $handler) = $route;
+                    $r->addRoute(strtoupper($method), $path, $handler);
+                }
+            });
         };
 
         $this->dispatcher = \FastRoute\simpleDispatcher($callback);

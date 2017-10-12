@@ -12,6 +12,7 @@ use Framework\Base\Validation\Validations\EmailValidation;
 use Framework\Base\Validation\Validations\FloatValidation;
 use Framework\Base\Validation\Validations\IntegerValidation;
 use Framework\Base\Validation\Validations\NonEmptyValidation;
+use Framework\Base\Validation\Validations\NumericValidation;
 use Framework\Base\Validation\Validations\StringValidation;
 use Framework\Base\Validation\Validations\UniqueValidation;
 use Framework\Base\Validation\Validations\ValidationInterface;
@@ -54,6 +55,7 @@ class Validator implements ValidatorInterface
         'email' => EmailValidation::class,
         'unique' => UniqueValidation::class,
         'alpha_numeric' => AlphaNumericValidation::class,
+        'numeric' => NumericValidation::class,
     ];
 
     /**

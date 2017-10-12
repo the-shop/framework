@@ -5,6 +5,7 @@ namespace Framework\Base\Validation;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Application\Exception\ValidationException;
 use Framework\Base\Validation\Validations\AlphabeticValidation;
+use Framework\Base\Validation\Validations\AlphaDashValidation;
 use Framework\Base\Validation\Validations\AlphaNumericValidation;
 use Framework\Base\Validation\Validations\ArrayValidation;
 use Framework\Base\Validation\Validations\BooleanValidation;
@@ -56,6 +57,7 @@ class Validator implements ValidatorInterface
         'unique' => UniqueValidation::class,
         'alpha_numeric' => AlphaNumericValidation::class,
         'numeric' => NumericValidation::class,
+        'alpha_dash' => AlphaDashValidation::class,
     ];
 
     /**

@@ -214,6 +214,81 @@ class ValidatorTest extends UnitTest
     }
 
     /**
+     * Test alpha_dash validation - failed
+     */
+    public function testAlphaDashValidationFail()
+    {
+        $validator = new Validator();
+        $value = 'test*/..+';
+        $validator->addValidation($value, 'alpha_dash');
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage('Validation failed');
+        $validator->validate();
+        $this->assertEquals(['alpha_dash' => $value], $validator->getFailed());
+    }
+
+    /**
+     * Test alpha_dash validation - success
+     */
+    public function testAlphaDashValidationSuccess()
+    {
+        $validator = new Validator();
+        $validator->addValidation('test-test', 'alpha_dash');
+        $validator->validate();
+        $this->assertEquals([], $validator->getFailed());
+    }
+
+    /**
+     * Test numeric validation - failed
+     */
+    public function testNumericValidationFail()
+    {
+        $validator = new Validator();
+        $value = 'test1';
+        $validator->addValidation($value, 'numeric');
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage('Validation failed');
+        $validator->validate();
+        $this->assertEquals(['numeric' => $value], $validator->getFailed());
+    }
+
+    /**
+     * Test numeric validation - success
+     */
+    public function testNumericValidationSuccess()
+    {
+        $validator = new Validator();
+        $validator->addValidation('123.32', 'numeric');
+        $validator->validate();
+        $this->assertEquals([], $validator->getFailed());
+    }
+
+    /**
+     * Test alpha_numeric validation - failed
+     */
+    public function testAlphaNumericValidationFail()
+    {
+        $validator = new Validator();
+        $value = 'test112-';
+        $validator->addValidation($value, 'alpha_numeric');
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage('Validation failed');
+        $validator->validate();
+        $this->assertEquals(['alpha_numeric' => $value], $validator->getFailed());
+    }
+
+    /**
+     * Test alpha_numeric validation - success
+     */
+    public function testAlphaNumericValidationSuccess()
+    {
+        $validator = new Validator();
+        $validator->addValidation('test12332', 'alpha_numeric');
+        $validator->validate();
+        $this->assertEquals([], $validator->getFailed());
+    }
+
+    /**
      * Test multiple validations with validator with some failed and some success validations
      */
     public function testValidatorMultipleValidations()
@@ -229,6 +304,9 @@ class ValidatorTest extends UnitTest
         $validator->addValidation($value, 'email');
         $validator->addValidation($number, 'float');
         $validator->addValidation($number, 'nonempty');
+        $validator->addValidation($number, 'alpha_numeric');
+        $validator->addValidation($value, 'numeric');
+        $validator->addValidation($number, 'alpha_dash');
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Validation failed');
         $validator->validate();
@@ -236,7 +314,8 @@ class ValidatorTest extends UnitTest
             'array' => $value,
             'boolean' => $value,
             'email' => $value,
-            'float' => $number
+            'float' => $number,
+            'numeric' => $value
         ], $validator->getFailed());
     }
 }

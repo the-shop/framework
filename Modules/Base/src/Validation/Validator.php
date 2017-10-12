@@ -5,6 +5,7 @@ namespace Framework\Base\Validation;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Application\Exception\ValidationException;
 use Framework\Base\Validation\Validations\AlphabeticValidation;
+use Framework\Base\Validation\Validations\AlphaNumericValidation;
 use Framework\Base\Validation\Validations\ArrayValidation;
 use Framework\Base\Validation\Validations\BooleanValidation;
 use Framework\Base\Validation\Validations\EmailValidation;
@@ -52,6 +53,7 @@ class Validator implements ValidatorInterface
         'nonempty' => NonEmptyValidation::class,
         'email' => EmailValidation::class,
         'unique' => UniqueValidation::class,
+        'alpha_numeric' => AlphaNumericValidation::class,
     ];
 
     /**

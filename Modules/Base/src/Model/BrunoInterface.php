@@ -112,4 +112,14 @@ interface BrunoInterface extends ApplicationAwareInterface
      * @return mixed
      */
     public function addFieldFilter(string $field, FieldModifierInterface $filter);
+
+    /**
+     * @return BrunoInterface
+     */
+    public function enableFieldFilters();
+
+    /**
+     * @return BrunoInterface
+     */
+    public function disableFieldFilters();
 }

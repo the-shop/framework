@@ -73,6 +73,11 @@ abstract class Bruno implements BrunoInterface
     private $fieldFilters = [];
 
     /**
+     * @var bool
+     */
+    private $filtersEnabled = true;
+
+    /**
      * Bruno constructor.
      *
      * @param array $attributes
@@ -197,8 +202,8 @@ abstract class Bruno implements BrunoInterface
     public function getDatabaseAdapters()
     {
         return $this->getApplication()
-                    ->getRepositoryManager()
-                    ->getModelAdapters($this->collection);
+            ->getRepositoryManager()
+            ->getModelAdapters($this->collection);
     }
 
     /**
@@ -277,7 +282,7 @@ abstract class Bruno implements BrunoInterface
 
     /**
      * @param string $attribute
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return $this
      * @throws \InvalidArgumentException
@@ -289,18 +294,20 @@ abstract class Bruno implements BrunoInterface
         }
 
         $this->getApplication()
-             ->triggerEvent(
-                 self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
-                 [
-                     $attribute => $value,
-                 ]
-             );
+            ->triggerEvent(
+                self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
+                [
+                    $attribute => $value,
+                ]
+            );
 
         if ($attribute === 'password') {
             $this->addFieldFilter('password', new HashFilter());
         }
 
-        if (array_key_exists($attribute, $this->fieldFilters)) {
+        if ($this->filtersEnabled === true
+            && array_key_exists($attribute, $this->fieldFilters) === true
+        ) {
             foreach ($this->fieldFilters[$attribute] as $filter) {
                 /* @var FieldModifierInterface $filter */
                 $value = $filter->modify($value);
@@ -310,10 +317,10 @@ abstract class Bruno implements BrunoInterface
         $this->attributes[$attribute] = $value;
 
         $this->getApplication()
-             ->triggerEvent(
-                 self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_POST,
-                 $this
-             );
+            ->triggerEvent(
+                self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_POST,
+                $this
+            );
 
         return $this;
     }
@@ -370,6 +377,11 @@ abstract class Bruno implements BrunoInterface
             'bool',
             'boolean',
             'array',
+            'num',
+            'numeric',
+            'alpha_num',
+            'alpha_numeric',
+            'alpha_dash',
         ];
 
         foreach ($definition as $key => $value) {
@@ -415,5 +427,29 @@ abstract class Bruno implements BrunoInterface
     public function getFieldFilters()
     {
         return $this->fieldFilters;
+    }
+
+    /**
+     * @return $this
+     */
+    public function enableFieldFilters()
+    {
+        if ($this->filtersEnabled === false) {
+            $this->filtersEnabled = true;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function disableFieldFilters()
+    {
+        if ($this->filtersEnabled === true) {
+            $this->filtersEnabled = false;
+        }
+
+        return $this;
     }
 }

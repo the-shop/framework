@@ -142,11 +142,13 @@ class Resource extends HttpController
                 ]
             );
 
-        $this->validateInput($resourceName, $this->getPost());
+        $postParams = $this->getPost();
+
+        $this->validateInput($resourceName, $postParams);
 
         $model = $this->getRepositoryFromResourceName($resourceName)
             ->newModel()
-            ->setAttributes($this->getPost())
+            ->setAttributes($postParams)
             ->save();
 
         $this->getApplication()
@@ -293,13 +295,13 @@ class Resource extends HttpController
             if (array_key_exists($fieldName, $requestParameters) === false) {
                 switch ($requestMethod) {
                     case 'POST':
-                        $this->validateRequiredField($fieldName, $options);
+                        $this->validateRequiredField($options);
                         break;
                     case 'PUT':
-                        $this->validateRequiredField($fieldName, $options);
+                        $this->validateRequiredField($options);
                         break;
                     case 'DELETE':
-                        $this->validateRequiredField($fieldName, $options);
+                        $this->validateRequiredField($options);
                         break;
                     case 'PATCH':
                         continue;
@@ -335,20 +337,19 @@ class Resource extends HttpController
     }
 
     /**
-     * @param string $fieldName
      * @param array $options
      */
-    private function validateRequiredField(string $fieldName, array $options = [])
+    private function validateRequiredField(array $options = [])
     {
         // Throw exception if required field is not defined - assume that is required = TRUE
         if (array_key_exists('required', $options) === false) {
-            throw new \InvalidArgumentException($fieldName . ' field is required!', 404);
+            throw new \InvalidArgumentException($options['label'] . ' field is required!', 404);
         }
         // Throw exception if field required = TRUE
         if (array_key_exists('required', $options) === true
             && $options['required'] === true
         ) {
-            throw new \InvalidArgumentException($fieldName . ' field is required!', 404);
+            throw new \InvalidArgumentException($options['label'] . ' field is required!', 404);
         }
     }
 

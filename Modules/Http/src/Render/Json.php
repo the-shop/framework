@@ -21,7 +21,12 @@ class Json extends Render
 
         http_response_code($response->getCode());
 
+        $headers = $response->getHeaders();
         header('Content-type: application/json');
+
+        foreach ($headers as $key => $value) {
+            header($key . ': ' . $value);
+        }
 
         $rendered = json_encode($responseBody);
 

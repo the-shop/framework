@@ -2,7 +2,6 @@
 
 namespace Framework\Base\Test\Auth\Controller;
 
-use Firebase\JWT\JWT;
 use Framework\Base\Test\TestModel;
 use Framework\Base\Test\UnitTest;
 use Framework\Http\Response\Response;
@@ -21,8 +20,10 @@ class AuthControllerTest extends UnitTest
 
         $model->defineModelAttributes($this->getFields()['tests']);
         $model->setApplication($this->getApplication());
-        $model->setAttribute('email', 'test@test.com');
-        $model->setAttribute('password', 'test123');
+        $model->setAttributes([
+            'email' => 'test@test.com',
+            'password' => 'test123'
+        ]);
 
         $repository->getPrimaryAdapter()->setLoadOneResult($model);
         $post = [
@@ -33,15 +34,12 @@ class AuthControllerTest extends UnitTest
         $response = $this->makeHttpRequest('POST', '/api/v1/login', $post);
 
         $this::assertInstanceOf(Response::class, $response);
-        $this::assertInternalType('string', $response->getBody());
+        $this::assertInternalType('object', $response->getBody());
         $this::assertInstanceOf(
-            \stdClass::class,
-            JWT::decode(
-                $response->getBody(),
-                'rV)7Djb{DpEpY5ex',
-                ['HS384']
-            )
+            TestModel::class,
+            $response->getBody()
         );
+        $this::assertArrayHasKey('Authorization', $response->getHeaders());
     }
 
     /**

@@ -37,6 +37,12 @@ class RestApi extends BaseApplication
 
         $helperRequest = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
+        $ctHeader = $helperRequest->headers->get('Content-Type');
+        if (strpos($ctHeader, 'application/json') === 0) {
+            $data = json_decode($helperRequest->getContent(), true);
+            $helperRequest->request->replace(is_array($data) ? $data : array());
+        }
+
         $request->setServer($helperRequest->server->all());
 
         $request->setPost($helperRequest->request->all());

@@ -85,7 +85,10 @@ class AuthController extends Http
         $alg = 'HS384';
         $jwt = JWT::encode($payload, $key, $alg);
 
-        return $jwt;
+        $res = $this->getApplication()->getResponse();
+        $res->setHeader('Authorization', $jwt);
+
+        return $model;
     }
 
     /**

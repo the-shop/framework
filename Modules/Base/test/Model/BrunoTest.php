@@ -23,6 +23,7 @@ class BrunoTest extends UnitTest
             ->newModel()
             ->addFieldFilter('name', new LowerCaseFilter())
             ->addFieldFilter('email', new TrimFilter())
+            ->addPasswordHashFilter()
             ->setAttributes([
                 'name' => 'TESTING',
                 'email' => ' test@test.com ',

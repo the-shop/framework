@@ -296,10 +296,6 @@ abstract class Bruno implements BrunoInterface
                  ]
              );
 
-        if ($attribute === 'password') {
-            $this->addFieldFilter('password', new HashFilter());
-        }
-
         if (array_key_exists($attribute, $this->fieldFilters)) {
             foreach ($this->fieldFilters[$attribute] as $filter) {
                 /* @var FieldModifierInterface $filter */
@@ -420,5 +416,15 @@ abstract class Bruno implements BrunoInterface
     public function getFieldFilters()
     {
         return $this->fieldFilters;
+    }
+
+    /**
+     * @return $this
+     */
+    public function addPasswordHashFilter()
+    {
+        $this->addFieldFilter('password', new HashFilter());
+
+        return $this;
     }
 }

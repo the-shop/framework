@@ -20,6 +20,41 @@ class Response implements ResponseInterface
      */
     private $code = 200;
 
+    private $headers = [];
+
+    /**
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param array $headers
+     * @return $this
+     */
+    public function setHeaders(array $headers = [])
+    {
+        foreach ($headers as $key => $value) {
+            $this->setHeader($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return $this
+     */
+    public function setHeader(string $key, string $value)
+    {
+        $this->headers[$key] = $value;
+
+        return $this;
+    }
+
     /**
      * @param $responseBody
      * @return $this

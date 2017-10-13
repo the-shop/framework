@@ -154,8 +154,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
             return null;
         }
 
+        $model->disableFieldFilters();
         $model->setAttributes($attributes);
         $model->setDatabaseAttributes($attributes);
+        $model->enableFieldFilters();
         $model->setIsNew(false);
 
         return $model;
@@ -182,8 +184,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
             return null;
         }
 
+        $model->disableFieldFilters();
         $model->setAttributes($attributes);
         $model->setDatabaseAttributes($attributes);
+        $model->enableFieldFilters();
         $model->setIsNew(false);
 
         return $model;
@@ -214,8 +218,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
 
         foreach ($data as $attributes) {
             $model = $this->newModel();
-            $model->setAttributes($attributes)
+            $model->disableFieldFilters()
+                  ->setAttributes($attributes)
                   ->setDatabaseAttributes($attributes)
+                  ->enableFieldFilters()
                   ->setIsNew(false);
 
             $out[$model->getId()] = $model;

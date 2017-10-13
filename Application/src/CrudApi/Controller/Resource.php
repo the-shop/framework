@@ -147,12 +147,8 @@ class Resource extends HttpController
         $this->validateInput($resourceName, $postParams);
 
         $model = $this->getRepositoryFromResourceName($resourceName)
-            ->newModel();
-
-        if (array_key_exists('password', $postParams) === true) {
-            $model->addPasswordHashFilter();
-        }
-        $model->setAttributes($postParams)
+            ->newModel()
+            ->setAttributes($postParams)
             ->save();
 
         $this->getApplication()
@@ -182,10 +178,6 @@ class Resource extends HttpController
         $postParams = $this->getPost();
 
         $this->validateInput($resourceName, $postParams);
-
-        if (array_key_exists('password', $postParams) === true) {
-            $model->addPasswordHashFilter();
-        }
 
         $model->setAttributes($postParams);
         $model->save();
@@ -219,10 +211,6 @@ class Resource extends HttpController
         $this->validateInput($resourceName, $postParams);
 
         foreach ($postParams as $attribute => $value) {
-            if ($attribute === 'password') {
-                $model->addPasswordHashFilter();
-            }
-
             $model->setAttribute($attribute, $value);
         }
 

@@ -2,7 +2,6 @@
 
 namespace Framework\Base\Test\Auth\Controller;
 
-use Firebase\JWT\JWT;
 use Framework\Base\Test\TestModel;
 use Framework\Base\Test\UnitTest;
 use Framework\Http\Response\Response;
@@ -21,9 +20,10 @@ class AuthControllerTest extends UnitTest
 
         $model->defineModelAttributes($this->getFields()['tests']);
         $model->setApplication($this->getApplication());
-        $model->setAttribute('email', 'test@test.com');
-        $model->addPasswordHashFilter();
-        $model->setAttribute('password', 'test123');
+        $model->setAttributes([
+            'email' => 'test@test.com',
+            'password' => 'test123'
+        ]);
 
         $repository->getPrimaryAdapter()->setLoadOneResult($model);
         $post = [
@@ -57,7 +57,6 @@ class AuthControllerTest extends UnitTest
         $model->defineModelAttributes($this->getFields()['tests']);
         $model->setApplication($this->getApplication());
         $model->setAttribute('email', 'test@test.com');
-        $model->addPasswordHashFilter();
         $model->setAttribute('password', 'test123');
 
         $repository->getPrimaryAdapter()->setLoadOneResult($model);

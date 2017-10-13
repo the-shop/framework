@@ -116,5 +116,10 @@ interface BrunoInterface extends ApplicationAwareInterface
     /**
      * @return BrunoInterface
      */
-    public function addPasswordHashFilter();
+    public function enableFieldFilters();
+
+    /**
+     * @return BrunoInterface
+     */
+    public function disableFieldFilters();
 }

@@ -45,8 +45,12 @@ return [
         'users' => [
             MongoAdapter::class,
         ],
+        'projects' => [
+            MongoAdapter::class
+        ]
     ],
     'primaryModelAdapter' => [
         'users' => MongoAdapter::class,
+        'projects' => MongoAdapter::class,
     ],
 ];

@@ -352,6 +352,13 @@
           "required": false,
           "default": ""
         },
+        "project_id": {
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
         "title": {
           "label": "Title",
           "type": "string",

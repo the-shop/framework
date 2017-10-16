@@ -7,6 +7,7 @@ use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Application\BaseApplication;
 use Framework\Base\Module\BaseModule;
 use Framework\RestApi\Listener\Acl;
+use Framework\RestApi\Listener\AuthenticationListener;
 use Framework\RestApi\Listener\ExceptionFormatter;
 use Framework\RestApi\Listener\ResponseFormatter;
 
@@ -21,12 +22,16 @@ class Module extends BaseModule
      */
     private $config = [
         'listeners' => [
-            BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_PRE =>
+            BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_PRE => [
                 ResponseFormatter::class,
-            ExceptionHandler::EVENT_EXCEPTION_HANDLER_HANDLE_PRE =>
+            ],
+            ExceptionHandler::EVENT_EXCEPTION_HANDLER_HANDLE_PRE => [
                 ExceptionFormatter::class,
-            BaseApplication::EVENT_APPLICATION_HANDLE_REQUEST_PRE =>
-                Acl::class
+            ],
+            BaseApplication::EVENT_APPLICATION_HANDLE_REQUEST_PRE => [
+                Acl::class,
+                AuthenticationListener::class,
+            ],
         ]
     ];
 
@@ -36,10 +41,6 @@ class Module extends BaseModule
     public function bootstrap()
     {
         $application = $this->getApplication();
-        foreach ($this->config['listeners'] as $event => $handlerClass) {
-            $application->listen($event, $handlerClass);
-        }
-
         $authModelsConfigs = $this->getAuthenticatables($application);
 
         if (empty($authModelsConfigs) === false) {
@@ -54,6 +55,12 @@ class Module extends BaseModule
             $application->getRepositoryManager()
                         ->addAuthenticatableModels($authModelsConfigs);
         }
+
+        foreach ($this->config['listeners'] as $event => $arrayHandlers) {
+            foreach ($arrayHandlers as $handlerClass) {
+                $application->listen($event, $handlerClass);
+            }
+        }
     }
 
     /**
@@ -61,7 +68,7 @@ class Module extends BaseModule
      *
      * @return array
      */
-    private function getAuthenticatables(ApplicationInterface $application)
+    private function getAuthenticatables(ApplicationInterface $application): array
     {
         $models = [];
 
@@ -77,15 +84,14 @@ class Module extends BaseModule
                 $params['authenticatable'] === true &&
                 isset($params['authStrategy']) === true &&
                 isset($params['credentials']) === true &&
-                is_array($params['credentials']) === true
+                is_array($params['credentials']) === true &&
+                isset($params['aclRoleField']) === true
             ) {
                 $models[$params['collection']] = [
                     'strategy' => $params['authStrategy'],
                     'credentials' => $params['credentials'],
+                    'aclRole' => $params['aclRoleField'],
                 ];
-            }
-            if (isset($params['aclRoleField']) === true) {
-                $models[$params['collection']]['aclRole'] = $params['aclRoleField'];
             }
         }
         return $models;

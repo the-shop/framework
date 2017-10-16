@@ -21,6 +21,11 @@ class Response implements ResponseInterface
     private $code = 200;
 
     /**
+     * @var array
+     */
+    private $headers = [];
+
+    /**
      * @param $responseBody
      * @return $this
      */
@@ -56,5 +61,40 @@ class Response implements ResponseInterface
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param array $headers
+     *
+     * @return ResponseInterface
+     */
+    public function setHeaders(array $headers): ResponseInterface
+    {
+        foreach ($headers as $name => $value) {
+            $this->addHeader($name, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $headerName
+     * @param string $headerValue
+     *
+     * @return \Framework\Base\Response\ResponseInterface
+     */
+    public function addHeader(string $headerName, string $headerValue): ResponseInterface
+    {
+        $this->headers[$headerName] = $headerValue;
+
+        return $this;
     }
 }

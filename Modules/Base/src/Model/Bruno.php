@@ -94,8 +94,8 @@ abstract class Bruno implements BrunoInterface
      */
     public function getId()
     {
-        if (isset($this->getDatabaseAttributes()[$this->getPrimaryKey()]) === true) {
-            return $this->getDatabaseAttributes()[$this->getPrimaryKey()];
+        if (isset($this->primaryKey) === true) {
+            return $this->getAttribute($this->getPrimaryKey());
         }
 
         return null;
@@ -309,6 +309,16 @@ abstract class Bruno implements BrunoInterface
     }
 
     /**
+     * @param string $attributeName
+     *
+     * @return mixed|null
+     */
+    public function getAttribute(string $attributeName)
+    {
+        return isset($this->getAttributes()[$attributeName]) === true ? $this->getAttributes()[$attributeName] : null;
+    }
+
+    /**
      * @throws \RuntimeException
      */
     public function getDirtyAttributes()
@@ -336,12 +346,20 @@ abstract class Bruno implements BrunoInterface
         return $this->dbAttributes;
     }
 
+    /**
+     * @return array
+     */
     public function getDefinedAttributes()
     {
         return $this->definedAttributes;
     }
 
-    public function defineModelAttributes(array $definition = [])
+    /**
+     * @param array $definition
+     *
+     * @return \Framework\Base\Model\BrunoInterface
+     */
+    public function defineModelAttributes(array $definition = []): BrunoInterface
     {
         $types = [
             'string',
@@ -377,9 +395,10 @@ abstract class Bruno implements BrunoInterface
     /**
      * @param string $field
      * @param FieldModifierInterface $filter
-     * @return $this
+     *
+     * @return \Framework\Base\Model\BrunoInterface
      */
-    public function addFieldFilter(string $field, FieldModifierInterface $filter)
+    public function addFieldFilter(string $field, FieldModifierInterface $filter): BrunoInterface
     {
         if (array_key_exists($field, $this->fieldFilters) === false) {
             $this->fieldFilters[$field] = [];
@@ -393,7 +412,7 @@ abstract class Bruno implements BrunoInterface
     /**
      * @return array
      */
-    public function getFieldFilters()
+    public function getFieldFilters(): array
     {
         return $this->fieldFilters;
     }

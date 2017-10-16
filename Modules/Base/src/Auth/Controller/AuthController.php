@@ -5,6 +5,7 @@ namespace Framework\Base\Auth\Controller;
 use Firebase\JWT\JWT;
 use Framework\Base\Application\Exception\AuthenticationException;
 use Framework\Base\Application\Exception\NotFoundException;
+use Framework\Base\Auth\RequestAuthorization;
 use Framework\Http\Controller\Http;
 
 /**
@@ -18,7 +19,7 @@ class AuthController extends Http
      * @throws \Framework\Base\Application\Exception\AuthenticationException
      * @throws \RuntimeException
      */
-    public function authenticate()
+    public function authenticate(): string
     {
         $authModels = $this->getRepositoryManager()->getAuthenticatableModels();
         $post = $this->getPost();
@@ -63,6 +64,15 @@ class AuthController extends Http
             throw $exception;
         }
 
+        $requestAuth = new RequestAuthorization();
+        $requestAuth->setResourceName($model->getCollection())
+                    ->setId($model->getId())
+                    ->setRole($model->getAttribute('role'))
+                    ->setModel($model);
+
+        $this->getApplication()
+             ->setRequestAuthorization($requestAuth);
+
         /**
          * @todo implement key generation, adjustable time on token expiration, algorithm selection
          */
@@ -71,13 +81,17 @@ class AuthController extends Http
         $payload = array(
             'iss' => 'framework.the-shop.io',
             'exp' => JWT::$timestamp + 3600,
-            'modelId' => $model->getId(),
-            'resourceName' => $model->getCollection(),
-            'aclRole' => '',
+            'modelId' => $requestAuth->getId(),
+            'resourceName' => $requestAuth->getResourceName(),
+            'aclRole' => $requestAuth->getRole(),
         );
         $alg = 'HS384';
         $jwt = JWT::encode($payload, $key, $alg);
 
-        return $jwt;
+        $this->getApplication()
+             ->getResponse()
+             ->addHeader('Authorization', "Bearer $jwt");
+
+        return $this;
     }
 }

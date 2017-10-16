@@ -50,6 +50,7 @@ class Request implements RequestInterface
     public function setQuery(array $get = [])
     {
         $this->queryParams = $get;
+
         return $this;
     }
 
@@ -68,6 +69,7 @@ class Request implements RequestInterface
     public function setPost(array $post = [])
     {
         $this->postParams = $post;
+
         return $this;
     }
 
@@ -98,6 +100,7 @@ class Request implements RequestInterface
     public function setFiles(array $files = [])
     {
         $this->fileParams = $files;
+
         return $this;
     }
 
@@ -187,5 +190,13 @@ class Request implements RequestInterface
     public function getServer()
     {
         return $this->serverInformation;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return getallheaders() === false ? [] : getallheaders();
     }
 }

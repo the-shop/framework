@@ -29,4 +29,24 @@ interface ResponseInterface
      * @return mixed
      */
     public function getCode();
+
+    /**
+     * @param array $headers
+     *
+     * @return \Framework\Base\Response\ResponseInterface
+     */
+    public function setHeaders(array $headers): ResponseInterface;
+
+    /**
+     * @param string $headerName
+     * @param string $headerValue
+     *
+     * @return \Framework\Base\Response\ResponseInterface
+     */
+    public function addHeader(string $headerName, string $headerValue): ResponseInterface;
+
+    /**
+     * @return array
+     */
+    public function getHeaders(): array;
 }

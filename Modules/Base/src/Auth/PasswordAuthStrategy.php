@@ -4,6 +4,7 @@ namespace Framework\Base\Auth;
 
 use Framework\Base\Application\Exception\AuthenticationException;
 use Framework\Base\Application\Exception\NotFoundException;
+use Framework\Base\Model\BrunoInterface;
 use Framework\Base\Repository\BrunoRepositoryInterface;
 
 /**
@@ -41,9 +42,9 @@ class PasswordAuthStrategy extends AuthStrategy
     /**
      * @param string $id
      *
-     * @return $this
+     * @return \Framework\Base\Auth\AuthStrategyInterface
      */
-    public function setIdentifier(string $id)
+    public function setIdentifier(string $id): AuthStrategyInterface
     {
         $this->id = $id;
 
@@ -53,9 +54,9 @@ class PasswordAuthStrategy extends AuthStrategy
     /**
      * @param string $authString
      *
-     * @return $this
+     * @return \Framework\Base\Auth\AuthStrategyInterface
      */
-    public function setAuthorization(string $authString)
+    public function setAuthorization(string $authString): AuthStrategyInterface
     {
         $this->password = $authString;
 
@@ -65,9 +66,9 @@ class PasswordAuthStrategy extends AuthStrategy
     /**
      * @param \Framework\Base\Repository\BrunoRepositoryInterface $repository
      *
-     * @return $this
+     * @return \Framework\Base\Auth\AuthStrategyInterface
      */
-    public function setRepository(BrunoRepositoryInterface $repository)
+    public function setRepository(BrunoRepositoryInterface $repository): AuthStrategyInterface
     {
         $this->repository = $repository;
 
@@ -101,11 +102,11 @@ class PasswordAuthStrategy extends AuthStrategy
     /**
      * @param array $credentials
      *
-     * @return \Framework\Base\Model\BrunoInterface|null
+     * @return \Framework\Base\Model\BrunoInterface
      * @throws \Framework\Base\Application\Exception\AuthenticationException
      * @throws \Framework\Base\Application\Exception\NotFoundException
      */
-    public function validate(array $credentials)
+    public function validate(array $credentials): BrunoInterface
     {
         $model = $this->getRepository()->loadOneBy(['email' => $this->getId()]);
 
@@ -115,8 +116,8 @@ class PasswordAuthStrategy extends AuthStrategy
 
         $authorizationName = end($credentials);
 
-        if (isset($model->getAttributes()[$authorizationName]) === false ||
-            password_verify($this->getPassword(), $model->getAttributes()[$authorizationName]) === false
+        if ($model->getAttribute($authorizationName) === null ||
+            password_verify($this->getPassword(), $model->getAttribute($authorizationName)) === false
         ) {
             throw new AuthenticationException('Invalid credentials');
         }

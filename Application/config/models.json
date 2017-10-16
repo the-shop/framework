@@ -339,6 +339,83 @@
           "default": ""
         }
       }
+    },
+    "Sprint": {
+      "collection": "sprints",
+      "authenticatable": false,
+      "primaryKey": "_id",
+      "fields": {
+        "_id": {
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "title": {
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "start": {
+          "label": "Start",
+          "type": "numeric",
+          "required": true,
+          "validation": [
+            "numeric"
+          ],
+          "default": 0
+        },
+        "end": {
+          "label": "End",
+          "type": "numeric",
+          "required": true,
+          "validation": [
+            "numeric"
+          ],
+          "default": null
+        },
+        "tasks": {
+          "label": "Tasks",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "members": {
+          "label": "Members",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "ownerId": {
+          "label": "Owner ID",
+          "type": "alpha_numeric",
+          "required": false,
+          "validation": [
+            "alphanumeric"
+          ],
+          "default": ""
+        },
+        "price": {
+          "label": "Price",
+          "type": "numeric",
+          "required": false,
+          "validation": [
+            "numeric"
+          ],
+          "default": 0
+        }
+      }
     }
   }
 }

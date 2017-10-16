@@ -47,10 +47,14 @@ return [
         ],
         'projects' => [
             MongoAdapter::class
+        ],
+        'sprints' => [
+            MongoAdapter::class
         ]
     ],
     'primaryModelAdapter' => [
         'users' => MongoAdapter::class,
         'projects' => MongoAdapter::class,
+        'sprints' => MongoAdapter::class,
     ],
 ];

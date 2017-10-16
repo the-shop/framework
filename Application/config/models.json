@@ -74,6 +74,14 @@
           ],
           "default": ""
         },
+        "admin": {
+          "label": "Admin",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ]
+        },
         "employeeRole": {
           "label": "Employee Role",
           "type": "string",

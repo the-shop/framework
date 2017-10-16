@@ -27,6 +27,10 @@ class Acl implements ListenerInterface
         $method = $request->getMethod();
         $uri = $request->getUri();
 
+        // Remove route prefix
+        $routePrefix = $this->getApplication()->getConfiguration()->getPathValue('routePrefix');
+        $uri = str_replace($routePrefix, '', $uri);
+
         // Transform uri to actually registered route so we can compare that route with acl
         foreach ($routeParameters as $param => $value) {
             $modifiedParam = "{" . $param . "}";

@@ -8,10 +8,10 @@ $dotenv->load(__DIR__ . '/../.env');
 $appConfig = new \Framework\Base\Application\ApplicationConfiguration();
 $appConfig->setRegisteredModules([
     \Application\CrudApi\Module::class,
-    \Framework\Base\Terminal\Module::class
+    \Framework\Terminal\Module::class
 ]);
 
-$app = new \Framework\Base\Terminal\TerminalApp($appConfig);
+$app = new \Framework\Terminal\TerminalApp($appConfig);
 
 try {
     $app->run();

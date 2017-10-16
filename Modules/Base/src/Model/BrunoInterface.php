@@ -22,6 +22,12 @@ interface BrunoInterface extends ApplicationAwareInterface
     public function getPrimaryKey();
 
     /**
+     * @param string $primaryKey
+     * @return BrunoInterface
+     */
+    public function setPrimaryKey(string $primaryKey);
+
+    /**
      * @return bool
      */
     public function isNew();
@@ -120,4 +126,14 @@ interface BrunoInterface extends ApplicationAwareInterface
      * @return mixed|null
      */
     public function getAttribute(string $attributeName);
+
+    /**
+     * @return BrunoInterface
+     */
+    public function enableFieldFilters();
+
+    /**
+     * @return BrunoInterface
+     */
+    public function disableFieldFilters();
 }

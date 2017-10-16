@@ -21,6 +21,9 @@ class ApplicationConfiguration extends Configuration
         $this->registeredModules = $modules;
     }
 
+    /**
+     * @return array
+     */
     public function getRegisteredModules()
     {
         return $this->registeredModules;

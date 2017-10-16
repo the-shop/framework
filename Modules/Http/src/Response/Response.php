@@ -20,10 +20,15 @@ class Response implements ResponseInterface
      */
     private $code = 200;
 
-    /**
-     * @var array
-     */
     private $headers = [];
+
+    /**
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
 
     /**
      * @param $responseBody
@@ -61,14 +66,6 @@ class Response implements ResponseInterface
     public function getCode()
     {
         return $this->code;
-    }
-
-    /**
-     * @return array
-     */
-    public function getHeaders(): array
-    {
-        return $this->headers;
     }
 
     /**

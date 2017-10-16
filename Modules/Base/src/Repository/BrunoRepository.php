@@ -100,6 +100,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         $model = new $modelClass();
 
         $model->defineModelAttributes($modelAttributesDefinition)
+              ->setPrimaryKey($this->getModelPrimaryKey())
               ->setCollection($this->resourceName)
               ->setApplication($this->getApplication());
 
@@ -115,6 +116,19 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
 
         return $this->getRepositoryManager()
                     ->getModelClass($repositoryClass);
+    }
+
+    /**
+     * @return string
+     */
+    public function getModelPrimaryKey()
+    {
+        // Convert resourceName name to model name like it's defined in configuration
+        $modelName = ucfirst(substr($this->getResourceName(), 0, -1));
+
+        return $this->getApplication()
+            ->getConfiguration()
+            ->getPathValue("models.{$modelName}.primaryKey");
     }
 
     /**
@@ -140,8 +154,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
             return null;
         }
 
+        $model->disableFieldFilters();
         $model->setAttributes($attributes);
         $model->setDatabaseAttributes($attributes);
+        $model->enableFieldFilters();
         $model->setIsNew(false);
 
         return $model;
@@ -168,8 +184,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
             return null;
         }
 
+        $model->disableFieldFilters();
         $model->setAttributes($attributes);
         $model->setDatabaseAttributes($attributes);
+        $model->enableFieldFilters();
         $model->setIsNew(false);
 
         return $model;
@@ -200,8 +218,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
 
         foreach ($data as $attributes) {
             $model = $this->newModel();
-            $model->setAttributes($attributes)
+            $model->disableFieldFilters()
+                  ->setAttributes($attributes)
                   ->setDatabaseAttributes($attributes)
+                  ->enableFieldFilters()
                   ->setIsNew(false);
 
             $out[$model->getId()] = $model;

@@ -233,6 +233,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function parseRequest(RequestInterface $request)
     {
         $dispatcher = $this->getDispatcher();
+        $dispatcher->setApplication($this);
         $dispatcher->register();
         $dispatcher->parseRequest($request);
 

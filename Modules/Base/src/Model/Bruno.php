@@ -4,6 +4,7 @@ namespace Framework\Base\Model;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Database\DatabaseAdapterInterface;
+use Framework\Base\Model\Modifiers\HashFilter;
 use Framework\Base\Mongo\MongoQuery;
 use Framework\Base\Model\Modifiers\FieldModifierInterface;
 
@@ -34,7 +35,7 @@ abstract class Bruno implements BrunoInterface
     /**
      * @var string
      */
-    protected $databaseAddress = '192.168.33.10:27017'; // TODO: extract to .env and use that
+    protected $databaseAddress = null;
 
     /**
      * @var string
@@ -72,6 +73,11 @@ abstract class Bruno implements BrunoInterface
     private $fieldFilters = [];
 
     /**
+     * @var bool
+     */
+    private $filtersEnabled = true;
+
+    /**
      * Bruno constructor.
      *
      * @param array $attributes
@@ -79,6 +85,8 @@ abstract class Bruno implements BrunoInterface
     public function __construct(array $attributes = [])
     {
         $this->setAttributes($attributes);
+        $this->databaseAddress = getenv('DATABASE_ADDRESS', '192.168.33.10:27017');
+        $this->database = getenv('DATABASE_NAME', 'framework');
     }
 
     /**
@@ -87,6 +95,17 @@ abstract class Bruno implements BrunoInterface
     public function getPrimaryKey()
     {
         return $this->primaryKey;
+    }
+
+    /**
+     * @param string $primaryKey
+     * @return $this
+     */
+    public function setPrimaryKey(string $primaryKey)
+    {
+        $this->primaryKey = $primaryKey;
+
+        return $this;
     }
 
     /**
@@ -263,7 +282,7 @@ abstract class Bruno implements BrunoInterface
 
     /**
      * @param string $attribute
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return $this
      * @throws \InvalidArgumentException
@@ -282,7 +301,13 @@ abstract class Bruno implements BrunoInterface
                  ]
              );
 
-        if (array_key_exists($attribute, $this->fieldFilters)) {
+        if ($attribute === 'password') {
+            $this->addFieldFilter('password', new HashFilter());
+        }
+
+        if ($this->filtersEnabled === true
+            && array_key_exists($attribute, $this->fieldFilters) === true
+        ) {
             foreach ($this->fieldFilters[$attribute] as $filter) {
                 /* @var FieldModifierInterface $filter */
                 $value = $filter->modify($value);
@@ -370,6 +395,11 @@ abstract class Bruno implements BrunoInterface
             'bool',
             'boolean',
             'array',
+            'num',
+            'numeric',
+            'alpha_num',
+            'alpha_numeric',
+            'alpha_dash',
         ];
 
         foreach ($definition as $key => $value) {
@@ -386,6 +416,7 @@ abstract class Bruno implements BrunoInterface
             ) {
                 throw new \InvalidArgumentException('Unsupported model attribute type: ' . $value['type']);
             }
+
             $this->definedAttributes[$key] = $value['type'];
         }
 
@@ -415,5 +446,29 @@ abstract class Bruno implements BrunoInterface
     public function getFieldFilters(): array
     {
         return $this->fieldFilters;
+    }
+
+    /**
+     * @return $this
+     */
+    public function enableFieldFilters()
+    {
+        if ($this->filtersEnabled === false) {
+            $this->filtersEnabled = true;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function disableFieldFilters()
+    {
+        if ($this->filtersEnabled === true) {
+            $this->filtersEnabled = false;
+        }
+
+        return $this;
     }
 }

@@ -4,6 +4,7 @@ namespace Framework\Base\Mongo;
 
 use Framework\Base\Database\DatabaseQueryInterface;
 use MongoDB\BSON\ObjectID;
+use MongoDB\BSON\Regex;
 
 /**
  * Class MongoQuery
@@ -32,6 +33,15 @@ class MongoQuery implements DatabaseQueryInterface
     private $limit = '';
 
     /**
+     * @var string
+     */
+    private $orderBy = '_id';
+
+    /**
+     * @var string
+     */
+    private $orderDirection = 'desc';
+    /**
      * @var array
      */
     private $selectFields = [];
@@ -58,15 +68,43 @@ class MongoQuery implements DatabaseQueryInterface
      */
     public function addAndCondition(string $field, string $operation, $value)
     {
-        if ($operation === '=') {
-            $operation = '$eq';
+        switch ($operation) {
+            case '=':
+                $operation = '$eq';
+                break;
+            case '>=':
+                $operation = '$gte';
+                break;
+            case '<=':
+                $operation = '$lte';
+                break;
+            case 'like':
+                /** @var  $operation \MongoDB\BSON\Regex */
+                $operation = new Regex(".*" . $value . ".*", "i");
+                break;
         }
 
         if ($field === '_id') {
             $value = new ObjectID($value);
         }
 
-        $queryPart = [$field => [$operation => $value]];
+        if ($operation instanceof Regex) {
+            $queryPart = [$field => $operation];
+        } else {
+            $queryPart = [$field => [$operation => $value]];
+        }
+
+        $this->conditions = array_merge_recursive($this->conditions, $queryPart);
+    }
+
+    /**
+     * @param string $field
+     * @param $value
+     * @return void
+     */
+    public function whereInArrayCondition(string $field, $value = [])
+    {
+        $queryPart = [$field => ['$in' => $value]];
 
         $this->conditions = array_merge_recursive($this->conditions, $queryPart);
     }
@@ -164,5 +202,39 @@ class MongoQuery implements DatabaseQueryInterface
     public function getSelectFields()
     {
         return $this->selectFields;
+    }
+
+    /**
+     * @param string $identifier
+     * @return void
+     */
+    public function setOrderBy(string $identifier)
+    {
+        $this->orderBy = $identifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderBy()
+    {
+        return $this->orderBy;
+    }
+
+    /**
+     * @param string $orderDirection
+     * @return void
+     */
+    public function setOrderDirection(string $orderDirection)
+    {
+        $this->orderDirection = $orderDirection;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderDirection()
+    {
+        return $this->orderDirection;
     }
 }

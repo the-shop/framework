@@ -9,18 +9,23 @@
     "sendgrid/sendgrid": "~6.0",
     "mustache/mustache": "^2.12",
     "firebase/php-jwt": "^5.0",
-    "symfony/http-foundation": "^3.3"
+    "symfony/http-foundation": "^3.3",
+    "videlalvaro/php-amqplib": "^2.7"
   },
   "autoload": {
     "psr-4": {
       "Framework\\RestApi\\": "Modules/RestApi/src",
+      "Framework\\RestApi\\Configuration\\": "Modules/RestApi/config",
       "Framework\\RestApi\\Test\\": "Modules/RestApi/test",
       "Framework\\Base\\": "Modules/Base/src",
       "Framework\\Base\\Test\\": "Modules/Base/test",
       "Framework\\Http\\": "Modules/Http/src",
       "Framework\\Http\\Test\\": "Modules/Http/test",
       "Framework\\Terminal\\": "Modules/Terminal/src",
+      "Framework\\Terminal\\Configuration\\": "Modules/Terminal/config",
+      "Framework\\Terminal\\Test\\": "Modules/Terminal/test",
       "Application\\": "Application/src",
+      "Application\\Configuration\\": "Application/config",
       "Application\\Test\\": "Application/test"
     }
   },

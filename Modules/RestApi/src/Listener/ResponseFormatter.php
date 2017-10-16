@@ -36,9 +36,9 @@ class ResponseFormatter implements ListenerInterface
                 'pagination' => [] // TODO:
             ];
         } elseif ($responseBody instanceof BrunoInterface) {
-            $data = $this->formatSingleRecord($responseBody->getAttributes());
+            $data = $this->formatSingleRecord($responseBody);
             $out = [
-                'data' => $data
+                'data' => $data,
             ];
         }
 
@@ -63,7 +63,20 @@ class ResponseFormatter implements ListenerInterface
         }
 
         if ($record instanceof BrunoInterface) {
-            $formatted = $this->formatSingleRecord($record->getAttributes());
+            $modelAttributes = $record->getAttributes();
+
+            $definedModelAttributes =
+                $this->getApplication()
+                     ->getRepositoryManager()
+                     ->getRegisteredModelFields($record->getCollection());
+
+            foreach ($definedModelAttributes as $attribute => $options) {
+                if (array_key_exists($attribute, $modelAttributes) === false) {
+                    $modelAttributes[$attribute] = $options['default'];
+                }
+            }
+
+            $formatted = $this->formatSingleRecord($modelAttributes);
         }
 
         return $formatted;

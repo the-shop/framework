@@ -70,4 +70,9 @@ interface BrunoRepositoryInterface extends ApplicationAwareInterface
      * @return DatabaseAdapterInterface
      */
     public function getPrimaryAdapter();
+
+    /**
+     * @return string
+     */
+    public function getModelPrimaryKey();
 }

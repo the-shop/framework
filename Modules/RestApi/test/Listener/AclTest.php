@@ -28,7 +28,7 @@ class AclTest extends UnitTest
 
         $this->getApplication()->setAclRules($aclTestRules);
 
-        $response = $this->makeHttpRequest('GET', '/users');
+        $response = $this->makeHttpRequest('GET', '/api/v1/users');
 
         $responseBody = $response->getBody();
 
@@ -64,7 +64,7 @@ class AclTest extends UnitTest
 
         $this->getApplication()->setAclRules($aclTestRules);
 
-        $response = $this->makeHttpRequest('GET', '/users');
+        $response = $this->makeHttpRequest('GET', '/api/v1/users');
 
         $this->assertEquals(200, $response->getCode());
     }

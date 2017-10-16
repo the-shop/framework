@@ -25,11 +25,11 @@ class PasswordAuthStrategyTest extends UnitTest
         $this::assertEquals($post[1], $strategy->getPassword());
     }
 
-    public function testValidationSucess()
+    public function testValidationSuccess()
     {
         $repository = $this->registerModelAndGetRepository();
 
-        $post = ['email' => 'test@test.com','password' => 'pw123'];
+        $post = ['email' => 'test@test.com', 'password' => 'pw123'];
         $strategy = new PasswordAuthStrategy($post, $repository);
 
         $this::assertInstanceOf(
@@ -50,7 +50,7 @@ class PasswordAuthStrategyTest extends UnitTest
         $strategy->validate($this->getAuthModel()['tests']['credentials']);
     }
 
-    public function testvalidationInvalidCredentials()
+    public function testValidationInvalidCredentials()
     {
         $repository = $this->registerModelAndGetRepository();
 
@@ -74,7 +74,7 @@ class PasswordAuthStrategyTest extends UnitTest
         $model->defineModelAttributes($this->getFields()['tests']);
         $model->setApplication($this->getApplication());
         $model->setAttribute('email', 'test@test.com');
-        $model->setAttribute('password', password_hash('pw123', PASSWORD_BCRYPT));
+        $model->setAttribute('password', 'pw123');
 
         $repository->getPrimaryAdapter()->setLoadOneResult($model);
 

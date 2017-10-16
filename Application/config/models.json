@@ -1,0 +1,214 @@
+{
+  "models": {
+    "User": {
+      "collection": "users",
+      "authenticatable": true,
+      "authStrategy": "password",
+      "credentials": [
+        "email",
+        "password"
+      ],
+      "aclRoleField": "role",
+      "primaryKey": "_id",
+      "fields": {
+        "_id": {
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "name": {
+          "label": "Name",
+          "type": "string",
+          "required": true,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "email": {
+          "label": "Email",
+          "type": "string",
+          "required": true,
+          "validation": [
+            "string",
+            "email",
+            "unique"
+          ],
+          "default": ""
+        },
+        "password": {
+          "label": "Password",
+          "type": "password",
+          "required": true,
+          "validation": [
+            "string"
+          ],
+          "default": null
+        },
+        "newPassword": {
+          "label": "New Password",
+          "type": "password",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": null
+        },
+        "repeatNewPassword": {
+          "label": "Repeat New Password",
+          "type": "password",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": null
+        },
+        "role": {
+          "label": "Role",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "employeeRole": {
+          "label": "Employee Role",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "employee": {
+          "label": "Employee",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
+        },
+        "skills": {
+          "label": "Skills",
+          "type": "array",
+          "required": false,
+          "validation":  [
+            "array"
+          ],
+          "default": []
+        },
+        "minimumsMissed": {
+          "label": "Minimums Missed",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
+        },
+        "valid": {
+          "label": "Valid",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
+        },
+        "xp_id": {
+          "label": "Xp ID",
+          "type": "alpha_numeric",
+          "required": false,
+          "validation": [
+            "alphanumeric"
+          ],
+          "default": ""
+        },
+        "xp": {
+          "label": "Xp",
+          "type": "numeric",
+          "required": false,
+          "validation": [
+            "numeric"
+          ],
+          "default": 0
+        },
+        "slack": {
+          "label": "Slack",
+          "type": "alpha_dash",
+          "required": false,
+          "validation": [
+            "alpha_dash"
+          ],
+          "default": ""
+        },
+        "github": {
+          "label": "GitHub",
+          "type": "alpha_dash",
+          "required": false,
+          "validation": [
+            "alpha_dash"
+          ],
+          "default": ""
+        },
+        "trello": {
+          "label": "Trello",
+          "type": "alpha_dash",
+          "required": false,
+          "validation": [
+            "alpha_dash"
+          ],
+          "default": ""
+        },
+        "token": {
+          "label": "Token",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "active": {
+          "label": "Is Active",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
+        },
+        "passwordForgot": {
+          "label": "Password Forgot",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        "passwordResetToken": {
+          "label": "Password Reset Token",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        "passwordResetTime": {
+          "label": "Password Reset Time",
+          "type": "integer",
+          "required": false,
+          "default": 0
+        },
+        "customField": {
+          "label": "Custom options field",
+          "type": "array",
+          "options": {
+            "option1": "Option 1",
+            "option2": "Option 2"
+          },
+          "required": false,
+          "default": []
+        }
+      }
+    }
+  }
+}

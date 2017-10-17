@@ -468,7 +468,7 @@ class ResourceTest extends UnitTest
         $resourceController->validateInput(
             'users',
             [
-                'name' => [],
+                'name' => 'testing',
                 'email' => $email,
             ]
         );

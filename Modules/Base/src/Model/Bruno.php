@@ -40,7 +40,7 @@ abstract class Bruno implements BrunoInterface
     /**
      * @var string
      */
-    protected $database = 'framework';
+    protected $database = null;
 
     /**
      * @var string
@@ -85,8 +85,6 @@ abstract class Bruno implements BrunoInterface
     public function __construct(array $attributes = [])
     {
         $this->setAttributes($attributes);
-        $this->databaseAddress = getenv('DATABASE_ADDRESS', '192.168.33.10:27017');
-        $this->database = getenv('DATABASE_NAME', 'framework');
     }
 
     /**
@@ -207,7 +205,7 @@ abstract class Bruno implements BrunoInterface
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getDatabase()
     {
@@ -220,6 +218,14 @@ abstract class Bruno implements BrunoInterface
     public function getCollection()
     {
         return $this->collection;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDatabaseAddress()
+    {
+        return $this->databaseAddress;
     }
 
     /**
@@ -259,9 +265,20 @@ abstract class Bruno implements BrunoInterface
      *
      * @return $this
      */
-    public function setDatabase(string $databaseName = 'framework')
+    public function setDatabase(string $databaseName): BrunoInterface
     {
         $this->database = $databaseName;
+
+        return $this;
+    }
+    /**
+     * @param string $databaseAddress
+     *
+     * @return $this
+     */
+    public function setDatabaseAddress(string $databaseAddress): BrunoInterface
+    {
+        $this->databaseAddress = $databaseAddress;
 
         return $this;
     }

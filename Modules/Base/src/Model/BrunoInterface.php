@@ -83,6 +83,25 @@ interface BrunoInterface extends ApplicationAwareInterface
     public function getDatabaseAttributes();
 
     /**
+     * @param string $databaseAddress
+     *
+     * @return \Framework\Base\Model\BrunoInterface
+     */
+    public function setDatabaseAddress(string $databaseAddress): BrunoInterface;
+
+    /**
+     * @return string
+     */
+    public function getDatabaseAddress();
+
+    /**
+     * @param string $databaseName
+     *
+     * @return \Framework\Base\Model\BrunoInterface
+     */
+    public function setDatabase(string $databaseName): BrunoInterface;
+
+    /**
      * @return string
      */
     public function getDatabase();

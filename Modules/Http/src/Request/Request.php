@@ -197,6 +197,11 @@ class Request implements RequestInterface
      */
     public function getHeaders(): array
     {
-        return getallheaders() === false ? [] : getallheaders();
+        if (function_exists('getallheaders') === true) {
+            if (getallheaders() !== false) {
+                return getallheaders();
+            }
+        }
+        return [];
     }
 }

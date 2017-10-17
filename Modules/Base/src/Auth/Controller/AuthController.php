@@ -21,12 +21,12 @@ use Framework\Http\Controller\Http;
 class AuthController extends Http
 {
     /**
-     * @return string
+     * @return BrunoInterface
      * @throws \Framework\Base\Application\Exception\AuthenticationException
      * @throws \RuntimeException
      * @throws NotFoundException
      */
-    public function authenticate(): string
+    public function authenticate(): BrunoInterface
     {
         $authModels = $this->getRepositoryManager()->getAuthenticatableModels();
         $post = $this->getPost();
@@ -162,6 +162,8 @@ class AuthController extends Http
 
             throw new \Exception('Issue with sending password reset email.');
         }
+
+        throw new \Exception('Issue with setting password reset token.');
     }
 
     /**

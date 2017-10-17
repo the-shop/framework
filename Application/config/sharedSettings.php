@@ -1,9 +1,6 @@
 <?php
 
 return [
-    /**
-     * Fixed framework <-> platform configuration
-     */
     'roles' => [
         'admin' => 'Admin',
         'standard' => 'Standard',

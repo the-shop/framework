@@ -50,11 +50,15 @@ return [
         ],
         'sprints' => [
             MongoAdapter::class
+        ],
+        'tasks' => [
+            MongoAdapter::class
         ]
     ],
     'primaryModelAdapter' => [
         'users' => MongoAdapter::class,
         'projects' => MongoAdapter::class,
         'sprints' => MongoAdapter::class,
+        'tasks' => MongoAdapter::class,
     ],
 ];

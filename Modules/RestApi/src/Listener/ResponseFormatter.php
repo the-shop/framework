@@ -29,7 +29,7 @@ class ResponseFormatter implements ListenerInterface
         if (is_array($responseBody) === true) {
             $data = [];
             foreach ($responseBody as $key => $responseItem) {
-                $data[$key] = $this->formatSingleRecord($responseItem);
+                $data[] = $this->formatSingleRecord($responseItem);
             }
             $out = [
                 'data' => $data,

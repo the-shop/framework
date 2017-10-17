@@ -40,11 +40,11 @@ interface ResponseInterface
      * @param string $value
      * @return ResponseInterface
      */
-    public function setHeader(string $key, string $value);
+    public function addHeader(string $key, string $value);
 
     /**
      * @param array $headers
      * @return ResponseInterface
      */
-    public function setHeaders(array $headers = []);
+    public function addHeaders(array $headers = []);
 }

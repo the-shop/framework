@@ -20,6 +20,9 @@ class Response implements ResponseInterface
      */
     private $code = 200;
 
+    /**
+     * @var array
+     */
     private $headers = [];
 
     /**
@@ -34,7 +37,7 @@ class Response implements ResponseInterface
      * @param array $headers
      * @return $this
      */
-    public function setHeaders(array $headers = [])
+    public function addHeaders(array $headers = [])
     {
         foreach ($headers as $key => $value) {
             $this->setHeader($key, $value);
@@ -48,7 +51,7 @@ class Response implements ResponseInterface
      * @param string $value
      * @return $this
      */
-    public function setHeader(string $key, string $value)
+    public function addHeader(string $key, string $value)
     {
         $this->headers[$key] = $value;
 

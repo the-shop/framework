@@ -22,10 +22,16 @@ class DatabaseSeedSettings
 
         $repository = $app->getRepositoryManager()->getRepositoryFromResourceName('settings');
 
-        foreach ($settingsArray as $key => $value) {
-            $repository->newModel()
-            ->setAttribute($key, $value)
-            ->save();
+        foreach ($settingsArray as $scope => $settings) {
+            foreach ($settings as $key => $value) {
+                $repository->newModel()
+                    ->setAttributes([
+                        'key' => $key,
+                        'value' => $value,
+                        'scope' => $scope
+                    ])
+                    ->save();
+            }
         }
 
         return 'Database seeded! Seeded collection: settings.';

@@ -34,31 +34,6 @@ class Response implements ResponseInterface
     }
 
     /**
-     * @param array $headers
-     * @return $this
-     */
-    public function addHeaders(array $headers = [])
-    {
-        foreach ($headers as $key => $value) {
-            $this->setHeader($key, $value);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param string $key
-     * @param string $value
-     * @return $this
-     */
-    public function addHeader(string $key, string $value)
-    {
-        $this->headers[$key] = $value;
-
-        return $this;
-    }
-
-    /**
      * @param $responseBody
      * @return $this
      */
@@ -94,5 +69,32 @@ class Response implements ResponseInterface
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * @param array $headers
+     *
+     * @return ResponseInterface
+     */
+    public function addHeaders(array $headers): ResponseInterface
+    {
+        foreach ($headers as $name => $value) {
+            $this->addHeader($name, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $headerName
+     * @param string $headerValue
+     *
+     * @return \Framework\Base\Response\ResponseInterface
+     */
+    public function addHeader(string $headerName, string $headerValue): ResponseInterface
+    {
+        $this->headers[$headerName] = $headerValue;
+
+        return $this;
     }
 }

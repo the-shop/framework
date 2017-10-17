@@ -35,12 +35,12 @@ abstract class Bruno implements BrunoInterface
     /**
      * @var string
      */
-    protected $databaseAddress = '192.168.33.10:27017';
+    protected $databaseAddress = null;
 
     /**
      * @var string
      */
-    protected $database = 'framework';
+    protected $database = null;
 
     /**
      * @var string
@@ -85,8 +85,6 @@ abstract class Bruno implements BrunoInterface
     public function __construct(array $attributes = [])
     {
         $this->setAttributes($attributes);
-        $this->databaseAddress = getenv('DATABASE_ADDRESS', '192.168.33.10:27017');
-        $this->database = getenv('DATABASE_NAME', 'framework');
     }
 
     /**
@@ -113,8 +111,8 @@ abstract class Bruno implements BrunoInterface
      */
     public function getId()
     {
-        if (isset($this->getDatabaseAttributes()[$this->getPrimaryKey()]) === true) {
-            return $this->getDatabaseAttributes()[$this->getPrimaryKey()];
+        if (isset($this->primaryKey) === true) {
+            return $this->getAttribute($this->getPrimaryKey());
         }
 
         return null;
@@ -202,12 +200,12 @@ abstract class Bruno implements BrunoInterface
     public function getDatabaseAdapters()
     {
         return $this->getApplication()
-            ->getRepositoryManager()
-            ->getModelAdapters($this->collection);
+                    ->getRepositoryManager()
+                    ->getModelAdapters($this->collection);
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getDatabase()
     {
@@ -220,6 +218,14 @@ abstract class Bruno implements BrunoInterface
     public function getCollection()
     {
         return $this->collection;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDatabaseAddress()
+    {
+        return $this->databaseAddress;
     }
 
     /**
@@ -259,9 +265,20 @@ abstract class Bruno implements BrunoInterface
      *
      * @return $this
      */
-    public function setDatabase(string $databaseName = 'framework')
+    public function setDatabase(string $databaseName): BrunoInterface
     {
         $this->database = $databaseName;
+
+        return $this;
+    }
+    /**
+     * @param string $databaseAddress
+     *
+     * @return $this
+     */
+    public function setDatabaseAddress(string $databaseAddress): BrunoInterface
+    {
+        $this->databaseAddress = $databaseAddress;
 
         return $this;
     }
@@ -294,12 +311,12 @@ abstract class Bruno implements BrunoInterface
         }
 
         $this->getApplication()
-            ->triggerEvent(
-                self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
-                [
-                    $attribute => $value,
-                ]
-            );
+             ->triggerEvent(
+                 self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
+                 [
+                     $attribute => $value,
+                 ]
+             );
 
         if ($attribute === 'password') {
             $this->addFieldFilter('password', new HashFilter());
@@ -317,10 +334,10 @@ abstract class Bruno implements BrunoInterface
         $this->attributes[$attribute] = $value;
 
         $this->getApplication()
-            ->triggerEvent(
-                self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_POST,
-                $this
-            );
+             ->triggerEvent(
+                 self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_POST,
+                 $this
+             );
 
         return $this;
     }
@@ -331,6 +348,16 @@ abstract class Bruno implements BrunoInterface
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * @param string $attributeName
+     *
+     * @return mixed|null
+     */
+    public function getAttribute(string $attributeName)
+    {
+        return isset($this->getAttributes()[$attributeName]) === true ? $this->getAttributes()[$attributeName] : null;
     }
 
     /**
@@ -361,12 +388,20 @@ abstract class Bruno implements BrunoInterface
         return $this->dbAttributes;
     }
 
+    /**
+     * @return array
+     */
     public function getDefinedAttributes()
     {
         return $this->definedAttributes;
     }
 
-    public function defineModelAttributes(array $definition = [])
+    /**
+     * @param array $definition
+     *
+     * @return \Framework\Base\Model\BrunoInterface
+     */
+    public function defineModelAttributes(array $definition = []): BrunoInterface
     {
         $types = [
             'string',
@@ -408,9 +443,10 @@ abstract class Bruno implements BrunoInterface
     /**
      * @param string $field
      * @param FieldModifierInterface $filter
-     * @return $this
+     *
+     * @return \Framework\Base\Model\BrunoInterface
      */
-    public function addFieldFilter(string $field, FieldModifierInterface $filter)
+    public function addFieldFilter(string $field, FieldModifierInterface $filter): BrunoInterface
     {
         if (array_key_exists($field, $this->fieldFilters) === false) {
             $this->fieldFilters[$field] = [];
@@ -424,7 +460,7 @@ abstract class Bruno implements BrunoInterface
     /**
      * @return array
      */
-    public function getFieldFilters()
+    public function getFieldFilters(): array
     {
         return $this->fieldFilters;
     }

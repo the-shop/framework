@@ -67,8 +67,8 @@ class ResponseFormatter implements ListenerInterface
 
             $definedModelAttributes =
                 $this->getApplication()
-                    ->getRepositoryManager()
-                    ->getRegisteredModelFields($record->getCollection());
+                     ->getRepositoryManager()
+                     ->getRegisteredModelFields($record->getCollection());
 
             foreach ($definedModelAttributes as $attribute => $options) {
                 if (array_key_exists($attribute, $modelAttributes) === false) {

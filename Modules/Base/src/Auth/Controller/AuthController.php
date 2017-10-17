@@ -11,6 +11,7 @@ use Framework\Base\Model\BrunoInterface;
 use Framework\Base\Model\Modifiers\HashFilter;
 use Framework\Base\Queue\Adapters\Sync;
 use Framework\Base\Queue\TaskQueue;
+use Framework\Base\Auth\RequestAuthorization;
 use Framework\Http\Controller\Http;
 
 /**
@@ -20,12 +21,12 @@ use Framework\Http\Controller\Http;
 class AuthController extends Http
 {
     /**
-     * @return string
+     * @return BrunoInterface
      * @throws \Framework\Base\Application\Exception\AuthenticationException
      * @throws \RuntimeException
      * @throws NotFoundException
      */
-    public function authenticate()
+    public function authenticate(): BrunoInterface
     {
         $authModels = $this->getRepositoryManager()->getAuthenticatableModels();
         $post = $this->getPost();
@@ -70,23 +71,33 @@ class AuthController extends Http
             throw $exception;
         }
 
+        $requestAuth = new RequestAuthorization();
+        $requestAuth->setResourceName($model->getCollection())
+                    ->setId($model->getId())
+                    ->setRole($model->getAttribute('role'))
+                    ->setModel($model);
+
+        $this->getApplication()
+             ->setRequestAuthorization($requestAuth);
+
         /**
          * @todo implement key generation, adjustable time on token expiration, algorithm selection
          */
         $key = 'rV)7Djb{DpEpY5ex';
         JWT::$timestamp = time();
-        $payload = [
+        $payload = array(
             'iss' => 'framework.the-shop.io',
             'exp' => JWT::$timestamp + 3600,
-            'modelId' => $model->getId(),
-            'resourceName' => $model->getCollection(),
-            'aclRole' => '',
-        ];
+            'modelId' => $requestAuth->getId(),
+            'resourceName' => $requestAuth->getResourceName(),
+            'aclRole' => $requestAuth->getRole(),
+        );
         $alg = 'HS384';
         $jwt = JWT::encode($payload, $key, $alg);
 
-        $res = $this->getApplication()->getResponse();
-        $res->addHeader('Authorization', $jwt);
+        $this->getApplication()
+             ->getResponse()
+             ->addHeader('Authorization', "Bearer $jwt");
 
         return $model;
     }
@@ -133,13 +144,15 @@ class AuthController extends Http
                 ->getPathValue('env.WEB_DOMAIN');
             $webDomain .= 'reset-password';
             $subject = 'Password reset confirmation link!';
-            $html = "<html>
+            $html = /** @lang text */
+                "<html>
                     <body>
-                    <p> Please, visit this link below to change your password.</p>
-                    <p> 
-                    <a href=\"{$webDomain}?token={$modelAttributes['passwordResetToken']}\">
-                    Click here to set a new password.
-                    </a></p>
+                        <p> Please, visit this link below to change your password.</p>
+                        <p>
+                            <a href=\"{$webDomain}?token={$modelAttributes['passwordResetToken']}\">
+                                Click here to set a new password.
+                            </a>
+                        </p>
                     </body>
                 </html>";
 
@@ -149,6 +162,8 @@ class AuthController extends Http
 
             throw new \Exception('Issue with sending password reset email.');
         }
+
+        throw new \Exception('Issue with setting password reset token.');
     }
 
     /**
@@ -212,9 +227,10 @@ class AuthController extends Http
         // Try to save model and send confirmation email
         if ($model->save()) {
             $subject = 'Password successfully changed!';
-            $html = "<html>
+            $html = /** @lang text */
+                "<html>
                     <body>
-                    <p> Hey, you have successfully changed your password.</p>
+                        <p> Hey, you have successfully changed your password.</p>
                     </body>
                 </html>";
 

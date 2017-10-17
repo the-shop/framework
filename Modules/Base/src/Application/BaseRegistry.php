@@ -52,6 +52,7 @@ class BaseRegistry implements RegistryInterface
         if (array_key_exists($key, $this->content) === true) {
             unset($this->content[$key]);
         }
+
         return $this;
     }
 }

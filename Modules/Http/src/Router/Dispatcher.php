@@ -3,7 +3,6 @@
 namespace Framework\Http\Router;
 
 use FastRoute\RouteCollector;
-use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Application\Exception\MethodNotAllowedException;
 use Framework\Base\Application\Exception\NotFoundException;

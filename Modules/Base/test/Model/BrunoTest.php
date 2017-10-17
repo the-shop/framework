@@ -2,7 +2,6 @@
 
 namespace Framework\Base\Test;
 
-use Framework\Base\Model\Modifiers\HashFilter;
 use Framework\Base\Model\Modifiers\LowerCaseFilter;
 use Framework\Base\Model\Modifiers\TrimFilter;
 

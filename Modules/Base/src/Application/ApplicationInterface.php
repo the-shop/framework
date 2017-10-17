@@ -2,6 +2,7 @@
 
 namespace Framework\Base\Application;
 
+use Framework\Base\Auth\RequestAuthorization;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
 use Framework\Base\Request\RequestInterface;
@@ -82,15 +83,17 @@ interface ApplicationInterface
 
     /**
      * @param LoggerInterface $logger
-     * @return $this
+     *
+     * @return \Framework\Base\Application\ApplicationInterface
      */
-    public function addLogger(LoggerInterface $logger);
+    public function addLogger(LoggerInterface $logger): ApplicationInterface;
 
     /**
      * @param LogInterface $log
-     * @return $this
+     *
+     * @return \Framework\Base\Application\ApplicationInterface
      */
-    public function log(LogInterface $log);
+    public function log(LogInterface $log): ApplicationInterface;
 
     /**
      * @return LoggerInterface[]
@@ -136,12 +139,24 @@ interface ApplicationInterface
     /**
      * @param string $path
      *
-     * @return $this
+     * @return ApplicationInterface
      */
-    public function setRootPath(string $path);
+    public function setRootPath(string $path): ApplicationInterface;
 
     /**
      * @return null|string
      */
     public function getRootPath();
+
+    /**
+     * @param \Framework\Base\Auth\RequestAuthorization $requestAuthorization
+     *
+     * @return \Framework\Base\Application\ApplicationInterface
+     */
+    public function setRequestAuthorization(RequestAuthorization $requestAuthorization): ApplicationInterface;
+
+    /**
+     * @return null|RequestAuthorization
+     */
+    public function getRequestAuthorization();
 }

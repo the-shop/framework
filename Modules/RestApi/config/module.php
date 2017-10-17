@@ -1,23 +1,29 @@
 <?php
 
 use Framework\RestApi\Listener\Acl;
+use Framework\RestApi\Listener\AuthenticationListener;
 use Framework\RestApi\Listener\ExceptionFormatter;
 use Framework\RestApi\Listener\ResponseFormatter;
+use Framework\RestApi\Listener\ConfirmRegistration;
 use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Application\BaseApplication;
 use Application\CrudApi\Controller\Resource;
-use Framework\RestApi\Listener\ConfirmRegistration;
 
 return [
     'listeners' => [
-        BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_PRE =>
-            ResponseFormatter::class,
-        ExceptionHandler::EVENT_EXCEPTION_HANDLER_HANDLE_PRE =>
-            ExceptionFormatter::class,
-        BaseApplication::EVENT_APPLICATION_HANDLE_REQUEST_PRE =>
+        BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_PRE => [
+            ResponseFormatter::class
+        ],
+        ExceptionHandler::EVENT_EXCEPTION_HANDLER_HANDLE_PRE => [
+            ExceptionFormatter::class
+        ],
+        BaseApplication::EVENT_APPLICATION_HANDLE_REQUEST_PRE => [
             Acl::class,
-        Resource::EVENT_CRUD_API_RESOURCE_CREATE_POST =>
-        ConfirmRegistration::class
+            AuthenticationListener::class,
+        ],
+        Resource::EVENT_CRUD_API_RESOURCE_CREATE_POST => [
+            ConfirmRegistration::class
+        ],
     ],
     'env' => [
         'SENTRY_DSN' => getenv('SENTRY_DSN'),
@@ -33,6 +39,8 @@ return [
         'PRIVATE_MAIL_FROM' => getenv('PRIVATE_MAIL_FROM'),
         'PRIVATE_MAIL_NAME' => getenv('PRIVATE_MAIL_NAME'),
         'PRIVATE_MAIL_SUBJECT' => getenv('PRIVATE_MAIL_SUBJECT'),
-        'WEB_DOMAIN' => getenv('WEB_DOMAIN')
+        'WEB_DOMAIN' => getenv('WEB_DOMAIN'),
+        'DATABASE_ADDRESS' => getenv('DATABASE_ADDRESS'),
+        'DATABASE_NAME' => getenv('DATABASE_NAME'),
     ]
 ];

@@ -35,7 +35,7 @@ interface ResponseInterface
      *
      * @return \Framework\Base\Response\ResponseInterface
      */
-    public function setHeaders(array $headers): ResponseInterface;
+    public function addHeaders(array $headers): ResponseInterface;
 
     /**
      * @param string $headerName

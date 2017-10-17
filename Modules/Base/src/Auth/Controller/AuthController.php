@@ -222,7 +222,6 @@ class AuthController extends Http
 
         // Reset token and set new password
         $model->setAttribute('passwordResetToken', '');
-        $model->addFieldFilter('password', new HashFilter());
         $model->setAttribute('password', $newPassword);
 
         // Try to save model and send confirmation email

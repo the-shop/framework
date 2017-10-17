@@ -104,7 +104,7 @@
           "label": "Skills",
           "type": "array",
           "required": false,
-          "validation":  [
+          "validation": [
             "array"
           ],
           "default": []
@@ -306,7 +306,7 @@
           "label": "Is Complete",
           "type": "boolean",
           "required": false,
-          "validation":  [
+          "validation": [
             "boolean"
           ],
           "default": false
@@ -421,6 +421,125 @@
             "numeric"
           ],
           "default": 0
+        }
+      }
+    },
+    "Setting": {
+      "collection": "settings",
+      "authenticatable": false,
+      "primaryKey": "_id",
+      "fields": {
+        "_id": {
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "roles": {
+          "label": "Roles",
+          "type": "array",
+          "required": false,
+          "default": []
+        },
+        "hourlyRate": {
+          "label": "Hourly Rate",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
+        },
+        "employees": {
+          "label": "Employees",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "projects": {
+          "label": "Projects",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "tasks": {
+          "label": "Tasks",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "taskHistoryStatuses": {
+          "label": "Task History Statuses",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "taskComplexityOptions": {
+          "label": "Task Complexity Options",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "guestRole": {
+          "label": "Guest role",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "defaultRole": {
+          "label": "Default role",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "skills": {
+          "label": "Skills",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "employeeMonthlyMinimum": {
+          "label": "Employee Monthly Minimum",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "taskPriorities": {
+          "label": "Task Priorities",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
         }
       }
     }

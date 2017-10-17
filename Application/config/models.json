@@ -215,6 +215,15 @@
           },
           "required": false,
           "default": []
+        },
+        "lastTimeActivityCheck": {
+          "label": "Last Time Activity Check",
+          "type": "numeric",
+          "required": false,
+          "validation": [
+            "numeric"
+          ],
+          "default": 0
         }
       }
     },

@@ -29,10 +29,12 @@ return [
         ]
     ],
     'listeners' => [
-        BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_PRE =>
+        BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_PRE => [
             ResponseFormatter::class,
-        ExceptionHandler::EVENT_EXCEPTION_HANDLER_HANDLE_PRE =>
+        ],
+        ExceptionHandler::EVENT_EXCEPTION_HANDLER_HANDLE_PRE => [
             ExceptionFormatter::class,
+        ]
     ],
     'queueNames' => [],
 ];

@@ -26,8 +26,10 @@ class Module extends BaseModule
             ->addRoutes($appConfig->getPathValue('routes'));
 
         $listeners = $appConfig->getPathValue('listeners');
-        foreach ($listeners as $event => $handlerClass) {
-            $this->getApplication()->listen($event, $handlerClass);
+        foreach ($listeners as $event => $arrayHandlers) {
+            foreach ($arrayHandlers as $handlerClass) {
+                $this->getApplication()->listen($event, $handlerClass);
+            }
         }
     }
 }

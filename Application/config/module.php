@@ -51,6 +51,9 @@ return [
         'sprints' => [
             MongoAdapter::class
         ],
+        'settings' => [
+            MongoAdapter::class
+        ],
         'tasks' => [
             MongoAdapter::class
         ]
@@ -59,6 +62,7 @@ return [
         'users' => MongoAdapter::class,
         'projects' => MongoAdapter::class,
         'sprints' => MongoAdapter::class,
+        'settings' => MongoAdapter::class,
         'tasks' => MongoAdapter::class,
     ],
 ];

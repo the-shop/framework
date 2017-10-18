@@ -382,6 +382,7 @@ abstract class Bruno implements BrunoInterface
             'alpha_num',
             'alpha_numeric',
             'alpha_dash',
+            'mixed'
         ];
 
         foreach ($definition as $key => $value) {

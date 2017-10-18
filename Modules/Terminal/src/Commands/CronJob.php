@@ -13,22 +13,21 @@ class CronJob extends Schedule
     /**
      * All cron jobs should be registered (added) in this method.
      * At the end method runs all cron jobs.
+     * You can add cron job with:
+     * -----------------------------------------------------------------
+     *                  $this->addCronJob(
+     *                      string $commandName,
+     *                      string $timeExpression,
+     *                      array $parameters = []
+     *                      );
+     * -----------------------------------------------------------------
      * @return array
      */
     public function handle()
     {
         /*--------------------------- REGISTER CRON JOBS HERE ------------------------*/
 
-        $this->addCronJob(
-            'test',
-            $this->everyFiveMinutes()->getCronTimeExpression(),
-            [
-                'testParam' => 'test required param',
-                'testOptionalParam' => 'test optional param',
-            ]
-        );
-
-        /*-----------------------------------------------------------------------------*/
+        /*----------------------------------------------------------------------------*/
 
         return $this->runCronJobs();
     }

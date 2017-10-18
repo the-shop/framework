@@ -104,7 +104,7 @@
           "label": "Skills",
           "type": "array",
           "required": false,
-          "validation":  [
+          "validation": [
             "array"
           ],
           "default": []
@@ -306,7 +306,7 @@
           "label": "Is Complete",
           "type": "boolean",
           "required": false,
-          "validation":  [
+          "validation": [
             "boolean"
           ],
           "default": false
@@ -421,6 +421,38 @@
             "numeric"
           ],
           "default": 0
+        }
+      }
+    },
+    "Setting": {
+      "collection": "settings",
+      "authenticatable": false,
+      "primaryKey": "_id",
+      "fields": {
+        "_id": {
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "key": {
+          "label": "Key",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        "value": {
+          "label": "Value",
+          "type": "mixed",
+          "required": true,
+          "default": null
+        },
+        "scope": {
+          "label": "Scope",
+          "type": "string",
+          "required": true,
+          "default": "internal"
         }
       }
     }

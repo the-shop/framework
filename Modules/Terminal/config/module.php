@@ -4,9 +4,9 @@ use Framework\Base\Application\BaseApplication;
 use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Terminal\Commands\CronJob;
 use Framework\Terminal\Commands\QueueWorker;
-use Framework\Terminal\Commands\Test;
 use Framework\RestApi\Listener\ExceptionFormatter;
 use Framework\RestApi\Listener\ResponseFormatter;
+use Application\Database\Seeders\DatabaseSeeder;
 
 return [
     'routes' => [
@@ -20,15 +20,13 @@ return [
             'requiredParams' => [],
             'optionalParams' => [],
         ],
-        'test' => [
-            'handler' => Test::class,
+        'db:seed' => [
+            'handler' => DatabaseSeeder::class,
             'requiredParams' => [
-                'testParam',
+                'seederName'
             ],
-            'optionalParams' => [
-                'testOptionalParam',
-            ],
-        ],
+            'optionalParams' => [],
+        ]
     ],
     'listeners' => [
         BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_PRE =>

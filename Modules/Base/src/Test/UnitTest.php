@@ -153,7 +153,8 @@ class UnitTest extends TestCase
     {
         $this->authModel['tests'] = ['strategy' => 'Password', 'credentials' => ['email', 'password']];
         $this->fields['tests'] = ["email" => ["label" => "Email", "type" => "string",],
-                            "password" =>["label" => "Password", "type" => "password"]];
+                                  "password" => ["label" => "Password", "type" => "password"],
+                                  "role" => ["label" => "Role", "type" => "string"]];
         $repository = [TestModel::class => TestRepository::class];
         $resource = ['tests' => TestRepository::class];
 

@@ -13,7 +13,7 @@ class Module extends BaseModule
 {
     /**
      * @inheritdoc
-     */
+    */
     public function bootstrap()
     {
         $application = $this->getApplication();
@@ -24,8 +24,10 @@ class Module extends BaseModule
         $appConfig = $application->getConfiguration();
 
         // Add listeners to application
-        foreach ($appConfig->getPathValue('listeners') as $event => $handlerClass) {
-            $application->listen($event, $handlerClass);
+        foreach ($appConfig->getPathValue('listeners') as $event => $arrayHandlers) {
+            foreach ($arrayHandlers as $handlerClass) {
+                $application->listen($event, $handlerClass);
+            }
         }
 
         $authModelsConfigs = $this->getAuthenticatables($application);
@@ -53,10 +55,10 @@ class Module extends BaseModule
             );
 
             $application->getDispatcher()
-                ->addRoutes($appConfig->getPathValue('routes'));
+                        ->addRoutes($appConfig->getPathValue('routes'));
 
             $application->getRepositoryManager()
-                ->addAuthenticatableModels($authModelsConfigs);
+                        ->addAuthenticatableModels($authModelsConfigs);
         }
     }
 
@@ -65,7 +67,7 @@ class Module extends BaseModule
      *
      * @return array
      */
-    private function getAuthenticatables(ApplicationInterface $application)
+    private function getAuthenticatables(ApplicationInterface $application): array
     {
         $models = [];
 
@@ -81,18 +83,16 @@ class Module extends BaseModule
                 $params['authenticatable'] === true &&
                 isset($params['authStrategy']) === true &&
                 isset($params['credentials']) === true &&
-                is_array($params['credentials']) === true
+                is_array($params['credentials']) === true &&
+                isset($params['aclRoleField']) === true
             ) {
                 $models[$params['collection']] = [
                     'strategy' => $params['authStrategy'],
                     'credentials' => $params['credentials'],
+                    'aclRole' => $params['aclRoleField'],
                 ];
             }
-            if (isset($params['aclRoleField']) === true) {
-                $models[$params['collection']]['aclRole'] = $params['aclRoleField'];
-            }
         }
-
         return $models;
     }
 }

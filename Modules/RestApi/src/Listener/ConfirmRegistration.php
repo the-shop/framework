@@ -38,6 +38,7 @@ class ConfirmRegistration implements ListenerInterface
             $emailSender->setTo($profileAttributes['email']);
             $emailSender->setTextBody('You have been successfully registered!');
             $emailSender->setHtmlBody(
+                /** @lang text */
                 "<html>
                     <body>
                         <h3>

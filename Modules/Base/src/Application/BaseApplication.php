@@ -5,6 +5,7 @@ namespace Framework\Base\Application;
 use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Application\Exception\GuzzleHttpException;
 use Framework\Base\Application\Exception\MethodNotAllowedException;
+use Framework\Base\Auth\RequestAuthorization;
 use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
@@ -126,6 +127,11 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
      * @var ApplicationConfiguration
      */
     private $configuration = null;
+
+    /**
+     * @var \Framework\Base\Auth\RequestAuthorization
+     */
+    private $requestAuthorization = null;
 
     /**
      * @var null|string
@@ -493,10 +499,11 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
 
     /**
      * @param LogInterface $log
-     * @return $this
+     *
+     * @return \Framework\Base\Application\ApplicationInterface
      * @throws \RuntimeException
      */
-    public function log(LogInterface $log)
+    public function log(LogInterface $log): ApplicationInterface
     {
         if (count($this->getLoggers()) === 0) {
             $this->addLogger(new MemoryLogger());
@@ -509,9 +516,10 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
 
     /**
      * @param LoggerInterface $logger
-     * @return $this
+     *
+     * @return \Framework\Base\Application\ApplicationInterface
      */
-    public function addLogger(LoggerInterface $logger)
+    public function addLogger(LoggerInterface $logger): ApplicationInterface
     {
         $this->loggers[] = $logger;
 
@@ -527,9 +535,10 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
-     * @param string $method
-     * @param string $uri
-     * @param array $params
+     * @param string    $method
+     * @param string    $uri
+     * @param array     $params
+     *
      * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws GuzzleHttpException
      * @throws MethodNotAllowedException
@@ -598,9 +607,9 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     /**
      * @param string $path
      *
-     * @return $this
+     * @return \Framework\Base\Application\ApplicationInterface
      */
-    public function setRootPath(string $path)
+    public function setRootPath(string $path): ApplicationInterface
     {
         $this->rootPath = $path;
 
@@ -613,5 +622,25 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function getRootPath()
     {
         return $this->rootPath;
+    }
+
+    /**
+     * @param \Framework\Base\Auth\RequestAuthorization $requestAuthorization
+     *
+     * @return \Framework\Base\Application\ApplicationInterface
+     */
+    public function setRequestAuthorization(RequestAuthorization $requestAuthorization): ApplicationInterface
+    {
+        $this->requestAuthorization = $requestAuthorization;
+
+        return $this;
+    }
+
+    /**
+     * @return RequestAuthorization|null
+     */
+    public function getRequestAuthorization()
+    {
+        return $this->requestAuthorization;
     }
 }

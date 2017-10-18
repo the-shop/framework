@@ -19,4 +19,9 @@ interface RequestInterface extends \Framework\Base\Request\RequestInterface
      * @return mixed
      */
     public function setUri(string $uri);
+
+    /**
+     * @return array
+     */
+    public function getHeaders(): array;
 }

@@ -31,20 +31,22 @@ interface ResponseInterface
     public function getCode();
 
     /**
+     * @param array $headers
+     *
+     * @return \Framework\Base\Response\ResponseInterface
+     */
+    public function addHeaders(array $headers): ResponseInterface;
+
+    /**
+     * @param string $headerName
+     * @param string $headerValue
+     *
+     * @return \Framework\Base\Response\ResponseInterface
+     */
+    public function addHeader(string $headerName, string $headerValue): ResponseInterface;
+
+    /**
      * @return array
      */
     public function getHeaders(): array;
-
-    /**
-     * @param string $key
-     * @param string $value
-     * @return ResponseInterface
-     */
-    public function addHeader(string $key, string $value);
-
-    /**
-     * @param array $headers
-     * @return ResponseInterface
-     */
-    public function addHeaders(array $headers = []);
 }

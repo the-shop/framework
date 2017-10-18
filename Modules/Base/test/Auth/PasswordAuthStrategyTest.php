@@ -43,7 +43,7 @@ class PasswordAuthStrategyTest extends UnitTest
         $repository = $this->registerModelAndGetRepository();
         $repository->getPrimaryAdapter()->setLoadOneResult(null);
 
-        $post = ['email' => 'test@testt.com','password' => 'pw123'];
+        $post = ['email' => 'test@testic.com','password' => 'pw123'];
         $strategy = new PasswordAuthStrategy($post, $repository);
 
         $this::expectException(NotFoundException::class);

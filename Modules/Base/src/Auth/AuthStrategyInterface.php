@@ -3,6 +3,7 @@
 namespace Framework\Base\Auth;
 
 use Framework\Base\Application\ApplicationAwareInterface;
+use Framework\Base\Model\BrunoInterface;
 use Framework\Base\Repository\BrunoRepositoryInterface;
 
 /**
@@ -16,27 +17,27 @@ interface AuthStrategyInterface extends ApplicationAwareInterface
      *
      * @param string $id
      *
-     * @return $this
+     * @return \Framework\Base\Auth\AuthStrategyInterface
      */
-    public function setIdentifier(string $id);
+    public function setIdentifier(string $id): AuthStrategyInterface;
 
     /**
      * Authorization string (password, token, key, secret...)
      *
      * @param string $authString
      *
-     * @return $this
+     * @return \Framework\Base\Auth\AuthStrategyInterface
      */
-    public function setAuthorization(string $authString);
+    public function setAuthorization(string $authString): AuthStrategyInterface;
 
     /**
      * Model repository
      *
      * @param \Framework\Base\Repository\BrunoRepositoryInterface $repository
      *
-     * @return $this
+     * @return \Framework\Base\Auth\AuthStrategyInterface
      */
-    public function setRepository(BrunoRepositoryInterface $repository);
+    public function setRepository(BrunoRepositoryInterface $repository): AuthStrategyInterface;
 
     /**
      * Validates the auth params
@@ -47,5 +48,5 @@ interface AuthStrategyInterface extends ApplicationAwareInterface
      * @throws \Framework\Base\Application\Exception\AuthenticationException
      * @throws \Framework\Base\Application\Exception\NotFoundException
      */
-    public function validate(array $credentials);
+    public function validate(array $credentials): BrunoInterface;
 }

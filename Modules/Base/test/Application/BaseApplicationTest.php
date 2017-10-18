@@ -76,6 +76,19 @@ class BaseApplicationTest extends UnitTest
             Response::class,
             $response
         );
-        $this->assertEquals(200, $response->getCode());
+        $this::assertEquals(200, $response->getCode());
+    }
+
+    public function testRootPath()
+    {
+        $path = realpath(
+            dirname(__DIR__, 4)
+        );
+
+        $this::assertEquals(
+            $path,
+            $this->getApplication()
+                 ->getRootPath()
+        );
     }
 }

@@ -135,24 +135,24 @@ class Resource extends HttpController
     public function create(string $resourceName)
     {
         $this->getApplication()
-            ->triggerEvent(
-                self::EVENT_CRUD_API_RESOURCE_CREATE_PRE,
-                [
-                    'resourceName' => $resourceName,
-                ]
-            );
+             ->triggerEvent(
+                 self::EVENT_CRUD_API_RESOURCE_CREATE_PRE,
+                 [
+                     'resourceName' => $resourceName,
+                 ]
+             );
 
         $postParams = $this->getPost();
 
         $this->validateInput($resourceName, $postParams);
 
         $model = $this->getRepositoryFromResourceName($resourceName)
-            ->newModel()
-            ->setAttributes($postParams)
-            ->save();
+                      ->newModel()
+                      ->setAttributes($postParams)
+                      ->save();
 
         $this->getApplication()
-            ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_CREATE_POST, $model);
+             ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_CREATE_POST, $model);
 
         return $model;
     }

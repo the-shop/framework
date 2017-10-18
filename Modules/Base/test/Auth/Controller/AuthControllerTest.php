@@ -22,7 +22,8 @@ class AuthControllerTest extends UnitTest
         $model->setApplication($this->getApplication());
         $model->setAttributes([
             'email' => 'test@test.com',
-            'password' => 'test123'
+            'password' => 'test123',
+            'role' => 'guest',
         ]);
 
         $repository->getPrimaryAdapter()->setLoadOneResult($model);

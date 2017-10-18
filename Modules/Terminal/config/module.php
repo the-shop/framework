@@ -6,7 +6,7 @@ use Framework\Terminal\Commands\CronJob;
 use Framework\Terminal\Commands\QueueWorker;
 use Framework\RestApi\Listener\ExceptionFormatter;
 use Framework\RestApi\Listener\ResponseFormatter;
-use Framework\Terminal\Commands\DatabaseSeedSettings;
+use Application\Database\Seeders\DatabaseSeeder;
 
 return [
     'routes' => [
@@ -20,9 +20,11 @@ return [
             'requiredParams' => [],
             'optionalParams' => [],
         ],
-        'db:seed:settings' => [
-            'handler' => DatabaseSeedSettings::class,
-            'requiredParams' => [],
+        'db:seed' => [
+            'handler' => DatabaseSeeder::class,
+            'requiredParams' => [
+                'seederName'
+            ],
             'optionalParams' => [],
         ]
     ],

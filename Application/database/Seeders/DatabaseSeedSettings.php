@@ -1,12 +1,12 @@
 <?php
 
-namespace Framework\Terminal\Commands;
+namespace Application\Database\Seeders;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 
 /**
  * Class DatabaseSeedSettings
- * @package Framework\Terminal\Commands
+ * @package Application\Database\Seeders
  */
 class DatabaseSeedSettings
 {

@@ -26,7 +26,8 @@
       "Framework\\Terminal\\Test\\": "Modules/Terminal/test",
       "Application\\": "Application/src",
       "Application\\Configuration\\": "Application/config",
-      "Application\\Test\\": "Application/test"
+      "Application\\Test\\": "Application/test",
+      "Application\\Database\\": "Application/database"
     }
   },
   "require-dev": {

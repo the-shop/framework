@@ -690,6 +690,38 @@
           "default": "internal"
         }
       }
+    },
+    "Comment": {
+      "collection": "comments",
+      "authenticatable": false,
+      "primaryKey": "_id",
+      "fields": {
+        "_id": {
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "records": {
+          "label": "Records",
+          "type": "array",
+          "required": false,
+          "default": [],
+          "validation": [
+            "array"
+          ]
+        },
+        "ownerId": {
+          "label": "Owner ID",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        }
+      }
     }
   }
 }

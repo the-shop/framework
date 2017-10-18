@@ -470,17 +470,17 @@
         },
         "owner": {
           "label": "Owner",
-          "type": "alpha_numeric",
+          "type": "string",
           "required": false,
           "validation": [
-            "alpha_numeric"
+            "string"
           ],
           "default": ""
         },
         "xp": {
           "label": "Xp",
           "type": "numeric",
-          "required": true,
+          "required": false,
           "validation": [
             "numeric"
           ],
@@ -489,7 +489,7 @@
         "payout": {
           "label": "Payout",
           "type": "numeric",
-          "required": true,
+          "required": false,
           "validation": [
             "numeric"
           ],
@@ -504,7 +504,7 @@
           ],
           "default": 0
         },
-        "dueDate": {
+        "due_date": {
           "label": "Due Date",
           "type": "numeric",
           "required": false,
@@ -518,7 +518,7 @@
           "type": "string",
           "required": false,
           "validation": [
-            "array"
+            "string"
           ],
           "default": []
         },
@@ -533,6 +533,15 @@
         },
         "passed_qa": {
           "label": "Passed QA",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
+        },
+        "qa_in_progress": {
+          "label": "QA in progress",
           "type": "boolean",
           "required": false,
           "validation": [
@@ -629,77 +638,9 @@
             "boolean"
           ],
           "default": false
-        }
-      }
-    },
-    "Project": {
-      "collection": "projects",
-      "authenticatable": false,
-      "primaryKey": "_id",
-      "fields": {
-        "_id": {
-          "label": "ID",
-          "type": "string",
-          "disabled": true,
-          "required": false,
-          "default": ""
         },
-        "name": {
-          "label": "Name",
-          "type": "string",
-          "required": true,
-          "validation": [
-            "string"
-          ],
-          "default": ""
-        },
-        "description": {
-          "label": "Description",
-          "type": "string",
-          "required": false,
-          "validation": [
-            "string"
-          ],
-          "default": ""
-        },
-        "start": {
-          "label": "Start",
-          "type": "numeric",
-          "required": true,
-          "validation": [
-            "numeric"
-          ],
-          "default": 0
-        },
-        "end": {
-          "label": "End",
-          "type": "numeric",
-          "required": true,
-          "validation": [
-            "numeric"
-          ],
-          "default": null
-        },
-        "price": {
-          "label": "Price",
-          "type": "numeric",
-          "required": false,
-          "validation": [
-            "numeric"
-          ],
-          "default": 0
-        },
-        "acceptedBy": {
-          "label": "Accepted By",
-          "type": "alpha_numeric",
-          "required": false,
-          "validation": [
-            "alpha_numeric"
-          ],
-          "default": ""
-        },
-        "sprints": {
-          "label": "Sprints",
+        "dependsOn": {
+          "label": "Depends on",
           "type": "array",
           "required": false,
           "validation": [
@@ -707,134 +648,14 @@
           ],
           "default": []
         },
-        "members": {
-          "label": "Members",
+        "blocks": {
+          "label": "Blocks",
           "type": "array",
           "required": false,
           "validation": [
             "array"
           ],
           "default": []
-        },
-        "isComplete": {
-          "label": "Is Complete",
-          "type": "boolean",
-          "required": false,
-          "validation": [
-            "boolean"
-          ],
-          "default": false
-        },
-        "isInternal": {
-          "label": "Is internal",
-          "type": "boolean",
-          "required": false,
-          "validation": [
-            "boolean"
-          ],
-          "default": true
-        },
-        "projectCommentsId": {
-          "label": "Project Comments id",
-          "type": "alpha_numeric",
-          "required": false,
-          "validation": [
-            "alpha_numeric"
-          ],
-          "default": ""
-        },
-        "ownerId": {
-          "label": "Owner ID",
-          "type": "alpha_numeric",
-          "required": false,
-          "validation": [
-            "alphanumeric"
-          ],
-          "default": ""
-        }
-      }
-    },
-    "Sprint": {
-      "collection": "sprints",
-      "authenticatable": false,
-      "primaryKey": "_id",
-      "fields": {
-        "_id": {
-          "label": "ID",
-          "type": "string",
-          "disabled": true,
-          "required": false,
-          "default": ""
-        },
-        "project_id": {
-          "label": "ID",
-          "type": "string",
-          "disabled": true,
-          "required": false,
-          "default": ""
-        },
-        "title": {
-          "label": "Title",
-          "type": "string",
-          "required": true,
-          "validation": [
-            "string"
-          ],
-          "default": ""
-        },
-        "start": {
-          "label": "Start",
-          "type": "numeric",
-          "required": true,
-          "validation": [
-            "numeric"
-          ],
-          "default": 0
-        },
-        "end": {
-          "label": "End",
-          "type": "numeric",
-          "required": true,
-          "validation": [
-            "numeric"
-          ],
-          "default": null
-        },
-        "tasks": {
-          "label": "Tasks",
-          "type": "array",
-          "required": false,
-          "validation": [
-            "array"
-          ],
-          "default": []
-        },
-        "members": {
-          "label": "Members",
-          "type": "array",
-          "required": false,
-          "validation": [
-            "array"
-          ],
-          "default": []
-        },
-        "ownerId": {
-          "label": "Owner ID",
-          "type": "alpha_numeric",
-          "required": false,
-          "validation": [
-            "alphanumeric"
-          ],
-          "default": ""
-        },
-        "price": {
-          "label": "Price",
-          "type": "numeric",
-          "required": false,
-          "validation": [
-            "numeric"
-          ],
-          "default": 0
         }
       }
     },

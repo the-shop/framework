@@ -215,6 +215,15 @@
           },
           "required": false,
           "default": []
+        },
+        "lastTimeActivityCheck": {
+          "label": "Last Time Activity Check",
+          "type": "numeric",
+          "required": false,
+          "validation": [
+            "numeric"
+          ],
+          "default": 0
         }
       }
     },
@@ -353,9 +362,8 @@
           "default": ""
         },
         "project_id": {
-          "label": "ID",
+          "label": "Project ID",
           "type": "string",
-          "disabled": true,
           "required": false,
           "default": ""
         },
@@ -424,6 +432,261 @@
         }
       }
     },
+    "Task": {
+      "collection": "tasks",
+      "authenticatable": false,
+      "primaryKey": "_id",
+      "fields": {
+        "_id": {
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "project_id": {
+          "label": "Project ID",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        "sprint_id": {
+          "label": "Sprint ID",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "title": {
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "owner": {
+          "label": "Owner",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "xp": {
+          "label": "Xp",
+          "type": "numeric",
+          "required": false,
+          "validation": [
+            "numeric"
+          ],
+          "default": 0
+        },
+        "payout": {
+          "label": "Payout",
+          "type": "numeric",
+          "required": false,
+          "validation": [
+            "numeric"
+          ],
+          "default": 0
+        },
+        "estimatedHours": {
+          "label": "Estimated Hours",
+          "type": "float",
+          "required": true,
+          "validation": [
+            "float"
+          ],
+          "default": 0
+        },
+        "estimate": {
+          "label": "Estimate",
+          "type": "float",
+          "required": false,
+          "validation": [
+            "float"
+
+          ],
+          "default": 0
+        },
+        "due_date": {
+          "label": "Due Date",
+          "type": "numeric",
+          "required": false,
+          "validation": [
+            "numeric"
+          ],
+          "default": 0
+        },
+        "description": {
+          "label": "Description",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": []
+        },
+        "submitted_for_qa": {
+          "label": "Submitted For QA",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
+        },
+        "passed_qa": {
+          "label": "Passed QA",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
+        },
+        "qa_in_progress": {
+          "label": "QA in progress",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
+        },
+        "task_history": {
+          "label": "Task History",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "ready": {
+          "label": "Ready",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
+        },
+        "paused": {
+          "label": "Paused",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
+        },
+        "skillset": {
+          "label": "Skillset",
+          "type": "array",
+          "required": true,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "complexity": {
+          "label": "Complexity",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 1
+        },
+        "priority": {
+          "label": "Priority",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "ownerId": {
+          "label": "Owner ID",
+          "type": "alpha_numeric",
+          "required": false,
+          "validation": [
+            "alpha_numeric"
+          ],
+          "default": ""
+        },
+        "commentsId": {
+          "label": "Comments ID",
+          "type": "alpha_numeric",
+          "required": false,
+          "validation": [
+            "alpha_numeric"
+          ],
+          "default": ""
+        },
+        "watchers": {
+          "label": "Watchers",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "blocked": {
+          "label": "Blocked",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
+        },
+        "dependsOn": {
+          "label": "Depends on",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "blocks": {
+          "label": "Blocks",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "colorIndicator": {
+          "label": "Color Indicator",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "history_id": {
+          "label": "History ID",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        }
+      }
+    },
     "Setting": {
       "collection": "settings",
       "authenticatable": false,
@@ -453,6 +716,38 @@
           "type": "string",
           "required": true,
           "default": "internal"
+        }
+      }
+    },
+    "Comment": {
+      "collection": "comments",
+      "authenticatable": false,
+      "primaryKey": "_id",
+      "fields": {
+        "_id": {
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "records": {
+          "label": "Records",
+          "type": "array",
+          "required": false,
+          "default": [],
+          "validation": [
+            "array"
+          ]
+        },
+        "ownerId": {
+          "label": "Owner ID",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
         }
       }
     }

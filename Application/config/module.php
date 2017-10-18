@@ -53,6 +53,12 @@ return [
         ],
         'settings' => [
             MongoAdapter::class
+        ],
+        'tasks' => [
+            MongoAdapter::class
+        ],
+        'comments' => [
+            MongoAdapter::class
         ]
     ],
     'primaryModelAdapter' => [
@@ -60,5 +66,7 @@ return [
         'projects' => MongoAdapter::class,
         'sprints' => MongoAdapter::class,
         'settings' => MongoAdapter::class,
+        'tasks' => MongoAdapter::class,
+        'comments' => MongoAdapter::class,
     ],
 ];

@@ -24,7 +24,8 @@ class Module extends BaseModule
         $appConfig = $application->getConfiguration();
 
         // Add listeners to application
-        foreach ($appConfig->getPathValue('listeners') as $event => $arrayHandlers) {
+        $listeners = $appConfig->getPathValue('listeners');
+        foreach ($listeners as $event => $arrayHandlers) {
             foreach ($arrayHandlers as $handlerClass) {
                 $application->listen($event, $handlerClass);
             }

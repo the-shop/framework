@@ -497,10 +497,20 @@
         },
         "estimatedHours": {
           "label": "Estimated Hours",
-          "type": "numeric",
+          "type": "float",
           "required": true,
           "validation": [
-            "numeric"
+            "float"
+          ],
+          "default": 0
+        },
+        "estimate": {
+          "label": "Estimate",
+          "type": "float",
+          "required": false,
+          "validation": [
+            "float"
+
           ],
           "default": 0
         },
@@ -656,6 +666,24 @@
             "array"
           ],
           "default": []
+        },
+        "colorIndicator": {
+          "label": "Color Indicator",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "history_id": {
+          "label": "History ID",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
         }
       }
     },

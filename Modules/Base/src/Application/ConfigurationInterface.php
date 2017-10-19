@@ -15,6 +15,11 @@ interface ConfigurationInterface
     public function __construct(array $configurationValues = []);
 
     /**
+     * @return string
+     */
+    public function getIdentifier();
+
+    /**
      * @param string $dotPath
      * @param $value
      * @return mixed
@@ -30,5 +35,19 @@ interface ConfigurationInterface
     /**
      * @return array
      */
-    public function getAll();
+    public function getAll(): array;
+
+    /**
+     * @param string $path
+     *
+     * @return \Framework\Base\Application\ConfigurationInterface
+     */
+    public function readFromJson(string $path): ConfigurationInterface;
+
+    /**
+     * @param string $path
+     *
+     * @return \Framework\Base\Application\ConfigurationInterface
+     */
+    public function readFromPhp(string $path): ConfigurationInterface;
 }

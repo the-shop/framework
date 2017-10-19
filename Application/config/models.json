@@ -750,6 +750,65 @@
           "default": ""
         }
       }
+    },
+    "Slack" : {
+      "collection": "slackMessages",
+      "authenticatable": false,
+      "primaryKey": "_id",
+      "fields": {
+        "_id": {
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "recipient": {
+          "label": "Recipient",
+          "type": "string",
+          "required": true,
+          "default": "",
+          "validation": [
+            "string"
+          ]
+        },
+        "message": {
+          "label": "Message body",
+          "type": "string",
+          "required": true,
+          "default": "",
+          "validation": [
+            "string"
+          ]
+        },
+        "priority": {
+          "label": "Priority",
+          "type": "integer",
+          "required": false,
+          "default": 1440,
+          "validation": [
+            "int"
+          ]
+        },
+        "sent":{
+          "label": "Is message sent",
+          "type": "string",
+          "required": true,
+          "default": false,
+          "validation": [
+            "bool"
+          ]
+        },
+        "runAt":{
+          "label": "Run at",
+          "type": "integer",
+          "required": true,
+          "default": null,
+          "validation": [
+            "int"
+          ]
+        }
+      }
     }
   }
 }

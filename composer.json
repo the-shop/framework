@@ -10,7 +10,8 @@
     "mustache/mustache": "^2.12",
     "firebase/php-jwt": "^5.0",
     "symfony/http-foundation": "^3.3",
-    "videlalvaro/php-amqplib": "^2.7"
+    "videlalvaro/php-amqplib": "^2.7",
+    "lygav/php-slackbot": "^0.0.4"
   },
   "autoload": {
     "psr-4": {

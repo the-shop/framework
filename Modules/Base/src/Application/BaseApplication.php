@@ -178,9 +178,16 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
         return $this->servicesRegistry->get($serviceClass);
     }
 
+    /**
+     * @param ServiceInterface $service
+     * @param bool $overwriteExisting
+     * @return $this
+     */
     public function registerService(ServiceInterface $service, bool $overwriteExisting = false)
     {
         $this->servicesRegistry->registerService($service, $overwriteExisting);
+
+        return $this;
     }
 
     /**
@@ -274,6 +281,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function bootstrap()
     {
         $this->servicesRegistry = new ServicesRegistry();
+        $this->servicesRegistry->setApplication($this);
 
         $bootstrap = new Bootstrap();
         $registerModules = $this->getConfiguration()->getRegisteredModules();

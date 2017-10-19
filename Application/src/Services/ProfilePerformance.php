@@ -2,9 +2,10 @@
 
 namespace Application\Services;
 
+use Application\CrudApi\Model\Generic;
+use Framework\Base\Application\ServiceInterface;
 use Framework\Base\Helpers\Parse;
 use Application\Helpers\ProfileOverall;
-use Application\CrudApi\Repository\GenericRepository;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Model\BrunoInterface;
 use InvalidArgumentException;
@@ -13,9 +14,22 @@ use InvalidArgumentException;
  * Class ProfilePerformance
  * @package Application\Services
  */
-class ProfilePerformance
+class ProfilePerformance implements ServiceInterface
 {
     use ApplicationAwareTrait;
+
+    /**
+     * @var string
+     */
+    private $identifier = 'profilePerformance';
+
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
 
     /**
      * @param BrunoInterface $profile
@@ -25,13 +39,7 @@ class ProfilePerformance
      */
     public function aggregateForTimeRange(BrunoInterface $profile, $unixStart, $unixEnd)
     {
-        // Let's make sure $profile model is really User model
-        if ($profile->getCollection() !== 'users') {
-            throw new \RuntimeException(
-                'Wrong model resource name. Must be users collection.',
-                403
-            );
-        }
+        $profile->confirmResourceOf('users');
 
         // Make sure that unixStart and unixEnd are integer format
         if (!is_int($unixStart) || !is_int($unixEnd)) {
@@ -43,13 +51,13 @@ class ProfilePerformance
 
         $repository = $this->getApplication()
             ->getRepositoryManager()
-            ->getRepository(GenericRepository::class)
+            ->getRepository(Generic::class)
             ->setResourceName('tasks');
 
         // Let's grab profile unfinished tasks
         $queryUnfinishedTasks = $repository
-            ->getPrimaryAdapter()
-            ->newQuery();
+            ->createNewQueryForModel($repository->newModel());
+
         $queryUnfinishedTasks->addAndCondition('owner', '=', $profile->getAttribute('_id'));
         $queryUnfinishedTasks->addAndCondition('passed_qa', '=', false);
         $queryUnfinishedTasks->addAndCondition('timeAssigned', '>=', $unixStart);
@@ -59,8 +67,8 @@ class ProfilePerformance
 
         // Let's grab profile finished tasks
         $queryFinishedTasks = $repository
-            ->getPrimaryAdapter()
-            ->newQuery();
+            ->createNewQueryForModel($repository->newModel());
+
         $queryFinishedTasks->addAndCondition('owner', '=', $profile->getAttribute('_id'));
         $queryFinishedTasks->addAndCondition('passed_qa', '=', true);
         $queryFinishedTasks->addAndCondition('timeAssigned', '>=', $unixStart);
@@ -89,7 +97,7 @@ class ProfilePerformance
             // Adjust values for profile we're looking at
             $mappedValues = $this->getTaskValuesForProfile($profile, $task);
             foreach ($mappedValues as $key => $value) {
-                $task->settAttribute($key, $value);
+                $task->setAttribute($key, $value);
             }
 
             $taskAttributes = $task->getAttributes();
@@ -194,25 +202,27 @@ class ProfilePerformance
     /**
      * Outputs hash map with seconds spent in work, pause and qa together with flag is task completed
      *
-     * @param GenericModel $task
+     * @param BrunoInterface $task
      * @return array
      */
-    public function perTask(GenericModel $task)
+    public function perTask(BrunoInterface $task)
     {
         $task->confirmResourceOf('tasks');
 
-        $taskWorkHistory = is_array($task->work) ? $task->work : [];
+        $taskAttributes = $task->getAttributes();
+
+        $taskWorkHistory = is_array($taskAttributes['work']) ? $taskAttributes['work'] : [];
 
         // We'll respond with array of performance per task owner (if task got reassigned for example)
         $response = [];
 
         // If task was never assigned, there's no performance, respond with empty array
-        if (empty($taskWorkHistory)) {
+        if (empty($taskWorkHistory) === true) {
             return $response;
         }
 
         $userPerformance = [
-            'taskCompleted' => $task->passed_qa === true ? true : false,
+            'taskCompleted' => $task->getAttribute('passed_qa') === true ? true : false,
         ];
 
         foreach ($taskWorkHistory as $taskOwnerId => $stats) {
@@ -226,32 +236,34 @@ class ProfilePerformance
             $userPerformance['workTrackTimestamp'] = $stats['workTrackTimestamp'];
 
             // Let's just add diff based of last task state against current time if task not done yet
-            if (!key_exists('timeRemoved', $stats) && $userPerformance['taskCompleted'] !== true) {
+            if (array_key_exists('timeRemoved', $stats) === false
+                && $userPerformance['taskCompleted'] !== true
+            ) {
                 $unixNow = (int)(new \DateTime())->format('U');
-                if ($task->paused !== true
-                    && $task->blocked !== true
-                    && $task->submitted_for_qa !== true
-                    && $task->qa_in_progress !== true
+                if ($taskAttributes['paused'] !== true
+                    && $taskAttributes['blocked'] !== true
+                    && $taskAttributes['submitted_for_qa'] !== true
+                    && $taskAttributes['qa_in_progress'] !== true
                 ) {
                     $userPerformance['workSeconds'] += $unixNow - $stats['workTrackTimestamp'];
                 }
-                if ($task->paused) {
+                if ($taskAttributes['paused'] === true) {
                     $userPerformance['pauseSeconds'] += $unixNow - $stats['workTrackTimestamp'];
                 }
-                if ($task->submitted_for_qa) {
+                if ($taskAttributes['submitted_for_qa'] === true) {
                     $userPerformance['qaSeconds'] += $unixNow - $stats['workTrackTimestamp'];
                 }
-                if ($task->blocked) {
+                if ($taskAttributes['blocked'] === true) {
                     $userPerformance['blockedSeconds'] += $unixNow - $stats['workTrackTimestamp'];
                 }
-                if ($task->qa_in_progress) {
+                if ($taskAttributes['qa_in_progress'] === true) {
                     $userPerformance['qaProgressSeconds'] += $unixNow - $stats['workTrackTimestamp'];
                     $userPerformance['qaProgressTotalSeconds'] += $unixNow - $stats['workTrackTimestamp'];
                 }
             }
 
             //set last task owner flag so we can calculate payment and XP when task is finished
-            if (!key_exists('timeRemoved', $stats)) {
+            if (array_key_exists('timeRemoved', $stats) === false) {
                 $userPerformance['taskLastOwner'] = true;
             } else {
                 $userPerformance['taskLastOwner'] = false;
@@ -310,9 +322,10 @@ class ProfilePerformance
         // Get all projects that user is a member of
         $repository = $this->getApplication()
             ->getRepositoryManager()
-            ->getRepository(GenericRepository::class);
+            ->getRepository(Generic::class);
 
-        $projectsQuery = $repository->setResourceName('projects')->getPrimaryAdapter()->newQuery();
+        $projectsQuery = $repository->setResourceName('projects')
+            ->createNewQueryForModel($repository->newModel());
         $projectsQuery->whereInArrayCondition('members', [$taskOwner->getAttribute('_id')]);
 
         $taskOwnerProjects = $repository->loadMultiple($projectsQuery);

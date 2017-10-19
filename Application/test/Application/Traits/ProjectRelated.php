@@ -1,14 +1,11 @@
 <?php
 
-namespace Application\Test\Collections;
+namespace Application\Test\Application\Traits;
 
-use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Model\BrunoInterface;
 
 trait ProjectRelated
 {
-    use ApplicationAwareTrait;
-
     public function setTaskOwner(BrunoInterface $owner)
     {
         $this->profile = $owner;

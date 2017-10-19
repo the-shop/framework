@@ -26,7 +26,7 @@ class GenericRepository extends BrunoRepository
      *
      * @return \Framework\Base\Database\DatabaseQueryInterface
      */
-    protected function createNewQueryForModel(BrunoInterface $bruno): DatabaseQueryInterface
+    public function createNewQueryForModel(BrunoInterface $bruno): DatabaseQueryInterface
     {
         $bruno->setCollection($this->resourceName);
 

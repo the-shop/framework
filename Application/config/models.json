@@ -486,6 +486,15 @@
           ],
           "default": 0
         },
+        "xpDeduction": {
+          "label": "Xp",
+          "type": "numeric",
+          "required": false,
+          "validation": [
+            "numeric"
+          ],
+          "default": 0
+        },
         "payout": {
           "label": "Payout",
           "type": "numeric",
@@ -693,6 +702,24 @@
             "array"
           ],
           "default": []
+        },
+        "timeAssigned": {
+          "label": "Time Assigned",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
+        },
+        "timeFinished": {
+          "label": "Time Finished",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
         }
       }
     },

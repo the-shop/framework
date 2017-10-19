@@ -107,6 +107,13 @@ interface ApplicationInterface
     public function getService(string $serviceClass);
 
     /**
+     * @param ServiceInterface $service
+     * @param bool $overwriteExisting
+     * @return ApplicationInterface
+     */
+    public function registerService(ServiceInterface $service, bool $overwriteExisting = false);
+
+    /**
      * @return ApplicationConfiguration
      * @todo return ConfigurationInterface ??
      */

@@ -261,7 +261,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
      *
      * @return DatabaseQueryInterface
      */
-    protected function createNewQueryForModel(BrunoInterface $bruno): DatabaseQueryInterface
+    public function createNewQueryForModel(BrunoInterface $bruno): DatabaseQueryInterface
     {
         $query = $this->getPrimaryAdapter()
             ->newQuery();

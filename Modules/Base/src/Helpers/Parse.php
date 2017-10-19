@@ -15,7 +15,7 @@ class Parse
      * @return int
      * @throws \Exception
      */
-    public static function unixTimestamp(mixed $input)
+    public static function unixTimestamp($input)
     {
         if (strlen((string)$input) === 10) {
             return (int)$input;
@@ -31,7 +31,7 @@ class Parse
      * @return float
      * @throws \Exception
      */
-    public static function float(mixed $float)
+    public static function float($float)
     {
         if (is_float($float)) {
             return $float;
@@ -49,7 +49,7 @@ class Parse
      * @return int
      * @throws \Exception
      */
-    public static function integer(mixed $input)
+    public static function integer($input)
     {
         if (is_numeric($input) === true) {
             return (int)$input;

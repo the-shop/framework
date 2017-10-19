@@ -95,6 +95,9 @@ class ProfilePerformance implements ServiceInterface
         // Let's aggregate task data
         foreach ($profileTasks as $task) {
             // Adjust values for profile we're looking at
+            /**
+             * @var BrunoInterface $task
+             */
             $mappedValues = $this->getTaskValuesForProfile($profile, $task);
             foreach ($mappedValues as $key => $value) {
                 $task->setAttribute($key, $value);
@@ -286,6 +289,9 @@ class ProfilePerformance implements ServiceInterface
      */
     public function getTaskValuesForProfile(BrunoInterface $profile, BrunoInterface $task)
     {
+        $profile->confirmResourceOf('users');
+        $task->confirmResourceOf('tasks');
+
         $xpAwardMultiplyBy = 4;
         $xpDeductionMultiplyBy = 10;
 
@@ -317,6 +323,9 @@ class ProfilePerformance implements ServiceInterface
      */
     public function taskPriorityCoefficient(BrunoInterface $taskOwner, BrunoInterface $task)
     {
+        $taskOwner->confirmResourceOf('users');
+        $task->confirmResourceOf('tasks');
+
         $taskPriorityCoefficient = 1;
 
         // Get all projects that user is a member of
@@ -389,6 +398,9 @@ class ProfilePerformance implements ServiceInterface
         $estimatedHours,
         $multiplyBy = null
     ) {
+
+        $taskOwner->confirmResourceOf('users');
+
         $profileCoefficient = 0.9;
         if ($multiplyBy === null) {
             $multiplyBy = 1;
@@ -426,6 +438,9 @@ class ProfilePerformance implements ServiceInterface
         $multiplyBy =
         null
     ) {
+        $profile->confirmResourceOf('users');
+        $task->confirmResourceOf('tasks');
+
         $xp = (float)$profile->getAttribute('xp');
 
         $taskComplexity = max((int)$task->getAttribute('complexity'), 1);
@@ -461,6 +476,9 @@ class ProfilePerformance implements ServiceInterface
      */
     private function calculateTaskEstimatedHours(BrunoInterface $profile, BrunoInterface $task)
     {
+        $profile->confirmResourceOf('users');
+        $task->confirmResourceOf('tasks');
+
         $estimatedHours =
             (float)$task->getAttribute('estimatedHours') * 1000
             / min((float)$profile->getAttribute('xp'), 1000);
@@ -476,6 +494,8 @@ class ProfilePerformance implements ServiceInterface
      */
     private function calculateSalary(array $aggregated, BrunoInterface $profile)
     {
+        $profile->confirmResourceOf('users');
+
         $employeeConfig = $this->getApplication()
             ->getConfiguration()
             ->getPathValue('internal.employees.roles');

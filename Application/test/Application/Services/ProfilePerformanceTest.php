@@ -354,7 +354,7 @@ class ProfilePerformanceTest extends UnitTest
     public function testProfilePerformanceTaskPriorityCoefficientMediumDeduction()
     {
         $this->markTestSkipped(
-            'Mark as uncompleted. Need truncate method on repository to clear databse records.'
+            'Mark as uncompleted. Need truncate method on repository to clear database records.'
         );
         // Get new project
         $project = $this->getNewProject();
@@ -406,7 +406,7 @@ class ProfilePerformanceTest extends UnitTest
     public function testProfilePerformanceTaskPriorityCoefficientHighDeduction()
     {
         $this->markTestSkipped(
-            'Mark as uncompleted. Need truncate method on repository to clear databse records.'
+            'Mark as uncompleted. Need truncate method on repository to clear database records.'
         );
         // Get new project
         $project = $this->getNewProject();

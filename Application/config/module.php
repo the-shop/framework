@@ -3,6 +3,7 @@
 use Application\CrudApi\Model\Generic as GenericModel;
 use Framework\Base\Mongo\MongoAdapter;
 use Application\CrudApi\Repository\GenericRepository;
+use Application\Services\SlackService;
 
 return [
     'routePrefix' => '/api/v1',
@@ -59,7 +60,10 @@ return [
         ],
         'comments' => [
             MongoAdapter::class
-        ]
+        ],
+        'slackMessages' => [
+            MongoAdapter::class,
+        ],
     ],
     'primaryModelAdapter' => [
         'users' => MongoAdapter::class,
@@ -68,5 +72,9 @@ return [
         'settings' => MongoAdapter::class,
         'tasks' => MongoAdapter::class,
         'comments' => MongoAdapter::class,
+        'slackMessages' => MongoAdapter::class,
+    ],
+    'services' => [
+        SlackService::class,
     ],
 ];

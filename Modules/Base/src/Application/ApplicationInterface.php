@@ -159,4 +159,12 @@ interface ApplicationInterface
      * @return null|RequestAuthorization
      */
     public function getRequestAuthorization();
+
+    /**
+     * @param \Framework\Base\Application\ServiceInterface $service
+     * @param bool                                         $overwriteExisting
+     *
+     * @return \Framework\Base\Application\ApplicationInterface
+     */
+    public function registerService(ServiceInterface $service, bool $overwriteExisting = false);
 }

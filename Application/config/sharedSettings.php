@@ -3,6 +3,13 @@
 return [
     /** Internal platform <-> framework configuration */
     'internal' => [
+        'slack' => [
+            'priorityToMinutesDelay' => [
+                \Application\Services\SlackService::HIGH_PRIORITY => 1,
+                \Application\Services\SlackService::MEDIUM_PRIORITY => 30,
+                \Application\Services\SlackService::LOW_PRIORITY => 120,
+            ],
+        ],
         'roles' => [
             'admin' => 'Admin',
             'standard' => 'Standard',

@@ -51,6 +51,12 @@ class Module extends BaseModule
             $repositoryManager->setPrimaryAdapter($model, new $primaryAdapter());
         }
 
+        //Register Services
+        $services = $appConfig->getPathValue('services');
+        foreach ($services as $service) {
+            $application->registerService(new $service);
+        }
+
         // Register resources, repositories and model fields
         $repositoryManager->registerResources($modelsConfiguration['resources'])
                           ->registerRepositories($appConfig->getPathValue('repositories'))

@@ -416,6 +416,7 @@ class ResourceTest extends UnitTest
         $testModelDefinition = [
             'users' => [
                 '_id' => [
+                    'primaryKey' => true,
                     'label' => 'ID',
                     'type' => 'string',
                     'disabled' => true,

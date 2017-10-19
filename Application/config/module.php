@@ -59,6 +59,12 @@ return [
         ],
         'comments' => [
             MongoAdapter::class
+        ],
+        "xp" => [
+            MongoAdapter::class
+        ],
+        "profile_overall" => [
+            MongoAdapter::class
         ]
     ],
     'primaryModelAdapter' => [
@@ -68,5 +74,7 @@ return [
         'settings' => MongoAdapter::class,
         'tasks' => MongoAdapter::class,
         'comments' => MongoAdapter::class,
+        'xp' => MongoAdapter::class,
+        'profile_overall' => MongoAdapter::class,
     ],
 ];

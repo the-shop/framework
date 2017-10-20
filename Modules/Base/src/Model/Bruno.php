@@ -78,6 +78,11 @@ abstract class Bruno implements BrunoInterface
     private $filtersEnabled = true;
 
     /**
+     * @var bool
+     */
+    private $isDirty = false;
+
+    /**
      * Bruno constructor.
      *
      * @param array $attributes
@@ -365,8 +370,20 @@ abstract class Bruno implements BrunoInterface
      */
     public function getDirtyAttributes()
     {
-        // TODO: Implement getDirtyAttributes() method.
-        throw new \RuntimeException('Not implemented');
+        $attributes = $this->getAttributes();
+        $databaseAttributes = $this->getDatabaseAttributes();
+
+        $difference = array_diff($attributes, $databaseAttributes);
+
+        return $difference;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDirty()
+    {
+        return empty($this->getDirtyAttributes()) === false;
     }
 
     /**

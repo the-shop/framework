@@ -6,6 +6,9 @@ use Framework\Base\Model\BrunoInterface;
 
 trait ProfileRelated
 {
+    /**
+     * @var null|BrunoInterface
+     */
     protected $profile = null;
 
     /**

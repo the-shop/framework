@@ -751,7 +751,7 @@
         }
       }
     },
-    "Slack" : {
+    "SlackMessage" : {
       "collection": "slackMessages",
       "authenticatable": false,
       "primaryKey": "_id",

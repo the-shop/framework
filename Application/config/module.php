@@ -10,6 +10,11 @@ return [
     'routes' => [
         [
             'get',
+            '/{resourceName}/{identifier}/performance',
+            '\Application\CrudApi\Controller\Resource::getPerformance',
+        ],
+        [
+            'get',
             '/{resourceName}',
             '\Application\CrudApi\Controller\Resource::loadAll',
         ],

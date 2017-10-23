@@ -29,7 +29,11 @@ class ResponseFormatter implements ListenerInterface
         if (is_array($responseBody) === true) {
             $data = [];
             foreach ($responseBody as $key => $responseItem) {
-                $data[] = $this->formatSingleRecord($responseItem);
+                if ($responseItem instanceof BrunoInterface) {
+                    $data[] = $this->formatSingleRecord($responseItem);
+                } else {
+                    $data[$key] = $this->formatSingleRecord($responseItem);
+                }
             }
             $out = [
                 'data' => $data,

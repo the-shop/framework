@@ -5,6 +5,7 @@ namespace Application\CrudApi\Controller;
 use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Application\Exception\ValidationException;
 use Framework\Base\Database\DatabaseQueryInterface;
+use Framework\Base\Helpers\Parse;
 use Framework\Base\Model\BrunoInterface;
 use Application\CrudApi\Repository\GenericRepository;
 use Framework\Base\Repository\BrunoRepositoryInterface;
@@ -135,24 +136,24 @@ class Resource extends HttpController
     public function create(string $resourceName)
     {
         $this->getApplication()
-             ->triggerEvent(
-                 self::EVENT_CRUD_API_RESOURCE_CREATE_PRE,
-                 [
-                     'resourceName' => $resourceName,
-                 ]
-             );
+            ->triggerEvent(
+                self::EVENT_CRUD_API_RESOURCE_CREATE_PRE,
+                [
+                    'resourceName' => $resourceName,
+                ]
+            );
 
         $postParams = $this->getPost();
 
         $this->validateInput($resourceName, $postParams);
 
         $model = $this->getRepositoryFromResourceName($resourceName)
-                      ->newModel()
-                      ->setAttributes($postParams)
-                      ->save();
+            ->newModel()
+            ->setAttributes($postParams)
+            ->save();
 
         $this->getApplication()
-             ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_CREATE_POST, $model);
+            ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_CREATE_POST, $model);
 
         return $model;
     }
@@ -334,6 +335,38 @@ class Resource extends HttpController
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $resourceName
+     * @param string $identifier
+     * @return mixed
+     * @throws NotFoundException
+     */
+    public function getPerformance(string $resourceName, string $identifier)
+    {
+        // Default last month
+        $startDate = strtotime('first day of last month');
+        $endDate = strtotime('last day of last month');
+
+        $query = $this->getQuery();
+
+        if (array_key_exists('unixStart', $query) === true) {
+            $startDate = Parse::unixTimestamp($query['unixStart']);
+        }
+
+        if (array_key_exists('unixEnd', $query) === true) {
+            $endDate = Parse::unixTimestamp($query['unixEnd']);
+        }
+
+        $profile = $this->getRepositoryFromResourceName($resourceName)->loadOne($identifier);
+        if (!$profile) {
+            throw new NotFoundException('Profile not found', 404);
+        }
+
+        $profilePerformance = $this->getApplication()->getService('profilePerformance');
+
+        return $profilePerformance->aggregateForTimeRange($profile, $startDate, $endDate);
     }
 
     /**

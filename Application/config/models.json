@@ -42,27 +42,21 @@
           "label": "Password",
           "type": "password",
           "required": true,
-          "validation": [
-            "string"
-          ],
+          "validation": [],
           "default": null
         },
         "newPassword": {
           "label": "New Password",
           "type": "password",
           "required": false,
-          "validation": [
-            "string"
-          ],
+          "validation": [],
           "default": null
         },
         "repeatNewPassword": {
           "label": "Repeat New Password",
           "type": "password",
           "required": false,
-          "validation": [
-            "string"
-          ],
+          "validation": [],
           "default": null
         },
         "role": {
@@ -132,7 +126,7 @@
           "type": "alpha_numeric",
           "required": false,
           "validation": [
-            "alphanumeric"
+            "alpha_numeric"
           ],
           "default": ""
         },

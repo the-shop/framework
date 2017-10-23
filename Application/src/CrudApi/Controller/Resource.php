@@ -178,7 +178,7 @@ class Resource extends HttpController
 
         $postParams = $this->getPost();
 
-        $this->validateInput($resourceName, $postParams);
+        $this->validateInput($resourceName, $postParams, $model);
 
         $model->setAttributes($postParams);
         $model->save();
@@ -209,7 +209,7 @@ class Resource extends HttpController
 
         $postParams = $this->getPost();
 
-        $this->validateInput($resourceName, $postParams);
+        $this->validateInput($resourceName, $postParams, $model);
 
         foreach ($postParams as $attribute => $value) {
             $model->setAttribute($attribute, $value);
@@ -273,11 +273,14 @@ class Resource extends HttpController
     /**
      * @param string $resourceName
      * @param array $requestParameters
+     * @param null|BrunoInterface $model
      * @return $this
-     * @throws \HttpException
      */
-    public function validateInput(string $resourceName, array $requestParameters = [])
-    {
+    public function validateInput(
+        string $resourceName,
+        array $requestParameters = [],
+        $model = null
+    ) {
         $app = $this->getApplication();
         $requestMethod = $this->getRequest()->getMethod();
 
@@ -315,9 +318,13 @@ class Resource extends HttpController
             ) {
                 $value = $requestParameters[$fieldName];
                 foreach ($options['validation'] as $validationRule) {
-                    /* If field has got unique validation rule, set value as
-                       array with fieldName => value, and resourceName so we can make query to DB */
-                    if (($validationRule === 'unique') === true) {
+                    /* If field has got unique validation rule, check if param value is different
+                       then model value then if is different set value as array with fieldName =>
+                       value, and resourceName so we can make query to DB */
+                    if ($validationRule === 'unique') {
+                        if ($model !== null && $value === $model->getAttribute($fieldName)) {
+                            continue;
+                        }
                         $value = [
                             $fieldName => $requestParameters[$fieldName],
                             'resourceName' => $resourceName,

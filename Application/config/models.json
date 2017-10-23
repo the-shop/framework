@@ -134,7 +134,7 @@
           "validation": [
             "alphanumeric"
           ],
-          "default": "0"
+          "default": ""
         },
         "xp": {
           "label": "Xp",
@@ -291,7 +291,7 @@
           "validation": [
             "alpha_numeric"
           ],
-          "default": "0"
+          "default": ""
         },
         "sprints": {
           "label": "Sprints",
@@ -345,7 +345,7 @@
           "validation": [
             "alphanumeric"
           ],
-          "default": "0"
+          "default": ""
         }
       }
     },
@@ -419,7 +419,7 @@
           "validation": [
             "alphanumeric"
           ],
-          "default": "0"
+          "default": ""
         },
         "price": {
           "label": "Price",
@@ -629,7 +629,7 @@
           "validation": [
             "alpha_numeric"
           ],
-          "default": "0"
+          "default": ""
         },
         "commentsId": {
           "label": "Comments ID",
@@ -638,7 +638,7 @@
           "validation": [
             "alpha_numeric"
           ],
-          "default": "0"
+          "default": ""
         },
         "watchers": {
           "label": "Watchers",

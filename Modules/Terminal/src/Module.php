@@ -21,9 +21,9 @@ class Module extends BaseModule
         $this->setModuleConfiguration($configDirPath);
         $appConfig = $application->getConfiguration();
 
-        // Add routes to dispatcher
+        // Add commands to dispatcher
         $application->getDispatcher()
-            ->addRoutes($appConfig->getPathValue('routes'));
+            ->addRoutes($appConfig->getPathValue('commands'));
 
         $listeners = $appConfig->getPathValue('listeners');
         foreach ($listeners as $event => $arrayHandlers) {

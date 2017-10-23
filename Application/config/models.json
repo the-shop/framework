@@ -337,7 +337,7 @@
           "type": "alpha_numeric",
           "required": false,
           "validation": [
-            "alphanumeric"
+            "alpha_numeric"
           ],
           "default": ""
         }
@@ -411,7 +411,7 @@
           "type": "alpha_numeric",
           "required": false,
           "validation": [
-            "alphanumeric"
+            "alpha_numeric"
           ],
           "default": ""
         },

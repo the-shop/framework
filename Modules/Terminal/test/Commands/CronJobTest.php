@@ -2,10 +2,11 @@
 
 namespace Framework\Terminal\Test\Commands;
 
-use Framework\Terminal\Commands\CronJob;
+use Framework\Terminal\Commands\Cron\CronJobInterface;
+use Framework\Terminal\Commands\CronJobsScheduler;
 use Framework\Terminal\Router\Dispatcher;
 use Framework\Base\Test\UnitTest;
-use InvalidArgumentException;
+use Framework\Terminal\Test\TestJob;
 
 /**
  * Class CronJobTest
@@ -30,132 +31,60 @@ class CronJobTest extends UnitTest
         ],
     ];
 
+    private $cronJobs = [
+        TestJob::class => [
+            'value' => 'daily',
+            'args' => [],
+        ],
+    ];
+
     /**
      * Test cron job add job - success
      */
-    public function testCronJobAddAddCronJob()
+    public function testAddCronJob()
     {
         $app = $this->getApplication();
         $app->setDispatcher(new Dispatcher());
         $dispatcher = $app->getDispatcher();
         $dispatcher->addRoutes($this->routes);
 
-        $cronJob = new CronJob();
-        $cronJob->setApplication($app);
+        $handler = new CronJobsScheduler();
+        $handler->setApplication($app);
 
-        $cronJob->addCronJob(
-            'test',
-            '* * * * *',
-            [
-                'testParam' => 'testParam',
-                'testParam2' => 'testParam',
-            ]
-        );
+        $cronJob = new TestJob(reset($this->cronJobs));
 
-        $this->assertEquals(
-            [
-                [
-                    'commandName' => 'test',
-                    'handler' => DummyCommand::class,
-                    'timeExpression' => '* * * * *',
-                    'parameters' => [
-                        'testParam' => 'testParam',
-                        'testParam2' => 'testParam',
-                    ],
-                ],
+        $handler->addCronJob($cronJob);
 
-            ],
-            $cronJob->getRegisteredJobs()
-        );
+        $this::assertContainsOnlyInstancesOf(CronJobInterface::class, $handler->getRegisteredJobs());
+
+        return $handler;
     }
 
     /**
-     * Test cron job add job - command not registered - exception
+     * Test cron jobs params being set correctly
+     *
+     * @depends testAddCronJob
      */
-    public function testCronJobAddCronJobCommandNotRegistered()
+    public function testCronJobSetters(CronJobsScheduler $handler)
     {
         $app = $this->getApplication();
         $app->setDispatcher(new Dispatcher());
         $dispatcher = $app->getDispatcher();
         $dispatcher->addRoutes($this->routes);
 
-        $cronJob = new CronJob();
-        $cronJob->setApplication($app);
+        /**
+         * @var CronJobInterface $cronJob
+         */
+        $cronJob = $handler->getRegisteredJobs()[0];
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Command name commandTest is not registered.');
-        $this->expectExceptionCode(404);
+        $this::assertEquals(TestJob::class, $cronJob->getIdentifier());
+        $this::assertEquals('0 0 * * *', $cronJob->getCronTimeExpression());
 
-        $cronJob->addCronJob(
-            'commandTest',
-            '* * * * *',
-            [
-                'testParam' => 'testParam',
-                'testParam2' => 'testParam',
-            ]
-        );
-    }
+        /**
+         * @var TestJob $cronJob
+         */
+        $cronJob->everyMinute();
 
-    /**
-     * Test cron jobs add job without enough required params - exception
-     */
-    public function testCronJobAddCronJobNotEnoughRequiredParams()
-    {
-        $app = $this->getApplication();
-        $app->setDispatcher(new Dispatcher());
-        $dispatcher = $app->getDispatcher();
-        $dispatcher->addRoutes($this->routes);
-
-        $cronJob = new CronJob();
-        $cronJob->setApplication($app);
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Not enough requiredParams passed for test command');
-        $this->expectExceptionCode(403);
-
-        $cronJob->addCronJob(
-            'test',
-            '* * * * *',
-            [
-                'testParam' => 'testParam'
-            ]
-        );
-    }
-
-    /**
-     * Test cron job run jobs
-     */
-    public function testCronJobRunJobs()
-    {
-        $app = $this->getApplication();
-        $app->setDispatcher(new Dispatcher());
-        $dispatcher = $app->getDispatcher();
-        $dispatcher->addRoutes($this->routes);
-
-        $cronJob = new CronJob();
-        $cronJob->setApplication($app);
-
-        $cronJob->addCronJob(
-            'test',
-            '* * * * *',
-            [
-                'testParam' => 'testParam',
-                'testParam2' => 'testParam2',
-                'optionalParam' => 'optionalParam',
-                'optionalParam2' => 'optionalParam2'
-            ]
-        );
-
-        $out = $cronJob->runCronJobs();
-
-        $this->assertEquals(
-            [
-                'test' => [
-                    'COMMAND DONE! STATUS CODE 200.',
-                    'Response: ' => 'testParam, testParam2, optionalParam, optionalParam2'
-                ]
-            ],
-            $out
-        );
+        $this::assertEquals('* * * * *', $cronJob->getCronTimeExpression());
     }
 }

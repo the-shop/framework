@@ -302,7 +302,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
             foreach ($this->events[$eventName] as $listenerClass) {
                 $listener = new $listenerClass();
                 if (!($listener instanceof ListenerInterface)) {
-                    throw new \RuntimeException('Listener "' . $listenerClass . '" must implement ListenerInterface.');
+                    throw new \RuntimeException('Listeners "' . $listenerClass . '" must implement ListenerInterface.');
                 }
                 $listener->setApplication($this);
                 $responses[] = $listener->handle($payload);

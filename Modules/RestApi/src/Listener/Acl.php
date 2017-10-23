@@ -8,7 +8,7 @@ use Framework\Base\Event\ListenerInterface;
 
 /**
  * Class Acl
- * @package Framework\RestApi\Listener
+ * @package Framework\RestApi\Listeners
  */
 class Acl implements ListenerInterface
 {

@@ -6,7 +6,7 @@ use Framework\Base\Test\UnitTest;
 
 /**
  * Class AclTest
- * @package Framework\RestApi\Test\Listener
+ * @package Framework\RestApi\Test\Listeners
  */
 class AclTest extends UnitTest
 {

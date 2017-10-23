@@ -31,6 +31,7 @@ trait ProjectRelated
             ->newModel()
             ->setAttributes(
                 [
+                    'title' => 'test task',
                     'owner' => '',
                     'paused' => false,
                     'submitted_for_qa' => false,

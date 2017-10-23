@@ -132,7 +132,7 @@
           "type": "alpha_numeric",
           "required": false,
           "validation": [
-            "alphanumeric"
+            "alpha_numeric"
           ],
           "default": ""
         },
@@ -336,14 +336,14 @@
           "validation": [
             "alpha_numeric"
           ],
-          "default": "0"
+          "default": ""
         },
         "ownerId": {
           "label": "Owner ID",
           "type": "alpha_numeric",
           "required": false,
           "validation": [
-            "alphanumeric"
+            "alpha_numeric"
           ],
           "default": ""
         }
@@ -417,7 +417,7 @@
           "type": "alpha_numeric",
           "required": false,
           "validation": [
-            "alphanumeric"
+            "alpha_numeric"
           ],
           "default": ""
         },

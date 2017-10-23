@@ -8,7 +8,7 @@ use Framework\Base\Model\BrunoInterface;
 
 /**
  * Class ResponseFormatter
- * @package Framework\RestApi\Listener
+ * @package Framework\RestApi\Listeners
  */
 class ResponseFormatter implements ListenerInterface
 {

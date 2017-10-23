@@ -84,6 +84,7 @@ class Resource extends HttpController
      */
     public function loadAll(string $resourceName)
     {
+
         $this->getApplication()
             ->triggerEvent(
                 self::EVENT_CRUD_API_RESOURCE_LOAD_ALL_PRE,
@@ -318,6 +319,9 @@ class Resource extends HttpController
             ) {
                 $value = $requestParameters[$fieldName];
                 foreach ($options['validation'] as $validationRule) {
+                    if ($validationRule === 'float' && is_integer($value)) {
+                        $value = (float) $value;
+                    }
                     /* If field has got unique validation rule, check if param value is different
                        then model value then if is different set value as array with fieldName =>
                        value, and resourceName so we can make query to DB */

@@ -330,7 +330,7 @@
           "validation": [
             "alpha_numeric"
           ],
-          "default": "0"
+          "default": ""
         },
         "ownerId": {
           "label": "Owner ID",

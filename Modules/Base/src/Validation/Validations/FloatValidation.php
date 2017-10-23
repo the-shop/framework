@@ -13,6 +13,10 @@ class FloatValidation extends Validation
      */
     public function isValid()
     {
+        if (empty($this->getValue()) === true) {
+            return true;
+        }
+
         return is_float($this->getValue()) === true;
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Terminal\Render;
+namespace Framework\Base\Test;
 
 use Framework\Base\Render\Render;
 use Framework\Base\Response\ResponseInterface;
@@ -9,7 +9,7 @@ use Framework\Base\Response\ResponseInterface;
  * Class Memory
  * @package Framework\Terminal\Render
  */
-class Memory extends Render
+class MemoryRenderer extends Render
 {
     private $response = null;
 

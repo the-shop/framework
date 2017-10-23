@@ -2,16 +2,16 @@
 
 use Framework\Base\Application\BaseApplication;
 use Framework\Base\Application\Exception\ExceptionHandler;
-use Framework\Terminal\Commands\CronJob;
+use Framework\Terminal\Commands\CronJobsScheduler;
 use Framework\Terminal\Commands\QueueWorker;
 use Framework\RestApi\Listener\ExceptionFormatter;
 use Framework\RestApi\Listener\ResponseFormatter;
 use Application\Database\Seeders\DatabaseSeeder;
 
 return [
-    'routes' => [
+    'commands' => [
         'cron:job' => [
-            'handler' => CronJob::class,
+            'handler' => CronJobsScheduler::class,
             'requiredParams' => [],
             'optionalParams' => [],
         ],

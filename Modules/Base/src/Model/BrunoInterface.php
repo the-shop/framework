@@ -155,4 +155,10 @@ interface BrunoInterface extends ApplicationAwareInterface
      * @return BrunoInterface
      */
     public function disableFieldFilters();
+
+    /**
+     * @param string $resourceType
+     * @return BrunoInterface
+     */
+    public function confirmResourceOf(string $resourceType);
 }

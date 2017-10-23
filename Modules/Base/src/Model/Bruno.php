@@ -489,4 +489,20 @@ abstract class Bruno implements BrunoInterface
 
         return $this;
     }
+
+    /**
+     * Validates collection is set properly, throws exception otherwise
+     *
+     * @param $resourceType
+     * @return $this
+     * @throws \Exception
+     */
+    public function confirmResourceOf(string $resourceType)
+    {
+        if ($this->getCollection() !== $resourceType) {
+            throw new \Exception('Model resource not configured correctly');
+        }
+
+        return $this;
+    }
 }

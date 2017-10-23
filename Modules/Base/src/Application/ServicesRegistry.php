@@ -8,6 +8,7 @@ namespace Framework\Base\Application;
  */
 class ServicesRegistry extends BaseRegistry
 {
+    use ApplicationAwareTrait;
     /**
      * @param ServiceInterface $service
      * @param bool $overwrite
@@ -15,6 +16,7 @@ class ServicesRegistry extends BaseRegistry
      */
     public function registerService(ServiceInterface $service, bool $overwrite = false)
     {
+        $service->setApplication($this->getApplication());
         $this->register($service->getIdentifier(), $service, $overwrite);
 
         return $this;

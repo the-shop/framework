@@ -4,6 +4,7 @@ namespace Framework\Base\Repository;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Database\DatabaseAdapterInterface;
+use Framework\Base\Database\DatabaseQueryInterface;
 use Framework\Base\Manager\RepositoryManagerInterface;
 use Framework\Base\Model\BrunoInterface;
 
@@ -75,4 +76,10 @@ interface BrunoRepositoryInterface extends ApplicationAwareInterface
      * @return string
      */
     public function getModelPrimaryKey();
+
+    /**
+     * @param BrunoInterface $model
+     * @return DatabaseQueryInterface
+     */
+    public function createNewQueryForModel(BrunoInterface $model): DatabaseQueryInterface;
 }

@@ -9,9 +9,9 @@
         "password"
       ],
       "aclRoleField": "role",
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -230,9 +230,9 @@
     "Project": {
       "collection": "projects",
       "authenticatable": false,
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -336,7 +336,7 @@
           "validation": [
             "alpha_numeric"
           ],
-          "default": ""
+          "default": "0"
         },
         "ownerId": {
           "label": "Owner ID",
@@ -352,9 +352,9 @@
     "Sprint": {
       "collection": "sprints",
       "authenticatable": false,
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -435,9 +435,9 @@
     "Task": {
       "collection": "tasks",
       "authenticatable": false,
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -478,6 +478,15 @@
           "default": ""
         },
         "xp": {
+          "label": "Xp",
+          "type": "numeric",
+          "required": false,
+          "validation": [
+            "numeric"
+          ],
+          "default": 0
+        },
+        "xpDeduction": {
           "label": "Xp",
           "type": "numeric",
           "required": false,
@@ -684,15 +693,42 @@
             "string"
           ],
           "default": ""
+        },
+        "work": {
+          "label": "Work",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "timeAssigned": {
+          "label": "Time Assigned",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
+        },
+        "timeFinished": {
+          "label": "Time Finished",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
         }
       }
     },
     "Setting": {
       "collection": "settings",
       "authenticatable": false,
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -722,9 +758,9 @@
     "Comment": {
       "collection": "comments",
       "authenticatable": false,
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -735,10 +771,10 @@
           "label": "Records",
           "type": "array",
           "required": false,
-          "default": [],
           "validation": [
             "array"
-          ]
+          ],
+          "default": []
         },
         "ownerId": {
           "label": "Owner ID",
@@ -748,6 +784,70 @@
             "string"
           ],
           "default": ""
+        }
+      }
+    },
+    "Xp": {
+      "collection": "xp",
+      "authenticatable": false,
+      "fields": {
+        "_id": {
+          "primaryKey": true,
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "records": {
+          "label": "Records",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        }
+      }
+    },
+    "ProfileOverall": {
+      "collection": "profile_overall",
+      "authenticatable": false,
+      "fields": {
+        "_id": {
+          "primaryKey": true,
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "totalEarned": {
+          "label": "Total Earned",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
+        },
+        "totalCost": {
+          "label": "Total Cost",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
+        },
+        "profit": {
+          "label": "Profit",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
         }
       }
     }

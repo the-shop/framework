@@ -3,6 +3,7 @@
 use Application\CrudApi\Model\Generic as GenericModel;
 use Framework\Base\Mongo\MongoAdapter;
 use Application\CrudApi\Repository\GenericRepository;
+use Application\Services\ProfilePerformance;
 
 return [
     'routePrefix' => '/api/v1',
@@ -59,6 +60,12 @@ return [
         ],
         'comments' => [
             MongoAdapter::class
+        ],
+        "xp" => [
+            MongoAdapter::class
+        ],
+        "profile_overall" => [
+            MongoAdapter::class
         ]
     ],
     'primaryModelAdapter' => [
@@ -68,5 +75,10 @@ return [
         'settings' => MongoAdapter::class,
         'tasks' => MongoAdapter::class,
         'comments' => MongoAdapter::class,
+        'xp' => MongoAdapter::class,
+        'profile_overall' => MongoAdapter::class,
     ],
+    'services' => [
+        ProfilePerformance::class
+    ]
 ];

@@ -22,20 +22,11 @@ class WorkDays
 
         for ($date = $firstDayOfMonth; $date <= $lastDayOfMonth; $date->modify('+1 day')) {
             $dateFormatted = $date->format('Y-m-d');
-            if (self::isWeekDay($dateFormatted) === true) {
+            if ((date('N', strtotime($dateFormatted)) <= 5) === true) {
                 $dates[] = $dateFormatted;
             }
         }
 
         return $dates;
-    }
-
-    /**
-     * @param $date
-     * @return bool
-     */
-    public static function isWeekDay($date)
-    {
-        return (date('N', strtotime($date)) <= 5) === true;
     }
 }

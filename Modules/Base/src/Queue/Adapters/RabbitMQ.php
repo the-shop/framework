@@ -29,7 +29,6 @@ class RabbitMQ implements QueueAdapterInterface
             getenv('RABBIT_MQ_PASSWORD', 'guest') #password
         );
 
-        /** @var $channel AMQPChannel */
         $channel = $connection->channel();
 
         $channel->queue_declare(

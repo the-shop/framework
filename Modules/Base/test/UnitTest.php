@@ -12,7 +12,6 @@ use Framework\Base\Application\BaseApplication;
 use Framework\Base\Request\RequestInterface;
 use Framework\Http\Request\Request;
 use Framework\RestApi\Module as RestApiModule;
-use Framework\Terminal\Render\Memory as MemoryRenderer;
 
 /**
  * All tests should extend this class

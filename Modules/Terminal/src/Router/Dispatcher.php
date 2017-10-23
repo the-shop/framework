@@ -17,12 +17,12 @@ class Dispatcher implements DispatcherInterface
     /**
      * @var array
      */
-    private $routes = [];
+    private $commands = [];
 
     /**
      * @var array
      */
-    private $routeParameters = [];
+    private $commandParameters = [];
 
     /**
      * @var
@@ -32,27 +32,27 @@ class Dispatcher implements DispatcherInterface
     /**
      * @return array
      */
-    public function getRoutes(): array
+    public function getCommands(): array
     {
-        return $this->routes;
-    }
-
-    public function register()
-    {
-    }
-
-    public function getRouteParameters(): array
-    {
-        return $this->routeParameters;
+        return $this->commands;
     }
 
     /**
-     * @param array $routesDefinition
-     * @return $this
+     * @return array
      */
-    public function addRoutes(array $routesDefinition = [])
+    public function getCommandParameters(): array
     {
-        $this->routes = $routesDefinition;
+        return $this->commandParameters;
+    }
+
+    /**
+     * @param array $commands
+     *
+     * @return \Framework\Base\Router\DispatcherInterface
+     */
+    public function addCommands(array $commands): DispatcherInterface
+    {
+        $this->commands = array_merge($this->commands, $commands);
 
         return $this;
     }
@@ -68,7 +68,7 @@ class Dispatcher implements DispatcherInterface
         $commandName = $inputHandler->getInputCommand();
 
         // Let's check if command is registered
-        if (array_key_exists($commandName, $this->getRoutes()) === false) {
+        if (array_key_exists($commandName, $this->getCommands()) === false) {
             throw new \InvalidArgumentException(
                 'Command name ' . $commandName . ' is not registered.',
                 404
@@ -79,25 +79,25 @@ class Dispatcher implements DispatcherInterface
          so we can compare it with input arguments */
         $definedRequiredParams = array_map(
             'strtolower',
-            $this->getRoutes()[$commandName]['requiredParams']
+            $this->getCommands()[$commandName]['requiredParams']
         );
         $definedOptionalParams = array_map(
             'strtolower',
-            $this->getRoutes()[$commandName]['optionalParams']
+            $this->getCommands()[$commandName]['optionalParams']
         );
 
         // Let's grab input arguments
         $inputRequiredParams = $inputHandler->getInputParameters()['requiredParams'];
         $inputOptionalParams = $inputHandler->getInputParameters()['optionalParams'];
 
-        $routeParameters = [];
+        $commandParameters = [];
 
         // Compare route defined required parameters with input required arguments
         foreach ($definedRequiredParams as $definedParam) {
             if (array_key_exists($definedParam, $inputRequiredParams) === false) {
                 throw new \InvalidArgumentException('Invalid required arguments.', 403);
             }
-            $routeParameters[$definedParam] = $inputRequiredParams[$definedParam];
+            $commandParameters[$definedParam] = $inputRequiredParams[$definedParam];
         }
 
         // Compare route defined optional parameters with input optional arguments
@@ -105,14 +105,14 @@ class Dispatcher implements DispatcherInterface
             if (array_key_exists($definedOptionalParam, $inputOptionalParams) === false) {
                 throw new \InvalidArgumentException('Invalid optional arguments.', 403);
             }
-            $routeParameters[$definedOptionalParam] = $inputOptionalParams[$definedOptionalParam];
+            $commandParameters[$definedOptionalParam] = $inputOptionalParams[$definedOptionalParam];
         }
 
         // Set route parameters
-        $this->routeParameters = $routeParameters;
+        $this->commandParameters = $commandParameters;
 
         // Set route handler
-        $this->setHandler($this->getRoutes()[$commandName]['handler']);
+        $this->setHandler($this->getCommands()[$commandName]['handler']);
 
         return $this;
     }
@@ -131,10 +131,41 @@ class Dispatcher implements DispatcherInterface
      */
     public function setHandler(string $fullyQualifiedClassName = null)
     {
-        if (($fullyQualifiedClassName !== null) === true) {
+        if (class_exists($fullyQualifiedClassName) === true) {
             $this->handler = $fullyQualifiedClassName;
         }
 
         return $this;
+    }
+
+    public function register()
+    {
+    }
+
+    //Terminal translation
+
+    /**
+     * @return array
+     */
+    public function getRoutes(): array
+    {
+        return $this->getCommands();
+    }
+
+    /**
+     * @return array
+     */
+    public function getRouteParameters(): array
+    {
+        return $this->getCommandParameters();
+    }
+
+    /**
+     * @param array $routesDefinition
+     * @return $this
+     */
+    public function addRoutes(array $routesDefinition = []): DispatcherInterface
+    {
+        return $this->addCommands($routesDefinition);
     }
 }

@@ -59,7 +59,7 @@ interface BrunoRepositoryInterface extends ApplicationAwareInterface
      *
      * @return BrunoInterface[]
      */
-    public function loadMultiple($identifiers);
+    public function loadMultiple($identifiers = []);
 
     /**
      * @param BrunoInterface $bruno

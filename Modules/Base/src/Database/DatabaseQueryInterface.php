@@ -73,7 +73,7 @@ interface DatabaseQueryInterface
      * @param string $condition
      * @param        $value
      *
-     * @return void
+     * @return DatabaseQueryInterface
      */
     public function addAndCondition(string $field, string $condition, $value);
 

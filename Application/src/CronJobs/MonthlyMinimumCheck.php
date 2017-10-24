@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Application\CronJobs;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Model\BrunoInterface;
@@ -8,7 +8,7 @@ use Framework\Terminal\Commands\Cron\CronJob;
 
 /**
  * Class MonthlyMinimumCheck
- * @package App\Console\Commands
+ * @package Application\CronJobs
  */
 class MonthlyMinimumCheck extends CronJob
 {
@@ -33,16 +33,17 @@ class MonthlyMinimumCheck extends CronJob
         }
 
         foreach ($profiles as $profile) {
-            if (!$profile->getAttribute('employee') === true) {
+            $employee = $profile->getAttribute('employee');
+            if (!$employee || $employee === false) {
                 continue;
             }
 
             $profilePerformance = $app->getService('profilePerformance');
             $dateStart = new \DateTime();
-            $unixStart = $dateStart->modify('first day of last month')->format('U');
+            $unixStart = (int)$dateStart->modify('first day of last month')->format('U');
 
             $dateEnd = new \DateTime();
-            $unixEnd = $dateEnd->modify('last day of last month')->format('U');
+            $unixEnd = (int)$dateEnd->modify('last day of last month')->format('U');
 
             $performance =
                 $profilePerformance->aggregateForTimeRange(
@@ -62,6 +63,9 @@ class MonthlyMinimumCheck extends CronJob
             if ($realPayoutCombined < $requiredMinimum) {
                 // Update profile
                 $profileMinimumsMissed = $profile->getAttribute('minimumsMissed');
+                if (!$profileMinimumsMissed) {
+                    $profileMinimumsMissed = 0;
+                }
                 $profileMinimumsMissed++;
                 $profile->setAttribute('minimumsMissed', $profileMinimumsMissed);
                 $profile->save();
@@ -85,7 +89,7 @@ class MonthlyMinimumCheck extends CronJob
                     . '*';
 
                 // Notify employee
-                if (array_key_exists('slack', $profileAttributes['slack']) === true
+                if (array_key_exists('slack', $profileAttributes) === true
                     && empty($profileAttributes['slack']) === false
                     && $profileAttributes['active'] === true
                 ) {
@@ -100,7 +104,7 @@ class MonthlyMinimumCheck extends CronJob
                 // Notify admins
                 foreach ($admins as $admin) {
                     $adminAttributes = $admin->getAttributes();
-                    if (array_key_exists('slack', $adminAttributes['slack']) === true
+                    if (array_key_exists('slack', $adminAttributes) === true
                         && empty($adminAttributes['slack']) === false
                         && $adminAttributes['active'] === true
                     ) {

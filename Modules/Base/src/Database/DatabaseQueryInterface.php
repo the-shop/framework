@@ -10,7 +10,7 @@ interface DatabaseQueryInterface
 {
     /**
      * @param string $name
-     * @return mixed
+     * @return \Framework\Base\Database\DatabaseQueryInterface
      */
     public function setDatabase(string $name);
 
@@ -21,7 +21,7 @@ interface DatabaseQueryInterface
 
     /**
      * @param string $name
-     * @return mixed
+     * @return \Framework\Base\Database\DatabaseQueryInterface
      */
     public function setCollection(string $name);
 
@@ -31,13 +31,13 @@ interface DatabaseQueryInterface
     public function getCollection();
 
     /**
-     * @return mixed
+     * @return array
      */
     public function build();
 
     /**
      * @param string $name
-     * @return mixed
+     * @return \Framework\Base\Database\DatabaseQueryInterface
      */
     public function addSelectField(string $name);
 
@@ -48,7 +48,7 @@ interface DatabaseQueryInterface
 
     /**
      * @param int $limit
-     * @return mixed
+     * @return \Framework\Base\Database\DatabaseQueryInterface
      */
     public function setLimit(int $limit);
 
@@ -59,7 +59,7 @@ interface DatabaseQueryInterface
 
     /**
      * @param int $offset
-     * @return mixed
+     * @return \Framework\Base\Database\DatabaseQueryInterface
      */
     public function setOffset(int $offset);
 
@@ -73,20 +73,22 @@ interface DatabaseQueryInterface
      * @param string $condition
      * @param        $value
      *
-     * @return void
+     * @return \Framework\Base\Database\DatabaseQueryInterface
      */
     public function addAndCondition(string $field, string $condition, $value);
 
     /**
      * @param string $field
      * @param $value
-     * @return void
+     *
+     * @return \Framework\Base\Database\DatabaseQueryInterface
      */
     public function whereInArrayCondition(string $field, $value = []);
 
     /**
      * @param string $identifier
-     * @return void
+     *
+     * @return \Framework\Base\Database\DatabaseQueryInterface
      */
     public function setOrderBy(string $identifier);
 
@@ -97,7 +99,8 @@ interface DatabaseQueryInterface
 
     /**
      * @param string $orderDirection
-     * @return void
+     *
+     * @return \Framework\Base\Database\DatabaseQueryInterface
      */
     public function setOrderDirection(string $orderDirection);
 

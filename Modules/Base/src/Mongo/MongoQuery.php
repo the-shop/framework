@@ -51,6 +51,19 @@ class MongoQuery implements DatabaseQueryInterface
      */
     private $conditions = [];
 
+    private static $translation = [
+        '=' => '$eq',
+        '!=' => '$ne',
+        '<' => '$lt',
+        '>' => '$gt',
+        '<=' => '$lte',
+        '>=' => '$gte',
+        'in' => '$in',
+        'not in' => '$nin',
+        'and' => '$and',
+        'or' => '$or',
+    ];
+
     /**
      * @return array
      */
@@ -64,24 +77,14 @@ class MongoQuery implements DatabaseQueryInterface
      * @param string $operation
      * @param        $value
      *
-     * @return void
+     * @return $this
      */
     public function addAndCondition(string $field, string $operation, $value)
     {
-        switch ($operation) {
-            case '=':
-                $operation = '$eq';
-                break;
-            case '>=':
-                $operation = '$gte';
-                break;
-            case '<=':
-                $operation = '$lte';
-                break;
-            case 'like':
-                /** @var  $operation \MongoDB\BSON\Regex */
-                $operation = new Regex(".*" . $value . ".*", "i");
-                break;
+        if ($operation === 'like') {
+            $operation = new Regex(".*" . $value . ".*", "i");
+        } else {
+            $operation = self::$translation[$operation];
         }
 
         if ($field === '_id') {
@@ -95,18 +98,22 @@ class MongoQuery implements DatabaseQueryInterface
         }
 
         $this->conditions = array_merge_recursive($this->conditions, $queryPart);
+
+        return $this;
     }
 
     /**
      * @param string $field
      * @param $value
-     * @return void
+     * @return $this
      */
     public function whereInArrayCondition(string $field, $value = [])
     {
         $queryPart = [$field => ['$in' => $value]];
 
         $this->conditions = array_merge_recursive($this->conditions, $queryPart);
+
+        return $this;
     }
 
     /**
@@ -206,11 +213,13 @@ class MongoQuery implements DatabaseQueryInterface
 
     /**
      * @param string $identifier
-     * @return void
+     * @return $this
      */
     public function setOrderBy(string $identifier)
     {
         $this->orderBy = $identifier;
+
+        return $this;
     }
 
     /**
@@ -223,11 +232,13 @@ class MongoQuery implements DatabaseQueryInterface
 
     /**
      * @param string $orderDirection
-     * @return void
+     * @return $this
      */
     public function setOrderDirection(string $orderDirection)
     {
         $this->orderDirection = $orderDirection;
+
+        return $this;
     }
 
     /**

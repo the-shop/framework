@@ -17,6 +17,7 @@ use Framework\Base\Request\RequestInterface;
 use Framework\Base\Response\ResponseInterface;
 use Framework\Base\Router\DispatcherInterface;
 use Framework\Http\Response\Response;
+use Framework\Terminal\Commands\Cron\CronJobInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -137,6 +138,11 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
      * @var null|string
      */
     private $rootPath = null;
+
+    /**
+     * @var array
+     */
+    protected $registeredCronJobs = [];
 
     /**
      * Has to build instance of RequestInterface, set it to BaseApplication and return it
@@ -650,5 +656,25 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function getRequestAuthorization()
     {
         return $this->requestAuthorization;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegisteredCronJobs(): array
+    {
+        return $this->registeredCronJobs;
+    }
+
+    /**
+     * @param \Framework\Terminal\Commands\Cron\CronJobInterface $cronJob
+     *
+     * @return \Framework\Base\Application\ApplicationInterface
+     */
+    public function registerCronJob(CronJobInterface $cronJob): ApplicationInterface
+    {
+        $this->registeredCronJobs[] = $cronJob;
+
+        return $this;
     }
 }

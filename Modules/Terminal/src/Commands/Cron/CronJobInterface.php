@@ -13,9 +13,9 @@ interface CronJobInterface extends ApplicationAwareInterface
     /**
      * CronJobInterface constructor.
      *
-     * @param array $cronJob
+     * @param array $cronJobParams
      */
-    public function __construct(array $cronJob);
+    public function __construct(array $cronJobParams);
 
     /**
      * @param string $expression

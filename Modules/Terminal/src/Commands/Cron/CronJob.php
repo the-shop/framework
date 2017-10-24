@@ -20,16 +20,19 @@ abstract class CronJob implements CronJobInterface
     /**
      * CronJob constructor.
      *
-     * @param array $cronJob
+     * @param array $cronJobParams
      */
-    public function __construct(array $cronJob)
+    public function __construct(array $cronJobParams)
     {
-        if (method_exists($this, $cronJob['value']) === false) {
-            $this->setCronTimeExpression($cronJob['value']);
-        } elseif (empty($cronJob['args']) === true) {
-            $this->{$cronJob['value']}();
+        if (is_array($cronJobParams['timer'])) {
+            list($method, $args) = $cronJobParams['timer'];
+            if (method_exists($this, $method) === true) {
+                $this->{$method}(...$args);
+            }
+        } elseif (method_exists($this, $cronJobParams['timer']) === true) {
+            $this->{$cronJobParams['timer']}();
         } else {
-            $this->{$cronJob['value']}(...$cronJob['args']);
+            $this->setCronTimeExpression($cronJobParams['timer']);
         }
     }
 

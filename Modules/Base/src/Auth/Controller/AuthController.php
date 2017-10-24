@@ -85,13 +85,13 @@ class AuthController extends Http
          */
         $key = 'rV)7Djb{DpEpY5ex';
         JWT::$timestamp = time();
-        $payload = array(
+        $payload = [
             'iss' => 'framework.the-shop.io',
             'exp' => JWT::$timestamp + 3600,
             'modelId' => $requestAuth->getId(),
             'resourceName' => $requestAuth->getResourceName(),
             'aclRole' => $requestAuth->getRole(),
-        );
+        ];
         $alg = 'HS384';
         $jwt = JWT::encode($payload, $key, $alg);
 

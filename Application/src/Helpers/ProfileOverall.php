@@ -4,6 +4,7 @@ namespace Application\Helpers;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Model\BrunoInterface;
+use MongoDB\BSON\ObjectID;
 
 /**
  * Class ProfileOverall
@@ -23,12 +24,13 @@ class ProfileOverall
         $repository = $this->getApplication()
             ->getRepositoryManager()
             ->getRepositoryFromResourceName('profile_overall');
-        $profileOverallRecord = $repository->loadOne($profile->getAttribute('_id'));
+        $profileId = $profile->getAttribute('_id');
+        $profileOverallRecord = $repository->loadOne($profileId);
         if (!$profileOverallRecord) {
             $profileOverallRecord =
                 $repository->newModel()
                     ->setAttributes([
-                        '_id' => $profile->getAttribute('_id'),
+                        '_id' => new ObjectID($profileId),
                         'totalEarned' => 0,
                         'totalCost' => 0,
                         'profit' => 0,

@@ -45,13 +45,13 @@ class AuthenticationListener implements ListenerInterface
                 );
             }
         }
-        $payload = array(
+        $payload = [
             'iss' => 'framework.the-shop.io',
             'exp' => JWT::$timestamp + 3600,
             'modelId' => $requestAuth->getId(),
             'resourceName' => $requestAuth->getResourceName(),
             'aclRole' => $requestAuth->getRole(),
-        );
+        ];
 
         $jwt = JWT::encode($payload, $key, $alg);
 

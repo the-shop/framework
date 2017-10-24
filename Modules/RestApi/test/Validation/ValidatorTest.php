@@ -119,7 +119,7 @@ class ValidatorTest extends UnitTest
     public function testFloatValidationFailed()
     {
         $validator = new Validator();
-        $value = 1;
+        $value = 'foo';
         $validator->addValidation($value, 'float');
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Validation failed');

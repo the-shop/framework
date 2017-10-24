@@ -45,6 +45,13 @@
       "private": {
         "GET": [
           {
+            "route": "/{resourceName}/{identifier}/performance",
+            "allows": [
+              "admin",
+              "standard"
+            ]
+          },
+          {
             "route": "/{resourceName}",
             "allows": [
               "admin",

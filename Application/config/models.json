@@ -218,6 +218,15 @@
             "numeric"
           ],
           "default": 0
+        },
+        "banned": {
+          "label": "Banned",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
         }
       }
     },

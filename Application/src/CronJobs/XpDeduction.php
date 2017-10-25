@@ -4,7 +4,6 @@ namespace Application\CronJobs;
 
 use Application\Helpers\XpRecord;
 use Framework\Base\Model\BrunoInterface;
-use MongoDB\BSON\ObjectID;
 use Framework\Terminal\Commands\Cron\CronJob;
 
 /**
@@ -99,7 +98,7 @@ class XpDeduction extends CronJob
                     $records[] = [
                         'xp' => -1,
                         'details' => 'Xp deducted for inactivity.',
-                        'timestamp' => (int) ($cronTime . '000') // Microtime
+                        'timestamp' => (int)($cronTime . '000') // Microtime
                     ];
                     $userXp->setAttribute('records', $records);
                     $userXp->save();
@@ -108,7 +107,7 @@ class XpDeduction extends CronJob
                     $profileXp--;
                     $profile->setAttributes([
                         'xp' => $profileXp,
-                        'lastTimeActivityCheck' => (int) $cronTime
+                        'lastTimeActivityCheck' => (int)$cronTime,
                     ]);
 
                     $profile->save();

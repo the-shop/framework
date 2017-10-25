@@ -2,62 +2,81 @@
 
 namespace Application\CronJobs;
 
-use Framework\Terminal\Commands\CronJob;
+use Application\CrudApi\SlackApiHelper;
+use Framework\Terminal\Commands\Cron\CronJob;
 
 class SlackSendMessage extends CronJob
 {
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function execute()
     {
         // Load configuration
-        $priorityMapping = Config::get('sharedSettings.internalConfiguration.slack.priorityToMinutesDelay');
+        $priorityMapping = $this->getApplication()
+                                ->getConfiguration()
+                                ->getPathValue(
+                                    'internal.slack.priorityToMinutesDelay'
+                                );
 
-        $sent = [];
+        $output = [];
 
-        $now = new \DateTime();
-        $unixNow = (int) $now->format('U');
+        $unixNow = time();
         $currentMinuteUnix = $unixNow - $unixNow % 60; // First second of current minute
         $nextMinuteUnix = $currentMinuteUnix + 60; // First second of next minute
 
+        $repository = $this->getApplication()
+                           ->getRepositoryManager()
+                           ->getRepositoryFromResourceName('slackMessages');
+
         // Load by priority
         foreach ($priorityMapping as $priority => $minutesDelay) {
-            $query = GenericModel::whereTo('slackMessages')
-                                 ->query();
-            // Find messages in required priority
-            $query->where('priority', '=', $priority)
-                // Make sure we don't re-send things
-                  ->where('sent', '=', false)
-                // Check when it was added and make sure that required delay is within current minute
-                  ->where('runAt', '<', $nextMinuteUnix);
+            $model = $repository->newModel();
+            $query = $repository->getPrimaryAdapter()
+                                ->newQuery()
+                                ->setDatabase($model->getDatabase())
+                                ->setCollection('slackMessages')
+                                ->addAndCondition('priority', '=', $priority)
+                                ->addAndCondition('sent', '=', false)
+                                ->addAndCondition('runAt', '<', $nextMinuteUnix);
 
-            $messages = $query->get();
+            $messages = $repository->loadMultiple($query);
+
+            $client = new SlackApiHelper();
+            $client->setApplication($this->getApplication());
 
             foreach ($messages as $message) {
-                SlackChat::message($message->recipient, $message->message);
-                $message->sent = true;
-                $message->save();
-                $sent[] = $message->recipient;
+                if (json_decode($message->getAttribute('message')) === null) {
+                    $response = json_decode(
+                        $client->sendMessage(
+                            $client->getUser($message->getAttribute('recipient'))->id,
+                            $message->getAttribute('message')
+                        )
+                        ->getBody()
+                        ->getContents()
+                    );
+                } else {
+                    $response = json_decode(
+                        $client->sendMessage(
+                            $client->getUser($message->getAttribute('recipient'))->id,
+                            '',
+                            $message->getAttribute('message')
+                        )
+                        ->getBody()
+                        ->getContents()
+                    );
+                }
+                if ($response->ok === true) {
+                    $message->setAttribute('sent', true);
+                    $message->save();
+                    $output['sent'][] = 'Message sent to ' . $message->getAttribute('recipient');
+                } else {
+                    $message->setAttribute('failed', true);
+                    $message->save();
+                    $output['failed'][] = 'Message failed to send to ' . $message->getAttribute('recipient');
+                }
             }
         }
-
-        return $sent;
-
-//
-//        /*--------------------------- REGISTER CRON JOBS HERE ------------------------*/
-//
-//        $this->addCronJob(
-//            'test',
-//            $this->everyFiveMinutes()->getCronTimeExpression(),
-//            [
-//                'testParam' => 'test required param',
-//                'testOptionalParam' => 'test optional param',
-//            ]
-//        );
-//
-//        /*-----------------------------------------------------------------------------*/
-//
-//        return $this->runCronJobs();
+        return $output;
     }
 }

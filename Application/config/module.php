@@ -4,6 +4,7 @@ use Application\CrudApi\Model\Generic as GenericModel;
 use Framework\Base\Mongo\MongoAdapter;
 use Application\CrudApi\Repository\GenericRepository;
 use Application\Services\SlackService;
+use Application\CronJobs\SlackSendMessage;
 
 return [
     'routePrefix' => '/api/v1',
@@ -76,5 +77,10 @@ return [
     ],
     'services' => [
         SlackService::class,
+    ],
+    'cronJobs' => [
+        SlackSendMessage::class => [
+            'timer' => 'everyMinute',
+        ],
     ],
 ];

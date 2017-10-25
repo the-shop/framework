@@ -80,7 +80,7 @@ trait ProfileRelated
      * @param null $timestamp
      * @return BrunoInterface
      */
-    public function getNewRequestLogWithDateUnassigned($timestamp = null)
+    public function getNewRequestLogWithDateUnAssigned($timestamp = null)
     {
         if (!$timestamp) {
             $time = new \DateTime();
@@ -90,7 +90,7 @@ trait ProfileRelated
         $log = $this->getNewRequestLog();
 
         $log->setAttributes([
-            '_id' => new ObjectID($timestamp . '0000000000000000'),
+            '_id' => new ObjectID(dechex($timestamp) . '0000000000000000'),
             'date' => (new \DateTime())::createFromFormat('d-m-Y H:i:s', $timestamp)
         ]);
 
@@ -112,7 +112,8 @@ trait ProfileRelated
 
         $log->setAttributes([
             '_id' => new ObjectID(dechex($timestamp) . '0000000000000000'),
-            'date' => (new \DateTime())::createFromFormat('d-m-Y H:i:s', $timestamp)
+            'date' => (new \DateTime())::createFromFormat('d-m-Y H:i:s', $timestamp),
+            'id' => $this->profile->getAttribute('_id')
         ]);
 
         return $log;

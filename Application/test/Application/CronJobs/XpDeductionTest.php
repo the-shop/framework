@@ -69,7 +69,7 @@ class XpDeductionTest extends UnitTest
         $logs = [];
 
         for ($i = 0; $i < count($this->logDates); $i++) {
-            $logModel = $this->getNewRequestLogWithDateAssigned($this->logDates[$i])
+            $logModel = $this->getNewRequestLogWithDateUnAssigned($this->logDates[$i])
                 ->save();
             $logs[] = $logModel;
         }
@@ -120,7 +120,7 @@ class XpDeductionTest extends UnitTest
         $logs = [];
 
         for ($i = 0; $i < count($this->logDates); $i++) {
-            $logModel = $this->getNewRequestLogWithDateAssigned($this->logDates[$i])
+            $logModel = $this->getNewRequestLogWithDateUnAssigned($this->logDates[$i])
                 ->save();
             $logs[] = $logModel;
         }
@@ -177,7 +177,7 @@ class XpDeductionTest extends UnitTest
         $logs = [];
 
         for ($i = 0; $i < count($this->logDates); $i++) {
-            $logModel = $this->getNewRequestLogWithDateAssigned($this->logDates[$i])
+            $logModel = $this->getNewRequestLogWithDateUnAssigned($this->logDates[$i])
                 ->save();
             $logs[] = $logModel;
         }
@@ -221,12 +221,9 @@ class XpDeductionTest extends UnitTest
         $logs = [];
 
         for ($i = 0; $i < count($this->logDates); $i++) {
-            $logModel = $this->getNewRequestLogWithDateAssigned($this->logDates[$i]);
+            $logModel = $this->getNewRequestLogWithDateUnAssigned($this->logDates[$i]);
             if ($i === 2 || $i === 3) {
-                $logModel->setAttribute(
-                    'id',
-                    $this->profile->getAttribute('_id')
-                );
+                $logModel = $this->getNewRequestLogWithDateAssigned($this->logDates[$i]);
             }
             $logModel->save();
             $logs[] = $logModel;

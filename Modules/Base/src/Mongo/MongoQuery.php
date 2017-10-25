@@ -71,8 +71,14 @@ class MongoQuery implements DatabaseQueryInterface
             case '=':
                 $operation = '$eq';
                 break;
+            case '>':
+                $operation = '$gt';
+                break;
             case '>=':
                 $operation = '$gte';
+                break;
+            case '<':
+                $operation = '$lt';
                 break;
             case '<=':
                 $operation = '$lte';

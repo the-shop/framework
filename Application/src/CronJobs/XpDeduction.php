@@ -39,14 +39,14 @@ class XpDeduction extends CronJob
             $hexDayAgo = dechex($unixDayAgo);
             $logsRepository = $repoManager->getRepositoryFromResourceName('logs');
             $query = $logsRepository->createNewQueryForModel($logsRepository->newModel());
-            $query->addAndCondition('_id', '<', new ObjectID($hexNow . '0000000000000000'))
-                ->addAndCondition('_id', '>=', new ObjectID($hexDayAgo . '0000000000000000'));
+            $query->addAndCondition('_id', '<', $hexNow . '0000000000000000')
+                ->addAndCondition('_id', '>=', $hexDayAgo . '0000000000000000');
 
             $logs = $logsRepository->loadMultiple($query);
 
             $logHashMap = [];
             foreach ($logs as $log) {
-                $logHashMap[$log->getAttribute('_id')] = $log;
+                $logHashMap[$log->getAttribute('id')] = $log;
             }
 
             /**
@@ -80,6 +80,7 @@ class XpDeduction extends CronJob
 
                 if (array_key_exists($userAttributes['_id'], $logHashMap) === false
                     && $daysChecked === 4
+                    && array_key_exists('role', $userAttributes)
                     && $userAttributes['role'] === 'standard') {
                     /**
                      * @var BrunoInterface $profile

@@ -2,6 +2,7 @@
 
 namespace Application\CronJobs;
 
+use Application\Helpers\XpRecord;
 use Framework\Base\Model\BrunoInterface;
 use MongoDB\BSON\ObjectID;
 use Framework\Terminal\Commands\Cron\CronJob;
@@ -48,7 +49,7 @@ class XpDeduction extends CronJob
                 $logHashMap[$log->getAttribute('_id')] = $log;
             }
 
-            /**2
+            /**
              * @var BrunoInterface $user
              */
             foreach ($profileHashMap as $user) {
@@ -89,25 +90,18 @@ class XpDeduction extends CronJob
                         $profile->setAttribute('banned', true);
                     }
 
-                    $profileXpId = $profile->getAttribute('xp_id');
-                    if (!$profileXpId) {
-                        $userXP = $repoManager->getRepositoryFromResourceName('xp')
-                            ->newModel();
-                        $userXP->setAttribute('records', []);
-                        $userXP->save();
-                        $profile->setAttribute('xp_id', $userXP->getAttribute('_id'));
-                    } else {
-                        $userXP = $repoManager->getRepositoryFromResourceName('xp')
-                            ->loadOne($profileXpId);
-                    }
+                    $userXp = (new XpRecord())
+                        ->setApplication($this->getApplication())
+                        ->getXpRecord($profile);
 
-                    $records = $userXP->getAttribute('records');
+                    $records = $userXp->getAttribute('records');
                     $records[] = [
                         'xp' => -1,
                         'details' => 'Xp deducted for inactivity.',
                         'timestamp' => (int) ($cronTime . '000') // Microtime
                     ];
-                    $userXP->setAttribute('records', $records);
+                    $userXp->setAttribute('records', $records);
+                    $userXp->save();
 
                     $profileXp = $profile->getAttribute('xp');
                     $profileXp--;

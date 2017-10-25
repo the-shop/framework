@@ -751,7 +751,7 @@
         }
       }
     },
-    "Slack" : {
+    "SlackMessage" : {
       "collection": "slackMessages",
       "authenticatable": false,
       "primaryKey": "_id",
@@ -767,7 +767,6 @@
           "label": "Recipient",
           "type": "string",
           "required": true,
-          "default": "",
           "validation": [
             "string"
           ]
@@ -776,7 +775,6 @@
           "label": "Message body",
           "type": "string",
           "required": true,
-          "default": "",
           "validation": [
             "string"
           ]
@@ -790,22 +788,30 @@
             "int"
           ]
         },
-        "sent":{
+        "sent": {
           "label": "Is message sent",
           "type": "string",
-          "required": true,
           "default": false,
           "validation": [
             "bool"
           ]
         },
-        "runAt":{
+        "runAt": {
           "label": "Run at",
           "type": "integer",
           "required": true,
           "default": null,
           "validation": [
             "int"
+          ]
+        },
+        "private": {
+          "label": "Is private",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "validation": [
+            "bool"
           ]
         }
       }

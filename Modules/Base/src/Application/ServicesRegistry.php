@@ -15,6 +15,7 @@ class ServicesRegistry extends BaseRegistry
      */
     public function registerService(ServiceInterface $service, bool $overwrite = false)
     {
+        $service->setApplication($this->getApplication());
         $this->register($service->getIdentifier(), $service, $overwrite);
 
         return $this;

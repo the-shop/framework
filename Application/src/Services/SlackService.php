@@ -4,22 +4,47 @@ namespace Application\Services;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Application\ServiceInterface;
+use Framework\Base\Model\BrunoInterface;
 
+/**
+ * Class SlackService
+ * @package Application\Services
+ */
 class SlackService implements ServiceInterface
 {
     use ApplicationAwareTrait;
 
     const HIGH_PRIORITY = 0;
+
     const MEDIUM_PRIORITY = 1;
+
     const LOW_PRIORITY = 2;
 
+    /**
+     * @return string
+     */
     public function getIdentifier()
     {
         return self::class;
     }
 
-    public function sendMessage($recipient, $message, $priority = self::MEDIUM_PRIORITY)
-    {
+    /**
+     * Saves message to be sent to Slack to DB
+     *
+     * @param string $recipient
+     * @param string $message
+     * @param bool   $private
+     * @param int    $priority
+     *
+     * @return \Framework\Base\Model\BrunoInterface
+     */
+    public function sendMessage(
+        string $recipient,
+        string $message,
+        $private = false,
+        $priority = self::MEDIUM_PRIORITY
+    ): BrunoInterface {
+
         // Load configuration
         $priorityMapping = $this->getApplication()
                                 ->getConfiguration()
@@ -35,6 +60,7 @@ class SlackService implements ServiceInterface
             'recipient' => $recipient,
             'message' => $message,
             'priority' => $priority,
+            'private' => $private,
             'sent' => false,
             'runAt' => $now - $now % $secondsDelay + $secondsDelay,
         ];

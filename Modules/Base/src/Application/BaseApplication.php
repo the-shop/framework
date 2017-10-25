@@ -288,6 +288,7 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     public function bootstrap()
     {
         $this->servicesRegistry = new ServicesRegistry();
+        $this->servicesRegistry->setApplication($this);
 
         $bootstrap = new Bootstrap();
         $registerModules = $this->getConfiguration()->getRegisteredModules();

@@ -6,7 +6,7 @@ namespace Framework\Base\Application;
  * Interface RegistryInterface
  * @package Framework\Base\Application
  */
-interface RegistryInterface
+interface RegistryInterface extends ApplicationAwareInterface
 {
     /**
      * @param $key

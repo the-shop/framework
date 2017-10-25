@@ -48,7 +48,7 @@ class XpDeduction extends CronJob
                 $logHashMap[$log->getAttribute('_id')] = $log;
             }
 
-            /**
+            /**2
              * @var BrunoInterface $user
              */
             foreach ($profileHashMap as $user) {

@@ -11,7 +11,7 @@ use Framework\Http\Response\Response;
 
 /**
  * Class ExceptionFormatter
- * @package Framework\RestApi\Listener
+ * @package Framework\RestApi\Listeners
  */
 class ExceptionFormatter implements ListenerInterface
 {

@@ -72,6 +72,11 @@ interface BrunoInterface extends ApplicationAwareInterface
     public function getDirtyAttributes();
 
     /**
+     * @return boolean
+     */
+    public function isDirty();
+
+    /**
      * @param array $attributes
      * @return BrunoInterface
      */
@@ -155,4 +160,10 @@ interface BrunoInterface extends ApplicationAwareInterface
      * @return BrunoInterface
      */
     public function disableFieldFilters();
+
+    /**
+     * @param string $resourceType
+     * @return BrunoInterface
+     */
+    public function confirmResourceOf(string $resourceType);
 }

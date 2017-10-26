@@ -8,6 +8,7 @@ namespace Framework\Base\Application;
  */
 class ServicesRegistry extends BaseRegistry
 {
+    use ApplicationAwareTrait;
     /**
      * @param ServiceInterface $service
      * @param bool $overwrite

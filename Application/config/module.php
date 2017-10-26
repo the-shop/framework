@@ -7,10 +7,16 @@ use Application\Services\SlackService;
 use Application\CronJobs\SlackSendMessage;
 use Application\Services\SlackApiHelper;
 use GuzzleHttp\Client;
+use Application\Services\ProfilePerformance;
 
 return [
     'routePrefix' => '/api/v1',
     'routes' => [
+        [
+            'get',
+            '/{resourceName}/{identifier}/performance',
+            '\Application\CrudApi\Controller\Resource::getPerformance',
+        ],
         [
             'get',
             '/{resourceName}',
@@ -67,6 +73,15 @@ return [
         'slackMessages' => [
             MongoAdapter::class,
         ],
+        "xp" => [
+            MongoAdapter::class
+        ],
+        "profile_overall" => [
+            MongoAdapter::class
+        ],
+        "logs" => [
+            MongoAdapter::class
+        ],
     ],
     'primaryModelAdapter' => [
         'users' => MongoAdapter::class,
@@ -76,9 +91,13 @@ return [
         'tasks' => MongoAdapter::class,
         'comments' => MongoAdapter::class,
         'slackMessages' => MongoAdapter::class,
+        'xp' => MongoAdapter::class,
+        'profile_overall' => MongoAdapter::class,
+        'logs' => MongoAdapter::class,
     ],
     'services' => [
         SlackService::class,
+        ProfilePerformance::class,
     ],
     'cronJobs' => [
         SlackSendMessage::class => [

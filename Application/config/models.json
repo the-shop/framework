@@ -9,9 +9,9 @@
         "password"
       ],
       "aclRoleField": "role",
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -42,27 +42,21 @@
           "label": "Password",
           "type": "password",
           "required": true,
-          "validation": [
-            "string"
-          ],
+          "validation": [],
           "default": null
         },
         "newPassword": {
           "label": "New Password",
           "type": "password",
           "required": false,
-          "validation": [
-            "string"
-          ],
+          "validation": [],
           "default": null
         },
         "repeatNewPassword": {
           "label": "Repeat New Password",
           "type": "password",
           "required": false,
-          "validation": [
-            "string"
-          ],
+          "validation": [],
           "default": null
         },
         "role": {
@@ -132,7 +126,7 @@
           "type": "alpha_numeric",
           "required": false,
           "validation": [
-            "alphanumeric"
+            "alpha_numeric"
           ],
           "default": ""
         },
@@ -224,15 +218,24 @@
             "numeric"
           ],
           "default": 0
+        },
+        "banned": {
+          "label": "Banned",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
         }
       }
     },
     "Project": {
       "collection": "projects",
       "authenticatable": false,
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -343,7 +346,7 @@
           "type": "alpha_numeric",
           "required": false,
           "validation": [
-            "alphanumeric"
+            "alpha_numeric"
           ],
           "default": ""
         }
@@ -352,9 +355,9 @@
     "Sprint": {
       "collection": "sprints",
       "authenticatable": false,
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -417,7 +420,7 @@
           "type": "alpha_numeric",
           "required": false,
           "validation": [
-            "alphanumeric"
+            "alpha_numeric"
           ],
           "default": ""
         },
@@ -435,9 +438,9 @@
     "Task": {
       "collection": "tasks",
       "authenticatable": false,
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -478,6 +481,15 @@
           "default": ""
         },
         "xp": {
+          "label": "Xp",
+          "type": "numeric",
+          "required": false,
+          "validation": [
+            "numeric"
+          ],
+          "default": 0
+        },
+        "xpDeduction": {
           "label": "Xp",
           "type": "numeric",
           "required": false,
@@ -684,15 +696,42 @@
             "string"
           ],
           "default": ""
+        },
+        "work": {
+          "label": "Work",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        },
+        "timeAssigned": {
+          "label": "Time Assigned",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
+        },
+        "timeFinished": {
+          "label": "Time Finished",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
         }
       }
     },
     "Setting": {
       "collection": "settings",
       "authenticatable": false,
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -722,9 +761,9 @@
     "Comment": {
       "collection": "comments",
       "authenticatable": false,
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,
@@ -735,10 +774,10 @@
           "label": "Records",
           "type": "array",
           "required": false,
-          "default": [],
           "validation": [
             "array"
-          ]
+          ],
+          "default": []
         },
         "ownerId": {
           "label": "Owner ID",
@@ -751,12 +790,144 @@
         }
       }
     },
+    "Xp": {
+      "collection": "xp",
+      "authenticatable": false,
+      "fields": {
+        "_id": {
+          "primaryKey": true,
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "records": {
+          "label": "Records",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": []
+        }
+      }
+    },
+    "ProfileOverall": {
+      "collection": "profile_overall",
+      "authenticatable": false,
+      "fields": {
+        "_id": {
+          "primaryKey": true,
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "totalEarned": {
+          "label": "Total Earned",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
+        },
+        "totalCost": {
+          "label": "Total Cost",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
+        },
+        "profit": {
+          "label": "Profit",
+          "type": "integer",
+          "required": false,
+          "validation": [
+            "integer"
+          ],
+          "default": 0
+        }
+      }
+    },
+    "Log": {
+      "collection": "logs",
+      "authenticatable": false,
+      "fields": {
+        "_id": {
+          "primaryKey": true,
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "name": {
+          "label": "Name",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "id": {
+          "label": "ID",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "date": {
+          "label": "Date",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "ip": {
+          "label": "Ip",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "uri": {
+          "label": "Uri",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "method": {
+          "label": "Method",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        }
+      }
+    },
     "SlackMessage" : {
       "collection": "slackMessages",
       "authenticatable": false,
-      "primaryKey": "_id",
       "fields": {
         "_id": {
+          "primaryKey": true,
           "label": "ID",
           "type": "string",
           "disabled": true,

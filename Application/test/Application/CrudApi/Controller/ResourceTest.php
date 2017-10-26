@@ -6,6 +6,7 @@ use Application\CrudApi\Controller\Resource;
 use Application\CrudApi\Model\Generic;
 use Framework\Base\Test\UnitTest;
 use Framework\Http\Request\Request;
+use Application\Test\Application\Traits\Helpers;
 
 /**
  * Class ResourceTest
@@ -13,6 +14,7 @@ use Framework\Http\Request\Request;
  */
 class ResourceTest extends UnitTest
 {
+    use Helpers;
     /**
      * @var array
      */
@@ -416,6 +418,7 @@ class ResourceTest extends UnitTest
         $testModelDefinition = [
             'users' => [
                 '_id' => [
+                    'primaryKey' => true,
                     'label' => 'ID',
                     'type' => 'string',
                     'disabled' => true,
@@ -472,26 +475,5 @@ class ResourceTest extends UnitTest
                 'email' => $email,
             ]
         );
-    }
-
-    /**
-     * Helper method for generating random E-mail
-     * @param int $length
-     * @return string
-     */
-    private function generateRandomEmail(int $length = 10)
-    {
-        // Generate random email
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $email = '';
-
-        for ($i = 0; $i < $length; $i++) {
-            $email .= $characters[rand(0, $charactersLength - 1)];
-        }
-
-        $email .= '@test.com';
-
-        return $email;
     }
 }

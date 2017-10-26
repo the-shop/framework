@@ -65,7 +65,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     public function getDatabaseAdapters()
     {
         return $this->getRepositoryManager()
-                    ->getModelAdapters($this->resourceName);
+            ->getModelAdapters($this->resourceName);
     }
 
     /**
@@ -102,11 +102,11 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         $config = $this->getApplication()->getConfiguration();
 
         $model->defineModelAttributes($modelAttributesDefinition)
-              ->setPrimaryKey($this->getModelPrimaryKey())
-              ->setCollection($this->resourceName)
-              ->setApplication($this->getApplication())
-              ->setDatabaseAddress($config->getPathValue('env.DATABASE_ADDRESS'))
-              ->setDatabase($config->getPathValue('env.DATABASE_NAME'));
+            ->setPrimaryKey($this->getModelPrimaryKey())
+            ->setCollection($this->resourceName)
+            ->setApplication($this->getApplication())
+            ->setDatabaseAddress($config->getPathValue('env.DATABASE_ADDRESS'))
+            ->setDatabase($config->getPathValue('env.DATABASE_NAME'));
 
         return $model;
     }
@@ -119,7 +119,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         $repositoryClass = get_class($this);
 
         return $this->getRepositoryManager()
-                    ->getModelClass($repositoryClass);
+            ->getModelClass($repositoryClass);
     }
 
     /**
@@ -127,12 +127,14 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
      */
     public function getModelPrimaryKey()
     {
-        // Convert resourceName name to model name like it's defined in configuration
-        $modelName = ucfirst(substr($this->getResourceName(), 0, -1));
+        $modelAttDefinition = $this->getModelAttributesDefinition();
 
-        return $this->getApplication()
-            ->getConfiguration()
-            ->getPathValue("models.{$modelName}.primaryKey");
+        foreach ($modelAttDefinition as $field => $definition) {
+            if (array_key_exists('primaryKey', $definition) === true && $definition['primaryKey']
+                === true) {
+                return $field;
+            }
+        }
     }
 
     /**
@@ -197,7 +199,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         }
 
         $attributes = $this->getPrimaryAdapter()
-                           ->loadOne($query);
+            ->loadOne($query);
 
         if ($attributes === null) {
             return null;
@@ -238,10 +240,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         foreach ($data as $attributes) {
             $model = $this->newModel();
             $model->disableFieldFilters()
-                  ->setAttributes($attributes)
-                  ->setDatabaseAttributes($attributes)
-                  ->enableFieldFilters()
-                  ->setIsNew(false);
+                ->setAttributes($attributes)
+                ->setDatabaseAttributes($attributes)
+                ->enableFieldFilters()
+                ->setIsNew(false);
 
             $out[$model->getId()] = $model;
         }
@@ -265,6 +267,7 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
     {
         // TODO: Implement save() method, let bruno use that
         throw new \RuntimeException('Not implemented');
+
         return $bruno;
     }
 
@@ -273,10 +276,10 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
      *
      * @return DatabaseQueryInterface
      */
-    protected function createNewQueryForModel(BrunoInterface $bruno): DatabaseQueryInterface
+    public function createNewQueryForModel(BrunoInterface $bruno): DatabaseQueryInterface
     {
         $query = $this->getPrimaryAdapter()
-                      ->newQuery();
+            ->newQuery();
 
         $query->setDatabase($bruno->getDatabase());
         $query->setCollection($bruno->getCollection());

@@ -75,9 +75,8 @@ class MongoQuery implements DatabaseQueryInterface
     /**
      * @param string $field
      * @param string $operation
-     * @param        $value
-     *
-     * @return $this
+     * @param $value
+     * @return DatabaseQueryInterface
      */
     public function addAndCondition(string $field, string $operation, $value)
     {

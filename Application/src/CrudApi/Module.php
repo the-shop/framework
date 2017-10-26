@@ -2,6 +2,7 @@
 
 namespace Application\CrudApi;
 
+use Application\Services\ProfilePerformance;
 use Framework\Base\Module\BaseModule;
 use Application\CrudApi\Repository\GenericRepository;
 

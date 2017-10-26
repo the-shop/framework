@@ -44,6 +44,7 @@ class RestApi extends BaseApplication
         }
 
         $request->setServer($helperRequest->server->all());
+        $request->setClientIp($helperRequest->getClientIp());
 
         $request->setPost($helperRequest->request->all());
         $request->setQuery($helperRequest->query->all());
@@ -51,7 +52,11 @@ class RestApi extends BaseApplication
         $request->setCookies($helperRequest->cookies->all());
         $request->setUri($helperRequest->getRequestUri());
 
-        if ($request->getMethod() === 'PUT' || $request->getMethod() === 'PATCH') {
+        $requestMethod = $request->getMethod();
+
+        if (($requestMethod === 'PUT' || $requestMethod === 'PATCH')
+            && (strpos($ctHeader, 'application/json') === 0) === false
+        ) {
             $request->setPost($request->getQuery());
         }
 

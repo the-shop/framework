@@ -200,8 +200,8 @@ abstract class Bruno implements BrunoInterface
     public function getDatabaseAdapters()
     {
         return $this->getApplication()
-                    ->getRepositoryManager()
-                    ->getModelAdapters($this->collection);
+            ->getRepositoryManager()
+            ->getModelAdapters($this->collection);
     }
 
     /**
@@ -262,8 +262,7 @@ abstract class Bruno implements BrunoInterface
 
     /**
      * @param string $databaseName
-     *
-     * @return $this
+     * @return BrunoInterface
      */
     public function setDatabase(string $databaseName): BrunoInterface
     {
@@ -271,10 +270,10 @@ abstract class Bruno implements BrunoInterface
 
         return $this;
     }
+
     /**
      * @param string $databaseAddress
-     *
-     * @return $this
+     * @return BrunoInterface
      */
     public function setDatabaseAddress(string $databaseAddress): BrunoInterface
     {
@@ -311,12 +310,12 @@ abstract class Bruno implements BrunoInterface
         }
 
         $this->getApplication()
-             ->triggerEvent(
-                 self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
-                 [
-                     $attribute => $value,
-                 ]
-             );
+            ->triggerEvent(
+                self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_PRE,
+                [
+                    $attribute => $value,
+                ]
+            );
 
         if ($attribute === 'password') {
             $this->addFieldFilter('password', new HashFilter());
@@ -334,10 +333,10 @@ abstract class Bruno implements BrunoInterface
         $this->attributes[$attribute] = $value;
 
         $this->getApplication()
-             ->triggerEvent(
-                 self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_POST,
-                 $this
-             );
+            ->triggerEvent(
+                self::EVENT_MODEL_HANDLE_ATTRIBUTE_VALUE_MODIFY_POST,
+                $this
+            );
 
         return $this;
     }
@@ -361,12 +360,33 @@ abstract class Bruno implements BrunoInterface
     }
 
     /**
-     * @throws \RuntimeException
+     * @return array
      */
     public function getDirtyAttributes()
     {
-        // TODO: Implement getDirtyAttributes() method.
-        throw new \RuntimeException('Not implemented');
+        $attributes = $this->getAttributes();
+        $databaseAttributes = $this->getDatabaseAttributes();
+
+        $dirty = [];
+
+        foreach ($attributes as $key => $value) {
+            if (!array_key_exists($key, $databaseAttributes)) {
+                $dirty[$key] = $value;
+            } elseif ($value !== $databaseAttributes[$key] &&
+                !$this->originalIsNumericallyEquivalent($key)) {
+                $dirty[$key] = $value;
+            }
+        }
+
+        return $dirty;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDirty()
+    {
+        return empty($this->getDirtyAttributes()) === false;
     }
 
     /**
@@ -417,7 +437,7 @@ abstract class Bruno implements BrunoInterface
             'alpha_num',
             'alpha_numeric',
             'alpha_dash',
-            'mixed'
+            'mixed',
         ];
 
         foreach ($definition as $key => $value) {
@@ -488,5 +508,39 @@ abstract class Bruno implements BrunoInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Validates collection is set properly, throws exception otherwise
+     *
+     * @param $resourceType
+     * @return $this
+     * @throws \Exception
+     */
+    public function confirmResourceOf(string $resourceType)
+    {
+        if ($this->getCollection() !== $resourceType) {
+            throw new \Exception('Model resource not configured correctly');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Determine if the new and old values for a given key are numerically equivalent.
+     *
+     * @param  string $key
+     * @return bool
+     */
+    private function originalIsNumericallyEquivalent($key)
+    {
+        $current = $this->getAttribute($key);
+        $databaseAttributes = $this->getDatabaseAttributes();
+
+        $original = $databaseAttributes[$key];
+
+        return is_numeric($current)
+            && is_numeric($original)
+            && strcmp((string)$current, (string)$original) === 0;
     }
 }

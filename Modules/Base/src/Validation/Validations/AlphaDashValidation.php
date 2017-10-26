@@ -14,6 +14,10 @@ class AlphaDashValidation extends Validation
      */
     public function isValid()
     {
+        if (empty($this->getValue()) === true) {
+            return true;
+        }
+
         return preg_match('/^[\pL\pM\pN_-]+$/u', $this->getValue()) > 0 === true;
     }
 

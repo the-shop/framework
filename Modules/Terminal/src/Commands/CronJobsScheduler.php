@@ -3,7 +3,6 @@
 namespace Framework\Terminal\Commands;
 
 use Framework\Base\Application\ApplicationAwareTrait;
-use Framework\Terminal\Commands\Cron\CronJobInterface;
 
 /**
  * Class CronJob

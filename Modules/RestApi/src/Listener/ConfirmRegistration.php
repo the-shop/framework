@@ -4,10 +4,7 @@ namespace Framework\RestApi\Listener;
 
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Event\ListenerInterface;
-use Application\Helpers\EmailSender;
-use Framework\Base\Mailer\SendGrid;
 use Framework\Base\Model\BrunoInterface;
-use SendGrid as MailerClient;
 
 /**
  * Class ConfirmRegistration
@@ -32,10 +29,8 @@ class ConfirmRegistration implements ListenerInterface
              */
             $profileName = $payload->getAttribute('name');
 
-            $appConfiguration = $this->getApplication()
+            $appConfig = $this->getApplication()
                 ->getConfiguration();
-
-            $subject = $appConfiguration->getPathValue('env.PRIVATE_MAIL_SUBJECT');
 
             $textBody = 'You have been successfully registered!';
             $htmlBody = /** @lang text */
@@ -48,19 +43,12 @@ class ConfirmRegistration implements ListenerInterface
                 </html>
                 ";
 
-            $app = $this->getApplication();
-            $mailerInterface = new SendGrid();
-            $mailerClient = new MailerClient(
-                $app->getConfiguration()
-                    ->getPathValue('env.SENDGRID_API_KEY')
-            );
-            $mailer = (new EmailSender())->setApplication($app);
+            $mailSender = $this->getApplication()->getService('emailService');
 
-            $mailer->sendEmail(
-                $mailerInterface,
-                $mailerClient,
-                $payload,
-                $subject,
+            $mailSender->sendEmail(
+                $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
+                $appConfig->getPathValue('env.PRIVATE_MAIL_SUBJECT'),
+                $payload->getAttribute('email'),
                 $htmlBody,
                 $textBody
             );

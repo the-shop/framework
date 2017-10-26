@@ -3,6 +3,7 @@
 namespace Framework\Base\Auth\Controller;
 
 use Application\Helpers\EmailSender;
+use Application\Services\EmailService;
 use Firebase\JWT\JWT;
 use Framework\Base\Application\Exception\AuthenticationException;
 use Framework\Base\Application\Exception\NotFoundException;
@@ -71,12 +72,12 @@ class AuthController extends Http
 
         $requestAuth = new RequestAuthorization();
         $requestAuth->setResourceName($model->getCollection())
-                    ->setId($model->getId())
-                    ->setRole($model->getAttribute('role'))
-                    ->setModel($model);
+            ->setId($model->getId())
+            ->setRole($model->getAttribute('role'))
+            ->setModel($model);
 
         $this->getApplication()
-             ->setRequestAuthorization($requestAuth);
+            ->setRequestAuthorization($requestAuth);
 
         /**
          * @todo implement key generation, adjustable time on token expiration, algorithm selection
@@ -94,8 +95,8 @@ class AuthController extends Http
         $jwt = JWT::encode($payload, $key, $alg);
 
         $this->getApplication()
-             ->getResponse()
-             ->addHeader('Authorization', "Bearer $jwt");
+            ->getResponse()
+            ->addHeader('Authorization', "Bearer $jwt");
 
         return $model;
     }
@@ -154,7 +155,16 @@ class AuthController extends Http
                     </body>
                 </html>";
 
-            if ($this->sendEmail($model, $subject, $html)) {
+            $appConfig = $this->getApplication()->getConfiguration();
+            $mailSender = $this->getApplication()->getService('emailService');
+
+            if ($mailSender->sendEmail(
+                $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
+                $subject,
+                $model->getAttribute('email'),
+                $html
+            )
+            ) {
                 return 'You will shortly receive an email with the link to reset your password.';
             }
 
@@ -194,7 +204,7 @@ class AuthController extends Http
         $modelAttributes = $model->getAttributes();
 
         // Check timestamps
-        $unixNow = (int) (new \DateTime())->format('U');
+        $unixNow = (int)(new \DateTime())->format('U');
         if ($unixNow - $modelAttributes['passwordResetTime'] > (24 * 60 * 60)) {
             throw new \HttpRuntimeException('Token has expired.', 400);
         }
@@ -232,36 +242,21 @@ class AuthController extends Http
                     </body>
                 </html>";
 
-            $this->sendEmail($model, $subject, $html);
+            /**
+             * @var EmailService $mailSender
+             */
+            $appConfig = $this->getApplication()->getConfiguration();
+            $mailSender = $this->getApplication()->getService('emailService');
+            $mailSender->sendEmail(
+                $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
+                $subject,
+                $model->getAttribute('email'),
+                $html
+            );
 
             return 'Password successfully changed.';
         }
 
         throw new \Exception('Issue with saving new password!');
-    }
-
-    /**
-     * @param BrunoInterface $model
-     * @param $subject
-     * @param $html
-     * @return mixed
-     */
-    private function sendEmail(BrunoInterface $model, $subject, $html)
-    {
-        $app = $this->getApplication();
-        $mailerInterface = new SendGrid();
-        $mailerClient = new MailerClient(
-            $app->getConfiguration()
-                ->getPathValue('env.SENDGRID_API_KEY')
-        );
-        $mailer = (new EmailSender())->setApplication($app);
-
-        $mailer->sendEmail(
-            $mailerInterface,
-            $mailerClient,
-            $model,
-            $subject,
-            $html
-        );
     }
 }

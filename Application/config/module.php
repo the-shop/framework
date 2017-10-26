@@ -71,6 +71,9 @@ return [
         ],
         "profile_overall" => [
             MongoAdapter::class
+        ],
+        "logs" => [
+            MongoAdapter::class
         ]
     ],
     'primaryModelAdapter' => [
@@ -82,6 +85,7 @@ return [
         'comments' => MongoAdapter::class,
         'xp' => MongoAdapter::class,
         'profile_overall' => MongoAdapter::class,
+        'logs' => MongoAdapter::class,
     ],
     'services' => [
         ProfilePerformance::class

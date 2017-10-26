@@ -44,6 +44,11 @@ class Request implements RequestInterface
     private $requestUri = null;
 
     /**
+     * @var null|string
+     */
+    private $clientIp = null;
+
+    /**
      * @param array $get
      * @return $this
      */
@@ -203,5 +208,24 @@ class Request implements RequestInterface
             }
         }
         return [];
+    }
+
+    /**
+     * @param string $ip
+     * @return RequestInterface
+     */
+    public function setClientIp(string $ip)
+    {
+        $this->clientIp = $ip;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getClientIp()
+    {
+        return $this->clientIp;
     }
 }

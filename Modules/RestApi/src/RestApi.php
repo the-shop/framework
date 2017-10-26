@@ -44,6 +44,7 @@ class RestApi extends BaseApplication
         }
 
         $request->setServer($helperRequest->server->all());
+        $request->setClientIp($helperRequest->getClientIp());
 
         $request->setPost($helperRequest->request->all());
         $request->setQuery($helperRequest->query->all());

@@ -62,9 +62,8 @@ class MongoQuery implements DatabaseQueryInterface
     /**
      * @param string $field
      * @param string $operation
-     * @param        $value
-     *
-     * @return void
+     * @param $value
+     * @return DatabaseQueryInterface
      */
     public function addAndCondition(string $field, string $operation, $value)
     {
@@ -72,8 +71,14 @@ class MongoQuery implements DatabaseQueryInterface
             case '=':
                 $operation = '$eq';
                 break;
+            case '>':
+                $operation = '$gt';
+                break;
             case '>=':
                 $operation = '$gte';
+                break;
+            case '<':
+                $operation = '$lt';
                 break;
             case '<=':
                 $operation = '$lte';
@@ -95,6 +100,8 @@ class MongoQuery implements DatabaseQueryInterface
         }
 
         $this->conditions = array_merge_recursive($this->conditions, $queryPart);
+
+        return $this;
     }
 
     /**

@@ -218,6 +218,15 @@
             "numeric"
           ],
           "default": 0
+        },
+        "banned": {
+          "label": "Banned",
+          "type": "boolean",
+          "required": false,
+          "validation": [
+            "boolean"
+          ],
+          "default": false
         }
       }
     },
@@ -901,6 +910,74 @@
             "integer"
           ],
           "default": 0
+        }
+      }
+    },
+    "Log": {
+      "collection": "logs",
+      "authenticatable": false,
+      "fields": {
+        "_id": {
+          "primaryKey": true,
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "name": {
+          "label": "Name",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "id": {
+          "label": "ID",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "date": {
+          "label": "Date",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "ip": {
+          "label": "Ip",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "uri": {
+          "label": "Uri",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "method": {
+          "label": "Method",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
         }
       }
     }

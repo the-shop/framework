@@ -76,6 +76,9 @@ class ProfilePerformance implements ServiceInterface
 
         $profileTasksFinished = $repository->loadMultiple($queryFinishedTasks);
 
+        /**
+         * @var BrunoInterface[] $profileTasks
+         */
         $profileTasks = array_merge($profileTasksUnfinished, $profileTasksFinished);
 
         $estimatedHours = 0;
@@ -95,9 +98,7 @@ class ProfilePerformance implements ServiceInterface
         // Let's aggregate task data
         foreach ($profileTasks as $task) {
             // Adjust values for profile we're looking at
-            /**
-             * @var BrunoInterface $task
-             */
+
             $mappedValues = $this->getTaskValuesForProfile($profile, $task);
             foreach ($mappedValues as $key => $value) {
                 $task->setAttribute($key, $value);

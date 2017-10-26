@@ -3,6 +3,7 @@
 namespace Application\Test\Application\Traits;
 
 use Framework\Base\Model\BrunoInterface;
+use MongoDB\BSON\ObjectID;
 
 trait ProfileRelated
 {
@@ -52,5 +53,69 @@ trait ProfileRelated
         $xpRecord->save();
 
         return $xpRecord;
+    }
+
+    /**
+     * @return BrunoInterface
+     */
+    public function getNewRequestLog()
+    {
+        return $this->getApplication()
+            ->getRepositoryManager()
+            ->getRepositoryFromResourceName('logs')
+            ->newModel()
+            ->setAttributes(
+                [
+                    'name' => '',
+                    'id' => '',
+                    'ip' => '',
+                    'date' => '',
+                    'uri' => '',
+                    'method' => ''
+                ]
+            );
+    }
+
+    /**
+     * @param null $timestamp
+     * @return BrunoInterface
+     */
+    public function getNewRequestLogWithDateUnAssigned($timestamp = null)
+    {
+        if (!$timestamp) {
+            $time = new \DateTime();
+            $timestamp = $time->format('U');
+        }
+
+        $log = $this->getNewRequestLog();
+
+        $log->setAttributes([
+            '_id' => new ObjectID(dechex($timestamp) . '0000000000000000'),
+            'date' => (new \DateTime())::createFromFormat('d-m-Y H:i:s', $timestamp)
+        ]);
+
+        return $log;
+    }
+
+    /**
+     * @param null $timestamp
+     * @return BrunoInterface
+     */
+    public function getNewRequestLogWithDateAssigned($timestamp = null)
+    {
+        if (!$timestamp) {
+            $time = new \DateTime();
+            $timestamp = $time->format('U');
+        }
+
+        $log = $this->getNewRequestLog();
+
+        $log->setAttributes([
+            '_id' => new ObjectID(dechex($timestamp) . '0000000000000000'),
+            'date' => (new \DateTime())::createFromFormat('d-m-Y H:i:s', $timestamp),
+            'id' => $this->profile->getAttribute('_id')
+        ]);
+
+        return $log;
     }
 }

@@ -2,12 +2,10 @@
 
 namespace Application\Listeners;
 
-use Application\Helpers\EmailSender;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Event\ListenerInterface;
-use Framework\Base\Mailer\SendGrid;
 use Framework\Base\Model\BrunoInterface;
-use SendGrid as MailerClient;
+use Application\Services\EmailService;
 
 /**
  * Class ProfileUpdate
@@ -41,36 +39,33 @@ class ProfileUpdate implements ListenerInterface
             $emailMessage = $this->getApplication()
                 ->getConfiguration()
                 ->getPathValue('internal.profile_update_xp_message');
+            //Format message
             $message = str_replace(
                 '{N}',
                 ($xpDifference > 0 ? "+" . $xpDifference : $xpDifference),
                 $emailMessage
             );
+
             $subject = 'Xp status changed!';
+            $html = /** @lang text */
+                "<html>
+                    <body>
+                        <p> {$message} </p>
+                    </body>
+                 </html>";
 
-            // Try to save model and send confirmation email
-                $html = /** @lang text */
-                    "<html>
-                        <body>
-                            <p> $message </p>
-                        </body>
-                     </html>";
 
-                    $app = $this->getApplication();
-                    $mailerInterface = new SendGrid();
-                    $mailerClient = new MailerClient(
-                        $app->getConfiguration()
-                            ->getPathValue('env.SENDGRID_API_KEY')
-                    );
-                    $mailer = (new EmailSender())->setApplication($app);
-
-                    $mailer->sendEmail(
-                        $mailerInterface,
-                        $mailerClient,
-                        $payload,
-                        $subject,
-                        $html
-                    );
+            $appConfig = $this->getApplication()->getConfiguration();
+            $mailSender = $this->getApplication()->getService('emailService');
+            /**
+             * @var EmailService $mailSender
+             */
+            $mailSender->sendEmail(
+                $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
+                $subject,
+                $payload->getAttribute('email'),
+                $html
+            );
 
             $slack = $payload->getAttribute('slack');
 

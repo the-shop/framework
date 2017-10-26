@@ -24,4 +24,15 @@ interface RequestInterface extends \Framework\Base\Request\RequestInterface
      * @return array
      */
     public function getHeaders(): array;
+
+    /**
+     * @param string $ip
+     * @return RequestInterface
+     */
+    public function setClientIp(string $ip);
+
+    /**
+     * @return string|null
+     */
+    public function getClientIp();
 }

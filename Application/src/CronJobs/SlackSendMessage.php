@@ -2,7 +2,6 @@
 
 namespace Application\CronJobs;
 
-use Application\CrudApi\SlackApiHelper;
 use Framework\Terminal\Commands\Cron\CronJob;
 
 class SlackSendMessage extends CronJob
@@ -42,7 +41,13 @@ class SlackSendMessage extends CronJob
 
             $messages = $repository->loadMultiple($query);
 
-            $client = new SlackApiHelper();
+            $args = $this->getArgs();
+
+            $httpClient = reset($args);
+            $handler = key($args);
+
+            $client = new $handler;
+            $client->setClient(new $httpClient);
             $client->setApplication($this->getApplication());
 
             foreach ($messages as $message) {

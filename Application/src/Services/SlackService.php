@@ -56,13 +56,19 @@ class SlackService implements ServiceInterface
 
         $now = time();
 
+        if ($secondsDelay === 0) {
+            $runAt = $now;
+        } else {
+            $runAt = $now - $now % $secondsDelay + $secondsDelay;
+        }
+
         $attributes = [
             'recipient' => $recipient,
             'message' => $message,
             'priority' => $priority,
             'private' => $private,
             'sent' => false,
-            'runAt' => $now - $now % $secondsDelay + $secondsDelay,
+            'runAt' => $runAt,
         ];
 
         return $this->getApplication()

@@ -59,8 +59,8 @@ class Module extends BaseModule
 
         //Add cron jobs
         $cronJobs = $appConfig->getPathValue('cronJobs');
-        foreach ($cronJobs as $job => $timer) {
-            $cronJob = new $job($timer);
+        foreach ($cronJobs as $job => $params) {
+            $cronJob = new $job($params);
             $application->registerCronJob($cronJob);
         }
 

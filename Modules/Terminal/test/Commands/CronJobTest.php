@@ -33,7 +33,8 @@ class CronJobTest extends UnitTest
 
     private $cronJobs = [
         TestJob::class => [
-            'timer' => 'daily'
+            'timer' => 'daily',
+            'args' => []
         ],
     ];
 

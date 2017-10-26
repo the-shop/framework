@@ -5,6 +5,8 @@ use Framework\Base\Mongo\MongoAdapter;
 use Application\CrudApi\Repository\GenericRepository;
 use Application\Services\SlackService;
 use Application\CronJobs\SlackSendMessage;
+use Application\Services\SlackApiHelper;
+use GuzzleHttp\Client;
 
 return [
     'routePrefix' => '/api/v1',
@@ -81,6 +83,9 @@ return [
     'cronJobs' => [
         SlackSendMessage::class => [
             'timer' => 'everyMinute',
+            'args' => [
+                SlackApiHelper::class => Client::class
+            ],
         ],
     ],
 ];

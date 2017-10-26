@@ -1,11 +1,10 @@
 <?php
 
-namespace Application\CrudApi;
+namespace Application\Services;
 
 use Framework\Base\Application\ApplicationAwareInterface;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Application\Exception\NotFoundException;
-use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -41,6 +40,8 @@ class SlackApiHelper implements ApplicationAwareInterface
      */
     private $headers = [];
 
+    const BASE_URI = 'https://slack.com/api/';
+
     /**
      * Slack collections
      *
@@ -55,8 +56,19 @@ class SlackApiHelper implements ApplicationAwareInterface
      */
     public function __construct()
     {
-        $this->client = new Client(['base_uri' => 'https://slack.com/api/']);
         $this->addHeader('Content-Type', 'application/x-www-form-urlencoded');
+    }
+
+    /**
+     * @param $client
+     *
+     * @return \Application\Services\SlackApiHelper
+     */
+    public function setClient($client): SlackApiHelper
+    {
+        $this->client = $client;
+
+        return $this;
     }
 
     /**
@@ -79,6 +91,18 @@ class SlackApiHelper implements ApplicationAwareInterface
     public function setQueryParams(array $queryParams = []): SlackApiHelper
     {
         $this->queryParams = $queryParams;
+
+        return $this;
+    }
+
+    /**
+     * @param array $headers
+     *
+     * @return \Application\Services\SlackApiHelper
+     */
+    public function setHeaders(array $headers = []): SlackApiHelper
+    {
+        $this->headers = $headers;
 
         return $this;
     }
@@ -141,6 +165,7 @@ class SlackApiHelper implements ApplicationAwareInterface
      * @param string $collection
      *
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \InvalidArgumentException
      */
     public function lists(string $collection): ResponseInterface
     {
@@ -149,7 +174,7 @@ class SlackApiHelper implements ApplicationAwareInterface
         }
         $this->setToken();
 
-        $response = $this->client->get($collection . '.list', [
+        $response = $this->client->get($this::BASE_URI . $collection . '.list', [
             'headers' => $this->headers,
             'query' => $this->queryParams,
         ]);
@@ -167,16 +192,15 @@ class SlackApiHelper implements ApplicationAwareInterface
      */
     public function getUser(string $slackName)
     {
-        $users = json_decode(
-            $this->lists('users')->getBody()->getContents()
-        )->members;
+        $contents = json_decode($this->lists('users')->getBody()->getContents());
 
-        foreach ($users as $user) {
-            if ($slackName === $user->name) {
-                return $user;
+        if (isset($contents->members) === true) {
+            foreach ($contents->members as $user) {
+                if ($slackName === $user->name) {
+                    return $user;
+                }
             }
         }
-
         throw new NotFoundException('User with that name is not found in your workspace', 404);
     }
 
@@ -199,7 +223,7 @@ class SlackApiHelper implements ApplicationAwareInterface
 
         $this->setToken();
 
-        $response = $this->client->post('chat.postMessage', [
+        $response = $this->client->post($this::BASE_URI . 'chat.postMessage', [
             'headers' => $this->headers,
             'form_params' => $this->postParams,
         ]);
@@ -211,6 +235,7 @@ class SlackApiHelper implements ApplicationAwareInterface
      * @param string $slackId
      *
      * @return string
+     * @throws \RuntimeException
      */
     public function openIm(string $slackId): string
     {
@@ -219,7 +244,7 @@ class SlackApiHelper implements ApplicationAwareInterface
 
         $response = json_decode(
             $this->client->post(
-                'im.open',
+                $this::BASE_URI . 'im.open',
                 [
                     'headers' => $this->headers,
                     'form_params' => $this->postParams,
@@ -245,5 +270,37 @@ class SlackApiHelper implements ApplicationAwareInterface
         $this->queryParams = [];
 
         return $this;
+    }
+
+    /**
+     * @return \GuzzleHttp\Client|null
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPostParams(): array
+    {
+        return $this->postParams;
+    }
+
+    /**
+     * @return array
+     */
+    public function getQueryParams(): array
+    {
+        return $this->queryParams;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
     }
 }

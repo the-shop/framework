@@ -18,6 +18,11 @@ abstract class CronJob implements CronJobInterface
     private $cronTimeExpression = '0 0 * * 0';
 
     /**
+     * @var array
+     */
+    private $args = [];
+
+    /**
      * CronJob constructor.
      *
      * @param array $cronJobParams
@@ -34,6 +39,7 @@ abstract class CronJob implements CronJobInterface
         } else {
             $this->setCronTimeExpression($cronJobParams['timer']);
         }
+        $this->setArgs($cronJobParams['args']);
     }
 
     /**
@@ -42,6 +48,26 @@ abstract class CronJob implements CronJobInterface
     public function getIdentifier(): string
     {
         return get_class($this);
+    }
+
+    /**
+     * @param array $args
+     *
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
+     */
+    public function setArgs(array $args): CronJobInterface
+    {
+        $this->args = $args;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getArgs(): array
+    {
+        return $this->args;
     }
 
     /**

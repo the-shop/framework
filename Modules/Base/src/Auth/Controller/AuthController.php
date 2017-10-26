@@ -2,17 +2,15 @@
 
 namespace Framework\Base\Auth\Controller;
 
+use Application\Helpers\EmailSender;
 use Firebase\JWT\JWT;
 use Framework\Base\Application\Exception\AuthenticationException;
 use Framework\Base\Application\Exception\NotFoundException;
-use Framework\Base\Mailer\EmailSender;
 use Framework\Base\Mailer\SendGrid;
 use Framework\Base\Model\BrunoInterface;
-use Framework\Base\Model\Modifiers\HashFilter;
-use Framework\Base\Queue\Adapters\Sync;
-use Framework\Base\Queue\TaskQueue;
 use Framework\Base\Auth\RequestAuthorization;
 use Framework\Http\Controller\Http;
+use SendGrid as MailerClient;
 
 /**
  * Class AuthController
@@ -250,31 +248,20 @@ class AuthController extends Http
      */
     private function sendEmail(BrunoInterface $model, $subject, $html)
     {
-        $profileAttributes = $model->getAttributes();
-        $appConfiguration = $this->getApplication()
-            ->getConfiguration();
-
-        $emailSender = new EmailSender(new SendGrid());
-        $emailSender->setClient(
-            new \SendGrid($appConfiguration->getPathValue('env.SENDGRID_API_KEY'))
+        $app = $this->getApplication();
+        $mailerInterface = new SendGrid();
+        $mailerClient = new MailerClient(
+            $app->getConfiguration()
+                ->getPathValue('env.SENDGRID_API_KEY')
         );
+        $mailer = (new EmailSender())->setApplication($app);
 
-        $emailSender->setFrom(
-            $appConfiguration
-                ->getPathValue('env.PRIVATE_MAIL_FROM')
-        );
-        $emailSender->setSubject($subject);
-        $emailSender->setTo($profileAttributes['email']);
-        $emailSender->setHtmlBody($html);
-
-        return TaskQueue::addTaskToQueue(
-            'email',
-            Sync::class,
-            [
-                'taskClassPath' => $emailSender,
-                'method' => 'send',
-                'parameters' => [],
-            ]
+        $mailer->sendEmail(
+            $mailerInterface,
+            $mailerClient,
+            $model,
+            $subject,
+            $html
         );
     }
 }

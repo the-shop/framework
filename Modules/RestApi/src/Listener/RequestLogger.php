@@ -24,15 +24,20 @@ class RequestLogger implements ListenerInterface
         $request = $app->getRequest();
         $requestAuth = $app->getRequestAuthorization();
 
-        $name = null;
+        $name = '';
+        $id = '';
 
-        if ($requestAuth->getModel() !== null) {
-            $name = $requestAuth->getModel()->getAttribute('name');
+        if ($requestAuth !== null) {
+            $id = $requestAuth->getId();
+            $model = $requestAuth->getModel();
+            if ($model !== null) {
+                $name = $model->getAttribute('name');
+            }
         }
 
         $logData = [
             'name' => $name,
-            'id' => $requestAuth->getId(),
+            'id' => $id,
             'date' => (new \DateTime())->format('d-m-Y H:i:s'),
             'ip' => $request->getClientIp(),
             'uri' => $request->getUri(),

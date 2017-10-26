@@ -19,8 +19,8 @@ return [
             ExceptionFormatter::class
         ],
         BaseApplication::EVENT_APPLICATION_HANDLE_REQUEST_PRE => [
-            AuthenticationListener::class,
             RequestLogger::class,
+            AuthenticationListener::class,
             Acl::class,
         ],
         Resource::EVENT_CRUD_API_RESOURCE_CREATE_POST => [

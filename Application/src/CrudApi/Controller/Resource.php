@@ -5,6 +5,7 @@ namespace Application\CrudApi\Controller;
 use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Application\Exception\ValidationException;
 use Framework\Base\Database\DatabaseQueryInterface;
+use Framework\Base\Helpers\Parse;
 use Framework\Base\Model\BrunoInterface;
 use Application\CrudApi\Repository\GenericRepository;
 use Framework\Base\Repository\BrunoRepositoryInterface;
@@ -83,6 +84,7 @@ class Resource extends HttpController
      */
     public function loadAll(string $resourceName)
     {
+
         $this->getApplication()
             ->triggerEvent(
                 self::EVENT_CRUD_API_RESOURCE_LOAD_ALL_PRE,
@@ -135,24 +137,24 @@ class Resource extends HttpController
     public function create(string $resourceName)
     {
         $this->getApplication()
-             ->triggerEvent(
-                 self::EVENT_CRUD_API_RESOURCE_CREATE_PRE,
-                 [
-                     'resourceName' => $resourceName,
-                 ]
-             );
+            ->triggerEvent(
+                self::EVENT_CRUD_API_RESOURCE_CREATE_PRE,
+                [
+                    'resourceName' => $resourceName,
+                ]
+            );
 
         $postParams = $this->getPost();
 
         $this->validateInput($resourceName, $postParams);
 
         $model = $this->getRepositoryFromResourceName($resourceName)
-                      ->newModel()
-                      ->setAttributes($postParams)
-                      ->save();
+            ->newModel()
+            ->setAttributes($postParams)
+            ->save();
 
         $this->getApplication()
-             ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_CREATE_POST, $model);
+            ->triggerEvent(self::EVENT_CRUD_API_RESOURCE_CREATE_POST, $model);
 
         return $model;
     }
@@ -177,7 +179,7 @@ class Resource extends HttpController
 
         $postParams = $this->getPost();
 
-        $this->validateInput($resourceName, $postParams);
+        $this->validateInput($resourceName, $postParams, $model);
 
         $model->setAttributes($postParams);
         $model->save();
@@ -208,7 +210,7 @@ class Resource extends HttpController
 
         $postParams = $this->getPost();
 
-        $this->validateInput($resourceName, $postParams);
+        $this->validateInput($resourceName, $postParams, $model);
 
         foreach ($postParams as $attribute => $value) {
             $model->setAttribute($attribute, $value);
@@ -272,11 +274,14 @@ class Resource extends HttpController
     /**
      * @param string $resourceName
      * @param array $requestParameters
+     * @param null|BrunoInterface $model
      * @return $this
-     * @throws \HttpException
      */
-    public function validateInput(string $resourceName, array $requestParameters = [])
-    {
+    public function validateInput(
+        string $resourceName,
+        array $requestParameters = [],
+        $model = null
+    ) {
         $app = $this->getApplication();
         $requestMethod = $this->getRequest()->getMethod();
 
@@ -314,9 +319,16 @@ class Resource extends HttpController
             ) {
                 $value = $requestParameters[$fieldName];
                 foreach ($options['validation'] as $validationRule) {
-                    /* If field has got unique validation rule, set value as
-                       array with fieldName => value, and resourceName so we can make query to DB */
-                    if (($validationRule === 'unique') === true) {
+                    if ($validationRule === 'float' && is_integer($value)) {
+                        $value = (float) $value;
+                    }
+                    /* If field has got unique validation rule, check if param value is different
+                       then model value then if is different set value as array with fieldName =>
+                       value, and resourceName so we can make query to DB */
+                    if ($validationRule === 'unique') {
+                        if ($model !== null && $value === $model->getAttribute($fieldName)) {
+                            continue;
+                        }
                         $value = [
                             $fieldName => $requestParameters[$fieldName],
                             'resourceName' => $resourceName,
@@ -334,6 +346,38 @@ class Resource extends HttpController
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $resourceName
+     * @param string $identifier
+     * @return mixed
+     * @throws NotFoundException
+     */
+    public function getPerformance(string $resourceName, string $identifier)
+    {
+        // Default last month
+        $startDate = strtotime('first day of last month');
+        $endDate = strtotime('last day of last month');
+
+        $query = $this->getQuery();
+
+        if (array_key_exists('unixStart', $query) === true) {
+            $startDate = Parse::unixTimestamp($query['unixStart']);
+        }
+
+        if (array_key_exists('unixEnd', $query) === true) {
+            $endDate = Parse::unixTimestamp($query['unixEnd']);
+        }
+
+        $profile = $this->getRepositoryFromResourceName($resourceName)->loadOne($identifier);
+        if (!$profile) {
+            throw new NotFoundException('Profile not found', 404);
+        }
+
+        $profilePerformance = $this->getApplication()->getService('profilePerformance');
+
+        return $profilePerformance->aggregateForTimeRange($profile, $startDate, $endDate);
     }
 
     /**

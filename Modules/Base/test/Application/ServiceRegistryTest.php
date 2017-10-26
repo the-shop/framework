@@ -14,6 +14,7 @@ class ServiceRegistryTest extends UnitTest
         $key = SampleService::class;
 
         $registry = new ServicesRegistry();
+        $registry->setApplication($this->getApplication());
 
         $this->assertAttributeCount(0, 'content', $registry);
 
@@ -34,6 +35,7 @@ class ServiceRegistryTest extends UnitTest
         $val = new \stdClass();
 
         $registry = new ServicesRegistry();
+        $registry->setApplication($this->getApplication());
 
         $this->assertAttributeCount(0, 'content', $registry);
 

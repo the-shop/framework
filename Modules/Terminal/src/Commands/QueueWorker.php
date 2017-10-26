@@ -10,14 +10,14 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
  * Class QueueWorker
  * @package Framework\Base\Terminal\Commands
  */
-class QueueWorker
+class QueueWorker implements CommandHandlerInterface
 {
     use ApplicationAwareTrait;
 
     /**
      * @return $this|string
      */
-    public function handle()
+    public function run(array $parameterValues = [])
     {
         $connection = new AMQPStreamConnection(
             getenv('RABBIT_MQ_HOST', 'localhost'), #host
@@ -26,7 +26,6 @@ class QueueWorker
             getenv('RABBIT_MQ_PASSWORD', 'guest') #password
         );
 
-        /** @var $channel AMQPChannel */
         $channel = $connection->channel();
 
         $queueNames = $this->getApplication()
@@ -56,8 +55,7 @@ class QueueWorker
                     $queueName, #queue
                     '', #consumer tag - Identifier for the consumer, valid within the current channel. just string
                     false, #no local - TRUE: the server will not send messages to the connection that published them
-                    false, #no ack - send a proper acknowledgment from the worker, once we're done with a
-                    # task
+                    false, #no ack - send a proper acknowledgment from the worker, once we're done with a task
                     false, #exclusive - queues may only be accessed by the current connection
                     false, #no wait - TRUE: the server will not respond to the method. The client should not wait for a reply method
                     [$this, 'processQueue']    #callback - method that will receive the message

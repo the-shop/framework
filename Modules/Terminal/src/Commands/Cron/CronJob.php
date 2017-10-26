@@ -2,25 +2,52 @@
 
 namespace Framework\Terminal\Commands\Cron;
 
+use Framework\Base\Application\ApplicationAwareTrait;
+
 /**
- * Class Schedule
+ * Class CronJobsHandler
  * @package Framework\Base\Terminal\Commands\Cron
  */
-class Schedule extends CronJobsHandler
+abstract class CronJob implements CronJobInterface
 {
+    use ApplicationAwareTrait;
+
     /**
-     * The cronTimeExpression expression representing the event's frequency.
-     *
      * @var string
      */
-    public $cronTimeExpression = '* * * * *';
+    private $cronTimeExpression = '0 0 * * 0';
+
+    /**
+     * CronJob constructor.
+     *
+     * @param array $cronJob
+     */
+    public function __construct(array $cronJob)
+    {
+        if (method_exists($this, $cronJob['value']) === false) {
+            $this->setCronTimeExpression($cronJob['value']);
+        } elseif (empty($cronJob['args']) === true) {
+            $this->{$cronJob['value']}();
+        } else {
+            $this->{$cronJob['value']}(...$cronJob['args']);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return get_class($this);
+    }
 
     /**
      * Set the cronTimeExpression expression for the event.
-     * @param $expression
-     * @return $this
+     * @param string $expression
+     *
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
-    public function setCronTimeExpression($expression)
+    public function setCronTimeExpression(string $expression): CronJobInterface
     {
         $this->cronTimeExpression = $expression;
 
@@ -32,7 +59,7 @@ class Schedule extends CronJobsHandler
      *
      * @return string
      */
-    public function getCronTimeExpression()
+    public function getCronTimeExpression(): string
     {
         return $this->cronTimeExpression;
     }
@@ -40,7 +67,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run hourly.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function hourly()
     {
@@ -50,7 +77,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run daily.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function daily()
     {
@@ -61,7 +88,8 @@ class Schedule extends CronJobsHandler
      * Schedule the command at a given time.
      *
      * @param  string  $time
-     * @return $this
+     *
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function at($time)
     {
@@ -72,14 +100,15 @@ class Schedule extends CronJobsHandler
      * Schedule the event to run daily at a given time (10:00, 19:30, etc).
      *
      * @param  string  $time
-     * @return $this
+     *
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function dailyAt($time)
     {
         $segments = explode(':', $time);
 
         return $this->spliceIntoPosition(2, (int) $segments[0])
-            ->spliceIntoPosition(1, count($segments) == 2 ? (int) $segments[1] : '0');
+                    ->spliceIntoPosition(1, count($segments) == 2 ? (int) $segments[1] : '0');
     }
 
     /**
@@ -87,20 +116,21 @@ class Schedule extends CronJobsHandler
      *
      * @param  int  $first
      * @param  int  $second
-     * @return $this
+     *
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function twiceDaily($first = 1, $second = 13)
     {
         $hours = $first.','.$second;
 
         return $this->spliceIntoPosition(1, 0)
-            ->spliceIntoPosition(2, $hours);
+                    ->spliceIntoPosition(2, $hours);
     }
 
     /**
      * Schedule the event to run only on weekdays.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function weekdays()
     {
@@ -110,7 +140,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run only on Mondays.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function mondays()
     {
@@ -120,7 +150,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run only on Tuesdays.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function tuesdays()
     {
@@ -130,7 +160,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run only on Wednesdays.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function wednesdays()
     {
@@ -140,7 +170,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run only on Thursdays.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function thursdays()
     {
@@ -150,7 +180,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run only on Fridays.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function fridays()
     {
@@ -160,7 +190,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run only on Saturdays.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function saturdays()
     {
@@ -170,7 +200,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run only on Sundays.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function sundays()
     {
@@ -180,7 +210,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run weekly.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function weekly()
     {
@@ -192,7 +222,8 @@ class Schedule extends CronJobsHandler
      *
      * @param  int  $day
      * @param  string  $time
-     * @return $this
+     *
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function weeklyOn($day, $time = '0:0')
     {
@@ -204,7 +235,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run monthly.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function monthly()
     {
@@ -216,7 +247,8 @@ class Schedule extends CronJobsHandler
      *
      * @param int  $day
      * @param string  $time
-     * @return $this
+     *
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function monthlyOn($day = 1, $time = '0:0')
     {
@@ -228,7 +260,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run quarterly.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function quarterly()
     {
@@ -238,7 +270,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run yearly.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function yearly()
     {
@@ -248,7 +280,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run every minute.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function everyMinute()
     {
@@ -258,7 +290,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run every five minutes.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function everyFiveMinutes()
     {
@@ -268,7 +300,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run every ten minutes.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function everyTenMinutes()
     {
@@ -278,7 +310,7 @@ class Schedule extends CronJobsHandler
     /**
      * Schedule the event to run every thirty minutes.
      *
-     * @return $this
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function everyThirtyMinutes()
     {
@@ -289,7 +321,8 @@ class Schedule extends CronJobsHandler
      * Set the days of the week the command should run on.
      *
      * @param  array|mixed  $days
-     * @return $this
+     *
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     public function days($days)
     {
@@ -297,13 +330,14 @@ class Schedule extends CronJobsHandler
 
         return $this->spliceIntoPosition(5, implode(',', $days));
     }
-    
+
     /**
      * Splice the given value into the given position of the expression.
      *
      * @param  int  $position
      * @param  string  $value
-     * @return $this
+     *
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
      */
     protected function spliceIntoPosition($position, $value)
     {

@@ -49,7 +49,7 @@ class EventsTest extends UnitTest
         $app = $this->getApplication();
         $app->listen(self::TEST_EVENT, 'stdClass');
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Listener "stdClass" must implement ListenerInterface.');
+        $this->expectExceptionMessage('Listeners "stdClass" must implement ListenerInterface.');
 
         $app->triggerEvent(self::TEST_EVENT);
     }

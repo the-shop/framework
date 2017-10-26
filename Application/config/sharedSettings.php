@@ -99,6 +99,7 @@ return [
             'Medium',
             'Low',
         ],
+        'profile_update_xp_message' => 'Hey, your XP changed by {N}',
     ],
     /** External platform <-> framework configuration */
     'external' => [],

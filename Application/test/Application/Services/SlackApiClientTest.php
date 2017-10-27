@@ -2,31 +2,31 @@
 
 namespace Application\Test\Application\Services;
 
-use Application\Services\SlackApiHelper;
+use Application\Services\SlackApiClient;
 use Application\Test\Application\DummyCurlClient;
 use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Test\UnitTest;
 use Psr\Http\Message\ResponseInterface;
 
-class SlackApiHelperTest extends UnitTest
+class SlackApiClientTest extends UnitTest
 {
     public function testIsSlackApiHelperInstantiatable()
     {
-        $client = new SlackApiHelper();
+        $client = new SlackApiClient();
         $client->setClient(new DummyCurlClient())
                ->setApplication($this->getApplication());
 
-        $this::assertInstanceOf(SlackApiHelper::class, $client);
+        $this::assertInstanceOf(SlackApiClient::class, $client);
 
         return $client;
     }
 
     /**
-     * @param \Application\Services\SlackApiHelper $client
+     * @param \Application\Services\SlackApiClient $client
      *
      * @depends testIsSlackApiHelperInstantiatable
      */
-    public function testSettersAndGetters(SlackApiHelper $client)
+    public function testSettersAndGetters(SlackApiClient $client)
     {
         $client->addPostParam('post', 'test');
         $client->addQueryParam('query', 'test');
@@ -54,11 +54,11 @@ class SlackApiHelperTest extends UnitTest
     }
 
     /**
-     * @param \Application\Services\SlackApiHelper $client
+     * @param \Application\Services\SlackApiClient $client
      *
      * @depends testSettersAndGetters
      */
-    public function testLists(SlackApiHelper $client)
+    public function testLists(SlackApiClient $client)
     {
         $this->getApplication()->getConfiguration()->setPathValue('env.SLACK_TOKEN', '123456');
         $collections = [
@@ -78,7 +78,7 @@ class SlackApiHelperTest extends UnitTest
 
     public function testGetUser()
     {
-        $client = new SlackApiHelper();
+        $client = new SlackApiClient();
         $client->setClient(new DummyCurlClient())
                ->setApplication($this->getApplication());
         $this->getApplication()->getConfiguration()->setPathValue('env.SLACK_TOKEN', '123456');
@@ -94,7 +94,7 @@ class SlackApiHelperTest extends UnitTest
 
     public function testOpenIm()
     {
-        $client = new SlackApiHelper();
+        $client = new SlackApiClient();
         $client->setClient(new DummyCurlClient())
                ->setApplication($this->getApplication());
         $this->getApplication()->getConfiguration()->setPathValue('env.SLACK_TOKEN', '123456');
@@ -109,7 +109,7 @@ class SlackApiHelperTest extends UnitTest
 
     public function testSendMessage()
     {
-        $client = new SlackApiHelper();
+        $client = new SlackApiClient();
         $client->setClient(new DummyCurlClient())
                ->setApplication($this->getApplication());
         $this->getApplication()->getConfiguration()->setPathValue('env.SLACK_TOKEN', '123456');

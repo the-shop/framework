@@ -3,7 +3,7 @@
 namespace Application\Test\Application\CronJobs;
 
 use Application\CronJobs\SlackSendMessage;
-use Application\Services\SlackApiHelper;
+use Application\Services\SlackApiClient;
 use Application\Services\SlackService;
 use Application\Test\Application\DummyCurlClient;
 use Framework\Base\Test\UnitTest;
@@ -14,21 +14,24 @@ class SlackSendMessageTest extends UnitTest
     {
         $arr = [
             'timer' => 'everyMinute',
-            'args' => [
-                SlackApiHelper::class => DummyCurlClient::class
-            ],
+            'args' => [],
         ];
 
         $this->getApplication()
              ->getConfiguration()
-             ->setPathValue('cronJobs.' . SlackSendMessage::class, $arr)
              ->setPathValue('env.SLACK_TOKEN', '123456')
              ->setPathValue('internal.slack.priorityToMinutesDelay.0', 0);
 
-        /** @var SlackService $service */
-        $service = $this->getApplication()->getService(SlackService::class);
+        $apiClient = new SlackApiClient();
+        $apiClient->setClient(new DummyCurlClient())
+                  ->setApplication($this->getApplication());
 
-        $service->sendMessage('test', 'message', false, 0);
+        /** @var SlackService $service */
+        $service = $this->getApplication()
+                        ->getService(SlackService::class)
+                        ->setApiClient($apiClient);
+
+        $service->setMessage('test', 'message', false, 0);
 
         $cronJob = new SlackSendMessage($arr);
         $cronJob->setApplication($this->getApplication());
@@ -38,6 +41,9 @@ class SlackSendMessageTest extends UnitTest
         $this->delete();
     }
 
+    /**
+     * Deletes test record from db
+     */
     private function delete()
     {
         $repository = $this->getApplication()

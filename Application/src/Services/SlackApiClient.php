@@ -8,10 +8,10 @@ use Framework\Base\Application\Exception\NotFoundException;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Class SlackApiHelper
- * @package Application\CrudApi
+ * Class SlackApiClient
+ * @package Application\Services
  */
-class SlackApiHelper implements ApplicationAwareInterface
+class SlackApiClient implements ApplicationAwareInterface
 {
     use ApplicationAwareTrait;
 
@@ -52,7 +52,7 @@ class SlackApiHelper implements ApplicationAwareInterface
     ];
 
     /**
-     * SlackApiHelper constructor.
+     * SlackApiClient constructor.
      */
     public function __construct()
     {
@@ -62,9 +62,9 @@ class SlackApiHelper implements ApplicationAwareInterface
     /**
      * @param $client
      *
-     * @return \Application\Services\SlackApiHelper
+     * @return \Application\Services\SlackApiClient
      */
-    public function setClient($client): SlackApiHelper
+    public function setClient($client): SlackApiClient
     {
         $this->client = $client;
 
@@ -74,9 +74,9 @@ class SlackApiHelper implements ApplicationAwareInterface
     /**
      * @param array $postParams
      *
-     * @return \Application\CrudApi\SlackApiHelper
+     * @return \Application\Services\SlackApiClient
      */
-    public function setPostParams(array $postParams = []): SlackApiHelper
+    public function setPostParams(array $postParams = []): SlackApiClient
     {
         $this->postParams = $postParams;
 
@@ -86,9 +86,9 @@ class SlackApiHelper implements ApplicationAwareInterface
     /**
      * @param array $queryParams
      *
-     * @return \Application\CrudApi\SlackApiHelper
+     * @return \Application\Services\SlackApiClient
      */
-    public function setQueryParams(array $queryParams = []): SlackApiHelper
+    public function setQueryParams(array $queryParams = []): SlackApiClient
     {
         $this->queryParams = $queryParams;
 
@@ -98,9 +98,9 @@ class SlackApiHelper implements ApplicationAwareInterface
     /**
      * @param array $headers
      *
-     * @return \Application\Services\SlackApiHelper
+     * @return \Application\Services\SlackApiClient
      */
-    public function setHeaders(array $headers = []): SlackApiHelper
+    public function setHeaders(array $headers = []): SlackApiClient
     {
         $this->headers = $headers;
 
@@ -111,9 +111,9 @@ class SlackApiHelper implements ApplicationAwareInterface
      * @param string $key
      * @param        $value
      *
-     * @return \Application\CrudApi\SlackApiHelper
+     * @return \Application\Services\SlackApiClient
      */
-    public function addPostParam(string $key, $value): SlackApiHelper
+    public function addPostParam(string $key, $value): SlackApiClient
     {
         $this->postParams[$key] = $value;
 
@@ -124,9 +124,9 @@ class SlackApiHelper implements ApplicationAwareInterface
      * @param string $key
      * @param        $value
      *
-     * @return \Application\CrudApi\SlackApiHelper
+     * @return \Application\Services\SlackApiClient
      */
-    public function addQueryParam(string $key, $value): SlackApiHelper
+    public function addQueryParam(string $key, $value): SlackApiClient
     {
         $this->queryParams[$key] = $value;
 
@@ -137,9 +137,9 @@ class SlackApiHelper implements ApplicationAwareInterface
      * @param string $headerName
      * @param string $headerValue
      *
-     * @return \Application\CrudApi\SlackApiHelper
+     * @return \Application\Services\SlackApiClient
      */
-    public function addHeader(string $headerName, string $headerValue): SlackApiHelper
+    public function addHeader(string $headerName, string $headerValue): SlackApiClient
     {
         $this->headers[$headerName] = $headerValue;
 
@@ -261,9 +261,9 @@ class SlackApiHelper implements ApplicationAwareInterface
     }
 
     /**
-     * @return \Application\CrudApi\SlackApiHelper
+     * @return \Application\Services\SlackApiClient
      */
-    public function resetParams(): SlackApiHelper
+    public function resetParams(): SlackApiClient
     {
         $this->postParams = [];
 

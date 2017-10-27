@@ -2,6 +2,7 @@
 
 namespace Application\CronJobs;
 
+use Application\Services\SlackService;
 use Framework\Terminal\Commands\Cron\CronJob;
 
 class SlackSendMessage extends CronJob
@@ -17,12 +18,19 @@ class SlackSendMessage extends CronJob
                                 ->getPathValue(
                                     'internal.slack.priorityToMinutesDelay'
                                 );
-
         $output = [];
 
         $unixNow = time();
         $currentMinuteUnix = $unixNow - $unixNow % 60; // First second of current minute
         $nextMinuteUnix = $currentMinuteUnix + 60; // First second of next minute
+
+        /** @var SlackService $service */
+        $service = $this->getApplication()
+                        ->getService(SlackService::class);
+
+        if ($service->getApiClient() === null) {
+            $service->setApiClient();
+        }
 
         $repository = $this->getApplication()
                            ->getRepositoryManager()
@@ -41,46 +49,8 @@ class SlackSendMessage extends CronJob
 
             $messages = $repository->loadMultiple($query);
 
-            $args = $this->getArgs();
-
-            $httpClient = reset($args);
-            $handler = key($args);
-
-            $client = new $handler;
-            $client->setClient(new $httpClient);
-            $client->setApplication($this->getApplication());
-
-            foreach ($messages as $message) {
-                if (json_decode($message->getAttribute('message')) === null) {
-                    $response = json_decode(
-                        $client->sendMessage(
-                            $client->getUser($message->getAttribute('recipient'))->id,
-                            $message->getAttribute('message')
-                        )
-                        ->getBody()
-                        ->getContents()
-                    );
-                } else {
-                    $response = json_decode(
-                        $client->sendMessage(
-                            $client->getUser($message->getAttribute('recipient'))->id,
-                            '',
-                            $message->getAttribute('message')
-                        )
-                        ->getBody()
-                        ->getContents()
-                    );
-                }
-                if ($response->ok === true) {
-                    $message->setAttribute('sent', true);
-                    $message->save();
-                    $output['sent'][] = 'Message sent to ' . $message->getAttribute('recipient');
-                } else {
-                    $message->setAttribute('failed', true);
-                    $message->save();
-                    $output['failed'][] = 'Message failed to send to ' . $message->getAttribute('recipient');
-                }
-            }
+            // Push to slack via service
+            $output = array_merge_recursive($output, $service->pushMessages($messages));
         }
         return $output;
     }

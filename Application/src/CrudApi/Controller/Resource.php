@@ -84,7 +84,6 @@ class Resource extends HttpController
      */
     public function loadAll(string $resourceName)
     {
-
         $this->getApplication()
             ->triggerEvent(
                 self::EVENT_CRUD_API_RESOURCE_LOAD_ALL_PRE,

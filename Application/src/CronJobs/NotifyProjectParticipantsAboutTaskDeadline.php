@@ -3,6 +3,7 @@
 namespace Application\CronJobs;
 
 use Application\CrudApi\Model\Generic;
+use Application\Services\SlackService;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Model\BrunoInterface;
 use Framework\Terminal\Commands\Cron\CronJob;
@@ -21,7 +22,7 @@ class NotifyProjectParticipantsAboutTaskDeadline extends CronJob
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
     public function execute()
     {
@@ -89,21 +90,26 @@ class NotifyProjectParticipantsAboutTaskDeadline extends CronJob
                      * @var BrunoInterface $taskToNotify
                      */
                     foreach ($tasksToNotifyArray as $taskToNotify) {
-                        $taskToNotifyAtt = $taskToNotify->getAttributes();
+                        $taskToNotifyAttributes = $taskToNotify->getAttributes();
+
                         if ($recipientAttributes['admin'] === false
                             && $recipientAttributes['_id'] !==
-                            $projects[$taskToNotifyAtt['project_id']]->acceptedBy
+                            $projects[$taskToNotifyAttributes['project_id']]
+                                ->getAttribute('acceptedBy')
                             && in_array(
                                 $recipientAttributes['_id'],
-                                $projects[$taskToNotifyAtt['project_id']]->members
+                                $projects[$taskToNotifyAttributes['project_id']]
+                                    ->getAttribute('members')
                             ) === false
                         ) {
                             continue;
                         }
+
                         $compareSkills = array_intersect(
                             $recipientAttributes['skills'],
-                            $taskToNotifyAtt['skillset']
+                            $taskToNotifyAttributes['skillset']
                         );
+
                         if (empty($compareSkills) === false && count($tasksToNotifyRecipient) < 3) {
                             $tasksToNotifyRecipient[] = $taskToNotify;
                         }
@@ -125,18 +131,22 @@ class NotifyProjectParticipantsAboutTaskDeadline extends CronJob
                     }
                 }
 
+                /**
+                 * @var SlackService $slackService
+                 */
+                $slackService = $this->getApplication()->getService('SlackService');
+
                 // Create message for tasks with due_date within next 7 days
                 $messageDeadlineSoon = $this->createMessage(
                     self::DUE_DATE_SOON,
                     $tasksToNotifyRecipient
                 );
                 if ($messageDeadlineSoon) {
-                    //TODO: implement after slack service is implemented
-                    /*Slack::sendMessage(
+                    $slackService->sendMessage(
                         $recipientSlack,
                         $messageDeadlineSoon,
-                        Slack::LOW_PRIORITY
-                    );*/
+                        SlackService::LOW_PRIORITY
+                    );
                 }
                 // Create message for tasks that due_date has passed for PO
                 $messageDeadlinePassed = $this->createMessage(
@@ -144,12 +154,11 @@ class NotifyProjectParticipantsAboutTaskDeadline extends CronJob
                     $tasksToNotifyPo
                 );
                 if ($messageDeadlinePassed) {
-                    //TODO: implement after slack service is implemented
-                    /*Slack::sendMessage(
+                    $slackService->sendMessage(
                         $recipientSlack,
                         $messageDeadlinePassed,
-                        Slack::LOW_PRIORITY
-                    );*/
+                        SlackService::LOW_PRIORITY
+                    );
                 }
             }
         }

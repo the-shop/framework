@@ -98,6 +98,7 @@ return [
     'services' => [
         SlackService::class,
         EmailService::class,
+        ProfilePerformance::class,
     ],
     'emailService' => [
         'mailerInterface' => SendGrid::class,

@@ -56,7 +56,13 @@ class MongoAdapter implements DatabaseAdapterInterface
     public function getClient()
     {
         if ($this->mongoClient === null) {
-            $this->setClient(new Client());
+            $this->setClient(new Client($uri = 'mongodb://127.0.0.1/', $uriOptions = [], $driverOptions = [
+                'typeMap' => [
+                    'array' => 'array',
+                    'document' => 'MongoDB\Model\BSONDocument',
+                    'root' => 'MongoDB\Model\BSONDocument',
+                ]
+            ]));
         }
 
         return $this->mongoClient;
@@ -155,7 +161,7 @@ class MongoAdapter implements DatabaseAdapterInterface
                     'limit' => (int) $query->getLimit(),
                     'sort' => [
                         $query->getOrderBy() => $query->getOrderDirection() === 'asc' ? -1 : 1
-                    ]
+                    ],
                 ]
             );
 

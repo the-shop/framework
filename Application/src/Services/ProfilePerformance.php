@@ -353,9 +353,10 @@ class ProfilePerformance implements ServiceInterface
             );
             foreach ($projectTasks as $projectTask) {
                 $taskSkillSet = $projectTask->getAttribute('skillset');
-                if (is_array($taskSkillSet) !== true) {
+                if ($taskSkillSet === null) {
                     $taskSkillSet = [];
                 }
+
                 // Let's compare user skills with task skillset
                 $compareSkills = array_intersect(
                     $taskOwner->getAttribute('skills'),

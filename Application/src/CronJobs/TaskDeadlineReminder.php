@@ -12,7 +12,7 @@ use Framework\Terminal\Commands\Cron\CronJob;
  * Class NotifyProjectParticipantsAboutTaskDeadline
  * @package App\Console\Commands
  */
-class NotifyProjectParticipantsAboutTaskDeadline extends CronJob
+class TaskDeadlineReminder extends CronJob
 {
     use ApplicationAwareTrait;
 
@@ -74,12 +74,12 @@ class NotifyProjectParticipantsAboutTaskDeadline extends CronJob
         // Sort array of tasks ascending by due_date so we can notify about deadline
         ksort($tasksDueDateIn7Days);
 
-        $profiles = $repository->setResourceName('users')->loadMultiple(['active' => 'true']);
+        $profiles = $repository->setResourceName('users')->loadMultiple(['active' => true]);
 
         foreach ($profiles as $recipient) {
             $recipientAttributes = $recipient->getAttributes();
             if (array_key_exists('slack', $recipientAttributes) === true
-                && empty($recipient['slack']) === false) {
+                && empty($recipientAttributes['slack']) === false) {
                 $recipientSlack = '@' . $recipientAttributes['slack'];
 
                 /*Loop through tasks that have due_date within next 7 days, compare skills with
@@ -92,7 +92,8 @@ class NotifyProjectParticipantsAboutTaskDeadline extends CronJob
                     foreach ($tasksToNotifyArray as $taskToNotify) {
                         $taskToNotifyAttributes = $taskToNotify->getAttributes();
 
-                        if ($recipientAttributes['admin'] === false
+                        if (isset($recipientAttributes['admin']) === true
+                            && $recipientAttributes['admin'] === false
                             && $recipientAttributes['_id'] !==
                             $projects[$taskToNotifyAttributes['project_id']]
                                 ->getAttribute('acceptedBy')
@@ -134,7 +135,7 @@ class NotifyProjectParticipantsAboutTaskDeadline extends CronJob
                 /**
                  * @var SlackService $slackService
                  */
-                $slackService = $this->getApplication()->getService('SlackService');
+                $slackService = $this->getApplication()->getService(SlackService::class);
 
                 // Create message for tasks with due_date within next 7 days
                 $messageDeadlineSoon = $this->createMessage(
@@ -190,18 +191,20 @@ class NotifyProjectParticipantsAboutTaskDeadline extends CronJob
         }
 
         foreach ($tasks as $task) {
+            $taskAttributes = $task->getAttributes();
             $message .= ' *'
-                . $task->title
+                . $taskAttributes['title']
                 . ' ('
-                . \DateTime::createFromFormat('U', $task->due_date)->format('Y-m-d')
+                . \DateTime::createFromFormat('U', $taskAttributes['due_date'])
+                    ->format('Y-m-d')
                 . ')* '
                 . $webDomain
                 . 'projects/'
-                . $task->project_id
+                . $taskAttributes['project_id']
                 . '/sprints/'
-                . $task->sprint_id
+                . $taskAttributes['sprint_id']
                 . '/tasks/'
-                . $task->_id
+                . $taskAttributes['_id']
                 . ' ';
         }
 

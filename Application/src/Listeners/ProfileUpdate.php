@@ -64,7 +64,7 @@ class ProfileUpdate implements ListenerInterface
                  </html>";
 
             $appConfig = $this->getApplication()->getConfiguration();
-            $mailSender = $this->getApplication()->getService('emailService');
+            $mailSender = $this->getApplication()->getService(EmailService::class);
             /**
              * @var EmailService $mailSender
              */

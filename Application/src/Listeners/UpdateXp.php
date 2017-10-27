@@ -3,6 +3,7 @@
 namespace Application\Listeners;
 
 use Application\Helpers\XpRecord;
+use Application\Services\ProfilePerformance;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Helpers\Parse;
@@ -47,7 +48,7 @@ class UpdateXp implements ListenerInterface
         $app = $this->getApplication();
         $repositoryManager = $app->getRepositoryManager();
 
-        $profilePerformance = $app->getService('profilePerformance');
+        $profilePerformance = $app->getService(ProfilePerformance::class);
 
         $taskPerformance = $profilePerformance->perTask($task);
 

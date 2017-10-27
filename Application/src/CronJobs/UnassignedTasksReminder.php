@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\CronJobs\Commands;
+namespace Application\CronJobs;
 
 use Application\Services\SlackService;
 use Framework\Base\Application\ApplicationAwareTrait;
@@ -38,8 +38,9 @@ class UnassignedTasksReminder extends CronJob
         // Get all active projects, members of projects and sprints
         foreach ($projects as $project) {
             $projectAttributes = $project->getAttributes();
-            if (empty($projectAttributes['acceptedBy']) !== true
-                && $projectAttributes['isComplete'] !== true
+            if (empty($projectAttributes['acceptedBy']) === false
+                && isset($projectAttributes['isComplete']) === true
+                && $projectAttributes['isComplete'] === false
             ) {
                 $activeProjects[$projectAttributes['_id']] = $project;
                 $projectSprints = $repository->setResourceName('sprints')
@@ -62,12 +63,13 @@ class UnassignedTasksReminder extends CronJob
                     }
                 }
 
-                if (empty($projectAttributes['members']) !== true) {
+                if (empty($projectAttributes['members']) === false) {
                     foreach ($projectAttributes['members'] as $memberId) {
                         $member = $repository->setResourceName('users')
                             ->loadOne($memberId);
-
-                        $members[$memberId] = $member;
+                        if ($member) {
+                            $members[$memberId] = $member;
+                        }
                     }
                 }
             }
@@ -94,16 +96,16 @@ class UnassignedTasksReminder extends CronJob
 
         foreach ($tasks as $task) {
             $taskProjectId = $task->getAttribute('project_id');
-            if (array_key_exists($taskProjectId, $taskCount) !== true) {
+            if (array_key_exists($taskProjectId, $taskCount) === false) {
                 $taskCount[$taskProjectId] = 1;
             } else {
                 $taskCount[$taskProjectId]++;
             }
         }
 
-        if (empty($taskCount) !== true) {
+        if (empty($taskCount) === false) {
             foreach ($activeProjects as $project) {
-                if (array_key_exists($project->getAttribute('_id'), $taskCount) !== true) {
+                if (array_key_exists($project->getAttribute('_id'), $taskCount) === false) {
                     continue;
                 }
 

@@ -56,7 +56,19 @@ class MongoAdapter implements DatabaseAdapterInterface
     public function getClient()
     {
         if ($this->mongoClient === null) {
-            $this->setClient(new Client());
+            $this->setClient(
+                new Client(
+                    $uri = 'mongodb://127.0.0.1/',
+                    $uriOptions = [],
+                    $driverOptions = [
+                        'typeMap' => [
+                            'array' => 'array',
+                            'document' => 'MongoDB\Model\BSONDocument',
+                            'root' => 'MongoDB\Model\BSONDocument',
+                        ],
+                    ]
+                )
+            );
         }
 
         return $this->mongoClient;
@@ -71,11 +83,11 @@ class MongoAdapter implements DatabaseAdapterInterface
     public function insertOne(DatabaseQueryInterface $query, array $data = [])
     {
         $result = $this->getClient()
-                       ->selectCollection(
-                           $query->getDatabase(),
-                           $query->getCollection()
-                       )
-                       ->insertOne($data);
+            ->selectCollection(
+                $query->getDatabase(),
+                $query->getCollection()
+            )
+            ->insertOne($data);
 
         if ($result->getInsertedId()) {
             return $result->getInsertedId();
@@ -90,8 +102,11 @@ class MongoAdapter implements DatabaseAdapterInterface
      * @param array $updateData
      * @return $this
      */
-    public function updateOne(DatabaseQueryInterface $query, string $identifier, array $updateData = [])
-    {
+    public function updateOne(
+        DatabaseQueryInterface $query,
+        string $identifier,
+        array $updateData = []
+    ) {
         if (empty($updateData)) {
             return $this;
         }
@@ -101,14 +116,14 @@ class MongoAdapter implements DatabaseAdapterInterface
         }
 
         $this->getClient()
-             ->selectCollection(
-                 $query->getDatabase(),
-                 $query->getCollection()
-             )
-             ->updateOne(
-                 ['_id' => new ObjectID($identifier)],
-                 ['$set' => $updateData]
-             );
+            ->selectCollection(
+                $query->getDatabase(),
+                $query->getCollection()
+            )
+            ->updateOne(
+                ['_id' => new ObjectID($identifier)],
+                ['$set' => $updateData]
+            );
 
         // TODO: check if $result reported successful update, throw exception otherwise
 
@@ -151,11 +166,11 @@ class MongoAdapter implements DatabaseAdapterInterface
                 $query->build(),
                 [
                     'projection' => $query->getSelectFields(),
-                    'skip' => (int) $query->getOffset(),
-                    'limit' => (int) $query->getLimit(),
+                    'skip' => (int)$query->getOffset(),
+                    'limit' => (int)$query->getLimit(),
                     'sort' => [
-                        $query->getOrderBy() => $query->getOrderDirection() === 'asc' ? -1 : 1
-                    ]
+                        $query->getOrderBy() => $query->getOrderDirection() === 'asc' ? -1 : 1,
+                    ],
                 ]
             );
 
@@ -164,7 +179,7 @@ class MongoAdapter implements DatabaseAdapterInterface
             if (isset($result['_id']) === true &&
                 $result['_id'] instanceof ObjectID === true
             ) {
-                $result['_id'] = (string) $result['_id'];
+                $result['_id'] = (string)$result['_id'];
             }
             $out[] = $result->getArrayCopy();
         }

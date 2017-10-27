@@ -179,11 +179,12 @@ abstract class BaseApplication implements ApplicationInterface, ApplicationAware
     }
 
     /**
-     * @param ServiceInterface $service
-     * @param bool $overwriteExisting
-     * @return $this
+     * @param \Framework\Base\Application\ServiceInterface $service
+     * @param bool                                         $overwriteExisting
+     *
+     * @return \Framework\Base\Application\ApplicationInterface
      */
-    public function registerService(ServiceInterface $service, bool $overwriteExisting = false)
+    public function registerService(ServiceInterface $service, bool $overwriteExisting = false): ApplicationInterface
     {
         $this->servicesRegistry->registerService($service, $overwriteExisting);
 

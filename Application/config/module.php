@@ -3,6 +3,7 @@
 use Application\CrudApi\Model\Generic as GenericModel;
 use Framework\Base\Mongo\MongoAdapter;
 use Application\CrudApi\Repository\GenericRepository;
+use Application\Services\SlackService;
 use Application\Services\ProfilePerformance;
 use Application\Services\EmailService;
 use Framework\Base\Mailer\SendGrid;
@@ -69,6 +70,9 @@ return [
         'comments' => [
             MongoAdapter::class,
         ],
+        'slackMessages' => [
+            MongoAdapter::class,
+        ],
         "xp" => [
             MongoAdapter::class,
         ],
@@ -76,8 +80,8 @@ return [
             MongoAdapter::class,
         ],
         "logs" => [
-            MongoAdapter::class,
-        ]
+            MongoAdapter::class
+        ],
     ],
     'primaryModelAdapter' => [
         'users' => MongoAdapter::class,
@@ -86,12 +90,13 @@ return [
         'settings' => MongoAdapter::class,
         'tasks' => MongoAdapter::class,
         'comments' => MongoAdapter::class,
+        'slackMessages' => MongoAdapter::class,
         'xp' => MongoAdapter::class,
         'profile_overall' => MongoAdapter::class,
         'logs' => MongoAdapter::class,
     ],
     'services' => [
-        ProfilePerformance::class,
+        SlackService::class,
         EmailService::class,
     ],
     'emailService' => [

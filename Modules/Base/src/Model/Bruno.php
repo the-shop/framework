@@ -401,6 +401,17 @@ abstract class Bruno implements BrunoInterface
     }
 
     /**
+     * @param string $attributeName
+     *
+     * @return mixed|null
+     */
+    public function getDatabaseAttribute(string $attributeName)
+    {
+        return isset($this->getDatabaseAttributes()[$attributeName]) === true ?
+            $this->getDatabaseAttributes()[$attributeName] : null;
+    }
+
+    /**
      * @return array
      */
     public function getDatabaseAttributes()

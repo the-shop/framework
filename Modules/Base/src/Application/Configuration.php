@@ -60,7 +60,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @return array
      */
-    public function getAll()
+    public function getAll(): array
     {
         return $this->configuration;
     }
@@ -68,8 +68,9 @@ class Configuration implements ConfigurationInterface
     /**
      * @param string $path
      * @return $this
+     * @todo discuss renaming to loadFromPhp
      */
-    public function readFromPhp(string $path)
+    public function readFromPhp(string $path): ConfigurationInterface
     {
         if (is_file($path) === false) {
             throw new \RuntimeException(
@@ -88,8 +89,9 @@ class Configuration implements ConfigurationInterface
     /**
      * @param string $path
      * @return $this
+     * @todo discuss renaming to loadFromJson
      */
-    public function readFromJson(string $path)
+    public function readFromJson(string $path): ConfigurationInterface
     {
         if (is_file($path) === false) {
             throw new \RuntimeException(

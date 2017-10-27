@@ -42,7 +42,7 @@ class TaskDeadlineReminderTest extends UnitTest
                 'employeeRole' => 'Apprentice',
                 'minimumsMissed' => 0,
                 'employee' => true,
-                'slack' => 'testslack',
+                'slack' => $this->generateRandomString(),
                 'active' => true,
             ])
             ->save();
@@ -139,7 +139,7 @@ class TaskDeadlineReminderTest extends UnitTest
 
     public function testDoNotNotifyMemberForTaskDeadlineNotAMemberOfProject()
     {
-        $this->getApplication()->getRepositoryManager()
+        $user = $this->getApplication()->getRepositoryManager()
             ->getRepositoryFromResourceName('users')
             ->newModel()
             ->setAttributes([
@@ -151,7 +151,7 @@ class TaskDeadlineReminderTest extends UnitTest
                 'employeeRole' => 'Apprentice',
                 'minimumsMissed' => 0,
                 'employee' => true,
-                'slack' => 'testingslacknottonotify',
+                'slack' => $this->generateRandomString(),
                 'active' => true,
                 'admin' => false
             ])
@@ -175,17 +175,13 @@ class TaskDeadlineReminderTest extends UnitTest
         $slackMessage = $this->getApplication()
             ->getRepositoryManager()
             ->getRepositoryFromResourceName('slackMessages')
-            ->loadOneBy(['recipient' => '@testingslacknottonotify']);
+            ->loadOneBy(['recipient' => '@' . $user->getAttribute('slack')]);
 
         $this->assertEquals(null, $slackMessage);
     }
 
     public function testNotifyPoAboutDeadlineMissedAndDeadlineSoonTasks()
     {
-        $this->markTestSkipped(
-            'Implement after truncate (clear collection) method is implemented on brunoRepository'
-        );
-
         $projectOwner = $this->getApplication()->getRepositoryManager()
             ->getRepositoryFromResourceName('users')
             ->newModel()
@@ -198,7 +194,7 @@ class TaskDeadlineReminderTest extends UnitTest
                 'employeeRole' => 'Apprentice',
                 'minimumsMissed' => 0,
                 'employee' => true,
-                'slack' => 'poslack',
+                'slack' => $this->generateRandomString(),
                 'active' => true,
                 'admin' => false
             ])
@@ -223,7 +219,7 @@ class TaskDeadlineReminderTest extends UnitTest
         $slackMessages = $this->getApplication()
             ->getRepositoryManager()
             ->getRepositoryFromResourceName('slackMessages')
-            ->loadMultiple(['recipient' => '@poslack']);
+            ->loadMultiple(['recipient' => '@' . $projectOwner->getAttribute('slack')]);
 
         $slackMessages = array_values($slackMessages);
 

@@ -2,6 +2,7 @@
 
 namespace Application\CronJobs\Commands;
 
+use Application\Services\SlackService;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Helpers\Parse;
 use Framework\Base\Model\BrunoInterface;
@@ -119,6 +120,7 @@ class UnassignedTasksReminder extends CronJob
                     . $project->getAttribute('name')
                     . '*';
 
+                $slackService = $this->getApplication()->getService(SlackService::class);
                 foreach ($members as $member) {
                     $memberAttributes = $member->getAttributes();
                     if (in_array($memberAttributes['_id'], $project->getAttribute('members'))
@@ -128,8 +130,7 @@ class UnassignedTasksReminder extends CronJob
                         && $memberAttributes['active'] === true
                     ) {
                         $recipient = '@' . $memberAttributes['slack'];
-                        //TODO: implement after slack service is implemented
-                        // Slack::sendMessage($recipient, $message, Slack::MEDIUM_PRIORITY);
+                        $slackService->sendMessage($recipient, $message, SlackService::MEDIUM_PRIORITY);
                     }
                 }
             }

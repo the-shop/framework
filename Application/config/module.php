@@ -5,6 +5,9 @@ use Framework\Base\Mongo\MongoAdapter;
 use Application\CrudApi\Repository\GenericRepository;
 use Application\Services\SlackService;
 use Application\Services\ProfilePerformance;
+use Application\Services\EmailService;
+use Framework\Base\Mailer\SendGrid;
+use SendGrid as SendGridClient;
 
 return [
     'routePrefix' => '/api/v1',
@@ -53,28 +56,28 @@ return [
             MongoAdapter::class,
         ],
         'projects' => [
-            MongoAdapter::class
+            MongoAdapter::class,
         ],
         'sprints' => [
-            MongoAdapter::class
+            MongoAdapter::class,
         ],
         'settings' => [
-            MongoAdapter::class
+            MongoAdapter::class,
         ],
         'tasks' => [
-            MongoAdapter::class
+            MongoAdapter::class,
         ],
         'comments' => [
-            MongoAdapter::class
+            MongoAdapter::class,
         ],
         'slackMessages' => [
             MongoAdapter::class,
         ],
         "xp" => [
-            MongoAdapter::class
+            MongoAdapter::class,
         ],
         "profile_overall" => [
-            MongoAdapter::class
+            MongoAdapter::class,
         ],
         "logs" => [
             MongoAdapter::class
@@ -94,6 +97,15 @@ return [
     ],
     'services' => [
         SlackService::class,
-        ProfilePerformance::class,
-    ]
+        EmailService::class,
+    ],
+    'emailService' => [
+        'mailerInterface' => SendGrid::class,
+        'mailerClient' => [
+            'classPath' => SendGridClient::class,
+            'constructorArguments' => [
+                getenv('SENDGRID_API_KEY'),
+            ],
+        ],
+    ],
 ];

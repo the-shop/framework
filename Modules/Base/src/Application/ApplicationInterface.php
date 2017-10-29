@@ -7,6 +7,8 @@ use Framework\Base\Logger\LoggerInterface;
 use Framework\Base\Logger\LogInterface;
 use Framework\Base\Request\RequestInterface;
 use Framework\Base\Response\ResponseInterface;
+use Framework\Terminal\Commands\Cron\CronJob;
+use Framework\Terminal\Commands\Cron\CronJobInterface;
 
 /**
  * Interface ApplicationInterface
@@ -166,4 +168,16 @@ interface ApplicationInterface
      * @return null|RequestAuthorization
      */
     public function getRequestAuthorization();
+
+    /**
+     * @param \Framework\Terminal\Commands\Cron\CronJobInterface $cronJob
+     *
+     * @return \Framework\Base\Application\ApplicationInterface
+     */
+    public function registerCronJob(CronJobInterface $cronJob): ApplicationInterface;
+
+    /**
+     * @return array
+     */
+    public function getRegisteredCronJobs(): array;
 }

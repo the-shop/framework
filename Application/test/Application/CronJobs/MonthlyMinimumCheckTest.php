@@ -59,7 +59,7 @@ class MonthlyMinimumCheckTest extends UnitTest
         $task->setAttribute('project_id', $project->getAttribute('_id'));
         $task->save();
 
-        $monthlyMinimumCheck = new MonthlyMinimumCheck(['value' => 'daily', 'args' => []]);
+        $monthlyMinimumCheck = new MonthlyMinimumCheck(['timer' => 'daily', 'args' => []]);
         $monthlyMinimumCheck->setApplication($this->getApplication());
 
         $checkProfileMinimum = $this->profile->getAttribute('minimumsMissed');

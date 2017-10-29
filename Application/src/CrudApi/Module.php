@@ -58,6 +58,13 @@ class Module extends BaseModule
             $application->registerService(new $service);
         }
 
+        //Add cron jobs
+        $cronJobs = $appConfig->getPathValue('cronJobs');
+        foreach ($cronJobs as $job => $params) {
+            $cronJob = new $job($params);
+            $application->registerCronJob($cronJob);
+        }
+
         // Register resources, repositories and model fields
         $repositoryManager->registerResources($modelsConfiguration['resources'])
                           ->registerRepositories($appConfig->getPathValue('repositories'))

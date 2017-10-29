@@ -179,7 +179,7 @@ abstract class Bruno implements BrunoInterface
         $query->setCollection($this->getCollection());
         $query->addAndCondition(
             '_id',
-            '$eq',
+            '=',
             $this->getId()
         );
 

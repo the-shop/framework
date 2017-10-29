@@ -19,27 +19,6 @@ class MongoAdapter implements DatabaseAdapterInterface
     private $mongoClient = null;
 
     /**
-     * @var MongoAdapter|null
-     */
-    private $databaseAdapter = null;
-
-    /**
-     * @param DatabaseAdapterInterface $adapter
-     * @return $this
-     */
-    public function setDatabaseAdapter(DatabaseAdapterInterface $adapter)
-    {
-        $this->databaseAdapter = $adapter;
-
-        return $this;
-    }
-
-    public function getDatabaseAdapter()
-    {
-        return $this->databaseAdapter;
-    }
-
-    /**
      * @param $mongoClient
      * @return $this
      */

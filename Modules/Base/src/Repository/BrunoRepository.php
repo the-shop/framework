@@ -171,6 +171,15 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
 
     /**
      * @param array $keyValues
+     * Example:
+     *  $keyValues = [
+     *      'name' = 'Name',
+     *      'role' = 'Role',
+     *      'xp' = [
+     *          '>',
+     *          1000,
+     *      ];
+     *  ];
      *
      * @return \Framework\Base\Model\BrunoInterface|null
      */
@@ -180,7 +189,13 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
         $query = $this->createNewQueryForModel($model);
 
         foreach ($keyValues as $key => $identifier) {
-            $query->addAndCondition($key, '=', $identifier);
+            $condition = '=';
+            if (is_array($identifier)) {
+                list($condition, $value) = $identifier;
+            } else {
+                $value = $identifier;
+            }
+            $query->addAndCondition($key, $condition, $value);
         }
 
         $attributes = $this->getPrimaryAdapter()

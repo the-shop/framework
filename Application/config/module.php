@@ -4,6 +4,9 @@ use Application\CrudApi\Model\Generic as GenericModel;
 use Framework\Base\Mongo\MongoAdapter;
 use Application\CrudApi\Repository\GenericRepository;
 use Application\Services\SlackService;
+use Application\CronJobs\SlackSendMessage;
+use Application\Services\SlackApiClient;
+use GuzzleHttp\Client;
 use Application\Services\ProfilePerformance;
 use Application\Services\EmailService;
 use Framework\Base\Mailer\SendGrid;
@@ -97,8 +100,21 @@ return [
     ],
     'services' => [
         SlackService::class,
+        ProfilePerformance::class,
         EmailService::class,
         ProfilePerformance::class,
+    ],
+    'servicesConfig' => [
+        SlackService::class => [
+            'apiClient' => SlackApiClient::class,
+            'httpClient' => Client::class,
+        ],
+    ],
+    'cronJobs' => [
+        SlackSendMessage::class => [
+            'timer' => 'everyMinute',
+            'args' => [],
+        ],
     ],
     'emailService' => [
         'mailerInterface' => SendGrid::class,

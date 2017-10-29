@@ -2,8 +2,8 @@
 
 namespace Framework\Terminal\Test\Commands;
 
+use Framework\Base\Application\ApplicationInterface;
 use Framework\Terminal\Commands\Cron\CronJobInterface;
-use Framework\Terminal\Commands\CronJobsScheduler;
 use Framework\Terminal\Router\Dispatcher;
 use Framework\Base\Test\UnitTest;
 use Framework\Terminal\Test\TestJob;
@@ -33,8 +33,8 @@ class CronJobTest extends UnitTest
 
     private $cronJobs = [
         TestJob::class => [
-            'value' => 'daily',
-            'args' => [],
+            'timer' => 'daily',
+            'args' => []
         ],
     ];
 
@@ -44,20 +44,16 @@ class CronJobTest extends UnitTest
     public function testAddCronJob()
     {
         $app = $this->getApplication();
-        $app->setDispatcher(new Dispatcher());
-        $dispatcher = $app->getDispatcher();
+        $app->setDispatcher($dispatcher = new Dispatcher());
         $dispatcher->addRoutes($this->routes);
-
-        $handler = new CronJobsScheduler();
-        $handler->setApplication($app);
 
         $cronJob = new TestJob(reset($this->cronJobs));
 
-        $handler->addCronJob($cronJob);
+        $app->registerCronJob($cronJob);
 
-        $this::assertContainsOnlyInstancesOf(CronJobInterface::class, $handler->getRegisteredJobs());
+        $this::assertContainsOnlyInstancesOf(CronJobInterface::class, $app->getRegisteredCronJobs());
 
-        return $handler;
+        return $app;
     }
 
     /**
@@ -65,19 +61,20 @@ class CronJobTest extends UnitTest
      *
      * @depends testAddCronJob
      */
-    public function testCronJobSetters(CronJobsScheduler $handler)
+    public function testCronJobSetters(ApplicationInterface $app)
     {
-        $app = $this->getApplication();
-        $app->setDispatcher(new Dispatcher());
         $dispatcher = $app->getDispatcher();
         $dispatcher->addRoutes($this->routes);
 
         /**
          * @var CronJobInterface $cronJob
          */
-        $cronJob = $handler->getRegisteredJobs()[0];
+        foreach ($app->getRegisteredCronJobs() as $registeredCronJob) {
+            if ($registeredCronJob instanceof TestJob) {
+                $cronJob = $registeredCronJob;
+            }
+        }
 
-        $this::assertEquals(TestJob::class, $cronJob->getIdentifier());
         $this::assertEquals('0 0 * * *', $cronJob->getCronTimeExpression());
 
         /**

@@ -13,9 +13,9 @@ interface CronJobInterface extends ApplicationAwareInterface
     /**
      * CronJobInterface constructor.
      *
-     * @param array $cronJob
+     * @param array $cronJobParams
      */
-    public function __construct(array $cronJob);
+    public function __construct(array $cronJobParams);
 
     /**
      * @param string $expression
@@ -33,6 +33,18 @@ interface CronJobInterface extends ApplicationAwareInterface
      * @return string
      */
     public function getIdentifier(): string;
+
+    /**
+     * @param array $args
+     *
+     * @return \Framework\Terminal\Commands\Cron\CronJobInterface
+     */
+    public function setArgs(array $args): CronJobInterface;
+
+    /**
+     * @return array
+     */
+    public function getArgs(): array;
 
     /**
      * @return mixed

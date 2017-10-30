@@ -58,7 +58,7 @@ class AdminsQAWaitingTasks extends CronJob
         }
         foreach ($projects as $project) {
             $user = $repositoryManager->getRepositoryFromResourceName('users')
-                                         ->loadOne($project->getAttribute('acceptedBy'));
+                                      ->loadOne($project->getAttribute('acceptedBy'));
             if (($user instanceof BrunoInterface) === true) {
                 $projectOwners[] = $user;
             }
@@ -67,11 +67,13 @@ class AdminsQAWaitingTasks extends CronJob
         /*Loop through project owners and tasks, check if there are tasks that are submitted for QA yesterday and
         create message and send to project owners*/
         foreach ($projectOwners as $projectOwner) {
-            if ($recipient = $projectOwner->getAttribute('slack') !== null) {
+            $recipient = $projectOwner->getAttribute('slack');
+            if ($recipient !== null) {
                 $text = 'Hey, these tasks are *submitted for QA yesterday* and waiting for review:';
 
                 foreach ($tasksInQa as $task) {
-                    if ($projectOwner->getId() === $projects[$task->getId()]->getAttribute('acceptedBy')) {
+                    if ($projectOwner->getId() ===
+                        $projects[$task->getAttribute('project_id')]->getAttribute('acceptedBy')) {
                         $historyRecords = $task->getAttribute('task_history');
                         foreach ($historyRecords as $historyRecord) {
                             if ($historyRecord['status'] === 'qa_ready' &&
@@ -104,7 +106,7 @@ class AdminsQAWaitingTasks extends CronJob
                 }
                 // Save message to DB
                 if ($sendMessage === true) {
-                    $service->setMessage($recipient, $text, SlackService::HIGH_PRIORITY);
+                    $service->setMessage($recipient, $text, false, SlackService::HIGH_PRIORITY);
                     $sendMessage = false;
                 }
             }

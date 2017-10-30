@@ -227,8 +227,8 @@ abstract class BrunoRepository implements BrunoRepositoryInterface
 
         if ($identifiers instanceof DatabaseQueryInterface === false) {
             $query = $this->createNewQueryForModel($model);
-            foreach ($identifiers as $identifier) {
-                $query->addAndCondition($model->getPrimaryKey(), '=', $identifier);
+            foreach ($identifiers as $identifier => $value) {
+                $query->addAndCondition($identifier, '=', $value);
             }
         } else {
             $query = $identifiers;

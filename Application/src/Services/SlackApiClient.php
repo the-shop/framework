@@ -40,6 +40,9 @@ class SlackApiClient implements ApplicationAwareInterface
      */
     private $headers = [];
 
+    /**
+     * @const string
+     */
     const BASE_URI = 'https://slack.com/api/';
 
     /**
@@ -148,12 +151,14 @@ class SlackApiClient implements ApplicationAwareInterface
 
     /**
      * SLACK_TOKEN env variable
+     * @return void
      */
-    private function setToken(): void
+    private function setToken()
     {
         if ($this->token === null) {
             $this->token = $this->getApplication()->getConfiguration()->getPathValue('env.SLACK_TOKEN');
         }
+
         $this->addQueryParam('token', $this->token);
 
         $this->addPostParam('token', $this->token);
@@ -174,7 +179,7 @@ class SlackApiClient implements ApplicationAwareInterface
         }
         $this->setToken();
 
-        $response = $this->client->get($this::BASE_URI . $collection . '.list', [
+        $response = $this->client->get(self::BASE_URI . $collection . '.list', [
             'headers' => $this->headers,
             'query' => $this->queryParams,
         ]);
@@ -201,6 +206,7 @@ class SlackApiClient implements ApplicationAwareInterface
                 }
             }
         }
+
         throw new NotFoundException('User with that name is not found in your workspace', 404);
     }
 

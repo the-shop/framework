@@ -19,16 +19,11 @@ class ProfilePerformance implements ServiceInterface
     use ApplicationAwareTrait;
 
     /**
-     * @var string
-     */
-    private $identifier = 'profilePerformance';
-
-    /**
      * @return string
      */
     public function getIdentifier()
     {
-        return $this->identifier;
+        return self::class;
     }
 
     /**
@@ -352,10 +347,15 @@ class ProfilePerformance implements ServiceInterface
                 ]
             );
             foreach ($projectTasks as $projectTask) {
+                $taskSkillSet = $projectTask->getAttribute('skillset');
+                if ($taskSkillSet === null) {
+                    $taskSkillSet = [];
+                }
+
                 // Let's compare user skills with task skillset
                 $compareSkills = array_intersect(
                     $taskOwner->getAttribute('skills'),
-                    $projectTask->getAttribute('skillset')
+                    $taskSkillSet
                 );
                 if (empty($projectTask->getAttribute('owner') === true)
                     && in_array(

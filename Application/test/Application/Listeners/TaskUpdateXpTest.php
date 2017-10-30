@@ -95,7 +95,7 @@ class TaskUpdateXpTest extends UnitTest
          * @var ProfilePerformance $pp
          */
         $app = $this->getApplication();
-        $pp = $app->getService('profilePerformance');
+        $pp = $app->getService(ProfilePerformance::class);
         $profileValues = $pp->getTaskValuesForProfile($this->profile, $task);
         $profileOldXp = $this->profile->getAttribute('xp');
 
@@ -147,7 +147,7 @@ class TaskUpdateXpTest extends UnitTest
          * @var ProfilePerformance $pp
          */
         $app = $this->getApplication();
-        $pp = $app->getService('profilePerformance');
+        $pp = $app->getService(ProfilePerformance::class);
         $profileValues = $pp->getTaskValuesForProfile($this->profile, $task);
         $profileOldXp = $this->profile->getAttribute('xp');
 
@@ -198,7 +198,7 @@ class TaskUpdateXpTest extends UnitTest
          * @var ProfilePerformance $pp
          */
         $app = $this->getApplication();
-        $pp = $app->getService('profilePerformance');
+        $pp = $app->getService(ProfilePerformance::class);
         $profileValues = $pp->getTaskValuesForProfile($this->profile, $task);
         $profileOldXp = $this->profile->getAttribute('xp');
 
@@ -263,7 +263,7 @@ class TaskUpdateXpTest extends UnitTest
          * @var ProfilePerformance $pp
          */
         $app = $this->getApplication();
-        $pp = $app->getService('profilePerformance');
+        $pp = $app->getService(ProfilePerformance::class);
         $profileValues = $pp->getTaskValuesForProfile($this->profile, $task);
         $profileOldXp = $this->profile->getAttribute('xp');
 
@@ -330,7 +330,7 @@ class TaskUpdateXpTest extends UnitTest
          * @var ProfilePerformance $pp
          */
         $app = $this->getApplication();
-        $pp = $app->getService('profilePerformance');
+        $pp = $app->getService(ProfilePerformance::class);
         $profileValues = $pp->getTaskValuesForProfile($this->profile, $task);
         $profileOldXp = $this->profile->getAttribute('xp');
 
@@ -414,7 +414,7 @@ class TaskUpdateXpTest extends UnitTest
          * @var ProfilePerformance $pp
          */
         $app = $this->getApplication();
-        $pp = $app->getService('profilePerformance');
+        $pp = $app->getService(ProfilePerformance::class);
         $profileValues = $pp->getTaskValuesForProfile($this->profile, $taskLowPriority);
         $profileOldXp = $this->profile->getAttribute('xp');
 
@@ -511,7 +511,7 @@ class TaskUpdateXpTest extends UnitTest
          * @var ProfilePerformance $pp
          */
         $app = $this->getApplication();
-        $pp = $app->getService('profilePerformance');
+        $pp = $app->getService(ProfilePerformance::class);
         $profileValues = $pp->getTaskValuesForProfile($this->profile, $taskLowPriority);
         $profileOldXp = $this->profile->getAttribute('xp');
 
@@ -601,7 +601,7 @@ class TaskUpdateXpTest extends UnitTest
          * @var ProfilePerformance $pp
          */
         $app = $this->getApplication();
-        $pp = $app->getService('profilePerformance');
+        $pp = $app->getService(ProfilePerformance::class);
         $profileValues = $pp->getTaskValuesForProfile($this->profile, $taskMediumPriority);
         $profileOldXp = $this->profile->getAttribute('xp');
 
@@ -698,7 +698,7 @@ class TaskUpdateXpTest extends UnitTest
          * @var ProfilePerformance $pp
          */
         $app = $this->getApplication();
-        $pp = $app->getService('profilePerformance');
+        $pp = $app->getService(ProfilePerformance::class);
         $profileValues = $pp->getTaskValuesForProfile($this->profile, $taskMediumPriority);
         $profileOldXp = $this->profile->getAttribute('xp');
 
@@ -795,7 +795,7 @@ class TaskUpdateXpTest extends UnitTest
          * @var ProfilePerformance $pp
          */
         $app = $this->getApplication();
-        $pp = $app->getService('profilePerformance');
+        $pp = $app->getService(ProfilePerformance::class);
         $profileValues = $pp->getTaskValuesForProfile($this->profile, $taskHighPriority);
         $profileOldXp = $this->profile->getAttribute('xp');
 

@@ -85,17 +85,22 @@ trait Helpers
     }
 
     /**
-     * Deletes test record from db
+     * Deletes test records from db collection
+     * @param string $resourceName
      */
     private function purgeCollection(string $resourceName)
     {
-        $models = $this->getApplication()
+        $adapter = $this->getApplication()
             ->getRepositoryManager()
             ->getRepositoryFromResourceName($resourceName)
-        ->loadMultiple();
+            ->getPrimaryAdapter();
 
-        foreach ($models as $model) {
-            $model->delete();
-        }
+        $databaseName = $this->getApplication()
+            ->getConfiguration()
+            ->getPathValue('env.DATABASE_NAME');
+
+        $adapter->getClient()
+            ->selectCollection($databaseName, $resourceName)
+            ->drop();
     }
 }

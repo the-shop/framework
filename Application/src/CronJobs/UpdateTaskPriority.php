@@ -42,7 +42,7 @@ class UpdateTaskPriority extends CronJob
 
         foreach ($tasks as $task) {
             $taskAttributes = $task->getAttributes();
-            if (empty($taskAttributes['owner'])) {
+            if (empty($taskAttributes['owner']) === true) {
                 $taskDueDate = Parse::unixTimestamp($taskAttributes['due_date']);
                 // Check if task due_date is in next 7 days and switch task priority to High if not set already
                 if ($taskDueDate >= $unixTimeNow
@@ -100,7 +100,8 @@ class UpdateTaskPriority extends CronJob
         // send slack notification to all admins and POs about task priority change
         foreach ($recipients as $recipient) {
             $recipientAttributes = $recipient->getAttributes();
-            if ($recipientAttributes['admin'] === true
+            if ((isset($recipientAttributes['admin']) === true
+                && $recipientAttributes['admin'] === true)
                 || in_array($recipientAttributes['_id'], $projectOwnerIds) === true
                 && isset($recipientAttributes['slack']) === true
                 && empty($recipientAttributes['slack']) === false
@@ -112,7 +113,7 @@ class UpdateTaskPriority extends CronJob
                 foreach ($projects as $projectToNotify) {
                     $projectToNotifyAtt = $projectToNotify->getAttributes();
                     if (isset($recipientAttributes['admin']) === true
-                        && $recipientAttributes['admin]'] === false
+                        && $recipientAttributes['admin'] === false
                         && $recipientAttributes['_id'] !== $projectToNotifyAtt['acceptedBy']
                     ) {
                         continue;
@@ -130,7 +131,7 @@ class UpdateTaskPriority extends CronJob
 
                     $slackService = $this->getApplication()
                         ->getService(SlackService::class);
-                    $slackService::setMessage(
+                    $slackService->setMessage(
                         $sendTo,
                         $message,
                         SlackService::LOW_PRIORITY

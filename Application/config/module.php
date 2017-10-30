@@ -101,7 +101,7 @@ return [
     'services' => [
         SlackService::class,
         EmailService::class,
-        ProfilePerformance::class
+        ProfilePerformance::class,
     ],
     'servicesConfig' => [
         SlackService::class => [

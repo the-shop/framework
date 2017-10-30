@@ -4,13 +4,20 @@ namespace Application\Test\Application;
 
 class DummyCurlClient
 {
+    private $slackUsername = '';
+
+    public function __construct(string $slackUsername = '')
+    {
+        $this->slackUsername = $slackUsername;
+    }
+
     public function get(string $str = '', array $arr = [])
     {
         $response = new DummyCurlResponse();
 
         if ($str === 'https://slack.com/api/users.list') {
             $user = (object) [
-                'name' => 'test',
+                'name' => $this->slackUsername,
                 'id' => 'testId'
             ];
             $content = (object) [

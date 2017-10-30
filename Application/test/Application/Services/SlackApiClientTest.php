@@ -4,12 +4,23 @@ namespace Application\Test\Application\Services;
 
 use Application\Services\SlackApiClient;
 use Application\Test\Application\DummyCurlClient;
+use Application\Test\Application\Traits\Helpers;
 use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Test\UnitTest;
 use Psr\Http\Message\ResponseInterface;
 
 class SlackApiClientTest extends UnitTest
 {
+    use Helpers;
+
+    public function tearDown()
+    {
+        $this->purgeCollection('users');
+        $this->purgeCollection('projects');
+        $this->purgeCollection('tasks');
+        $this->purgeCollection('sprints');
+    }
+
     public function testIsSlackApiHelperInstantiatable()
     {
         $client = new SlackApiClient();
@@ -83,11 +94,12 @@ class SlackApiClientTest extends UnitTest
     public function testGetUser()
     {
         $client = new SlackApiClient();
-        $client->setClient(new DummyCurlClient())
+        $slackUsername = $this->generateRandomString();
+        $client->setClient(new DummyCurlClient($slackUsername))
                ->setApplication($this->getApplication());
         $this->getApplication()->getConfiguration()->setPathValue('env.SLACK_TOKEN', '123456');
 
-        $this::assertEquals('testId', $client->getUser('test')->id);
+        $this::assertEquals('testId', $client->getUser($slackUsername)->id);
 
         $this::expectException(NotFoundException::class);
         $this::expectExceptionMessage('User with that name is not found in your workspace');

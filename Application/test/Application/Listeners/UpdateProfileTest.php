@@ -3,6 +3,7 @@
 namespace Application\Test\Application\Listeners;
 
 use Application\Listeners\ProfileUpdate;
+use Application\Services\EmailService;
 use Application\Test\Application\Traits\Helpers;
 use Application\Test\Application\Traits\ProfileRelated;
 use Application\Test\Application\Traits\ProjectRelated;
@@ -41,7 +42,10 @@ class UpdateProfileTest extends UnitTest
     {
         parent::tearDown();
 
-        $this->profile->delete();
+        $this->purgeCollection('users');
+        $this->purgeCollection('projects');
+        $this->purgeCollection('tasks');
+        $this->purgeCollection('sprints');
     }
 
     /**
@@ -71,7 +75,7 @@ class UpdateProfileTest extends UnitTest
 
         $this->getApplication()
             ->getConfiguration()
-            ->setPathValue('emailService', $emailServiceConfig);
+            ->setPathValue('servicesConfig.' . EmailService::class, $emailServiceConfig);
 
         $profile = $this->profile;
         $profile->setAttribute('xp', 205);

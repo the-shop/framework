@@ -11,7 +11,7 @@ use Application\CrudApi\Model\Generic;
 
 /**
  * Class UnassignedTasksReminder
- * @package Application\CronJobs\Commands
+ * @package Application\CronJobs
  */
 class UnassignedTasksReminder extends CronJob
 {

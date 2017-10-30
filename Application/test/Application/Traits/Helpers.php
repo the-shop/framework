@@ -36,7 +36,6 @@ trait Helpers
         }
 
         return $string;
-        return $string;
     }
 
     /**
@@ -83,5 +82,20 @@ trait Helpers
         }
 
         return $message;
+    }
+
+    /**
+     * Deletes test record from db
+     */
+    private function purgeCollection(string $resourceName)
+    {
+        $models = $this->getApplication()
+            ->getRepositoryManager()
+            ->getRepositoryFromResourceName($resourceName)
+        ->loadMultiple();
+
+        foreach ($models as $model) {
+            $model->delete();
+        }
     }
 }

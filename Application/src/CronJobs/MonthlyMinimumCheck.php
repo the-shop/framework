@@ -3,6 +3,7 @@
 namespace Application\CronJobs;
 
 use Application\Services\ProfilePerformance;
+use Application\Services\SlackService;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Model\BrunoInterface;
 use Framework\Terminal\Commands\Cron\CronJob;
@@ -89,14 +90,24 @@ class MonthlyMinimumCheck extends CronJob
                     . $profileAttributes['minimumsMissed']
                     . '*';
 
+                /**
+                 * @var SlackService $slackService
+                 */
+                $slackService = $this->getApplication()
+                    ->getService(SlackService::class);
+
                 // Notify employee
                 if (array_key_exists('slack', $profileAttributes) === true
                     && empty($profileAttributes['slack']) === false
                     && $profileAttributes['active'] === true
                 ) {
                     $recipient = '@' . $profileAttributes['slack'];
-                   //TODO: implement after SlackService is implemented
-                    // Slack::sendMessage($recipient, $userMessage, Slack::MEDIUM_PRIORITY);
+
+                    $slackService->setMessage(
+                        $recipient,
+                        $userMessage,
+                        SlackService::MEDIUM_PRIORITY
+                    );
                 }
 
                 /**
@@ -110,8 +121,12 @@ class MonthlyMinimumCheck extends CronJob
                         && $adminAttributes['active'] === true
                     ) {
                         $recipient = '@' . $adminAttributes['slack'];
-                        //TODO: implement after SlackService is implemented
-                     //   Slack::sendMessage($recipient, $adminMessage, Slack::MEDIUM_PRIORITY);
+
+                        $slackService->setMessage(
+                            $recipient,
+                            $adminMessage,
+                            SlackService::MEDIUM_PRIORITY
+                        );
                     }
                 }
             }

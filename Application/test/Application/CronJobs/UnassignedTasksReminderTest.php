@@ -86,6 +86,9 @@ class UnassignedTasksReminderTest extends UnitTest
         parent::tearDown();
 
         $this->profile->delete();
+        $this->purgeCollection('projects');
+        $this->purgeCollection('tasks');
+        $this->purgeCollection('sprints');
     }
 
     public function testNotifyProjectMemberAboutUnassignedTasks()

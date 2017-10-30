@@ -17,16 +17,11 @@ class EmailService implements ServiceInterface
     use ApplicationAwareTrait;
 
     /**
-     * @var string
-     */
-    private $identifier = 'emailService';
-
-    /**
-     * @return string
+     * @return mixed
      */
     public function getIdentifier()
     {
-        return $this->identifier;
+        return self::class;
     }
 
     /**

@@ -25,6 +25,8 @@ class SlackApiClientTest extends UnitTest
      * @param \Application\Services\SlackApiClient $client
      *
      * @depends testIsSlackApiHelperInstantiatable
+     *
+     * @return SlackApiClient
      */
     public function testSettersAndGetters(SlackApiClient $client)
     {
@@ -57,6 +59,8 @@ class SlackApiClientTest extends UnitTest
      * @param \Application\Services\SlackApiClient $client
      *
      * @depends testSettersAndGetters
+     *
+     * @return SlackApiClient
      */
     public function testLists(SlackApiClient $client)
     {

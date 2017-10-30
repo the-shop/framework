@@ -19,16 +19,11 @@ class ProfilePerformance implements ServiceInterface
     use ApplicationAwareTrait;
 
     /**
-     * @var string
-     */
-    private $identifier = 'profilePerformance';
-
-    /**
      * @return string
      */
     public function getIdentifier()
     {
-        return $this->identifier;
+        return self::class;
     }
 
     /**

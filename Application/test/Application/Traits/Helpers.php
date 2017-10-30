@@ -36,6 +36,7 @@ trait Helpers
         }
 
         return $string;
+        return $string;
     }
 
     /**

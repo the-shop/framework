@@ -100,7 +100,6 @@ return [
     ],
     'services' => [
         SlackService::class,
-        ProfilePerformance::class,
         EmailService::class,
         ProfilePerformance::class,
     ],

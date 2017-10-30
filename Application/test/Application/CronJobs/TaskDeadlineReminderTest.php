@@ -101,16 +101,14 @@ class TaskDeadlineReminderTest extends UnitTest
      */
     public function testNotifyProjectMemberForTaskDeadlines()
     {
-        $cronJob = new TaskDeadlineReminder(['value' => '', 'args' => []]);
+        $cronJob = new TaskDeadlineReminder(['timer' => '', 'args' => []]);
         $cronJob->setApplication($this->getApplication());
         $cronJob->execute();
 
-        $slackMessages = $this->getApplication()
+        $slackMessage = $this->getApplication()
             ->getRepositoryManager()
             ->getRepositoryFromResourceName('slackMessages')
-            ->loadMultiple();
-
-        $slackMessage = end($slackMessages);
+            ->loadOneBy(['recipient' => '@' . $this->profile->getAttribute('slack')]);
 
         $slackMessageAttributes = $slackMessage->getAttributes();
 
@@ -168,7 +166,7 @@ class TaskDeadlineReminderTest extends UnitTest
             $task->save();
         }
 
-        $cronJob = new TaskDeadlineReminder(['value' => '', 'args' => []]);
+        $cronJob = new TaskDeadlineReminder(['timer' => '', 'args' => []]);
         $cronJob->setApplication($this->getApplication());
         $cronJob->execute();
 
@@ -212,7 +210,7 @@ class TaskDeadlineReminderTest extends UnitTest
             $task->save();
         }
 
-        $cronJob = new TaskDeadlineReminder(['value' => '', 'args' => []]);
+        $cronJob = new TaskDeadlineReminder(['timer' => '', 'args' => []]);
         $cronJob->setApplication($this->getApplication());
         $cronJob->execute();
 

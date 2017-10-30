@@ -143,9 +143,10 @@ class TaskDeadlineReminder extends CronJob
                     $tasksToNotifyRecipient
                 );
                 if ($messageDeadlineSoon) {
-                    $slackService->sendMessage(
+                    $slackService->setMessage(
                         $recipientSlack,
                         $messageDeadlineSoon,
+                        $private = false,
                         SlackService::LOW_PRIORITY
                     );
                 }
@@ -155,9 +156,10 @@ class TaskDeadlineReminder extends CronJob
                     $tasksToNotifyPo
                 );
                 if ($messageDeadlinePassed) {
-                    $slackService->sendMessage(
+                    $slackService->setMessage(
                         $recipientSlack,
                         $messageDeadlinePassed,
+                        $private = false,
                         SlackService::LOW_PRIORITY
                     );
                 }

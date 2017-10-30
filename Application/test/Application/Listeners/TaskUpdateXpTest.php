@@ -358,15 +358,25 @@ class TaskUpdateXpTest extends UnitTest
      */
     public function testTaskUpdateXpTaskPriorityOnlyLow()
     {
-        $this->markTestSkipped(
-            'Mark as uncompleted. Need truncate method on repository to clear database records.'
-        );
+        $newUser = $this->getApplication()->getRepositoryManager()
+            ->getRepositoryFromResourceName('users')
+            ->newModel()
+            ->setAttributes([
+                'name' => 'test user',
+                'email' => $this->generateRandomEmail(20),
+                'password' => 'test',
+                'skills' => ['PHP'],
+                'xp' => 200,
+                'employeeRole' => 'Apprentice',
+            ])
+            ->save();
+
         $project = $this->getNewProject();
         $members = $project->getAttribute('members');
         $members[] = $this->profile->getAttribute('_id');
         $project->setAttributes([
             'members' => $members,
-            'acceptedBy' => $this->profile->getAttribute('_id')
+            'acceptedBy' => $newUser->getId()
         ]);
         $project->save();
 
@@ -441,16 +451,25 @@ class TaskUpdateXpTest extends UnitTest
      */
     public function testTaskUpdateXpTaskPriorityLowDeduct()
     {
-        $this->markTestSkipped(
-            'Mark as uncompleted. Need truncate method on repository to clear database records.'
-        );
+        $newUser = $this->getApplication()->getRepositoryManager()
+            ->getRepositoryFromResourceName('users')
+            ->newModel()
+            ->setAttributes([
+                'name' => 'test user',
+                'email' => $this->generateRandomEmail(20),
+                'password' => 'test',
+                'skills' => ['PHP'],
+                'xp' => 200,
+                'employeeRole' => 'Apprentice',
+            ])
+            ->save();
 
         $project = $this->getNewProject();
         $members = $project->getAttribute('members');
         $members[] = $this->profile->getAttribute('_id');
         $project->setAttributes([
             'members' => $members,
-            'acceptedBy' => $this->profile->getAttribute('_id')
+            'acceptedBy' => $newUser->getid()
         ]);
         $project->save();
 
@@ -539,16 +558,25 @@ class TaskUpdateXpTest extends UnitTest
      */
     public function testTaskUpdateXpTaskPriorityMediumOrLow()
     {
-        $this->markTestSkipped(
-            'Mark as uncompleted. Need truncate method on repository to clear database records.'
-        );
+        $newUser = $this->getApplication()->getRepositoryManager()
+            ->getRepositoryFromResourceName('users')
+            ->newModel()
+            ->setAttributes([
+                'name' => 'test user',
+                'email' => $this->generateRandomEmail(20),
+                'password' => 'test',
+                'skills' => ['PHP'],
+                'xp' => 200,
+                'employeeRole' => 'Apprentice',
+            ])
+            ->save();
 
         $project = $this->getNewProject();
         $members = $project->getAttribute('members');
         $members[] = $this->profile->getAttribute('_id');
         $project->setAttributes([
             'members' => $members,
-            'acceptedBy' => $this->profile->getAttribute('_id')
+            'acceptedBy' => $newUser->getId()
         ]);
         $project->save();
 
@@ -628,16 +656,25 @@ class TaskUpdateXpTest extends UnitTest
      */
     public function testTaskUpdateXpTaskPriorityMediumDeduct()
     {
-        $this->markTestSkipped(
-            'Mark as uncompleted. Need truncate method on repository to clear database records.'
-        );
+        $newUser = $this->getApplication()->getRepositoryManager()
+            ->getRepositoryFromResourceName('users')
+            ->newModel()
+            ->setAttributes([
+                'name' => 'test user',
+                'email' => $this->generateRandomEmail(20),
+                'password' => 'test',
+                'skills' => ['PHP'],
+                'xp' => 200,
+                'employeeRole' => 'Apprentice',
+            ])
+            ->save();
 
         $project = $this->getNewProject();
         $members = $project->getAttribute('members');
         $members[] = $this->profile->getAttribute('_id');
         $project->setAttributes([
             'members' => $members,
-            'acceptedBy' => $this->profile->getAttribute('_id')
+            'acceptedBy' => $newUser->getId()
         ]);
         $project->save();
 
@@ -725,16 +762,25 @@ class TaskUpdateXpTest extends UnitTest
      */
     public function testTaskUpdateXpTaskPriorityHigh()
     {
-        $this->markTestSkipped(
-            'Mark as uncompleted. Need truncate method on repository to clear database records.'
-        );
+        $newUser = $this->getApplication()->getRepositoryManager()
+            ->getRepositoryFromResourceName('users')
+            ->newModel()
+            ->setAttributes([
+                'name' => 'test user',
+                'email' => $this->generateRandomEmail(20),
+                'password' => 'test',
+                'skills' => ['PHP'],
+                'xp' => 200,
+                'employeeRole' => 'Apprentice',
+            ])
+            ->save();
 
         $project = $this->getNewProject();
         $members = $project->getAttribute('members');
         $members[] = $this->profile->getAttribute('_id');
         $project->setAttributes([
             'members' => $members,
-            'acceptedBy' => $this->profile->getAttribute('_id')
+            'acceptedBy' => $newUser->getId()
         ]);
         $project->save();
 

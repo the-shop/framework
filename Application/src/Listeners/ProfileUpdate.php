@@ -51,7 +51,7 @@ class ProfileUpdate implements ListenerInterface
 
             if ($slack !== null && empty($slack) === false) {
                 //Send slack message with XP status changed
-                $recipient = '@' . $slack;
+                $recipient = $slack;
                 $slackService = $this->getApplication()->getService(SlackService::class);
                 $slackService->setMessage(
                     $recipient,

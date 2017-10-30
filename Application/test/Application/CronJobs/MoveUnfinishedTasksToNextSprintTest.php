@@ -161,7 +161,7 @@ class MoveUnfinishedTasksToNextSprintTest extends UnitTest
 
         $slackMessage = $this->getApplication()->getRepositoryManager()
             ->getRepositoryFromResourceName('slackMessages')
-            ->loadOneBy(['recipient' => '@' . $this->profile->getAttribute('slack')]);
+            ->loadOneBy(['recipient' => $this->profile->getAttribute('slack')]);
         $slackMessageAttributes = $slackMessage->getAttributes();
 
         $this->assertArrayHasKey('recipient', $slackMessageAttributes);
@@ -171,7 +171,7 @@ class MoveUnfinishedTasksToNextSprintTest extends UnitTest
         $this->assertArrayHasKey('runAt', $slackMessageAttributes);
         $this->assertEquals(
             $slackMessageAttributes['recipient'],
-            '@' . $this->profile->getAttribute('slack')
+            $this->profile->getAttribute('slack')
         );
 
         $message =

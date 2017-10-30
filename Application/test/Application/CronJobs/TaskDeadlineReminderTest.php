@@ -106,7 +106,7 @@ class TaskDeadlineReminderTest extends UnitTest
         $slackMessage = $this->getApplication()
             ->getRepositoryManager()
             ->getRepositoryFromResourceName('slackMessages')
-            ->loadOneBy(['recipient' => '@' . $this->profile->getAttribute('slack')]);
+            ->loadOneBy(['recipient' => $this->profile->getAttribute('slack')]);
 
         $slackMessageAttributes = $slackMessage->getAttributes();
 
@@ -125,7 +125,7 @@ class TaskDeadlineReminderTest extends UnitTest
         $this->assertArrayHasKey('runAt', $slackMessageAttributes);
         $this->assertEquals(
             $slackMessageAttributes['recipient'],
-            '@' . $this->profile->getAttribute('slack')
+            $this->profile->getAttribute('slack')
         );
         $this->assertEquals($slackMessageAttributes['priority'], SlackService::LOW_PRIORITY);
         $this->assertEquals($slackMessageAttributes['sent'], false);
@@ -170,7 +170,7 @@ class TaskDeadlineReminderTest extends UnitTest
         $slackMessage = $this->getApplication()
             ->getRepositoryManager()
             ->getRepositoryFromResourceName('slackMessages')
-            ->loadOneBy(['recipient' => '@' . $user->getAttribute('slack')]);
+            ->loadOneBy(['recipient' => $user->getAttribute('slack')]);
 
         $this->assertEquals(null, $slackMessage);
     }
@@ -214,7 +214,7 @@ class TaskDeadlineReminderTest extends UnitTest
         $slackMessages = $this->getApplication()
             ->getRepositoryManager()
             ->getRepositoryFromResourceName('slackMessages')
-            ->loadMultiple(['recipient' => '@' . $projectOwner->getAttribute('slack')]);
+            ->loadMultiple(['recipient' => $projectOwner->getAttribute('slack')]);
 
         $slackMessages = array_values($slackMessages);
 
@@ -242,7 +242,7 @@ class TaskDeadlineReminderTest extends UnitTest
         $this->assertArrayHasKey('runAt', $dueDateDueDateSoonMessageAtt);
         $this->assertEquals(
             $dueDateDueDateSoonMessageAtt['recipient'],
-            '@' . $projectOwner->getAttribute('slack')
+            $projectOwner->getAttribute('slack')
         );
         $this->assertEquals($dueDateDueDateSoonMessageAtt['priority'], SlackService::LOW_PRIORITY);
         $this->assertEquals($dueDateDueDateSoonMessageAtt['sent'], false);
@@ -255,7 +255,7 @@ class TaskDeadlineReminderTest extends UnitTest
         $this->assertArrayHasKey('runAt', $dueDateDueDatePassedMessageAtt);
         $this->assertEquals(
             $dueDateDueDatePassedMessageAtt['recipient'],
-            '@' . $projectOwner->getAttribute('slack')
+            $projectOwner->getAttribute('slack')
         );
         $this->assertEquals($dueDateDueDatePassedMessageAtt['priority'], SlackService::LOW_PRIORITY);
         $this->assertEquals($dueDateDueDatePassedMessageAtt['sent'], false);

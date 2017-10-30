@@ -26,6 +26,7 @@ class TaskUpdateXpTest extends UnitTest
                 'skills' => ['PHP'],
                 'xp' => 200,
                 'employeeRole' => 'Apprentice',
+                'slack' => $this->generateRandomString()
             ])
             ->save();
 
@@ -368,6 +369,7 @@ class TaskUpdateXpTest extends UnitTest
                 'skills' => ['PHP'],
                 'xp' => 200,
                 'employeeRole' => 'Apprentice',
+                'slack' => $this->generateRandomString()
             ])
             ->save();
 
@@ -461,6 +463,7 @@ class TaskUpdateXpTest extends UnitTest
                 'skills' => ['PHP'],
                 'xp' => 200,
                 'employeeRole' => 'Apprentice',
+                'slack' => $this->generateRandomString()
             ])
             ->save();
 
@@ -568,6 +571,7 @@ class TaskUpdateXpTest extends UnitTest
                 'skills' => ['PHP'],
                 'xp' => 200,
                 'employeeRole' => 'Apprentice',
+                'slack' => $this->generateRandomString()
             ])
             ->save();
 
@@ -666,6 +670,7 @@ class TaskUpdateXpTest extends UnitTest
                 'skills' => ['PHP'],
                 'xp' => 200,
                 'employeeRole' => 'Apprentice',
+                'slack' => $this->generateRandomString()
             ])
             ->save();
 
@@ -772,6 +777,7 @@ class TaskUpdateXpTest extends UnitTest
                 'skills' => ['PHP'],
                 'xp' => 200,
                 'employeeRole' => 'Apprentice',
+                'slack' => $this->generateRandomString()
             ])
             ->save();
 

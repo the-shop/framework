@@ -131,7 +131,7 @@ class UnassignedTasksReminder extends CronJob
                         && empty($memberAttributes['slack']) !== true
                         && $memberAttributes['active'] === true
                     ) {
-                        $recipient = '@' . $memberAttributes['slack'];
+                        $recipient = $memberAttributes['slack'];
                         $slackService->setMessage(
                             $recipient,
                             $message,

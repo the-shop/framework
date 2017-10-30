@@ -120,7 +120,7 @@ class MoveUnfinishedTasksToNextSprint extends CronJob
                         && isset($adminAttributes['active'])
                         && $adminAttributes['active'] === true
                         ) {
-                        $recipient = '@' . $adminAttributes['slack'];
+                        $recipient = $adminAttributes['slack'];
                         $message =
                             'Hey! There are no future sprints created to move unfinished tasks '
                             . 'from ended sprints on project : *'

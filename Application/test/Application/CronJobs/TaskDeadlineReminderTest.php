@@ -130,7 +130,6 @@ class TaskDeadlineReminderTest extends UnitTest
         $this->assertEquals($slackMessageAttributes['priority'], SlackService::LOW_PRIORITY);
         $this->assertEquals($slackMessageAttributes['sent'], false);
         $this->assertEquals($slackMessageAttributes['message'], $message);
-        $slackMessage->delete();
     }
 
     public function testDoNotNotifyMemberForTaskDeadlineNotAMemberOfProject()
@@ -261,9 +260,5 @@ class TaskDeadlineReminderTest extends UnitTest
         $this->assertEquals($dueDateDueDatePassedMessageAtt['priority'], SlackService::LOW_PRIORITY);
         $this->assertEquals($dueDateDueDatePassedMessageAtt['sent'], false);
         $this->assertEquals($dueDateDueDatePassedMessageAtt['message'], $messageDueDatePassed);
-
-        foreach ($slackMessages as $message) {
-            $message->delete();
-        }
     }
 }

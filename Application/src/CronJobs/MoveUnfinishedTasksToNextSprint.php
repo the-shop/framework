@@ -10,10 +10,10 @@ use Framework\Base\Model\BrunoInterface;
 use Framework\Terminal\Commands\Cron\CronJob;
 
 /**
- * Class UnfinishedTasks
+ * Class MoveUnfinishedTasksToNextSprint
  * @package Application\CronJobs
  */
-class UnfinishedTasks extends CronJob
+class MoveUnfinishedTasksToNextSprint extends CronJob
 {
     use ApplicationAwareTrait;
 

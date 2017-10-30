@@ -6,17 +6,22 @@ use Application\CronJobs\AdminsQAWaitingTasks;
 use Application\Services\SlackApiClient;
 use Application\Services\SlackService;
 use Application\Test\Application\DummyCurlClient;
+use Application\Test\Application\Traits\Helpers;
 use Framework\Base\Model\BrunoInterface;
 use Framework\Base\Test\UnitTest;
 
 class AdminsQAWaitingTasksTest extends UnitTest
 {
+    use Helpers;
+
     /** @var  BrunoInterface */
     private $user;
     /** @var  BrunoInterface */
     private $project;
     /** @var  BrunoInterface */
     private $task;
+    /** @var  BrunoInterface */
+    private $slackMessage;
 
     public function setUp()
     {
@@ -72,11 +77,16 @@ class AdminsQAWaitingTasksTest extends UnitTest
                               ->setAttributes($models['task'])
                               ->setAttribute('project_id', $this->project->getId())
                               ->save();
+    }
 
-        $this->getApplication()
-             ->getConfiguration()
-             ->setPathValue('internal.slack.priorityToMinutesDelay.0', 0)
-             ->setPathValue('env.WEB_DOMAIN', 'testDomain');
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        $this->deleteCollection($this->task);
+        $this->deleteCollection($this->project);
+        $this->deleteCollection($this->slackMessage);
+        $this->deleteCollection($this->user);
     }
 
     public function testExecute()
@@ -90,7 +100,6 @@ class AdminsQAWaitingTasksTest extends UnitTest
         $apiClient->setClient(new DummyCurlClient())
                   ->setApplication($this->getApplication());
 
-        /** @var SlackService $service */
         $service = $this->getApplication()
                         ->getService(SlackService::class)
                         ->setApiClient($apiClient);
@@ -99,40 +108,19 @@ class AdminsQAWaitingTasksTest extends UnitTest
         $cronJob->setApplication($this->getApplication())
                 ->execute();
 
-        $slackMessage = $this->getApplication()
+        $this->slackMessage = $this->getApplication()
                              ->getRepositoryManager()
                              ->getRepositoryFromResourceName('slackMessages')
-                             ->loadOneBy(['recipient' => $this->user->getAttribute('name')]);
+                             ->loadOneBy(['recipient' => $this->user->getAttribute('slack')]);
 
         $this::assertStringStartsWith(
             'Hey, these tasks are *submitted for QA yesterday* and waiting for review: *testTask',
-            $slackMessage->getAttribute('message')
+            $this->slackMessage->getAttribute('message')
         );
-        $this::assertEquals(SlackService::HIGH_PRIORITY, $slackMessage->getAttribute('priority'));
-        $this::assertEquals(false, $slackMessage->getAttribute('sent'));
-
-
-        $this->delete($this->user);
-        $this->delete($this->task);
-        $this->delete($this->project);
-        $this->delete($slackMessage);
-    }
-
-    /**
-     * Deletes test record from db
-     */
-    private function delete(BrunoInterface $model)
-    {
-        $repository = $this->getApplication()
-                           ->getRepositoryManager()
-                           ->getRepositoryFromResourceName($model->getCollection());
-
-        $repository->getPrimaryAdapter()
-                   ->getClient()
-                   ->selectCollection(
-                       $model->getDatabase(),
-                       $model->getCollection()
-                   )
-                   ->drop();
+        $this::assertEquals(
+            SlackService::HIGH_PRIORITY,
+            $this->slackMessage->getAttribute('priority')
+        );
+        $this::assertEquals(false, $this->slackMessage->getAttribute('sent'));
     }
 }

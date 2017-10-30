@@ -3,6 +3,7 @@
 namespace Application\Test\Application\Traits;
 
 use Application\Test\Application\CronJobs\TaskDeadlineReminderTest;
+use Framework\Base\Model\BrunoInterface;
 
 /**
  * Class Helpers
@@ -35,7 +36,6 @@ trait Helpers
             $string .= $characters[rand(0, $charactersLength - 1)];
         }
 
-        return $string;
         return $string;
     }
 
@@ -83,5 +83,20 @@ trait Helpers
         }
 
         return $message;
+    }
+
+    private function deleteCollection(BrunoInterface $model)
+    {
+        $repository = $this->getApplication()
+                           ->getRepositoryManager()
+                           ->getRepositoryFromResourceName($model->getCollection());
+
+        $repository->getPrimaryAdapter()
+                   ->getClient()
+                   ->selectCollection(
+                       $model->getDatabase(),
+                       $model->getCollection()
+                   )
+                   ->drop();
     }
 }

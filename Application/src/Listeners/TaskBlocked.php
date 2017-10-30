@@ -34,7 +34,7 @@ class TaskBlocked implements ListenerInterface
                     $repositoryManager = $this->getApplication()
                                               ->getRepositoryManager();
 
-                    $project = $repositoryManager->getRepositoryFromResourceName('tasks')
+                    $project = $repositoryManager->getRepositoryFromResourceName('projects')
                                                  ->loadOne($payload->getAttribute('project_id'));
 
                     $owner = $repositoryManager->getRepositoryFromResourceName('users')

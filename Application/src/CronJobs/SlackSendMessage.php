@@ -5,6 +5,10 @@ namespace Application\CronJobs;
 use Application\Services\SlackService;
 use Framework\Terminal\Commands\Cron\CronJob;
 
+/**
+ * Class SlackSendMessage
+ * @package Application\CronJobs
+ */
 class SlackSendMessage extends CronJob
 {
     /**

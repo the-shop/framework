@@ -31,7 +31,7 @@ class SlackSendMessageTest extends UnitTest
                         ->getService(SlackService::class)
                         ->setApiClient($apiClient);
 
-        $service->setMessage('test', 'message', false, 0);
+        $service->setMessage('test', 'message', 0);
 
         $cronJob = new SlackSendMessage($arr);
         $cronJob->setApplication($this->getApplication());

@@ -148,8 +148,10 @@ class SlackApiClient implements ApplicationAwareInterface
 
     /**
      * SLACK_TOKEN env variable
+     *
+     * @return void
      */
-    private function setToken(): void
+    private function setToken()
     {
         if ($this->token === null) {
             $this->token = $this->getApplication()->getConfiguration()->getPathValue('env.SLACK_TOKEN');

@@ -101,7 +101,7 @@ class TaskDeadlineReminderTest extends UnitTest
      */
     public function testNotifyProjectMemberForTaskDeadlines()
     {
-        $cronJob = new TaskDeadlineReminder(['value' => '', 'args' => []]);
+        $cronJob = new TaskDeadlineReminder(['timer' => '', 'args' => []]);
         $cronJob->setApplication($this->getApplication());
         $cronJob->execute();
 
@@ -168,7 +168,7 @@ class TaskDeadlineReminderTest extends UnitTest
             $task->save();
         }
 
-        $cronJob = new TaskDeadlineReminder(['value' => '', 'args' => []]);
+        $cronJob = new TaskDeadlineReminder(['timer' => '', 'args' => []]);
         $cronJob->setApplication($this->getApplication());
         $cronJob->execute();
 
@@ -212,7 +212,7 @@ class TaskDeadlineReminderTest extends UnitTest
             $task->save();
         }
 
-        $cronJob = new TaskDeadlineReminder(['value' => '', 'args' => []]);
+        $cronJob = new TaskDeadlineReminder(['timer' => '', 'args' => []]);
         $cronJob->setApplication($this->getApplication());
         $cronJob->execute();
 

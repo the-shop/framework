@@ -5,6 +5,7 @@ use Framework\Base\Mongo\MongoAdapter;
 use Application\CrudApi\Repository\GenericRepository;
 use Application\Services\SlackService;
 use Application\CronJobs\SlackSendMessage;
+use Application\CronJobs\AdminsQAWaitingTasks;
 use Application\Services\SlackApiClient;
 use GuzzleHttp\Client;
 use Application\Services\ProfilePerformance;
@@ -100,8 +101,8 @@ return [
     ],
     'services' => [
         SlackService::class,
-        EmailService::class,
         ProfilePerformance::class,
+        EmailService::class,
     ],
     'servicesConfig' => [
         SlackService::class => [
@@ -114,6 +115,16 @@ return [
             'timer' => 'everyMinute',
             'args' => [],
         ],
+        AdminsQAWaitingTasks::class => [
+            'timer' => [
+                'twiceDaily',
+                [
+                    '9',
+                    '14',
+                ],
+            ],
+            'args' => [],
+        ]
     ],
     'emailService' => [
         'mailerInterface' => SendGrid::class,

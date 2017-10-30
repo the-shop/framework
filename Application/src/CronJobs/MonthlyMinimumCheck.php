@@ -2,6 +2,7 @@
 
 namespace Application\CronJobs;
 
+use Application\Services\ProfilePerformance;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Model\BrunoInterface;
 use Framework\Terminal\Commands\Cron\CronJob;
@@ -38,7 +39,7 @@ class MonthlyMinimumCheck extends CronJob
                 continue;
             }
 
-            $profilePerformance = $app->getService('profilePerformance');
+            $profilePerformance = $app->getService(ProfilePerformance::class);
             $dateStart = new \DateTime();
             $unixStart = (int)$dateStart->modify('first day of last month')->format('U');
 

@@ -35,13 +35,19 @@ class MongoAdapter implements DatabaseAdapterInterface
     public function getClient()
     {
         if ($this->mongoClient === null) {
-            $this->setClient(new Client($uri = 'mongodb://127.0.0.1/', $uriOptions = [], $driverOptions = [
-                'typeMap' => [
-                    'array' => 'array',
-                    'document' => 'MongoDB\Model\BSONDocument',
-                    'root' => 'MongoDB\Model\BSONDocument',
-                ]
-            ]));
+            $this->setClient(
+                new Client(
+                    $uri = 'mongodb://127.0.0.1/',
+                    $uriOptions = [],
+                    $driverOptions = [
+                        'typeMap' => [
+                            'array' => 'array',
+                            'document' => 'MongoDB\Model\BSONDocument',
+                            'root' => 'MongoDB\Model\BSONDocument',
+                        ],
+                    ]
+                )
+            );
         }
 
         return $this->mongoClient;
@@ -75,8 +81,11 @@ class MongoAdapter implements DatabaseAdapterInterface
      * @param array $updateData
      * @return $this
      */
-    public function updateOne(DatabaseQueryInterface $query, string $identifier, array $updateData = [])
-    {
+    public function updateOne(
+        DatabaseQueryInterface $query,
+        string $identifier,
+        array $updateData = []
+    ) {
         if (empty($updateData)) {
             return $this;
         }
@@ -86,14 +95,14 @@ class MongoAdapter implements DatabaseAdapterInterface
         }
 
         $this->getClient()
-             ->selectCollection(
-                 $query->getDatabase(),
-                 $query->getCollection()
-             )
-             ->updateOne(
-                 ['_id' => new ObjectID($identifier)],
-                 ['$set' => $updateData]
-             );
+            ->selectCollection(
+                $query->getDatabase(),
+                $query->getCollection()
+            )
+            ->updateOne(
+                ['_id' => new ObjectID($identifier)],
+                ['$set' => $updateData]
+            );
 
         // TODO: check if $result reported successful update, throw exception otherwise
 

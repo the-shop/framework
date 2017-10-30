@@ -58,6 +58,7 @@ trait ProjectRelated
                     'name' => 'Test Project',
                     'acceptedBy' => '',
                     'members' => [],
+                    'isComplete' => false,
                 ]
             );
     }

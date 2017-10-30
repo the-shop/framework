@@ -3,6 +3,7 @@
 namespace Application\Test\Services;
 
 use Application\Helpers\WorkDays;
+use Application\Services\ProfilePerformance;
 use Application\Test\Application\Traits\Helpers;
 use Framework\Base\Test\UnitTest;
 use Application\Test\Application\Traits\ProfileRelated;
@@ -45,7 +46,7 @@ class ProfilePerformanceTest extends UnitTest
     {
         $task = $this->getAssignedTask();
 
-        $pp = $this->getApplication()->getService('profilePerformance');
+        $pp = $this->getApplication()->getService(ProfilePerformance::class);
 
         $out = $pp->perTask($task);
 
@@ -81,7 +82,7 @@ class ProfilePerformanceTest extends UnitTest
         $assignedAgo = (int)(new \DateTime())->sub(new \DateInterval('PT' . $minutesWorking . 'M'))->format('U');
         $task = $this->getTaskWithJustAssignedHistory($assignedAgo);
 
-        $pp = $this->getApplication()->getService('profilePerformance');
+        $pp = $this->getApplication()->getService(ProfilePerformance::class);
 
         $out = $pp->perTask($task);
 
@@ -121,7 +122,7 @@ class ProfilePerformanceTest extends UnitTest
             );
         }
 
-        $pp = $this->getApplication()->getService('profilePerformance');
+        $pp = $this->getApplication()->getService(ProfilePerformance::class);
         //Test XP diff within time range with XP records
         $out = $pp->aggregateForTimeRange(
             $this->profile,
@@ -146,7 +147,7 @@ class ProfilePerformanceTest extends UnitTest
             );
         }
 
-        $pp = $this->getApplication()->getService('profilePerformance');
+        $pp = $this->getApplication()->getService(ProfilePerformance::class);
         //Test XP diff within time range with XP records
         $out = $pp->aggregateForTimeRange(
             $this->profile,
@@ -171,7 +172,7 @@ class ProfilePerformanceTest extends UnitTest
             );
         }
 
-        $pp = $this->getApplication()->getService('profilePerformance');
+        $pp = $this->getApplication()->getService(ProfilePerformance::class);
         //Test XP diff for time range where there are no XP records
         $startTime = (int)(new \DateTime())->modify('+50 days')->format('U');
         $endTime = (int)(new \DateTime())->modify('+55 days')->format('U');
@@ -194,7 +195,7 @@ class ProfilePerformanceTest extends UnitTest
             );
         }
 
-        $pp = $this->getApplication()->getService('profilePerformance');
+        $pp = $this->getApplication()->getService(ProfilePerformance::class);
         //Test XP diff when first 2 days of check there are no xp records and 3rd day there is one record
         $twoDaysBeforeFirstWorkDay = (int)(new \DateTime(reset($workDays)))->modify('-2 days')->format('U');
         $firstWorkDay = (int)\DateTime::createFromFormat('Y-m-d', reset($workDays))->format('U');
@@ -244,7 +245,7 @@ class ProfilePerformanceTest extends UnitTest
 
         $workDaysUnixTimestamps = array_keys($tasks);
 
-        $pp = $this->getApplication()->getService('profilePerformance');
+        $pp = $this->getApplication()->getService(ProfilePerformance::class);
         $out = $pp->aggregateForTimeRange(
             $this->profile,
             $workDaysUnixTimestamps[0],
@@ -274,7 +275,7 @@ class ProfilePerformanceTest extends UnitTest
                 ->sub(new \DateInterval('P2D'))
                 ->format('U');
 
-        $pp = $this->getApplication()->getService('profilePerformance');
+        $pp = $this->getApplication()->getService(ProfilePerformance::class);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid time range input. Must be type of integer');
@@ -343,7 +344,7 @@ class ProfilePerformanceTest extends UnitTest
         $highPriorityTask->save();
 
         // Test task priority coefficient
-        $pp = $this->getApplication()->getService('profilePerformance');
+        $pp = $this->getApplication()->getService(ProfilePerformance::class);
         $out = $pp->taskPriorityCoefficient($this->profile, $lowPriorityTask);
         $this->assertEquals(1.0, $out);
     }
@@ -395,7 +396,7 @@ class ProfilePerformanceTest extends UnitTest
         $highPriorityTask->save();
 
         // Test task priority coefficient
-        $pp = $this->getApplication()->getService('profilePerformance');
+        $pp = $this->getApplication()->getService(ProfilePerformance::class);
         $out = $pp->taskPriorityCoefficient($this->profile, $lowPriorityTask);
         $this->assertEquals(0.5, $out);
     }
@@ -447,7 +448,7 @@ class ProfilePerformanceTest extends UnitTest
         $highPriorityTask->save();
 
         // Test task priority coefficient
-        $pp = $this->getApplication()->getService('profilePerformance');
+        $pp = $this->getApplication()->getService(ProfilePerformance::class);
         $out = $pp->taskPriorityCoefficient($this->profile, $lowPriorityTask);
         $this->assertEquals(0.8, $out);
     }

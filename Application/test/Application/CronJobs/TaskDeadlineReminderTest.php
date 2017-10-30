@@ -105,12 +105,10 @@ class TaskDeadlineReminderTest extends UnitTest
         $cronJob->setApplication($this->getApplication());
         $cronJob->execute();
 
-        $slackMessages = $this->getApplication()
+        $slackMessage = $this->getApplication()
             ->getRepositoryManager()
             ->getRepositoryFromResourceName('slackMessages')
-            ->loadMultiple();
-
-        $slackMessage = end($slackMessages);
+            ->loadOneBy(['recipient' => '@' . $this->profile->getAttribute('slack')]);
 
         $slackMessageAttributes = $slackMessage->getAttributes();
 

@@ -351,6 +351,7 @@ class ProfilePerformance implements ServiceInterface
                 if ($taskSkillSet === null) {
                     $taskSkillSet = [];
                 }
+
                 // Let's compare user skills with task skillset
                 $compareSkills = array_intersect(
                     $taskOwner->getAttribute('skills'),

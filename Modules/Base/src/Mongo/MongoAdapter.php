@@ -19,27 +19,6 @@ class MongoAdapter implements DatabaseAdapterInterface
     private $mongoClient = null;
 
     /**
-     * @var MongoAdapter|null
-     */
-    private $databaseAdapter = null;
-
-    /**
-     * @param DatabaseAdapterInterface $adapter
-     * @return $this
-     */
-    public function setDatabaseAdapter(DatabaseAdapterInterface $adapter)
-    {
-        $this->databaseAdapter = $adapter;
-
-        return $this;
-    }
-
-    public function getDatabaseAdapter()
-    {
-        return $this->databaseAdapter;
-    }
-
-    /**
      * @param $mongoClient
      * @return $this
      */
@@ -83,11 +62,11 @@ class MongoAdapter implements DatabaseAdapterInterface
     public function insertOne(DatabaseQueryInterface $query, array $data = [])
     {
         $result = $this->getClient()
-            ->selectCollection(
-                $query->getDatabase(),
-                $query->getCollection()
-            )
-            ->insertOne($data);
+                       ->selectCollection(
+                           $query->getDatabase(),
+                           $query->getCollection()
+                       )
+                       ->insertOne($data);
 
         if ($result->getInsertedId()) {
             return $result->getInsertedId();
@@ -166,10 +145,10 @@ class MongoAdapter implements DatabaseAdapterInterface
                 $query->build(),
                 [
                     'projection' => $query->getSelectFields(),
-                    'skip' => (int)$query->getOffset(),
-                    'limit' => (int)$query->getLimit(),
+                    'skip' => (int) $query->getOffset(),
+                    'limit' => (int) $query->getLimit(),
                     'sort' => [
-                        $query->getOrderBy() => $query->getOrderDirection() === 'asc' ? -1 : 1,
+                        $query->getOrderBy() => $query->getOrderDirection() === 'asc' ? -1 : 1
                     ],
                 ]
             );
@@ -179,7 +158,7 @@ class MongoAdapter implements DatabaseAdapterInterface
             if (isset($result['_id']) === true &&
                 $result['_id'] instanceof ObjectID === true
             ) {
-                $result['_id'] = (string)$result['_id'];
+                $result['_id'] = (string) $result['_id'];
             }
             $out[] = $result->getArrayCopy();
         }

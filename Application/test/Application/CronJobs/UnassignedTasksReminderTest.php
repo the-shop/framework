@@ -90,7 +90,7 @@ class UnassignedTasksReminderTest extends UnitTest
 
     public function testNotifyProjectMemberAboutUnassignedTasks()
     {
-        $cronJob = (new UnassignedTasksReminder(['value' => '', 'args' => []]))
+        $cronJob = (new UnassignedTasksReminder(['timer' => '', 'args' => []]))
             ->setApplication($this->getApplication());
         $cronJob->execute();
 
@@ -142,7 +142,7 @@ class UnassignedTasksReminderTest extends UnitTest
             ])
             ->save();
 
-        $cronJob = (new UnassignedTasksReminder(['value' => '', 'args' => []]))
+        $cronJob = (new UnassignedTasksReminder(['timer' => '', 'args' => []]))
             ->setApplication($this->getApplication());
         $cronJob->execute();
 

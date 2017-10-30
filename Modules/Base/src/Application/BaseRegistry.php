@@ -8,6 +8,8 @@ namespace Framework\Base\Application;
  */
 class BaseRegistry implements RegistryInterface
 {
+    use ApplicationAwareTrait;
+
     /**
      * @var array
      */

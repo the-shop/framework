@@ -3,7 +3,6 @@
 namespace Framework\Terminal\Commands;
 
 use Framework\Base\Application\ApplicationAwareTrait;
-use Framework\Terminal\Commands\Cron\CronJobInterface;
 
 /**
  * Class CronJob
@@ -14,28 +13,11 @@ class CronJobsScheduler implements CommandHandlerInterface
     use ApplicationAwareTrait;
 
     /**
-     * @var array
-     */
-    protected $registeredJobs = [];
-
-    /**
      * @return array
      */
     public function getRegisteredJobs(): array
     {
-        return $this->registeredJobs;
-    }
-
-    /**
-     * @param \Framework\Terminal\Commands\Cron\CronJobInterface $cronJob
-     *
-     * @return \Framework\Terminal\Commands\CommandHandlerInterface
-     */
-    public function addCronJob(CronJobInterface $cronJob): CommandHandlerInterface
-    {
-        $this->registeredJobs[] = $cronJob;
-
-        return $this;
+        return $this->getApplication()->getRegisteredCronJobs();
     }
 
     /**

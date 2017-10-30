@@ -45,7 +45,7 @@ return [
         'DATABASE_ADDRESS' => getenv('DATABASE_ADDRESS'),
         'DATABASE_NAME' => getenv('DATABASE_NAME'),
         /**
-         * @todo fix config keys not overwriting each other then move SLACK_TOKEN to application config
+         * @todo fix config keys not overwriting each other then move SLACK_TOKEN to application config, duplicates in terminal app config
          */
         'SLACK_TOKEN' => getenv('SLACK_TOKEN'),
     ]

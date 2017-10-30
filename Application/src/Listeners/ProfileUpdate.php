@@ -2,6 +2,7 @@
 
 namespace Application\Listeners;
 
+use Application\Services\SlackService;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Model\BrunoInterface;
@@ -51,8 +52,13 @@ class ProfileUpdate implements ListenerInterface
             if ($slack !== null && empty($slack) === false) {
                 //Send slack message with XP status changed
                 $recipient = '@' . $slack;
-                //TODO: implement after slack service is implemented
-                //Slack::sendMessage($recipient, $message, Slack::HIGH_PRIORITY);
+                $slackService = $this->getApplication()->getService(SlackService::class);
+                $slackService->setMessage(
+                    $recipient,
+                    $message,
+                    $private = false,
+                    SlackService::HIGH_PRIORITY
+                );
             }
 
             $subject = 'Xp status changed!';

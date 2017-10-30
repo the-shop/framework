@@ -77,8 +77,8 @@ class XpDeductionTest extends UnitTest
         $profileAttributes = $this->profile->getAttributes();
 
         $xpDeduction = new XpDeduction([
-            'value' => '',
-            'args' => '',
+            'timer' => '',
+            'args' => [],
         ]);
         $xpDeduction->setApplication($this->getApplication());
         $xpDeduction->execute();
@@ -131,8 +131,8 @@ class XpDeductionTest extends UnitTest
         $profileAttributes = $this->profile->getAttributes();
 
         $xpDeduction = new XpDeduction([
-            'value' => '',
-            'args' => '',
+            'timer' => '',
+            'args' => [],
         ]);
 
         $xpDeduction->setApplication($this->getApplication());
@@ -188,8 +188,8 @@ class XpDeductionTest extends UnitTest
         $profileAttributes = $this->profile->getAttributes();
 
         $xpDeduction = new XpDeduction([
-            'value' => '',
-            'args' => '',
+            'timer' => '',
+            'args' => [],
         ]);
 
         $xpDeduction->setApplication($this->getApplication());
@@ -235,8 +235,8 @@ class XpDeductionTest extends UnitTest
         $profileAttributes = $this->profile->getAttributes();
 
         $xpDeduction = new XpDeduction([
-            'value' => '',
-            'args' => '',
+            'timer' => '',
+            'args' => [],
         ]);
 
         $xpDeduction->setApplication($this->getApplication());

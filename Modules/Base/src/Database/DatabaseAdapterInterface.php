@@ -47,17 +47,6 @@ interface DatabaseAdapterInterface
     public function getClient();
 
     /**
-     * @param DatabaseAdapterInterface $client
-     * @return mixed
-     */
-    public function setDatabaseAdapter(DatabaseAdapterInterface $client);
-
-    /**
-     * @return DatabaseAdapterInterface|null
-     */
-    public function getDatabaseAdapter();
-
-    /**
      * @return \Framework\Base\Database\DatabaseQueryInterface
      */
     public function newQuery(): DatabaseQueryInterface;

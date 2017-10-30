@@ -3,7 +3,7 @@
 /**
  * Require composer dependencies
  */
-require_once '../vendor/autoload.php';
+require_once realpath(dirname(__DIR__) . '/vendor/autoload.php');
 
 $dotenv = new \Symfony\Component\Dotenv\Dotenv();
 $dotenv->load(realpath(dirname(__DIR__) . '/.env'));

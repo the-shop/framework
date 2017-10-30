@@ -4,6 +4,7 @@ namespace Application\Listeners;
 
 use Application\Helpers\XpRecord;
 use Application\Services\ProfilePerformance;
+use Application\Services\SlackService;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Helpers\Parse;
@@ -167,7 +168,7 @@ class UpdateXp implements ListenerInterface
      * @param $task
      * @param $xpDiff
      */
-    private function sendSlackMessageXpUpdated($profile, $task, $xpDiff)
+    private function sendSlackMessageXpUpdated(BrunoInterface $profile, BrunoInterface $task, $xpDiff)
     {
         $configuration = $this->getApplication()->getConfiguration();
         $xpUpdateMessage = $configuration->getPathValue('internal.profile_update_xp_message');
@@ -185,7 +186,17 @@ class UpdateXp implements ListenerInterface
             . '/tasks/'
             . $task->getAttribute('_id')
             . ')';
-        //TODO: implement after slack service is implemented
-        //Slack::sendMessage($recipient, $slackMessage, Slack::HIGH_PRIORITY);
+
+        /**
+         * @var SlackService $slackService
+         */
+        $slackService = $this->getApplication()->getService(SlackService::class);
+
+        $slackService->setMessage(
+            $recipient,
+            $slackMessage,
+            $private = false,
+            SlackService::HIGH_PRIORITY
+        );
     }
 }

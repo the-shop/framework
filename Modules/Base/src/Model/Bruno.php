@@ -7,6 +7,7 @@ use Framework\Base\Database\DatabaseAdapterInterface;
 use Framework\Base\Model\Modifiers\HashFilter;
 use Framework\Base\Mongo\MongoQuery;
 use Framework\Base\Model\Modifiers\FieldModifierInterface;
+use MongoDB\Model\BSONArray;
 
 /**
  * Base Model for database
@@ -178,7 +179,7 @@ abstract class Bruno implements BrunoInterface
         $query->setCollection($this->getCollection());
         $query->addAndCondition(
             '_id',
-            '$eq',
+            '=',
             $this->getId()
         );
 

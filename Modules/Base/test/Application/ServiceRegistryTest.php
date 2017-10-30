@@ -10,7 +10,6 @@ class ServiceRegistryTest extends UnitTest
     public function testRegisterWithServiceInterface()
     {
         $val = new SampleService();
-
         $key = SampleService::class;
 
         $registry = new ServicesRegistry();

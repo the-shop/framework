@@ -11,6 +11,9 @@ use Application\Services\ProfilePerformance;
 use Application\Services\EmailService;
 use Framework\Base\Mailer\SendGrid;
 use SendGrid as SendGridClient;
+use Application\Services\FileUploadService;
+use Aws\S3\S3Client;
+use Framework\Base\FileUpload\S3FileUpload;
 
 return [
     'routePrefix' => '/api/v1',
@@ -83,7 +86,7 @@ return [
             MongoAdapter::class,
         ],
         "logs" => [
-            MongoAdapter::class
+            MongoAdapter::class,
         ],
     ],
     'primaryModelAdapter' => [
@@ -114,6 +117,20 @@ return [
                 'classPath' => SendGridClient::class,
                 'constructorArguments' => [
                     getenv('SENDGRID_API_KEY'),
+                ],
+            ],
+        ],
+        FileUploadService::class => [
+            'fileUploadInterface' => S3FileUpload::class,
+            'fileUploadClient' => [
+                'classPath' => S3Client::class,
+                'constructorArguments' => [
+                    'version' => 'latest',
+                    'region' => getenv('S3_REGION'),
+                    'credentials' => [
+                        'key' => getenv('S3_KEY'),
+                        'secret' => getenv('S3_SECRET'),
+                    ],
                 ],
             ],
         ],

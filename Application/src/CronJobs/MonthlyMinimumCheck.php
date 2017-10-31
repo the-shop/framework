@@ -101,7 +101,7 @@ class MonthlyMinimumCheck extends CronJob
                     && empty($profileAttributes['slack']) === false
                     && $profileAttributes['active'] === true
                 ) {
-                    $recipient = '@' . $profileAttributes['slack'];
+                    $recipient = $profileAttributes['slack'];
 
                     $slackService->setMessage(
                         $recipient,
@@ -120,7 +120,7 @@ class MonthlyMinimumCheck extends CronJob
                         && empty($adminAttributes['slack']) === false
                         && $adminAttributes['active'] === true
                     ) {
-                        $recipient = '@' . $adminAttributes['slack'];
+                        $recipient = $adminAttributes['slack'];
 
                         $slackService->setMessage(
                             $recipient,

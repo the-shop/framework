@@ -80,7 +80,7 @@ class TaskDeadlineReminder extends CronJob
             $recipientAttributes = $recipient->getAttributes();
             if (array_key_exists('slack', $recipientAttributes) === true
                 && empty($recipientAttributes['slack']) === false) {
-                $recipientSlack = '@' . $recipientAttributes['slack'];
+                $recipientSlack = $recipientAttributes['slack'];
 
                 /*Loop through tasks that have due_date within next 7 days, compare skills with
                 recipient skills and get max 3 tasks with nearest due_date*/

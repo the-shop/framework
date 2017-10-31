@@ -173,7 +173,7 @@ class UpdateXp implements ListenerInterface
         $configuration = $this->getApplication()->getConfiguration();
         $xpUpdateMessage = $configuration->getPathValue('internal.profile_update_xp_message');
         $webDomain = $configuration->getPathValue('env.WEB_DOMAIN');
-        $recipient = '@' . $profile->getAttribute('slack');
+        $recipient = $profile->getAttribute('slack');
         $slackMessage = str_replace('{N}', ($xpDiff > 0 ? "+" . $xpDiff : $xpDiff), $xpUpdateMessage)
             . ' *'
             . $task->getAttribute('title')

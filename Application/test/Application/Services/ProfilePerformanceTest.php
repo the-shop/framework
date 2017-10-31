@@ -357,9 +357,6 @@ class ProfilePerformanceTest extends UnitTest
      */
     public function testProfilePerformanceTaskPriorityCoefficientMediumDeduction()
     {
-        $this->markTestSkipped(
-            'Mark as uncompleted. Need truncate method on repository to clear database records.'
-        );
         // Get new project
         $project = $this->getNewProject();
         $members = [$this->profile->getAttribute('_id')];
@@ -377,7 +374,7 @@ class ProfilePerformanceTest extends UnitTest
         $lowPriorityTask = $this->getNewTask();
         $lowPriorityTask->setAttributes([
             'project_id' => $project->getAttribute('_id'),
-            'priority' => 'low',
+            'priority' => 'Low',
             'skillset' => $skillSetMatch
         ]);
         $lowPriorityTask->save();
@@ -385,7 +382,7 @@ class ProfilePerformanceTest extends UnitTest
         $mediumPriorityTask = $this->getNewTask();
         $mediumPriorityTask->setAttributes([
             'project_id' => $project->getAttribute('_id'),
-            'priority' => 'medium',
+            'priority' => 'Medium',
             'skillset' => $skillSetMatch
         ]);
         $mediumPriorityTask->save();
@@ -393,7 +390,7 @@ class ProfilePerformanceTest extends UnitTest
         $highPriorityTask = $this->getNewTask();
         $highPriorityTask->setAttributes([
             'project_id' => $project->getAttribute('_id'),
-            'priority' => 'high',
+            'priority' => 'High',
             'skillset' => $skillSetMatch
         ]);
         $highPriorityTask->save();
@@ -401,6 +398,7 @@ class ProfilePerformanceTest extends UnitTest
         // Test task priority coefficient
         $pp = $this->getApplication()->getService(ProfilePerformance::class);
         $out = $pp->taskPriorityCoefficient($this->profile, $lowPriorityTask);
+
         $this->assertEquals(0.5, $out);
     }
 
@@ -409,9 +407,6 @@ class ProfilePerformanceTest extends UnitTest
      */
     public function testProfilePerformanceTaskPriorityCoefficientHighDeduction()
     {
-        $this->markTestSkipped(
-            'Mark as uncompleted. Need truncate method on repository to clear database records.'
-        );
         // Get new project
         $project = $this->getNewProject();
         $members = [$this->profile->getAttribute('_id')];
@@ -429,7 +424,7 @@ class ProfilePerformanceTest extends UnitTest
         $lowPriorityTask = $this->getNewTask();
         $lowPriorityTask->setAttributes([
             'project_id' => $project->getAttribute('_id'),
-            'priority' => 'low',
+            'priority' => 'Low',
             'skillset' => $skillSetMatch
         ]);
         $lowPriorityTask->save();
@@ -437,7 +432,7 @@ class ProfilePerformanceTest extends UnitTest
         $mediumPriorityTask = $this->getNewTask();
         $mediumPriorityTask->setAttributes([
             'project_id' => $project->getAttribute('_id'),
-            'priority' => 'medium',
+            'priority' => 'Medium',
             'skillset' => $skillSetMatch
         ]);
         $mediumPriorityTask->save();
@@ -445,14 +440,14 @@ class ProfilePerformanceTest extends UnitTest
         $highPriorityTask = $this->getNewTask();
         $highPriorityTask->setAttributes([
             'project_id' => $project->getAttribute('_id'),
-            'priority' => 'high',
+            'priority' => 'High',
             'skillset' => $skillSetMatch
         ]);
         $highPriorityTask->save();
 
         // Test task priority coefficient
         $pp = $this->getApplication()->getService(ProfilePerformance::class);
-        $out = $pp->taskPriorityCoefficient($this->profile, $lowPriorityTask);
+        $out = $pp->taskPriorityCoefficient($this->profile, $mediumPriorityTask);
         $this->assertEquals(0.8, $out);
     }
 }

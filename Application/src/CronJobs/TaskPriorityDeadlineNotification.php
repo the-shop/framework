@@ -144,7 +144,7 @@ class TaskPriorityDeadlineNotification extends CronJob
                             if ($priority === self::LOW) {
                                 $message .= '* tasks with *Low priority* in next *28 days*';
                             }
-                            $service->setMessage($sendTo, $message, false, SlackService::LOW_PRIORITY);
+                            $service->setMessage($sendTo, $message, SlackService::LOW_PRIORITY);
                         }
                     }
                 }

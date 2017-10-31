@@ -103,6 +103,7 @@ trait Helpers
         $adapter->getClient()
             ->selectCollection($databaseName, $resourceName)
             ->drop();
+    }
 
     private function deleteCollection(BrunoInterface $model)
     {

@@ -115,7 +115,7 @@ class UpdateTaskPriorityTest extends UnitTest
         $slackMessage = $this->getApplication()
             ->getRepositoryManager()
             ->getRepositoryFromResourceName('slackMessages')
-            ->loadOneBy(['recipient' => '@' . $this->profile->getAttribute('slack')]);
+            ->loadOneBy(['recipient' => $this->profile->getAttribute('slack')]);
 
         $slackMessageAttributes = $slackMessage->getAttributes();
 
@@ -126,7 +126,7 @@ class UpdateTaskPriorityTest extends UnitTest
         $this->assertArrayHasKey('runAt', $slackMessageAttributes);
         $this->assertEquals(
             $slackMessageAttributes['recipient'],
-            '@' . $this->profile->getAttribute('slack')
+            $this->profile->getAttribute('slack')
         );
         $this->assertEquals($slackMessageAttributes['priority'], SlackService::LOW_PRIORITY);
         $this->assertEquals($slackMessageAttributes['sent'], false);

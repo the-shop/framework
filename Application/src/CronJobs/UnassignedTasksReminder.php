@@ -11,7 +11,7 @@ use Application\CrudApi\Model\Generic;
 
 /**
  * Class UnassignedTasksReminder
- * @package Application\CronJobs\Commands
+ * @package Application\CronJobs
  */
 class UnassignedTasksReminder extends CronJob
 {
@@ -135,7 +135,6 @@ class UnassignedTasksReminder extends CronJob
                         $slackService->setMessage(
                             $recipient,
                             $message,
-                            $private = false,
                             SlackService::MEDIUM_PRIORITY
                         );
                     }

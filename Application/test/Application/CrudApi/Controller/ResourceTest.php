@@ -15,6 +15,14 @@ use Application\Test\Application\Traits\Helpers;
 class ResourceTest extends UnitTest
 {
     use Helpers;
+
+    public function tearDown()
+    {
+        $this->purgeCollection('projects');
+        $this->purgeCollection('tasks');
+        $this->purgeCollection('sprints');
+    }
+
     /**
      * @var array
      */

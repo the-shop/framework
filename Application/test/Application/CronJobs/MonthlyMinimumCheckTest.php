@@ -42,6 +42,7 @@ class MonthlyMinimumCheckTest extends UnitTest
         parent::tearDown();
 
         $this->profile->delete();
+        $this->purgeCollection('tasks');
     }
 
     /**

@@ -93,6 +93,17 @@ abstract class CronJob implements CronJobInterface
         return $this->cronTimeExpression;
     }
 
+    public function formatUnixTimeStamp($input)
+    {
+        if (strlen((string)$input) === 10) {
+            return (int)$input;
+        } elseif (strlen((string)$input) === 13) {
+            return (int)substr((string)$input, 0, -3);
+        }
+
+        throw new \InvalidArgumentException('Unrecognized unix timestamp format');
+    }
+
     /**
      * Schedule the event to run hourly.
      *

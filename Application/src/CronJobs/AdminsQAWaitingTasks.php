@@ -19,7 +19,6 @@ class AdminsQAWaitingTasks extends CronJob
                           ->getConfiguration()
                           ->getPathValue('env.WEB_DOMAIN');
 
-        /** @var SlackService $service */
         $service = $this->getApplication()
                         ->getService(SlackService::class);
 
@@ -36,10 +35,7 @@ class AdminsQAWaitingTasks extends CronJob
 
         $model = $repository->newModel();
 
-        $query = $repository->getPrimaryAdapter()
-                            ->newQuery()
-                            ->setDatabase($model->getDatabase())
-                            ->setCollection('tasks')
+        $query = $repository->createNewQueryForModel($model)
                             ->addAndCondition('submitted_for_qa', '=', true);
 
         $tasksInQa = $repository->loadMultiple($query);

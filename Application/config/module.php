@@ -13,10 +13,28 @@ use Application\Services\ProfilePerformance;
 use Application\Services\EmailService;
 use Framework\Base\Mailer\SendGrid;
 use SendGrid as SendGridClient;
+use Application\Services\FileUploadService;
+use Aws\S3\S3Client;
+use Framework\Base\FileUpload\S3FileUpload;
 
 return [
     'routePrefix' => '/api/v1',
     'routes' => [
+        [
+            'post',
+            '/upload',
+            '\Framework\Http\Controller\FileUploadController::uploadFile'
+        ],
+        [
+            'get',
+            '/projects/{id}/uploads',
+            '\Framework\Http\Controller\FileUploadController::getProjectUploads'
+        ],
+        [
+            'delete',
+            '/upload/{projectId}/project',
+            '\Framework\Http\Controller\FileUploadController::deleteProjectUploads'
+        ],
         [
             'get',
             '/{resourceName}/{identifier}/performance',
@@ -85,8 +103,11 @@ return [
             MongoAdapter::class,
         ],
         "logs" => [
-            MongoAdapter::class
+            MongoAdapter::class,
         ],
+        "uploads" => [
+            MongoAdapter::class
+        ]
     ],
     'primaryModelAdapter' => [
         'users' => MongoAdapter::class,
@@ -99,11 +120,13 @@ return [
         'xp' => MongoAdapter::class,
         'profile_overall' => MongoAdapter::class,
         'logs' => MongoAdapter::class,
+        'uploads' => MongoAdapter::class,
     ],
     'services' => [
         SlackService::class,
         EmailService::class,
         ProfilePerformance::class,
+        FileUploadService::class,
     ],
     'servicesConfig' => [
         SlackService::class => [
@@ -116,6 +139,20 @@ return [
                 'classPath' => SendGridClient::class,
                 'constructorArguments' => [
                     getenv('SENDGRID_API_KEY'),
+                ],
+            ],
+        ],
+        FileUploadService::class => [
+            'fileUploadInterface' => S3FileUpload::class,
+            'fileUploadClient' => [
+                'classPath' => S3Client::class,
+                'constructorArguments' => [
+                    'version' => 'latest',
+                    'region' => getenv('S3_REGION'),
+                    'credentials' => [
+                        'key' => getenv('S3_KEY'),
+                        'secret' => getenv('S3_SECRET'),
+                    ],
                 ],
             ],
         ],

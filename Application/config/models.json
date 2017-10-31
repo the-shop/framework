@@ -522,7 +522,6 @@
           "required": false,
           "validation": [
             "float"
-
           ],
           "default": 0
         },
@@ -790,7 +789,7 @@
         }
       }
     },
-    "SlackMessage" : {
+    "SlackMessage": {
       "collection": "slackMessages",
       "authenticatable": false,
       "fields": {
@@ -829,7 +828,7 @@
             "int"
           ]
         },
-        "sent":{
+        "sent": {
           "label": "Is message sent",
           "type": "string",
           "required": true,
@@ -838,7 +837,7 @@
             "bool"
           ]
         },
-        "runAt":{
+        "runAt": {
           "label": "Run at",
           "type": "integer",
           "required": true,
@@ -981,6 +980,47 @@
         },
         "method": {
           "label": "Method",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        }
+      }
+    },
+    "Upload": {
+      "collection": "uploads",
+      "authenticatable": false,
+      "fields": {
+        "_id": {
+          "primaryKey": true,
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "projectId": {
+          "label": "Project ID",
+          "type": "string",
+          "required": true,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "name": {
+          "label": "Name",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "fileUrl": {
+          "label": "File Url",
           "type": "string",
           "required": false,
           "validation": [

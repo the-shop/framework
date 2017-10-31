@@ -45,6 +45,13 @@
       "private": {
         "GET": [
           {
+            "route": "/projects/{id}/uploads",
+            "allows": [
+              "admin",
+              "standard"
+            ]
+          },
+          {
             "route": "/{resourceName}/{identifier}/performance",
             "allows": [
               "admin",
@@ -69,6 +76,13 @@
         "POST": [
           {
             "route": "/{resourceName}",
+            "allows": [
+              "admin",
+              "standard"
+            ]
+          },
+          {
+            "route": "/upload",
             "allows": [
               "admin",
               "standard"
@@ -103,6 +117,13 @@
         "DELETE": [
           {
             "route": "/{resourceName}/{identifier}",
+            "allows": [
+              "admin",
+              "standard"
+            ]
+          },
+          {
+            "route": "/upload/{projectId}/project",
             "allows": [
               "admin",
               "standard"

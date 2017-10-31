@@ -12,6 +12,9 @@
         <testsuite name="Modules/Terminal">
             <directory>Modules/Terminal/test</directory>
         </testsuite>
+        <testsuite name="Modules/Http">
+            <directory>Modules/Http/test</directory>
+        </testsuite>
     </testsuites>
     <php>
         <env name="FILE_LOGGER_FILE_NAME" value="file_logger.log"/>
@@ -22,5 +25,7 @@
         <env name="PRIVATE_MAIL_FROM" value="no-reply@the-shop.hr" />
         <env name="SLACK_TOKEN" value="123456" />
         <env name="WEB_DOMAIN" value="test-theshop" />
+        <env name="FILE_TO_UPLOAD_TEST_PATH"
+             value="/Modules/Base/test/FileUpload/test.txt"/>
     </php>
 </phpunit>

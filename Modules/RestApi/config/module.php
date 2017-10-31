@@ -13,10 +13,10 @@ use Framework\RestApi\Listener\RequestLogger;
 return [
     'listeners' => [
         BaseApplication::EVENT_APPLICATION_RENDER_RESPONSE_PRE => [
-            ResponseFormatter::class
+            ResponseFormatter::class,
         ],
         ExceptionHandler::EVENT_EXCEPTION_HANDLER_HANDLE_PRE => [
-            ExceptionFormatter::class
+            ExceptionFormatter::class,
         ],
         BaseApplication::EVENT_APPLICATION_HANDLE_REQUEST_PRE => [
             RequestLogger::class,
@@ -24,7 +24,7 @@ return [
             Acl::class,
         ],
         Resource::EVENT_CRUD_API_RESOURCE_CREATE_POST => [
-            ConfirmRegistration::class
+            ConfirmRegistration::class,
         ],
     ],
     'env' => [
@@ -48,5 +48,9 @@ return [
          * @todo fix config keys not overwriting each other then move SLACK_TOKEN to application config, duplicates in terminal app config
          */
         'SLACK_TOKEN' => getenv('SLACK_TOKEN'),
-    ]
+        'S3_KEY' => getenv('S3_KEY'),
+        'S3_SECRET' => getenv('S3_SECRET'),
+        'S3_BUCKET' => getenv('S3_BUCKET'),
+        'S3_REGION' => getenv('S3_REGION'),
+    ],
 ];

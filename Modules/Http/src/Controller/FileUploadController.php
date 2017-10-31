@@ -74,6 +74,7 @@ class FileUploadController extends Http
     {
         $project = $this->getRepositoryFromResourceName('projects')
             ->loadOne($identifier);
+
         if ($project === null) {
             throw new NotFoundException('Project with given ID not found', 404);
         }
@@ -95,6 +96,7 @@ class FileUploadController extends Http
     {
         $project = $this->getRepositoryFromResourceName('projects')
             ->loadOne($identifier);
+
         if ($project === null) {
             throw new NotFoundException('Project with given ID not found', 404);
         }

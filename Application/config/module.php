@@ -19,6 +19,21 @@ return [
     'routePrefix' => '/api/v1',
     'routes' => [
         [
+            'post',
+            '/upload',
+            '\Framework\Http\Controller\FileUploadController::uploadFile'
+        ],
+        [
+            'get',
+            '/projects/{id}/uploads',
+            '\Framework\Http\Controller\FileUploadController::getProjectUploads'
+        ],
+        [
+            'delete',
+            '/upload/{projectId}/project',
+            '\Framework\Http\Controller\FileUploadController::deleteProjectUploads'
+        ],
+        [
             'get',
             '/{resourceName}/{identifier}/performance',
             '\Application\CrudApi\Controller\Resource::getPerformance',

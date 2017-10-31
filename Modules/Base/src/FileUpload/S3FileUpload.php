@@ -21,6 +21,7 @@ class S3FileUpload extends FileUpload
      */
     public function uploadFile($filePath, $fileName)
     {
+
         $client = $this->getClient();
 
         $bucket = $this->getApplication()
@@ -28,7 +29,7 @@ class S3FileUpload extends FileUpload
             ->getPathValue('env.S3_BUCKET');
 
         try {
-            $client->putObject([
+            $response = $client->putObject([
                 'Bucket' => $bucket,
                 'Key' => $fileName,
                 'SourceFile' => $filePath,
@@ -38,6 +39,6 @@ class S3FileUpload extends FileUpload
             throw new \Exception('There was an error uploading the file.');
         }
 
-        return true;
+        return $response;
     }
 }

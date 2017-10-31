@@ -790,65 +790,6 @@
         }
       }
     },
-    "SlackMessage" : {
-      "collection": "slackMessages",
-      "authenticatable": false,
-      "fields": {
-        "_id": {
-          "primaryKey": true,
-          "label": "ID",
-          "type": "string",
-          "disabled": true,
-          "required": false,
-          "default": ""
-        },
-        "recipient": {
-          "label": "Recipient",
-          "type": "string",
-          "required": true,
-          "default": "",
-          "validation": [
-            "string"
-          ]
-        },
-        "message": {
-          "label": "Message body",
-          "type": "string",
-          "required": true,
-          "default": "",
-          "validation": [
-            "string"
-          ]
-        },
-        "priority": {
-          "label": "Priority",
-          "type": "integer",
-          "required": false,
-          "default": 1440,
-          "validation": [
-            "int"
-          ]
-        },
-        "sent":{
-          "label": "Is message sent",
-          "type": "string",
-          "required": true,
-          "default": false,
-          "validation": [
-            "bool"
-          ]
-        },
-        "runAt":{
-          "label": "Run at",
-          "type": "integer",
-          "required": true,
-          "default": null,
-          "validation": [
-            "int"
-          ]
-        }
-      }
-    },
     "Xp": {
       "collection": "xp",
       "authenticatable": false,
@@ -1043,6 +984,47 @@
           "validation": [
             "bool"
           ]
+        }
+      }
+    },
+    "Upload": {
+      "collection": "uploads",
+      "authenticatable": false,
+      "fields": {
+        "_id": {
+          "primaryKey": true,
+          "label": "ID",
+          "type": "string",
+          "disabled": true,
+          "required": false,
+          "default": ""
+        },
+        "projectId": {
+          "label": "Project ID",
+          "type": "string",
+          "required": true,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "name": {
+          "label": "Name",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
+        },
+        "fileUrl": {
+          "label": "File Url",
+          "type": "string",
+          "required": false,
+          "validation": [
+            "string"
+          ],
+          "default": ""
         }
       }
     }

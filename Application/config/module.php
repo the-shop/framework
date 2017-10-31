@@ -88,6 +88,9 @@ return [
         "logs" => [
             MongoAdapter::class,
         ],
+        "uploads" => [
+            MongoAdapter::class
+        ]
     ],
     'primaryModelAdapter' => [
         'users' => MongoAdapter::class,
@@ -100,6 +103,7 @@ return [
         'xp' => MongoAdapter::class,
         'profile_overall' => MongoAdapter::class,
         'logs' => MongoAdapter::class,
+        'uploads' => MongoAdapter::class,
     ],
     'services' => [
         SlackService::class,

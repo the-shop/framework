@@ -5,6 +5,8 @@ use Framework\Base\Mongo\MongoAdapter;
 use Application\CrudApi\Repository\GenericRepository;
 use Application\Services\SlackService;
 use Application\CronJobs\SlackSendMessage;
+use Application\CronJobs\AdminsQAWaitingTasks;
+use Application\CronJobs\TaskPriorityDeadlineNotification;
 use Application\Services\SlackApiClient;
 use GuzzleHttp\Client;
 use Application\Services\ProfilePerformance;
@@ -121,6 +123,25 @@ return [
     'cronJobs' => [
         SlackSendMessage::class => [
             'timer' => 'everyMinute',
+            'args' => [],
+        ],
+        AdminsQAWaitingTasks::class => [
+            'timer' => [
+                'twiceDaily',
+                [
+                    '9:00',
+                    '14:00',
+                ],
+            ],
+            'args' => [],
+        ],
+        TaskPriorityDeadlineNotification::class => [
+            'timer' => [
+                'dailyAt',
+                [
+                    '7:00',
+                ],
+            ],
             'args' => [],
         ],
     ],

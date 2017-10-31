@@ -43,10 +43,7 @@ class SlackSendMessage extends CronJob
         // Load by priority
         foreach ($priorityMapping as $priority => $minutesDelay) {
             $model = $repository->newModel();
-            $query = $repository->getPrimaryAdapter()
-                                ->newQuery()
-                                ->setDatabase($model->getDatabase())
-                                ->setCollection('slackMessages')
+            $query = $repository->createNewQueryForModel($model)
                                 ->addAndCondition('priority', '=', $priority)
                                 ->addAndCondition('sent', '=', false)
                                 ->addAndCondition('runAt', '<', $nextMinuteUnix);

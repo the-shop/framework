@@ -4,6 +4,7 @@ namespace Framework\Http\Controller;
 
 use Application\Services\FileUploadService;
 use Framework\Base\Application\Exception\NotFoundException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class FileUploadController
@@ -17,8 +18,8 @@ class FileUploadController extends Http
     public function uploadFile()
     {
         $userId = $this->getApplication()
-        ->getRequestAuthorization()
-        ->getId();
+            ->getRequestAuthorization()
+            ->getId();
 
         $post = $this->getPost();
 
@@ -37,21 +38,23 @@ class FileUploadController extends Http
         $uploadService = $this->getApplication()
             ->getService(FileUploadService::class);
 
+        /**
+         * @var UploadedFile[] $files
+         */
         foreach ($files as $file) {
             $upload = $repository->newModel();
 
             $fileName = $userId . '-' . bin2hex(random_bytes(20)) . '.' .
-                $this->getClientOriginalExtension($file);
+                $file->guessExtension();
 
-            $filePath = $fileName;
-            $uploadService->uploadFile($filePath, $fileName);
+            $filePath = $file->getRealPath();
 
-            //$fileUrl = Storage::cloud()->url($fileName);
+            $fileUrl = $uploadService->uploadFile($filePath, $fileName);
 
             $upload->setAttributes([
-               'projectId' => $projectId,
-                'name' => $this->getName($file),
-                'fileUrl' => 'test',
+                'projectId' => $projectId,
+                'name' => $file->getClientOriginalName(),
+                'fileUrl' => $fileUrl,
             ])
                 ->save();
 
@@ -76,7 +79,7 @@ class FileUploadController extends Http
         }
 
         $uploads = $this->getRepositoryFromResourceName('uploads')
-        ->loadMultiple(['projectId' => $identifier]);
+            ->loadMultiple(['projectId' => $identifier]);
 
         return $uploads;
     }
@@ -104,35 +107,5 @@ class FileUploadController extends Http
         }
 
         return $uploads;
-    }
-
-    /**
-     * Returns locale independent base name of the given path.
-     *
-     * @param string $filePath The new file name
-     *
-     * @return string containing
-     */
-    protected function getName(string $filePath)
-    {
-        $originalName = str_replace('\\', '/', $filePath);
-        $pos = strrpos($originalName, '/');
-        $originalName = false === $pos ? $originalName : substr($originalName, $pos + 1);
-
-        return $originalName;
-    }
-
-    /**
-     * Returns the original file extension.
-     *
-     * It is extracted from the original file name that was uploaded.
-     * Then it should not be considered as a safe value.
-     *
-     * @param string $filePath
-     * @return string The extension
-     */
-    protected function getClientOriginalExtension(string $filePath)
-    {
-        return pathinfo($this->getName($filePath), PATHINFO_EXTENSION);
     }
 }

@@ -30,37 +30,32 @@ class FileUploadService implements ServiceInterface
      */
     public function uploadFile(string $filePath, string $fileName)
     {
-        $appConfiguration = $this->getApplication()
+        $app = $this->getApplication();
+        $appConfiguration = $app
             ->getConfiguration();
 
         $fileUploadClientPath = $appConfiguration
             ->getPathValue('servicesConfig.' . self::class . '.fileUploadClient.classPath');
 
-        $constructorArguments = array_values(
-            $appConfiguration
-                ->getPathValue(
-                    'servicesConfig.'
-                    . self::class
-                    . '.fileUploadClient.constructorArguments'
-                )
+        $constructorArguments = $appConfiguration->getPathValue(
+            'servicesConfig.'
+            . self::class
+            . '.fileUploadClient.constructorArguments'
         );
 
         /**
          * @var S3Client $fileUploadClient
          */
-        $fileUploadClient = new $fileUploadClientPath(...$constructorArguments);
+        $fileUploadClient = new $fileUploadClientPath($constructorArguments);
 
         $fileUploadInterface = $appConfiguration
             ->getPathValue('servicesConfig.' . self::class . '.fileUploadInterface');
 
         $fileUploadInterface = new $fileUploadInterface();
 
-        $fileUploader = new FileUploader($fileUploadInterface);
-        $fileUploader->setApplication($this->getApplication());
+        $fileUploader = new FileUploader($app, $fileUploadInterface);
         $fileUploader->setClient($fileUploadClient);
 
-        $fileUploader->uploadFile($filePath, $fileName);
-
-        return 'File successfully uploaded.';
+        return $fileUploader->uploadFile($filePath, $fileName);
     }
 }

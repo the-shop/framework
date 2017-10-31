@@ -3,6 +3,7 @@
 namespace Framework\Base\FileUpload;
 
 use Framework\Base\Application\ApplicationAwareTrait;
+use Framework\Base\Application\ApplicationInterface;
 
 /**
  * Class FileUploader
@@ -19,12 +20,15 @@ class FileUploader
 
     /**
      * FileUploader constructor.
+     * @param ApplicationInterface $app
      * @param FileUploadInterface $fileUploadInterface
      */
-    public function __construct(FileUploadInterface $fileUploadInterface)
-    {
+    public function __construct(
+        ApplicationInterface $app,
+        FileUploadInterface $fileUploadInterface
+    ) {
         $this->fileUploadInterface = $fileUploadInterface;
-        $this->fileUploadInterface->setApplication($this->getApplication());
+        $this->fileUploadInterface->setApplication($app);
     }
 
     /**
@@ -38,9 +42,10 @@ class FileUploader
     /**
      * @param $file
      * @param $fileName
+     * @return mixed
      */
     public function uploadFile($file, $fileName)
     {
-        $this->fileUploadInterface->uploadFile($file, $fileName);
+        return $this->fileUploadInterface->uploadFile($file, $fileName);
     }
 }

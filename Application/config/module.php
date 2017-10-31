@@ -124,6 +124,7 @@ return [
         SlackService::class,
         EmailService::class,
         ProfilePerformance::class,
+        FileUploadService::class,
     ],
     'servicesConfig' => [
         SlackService::class => [

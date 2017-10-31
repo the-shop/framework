@@ -39,6 +39,6 @@ class S3FileUpload extends FileUpload
             throw new \Exception('There was an error uploading the file.');
         }
 
-        return $response;
+        return $response->get('ObjectURL');
     }
 }

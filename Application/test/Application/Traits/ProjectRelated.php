@@ -33,6 +33,7 @@ trait ProjectRelated
                 [
                     'title' => 'test task',
                     'owner' => '',
+                    'sprint_id' => '',
                     'paused' => false,
                     'submitted_for_qa' => false,
                     'qa_in_progress' => false,

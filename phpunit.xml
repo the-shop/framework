@@ -21,5 +21,6 @@
         <env name="DATABASE_NAME" value="framework-test"/>
         <env name="PRIVATE_MAIL_FROM" value="no-reply@the-shop.hr" />
         <env name="SLACK_TOKEN" value="123456" />
+        <env name="WEB_DOMAIN" value="test-theshop" />
     </php>
 </phpunit>

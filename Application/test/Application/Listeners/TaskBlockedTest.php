@@ -36,9 +36,6 @@ class TaskBlockedTest extends UnitTest
                                    'name' => 'test user',
                                    'email' => $this->generateRandomEmail(20),
                                    'password' => 'test',
-                                   'skills' => ['PHP'],
-                                   'xp' => 200,
-                                   'employeeRole' => 'Apprentice',
                                    'slack' => 'test'
                                ]
                            )

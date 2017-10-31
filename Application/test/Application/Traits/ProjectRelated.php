@@ -32,8 +32,6 @@ trait ProjectRelated
             ->setAttributes(
                 [
                     'title' => 'test task',
-                    'owner' => '',
-                    'sprint_id' => '',
                     'paused' => false,
                     'submitted_for_qa' => false,
                     'qa_in_progress' => false,
@@ -57,7 +55,6 @@ trait ProjectRelated
             ->setAttributes(
                 [
                     'name' => 'Test Project',
-                    'acceptedBy' => '',
                     'members' => [],
                     'isComplete' => false,
                 ]
@@ -77,7 +74,6 @@ trait ProjectRelated
             ->setAttributes(
                 [
                     'name' => 'Test Project',
-                    'acceptedBy' => '',
                     'members' => [],
                 ]
             );
@@ -96,7 +92,6 @@ trait ProjectRelated
             ->setAttributes(
                 [
                     'name' => 'Test Project',
-                    'acceptedBy' => '',
                     'members' => [],
                 ]
             );

@@ -36,7 +36,7 @@ class S3FileUpload extends FileUpload
                 'ACL' => 'public-read'
             ]);
         } catch (S3Exception $e) {
-            throw new \Exception('There was an error uploading the file.');
+            throw new \Exception('There was an error uploading the file.', 400);
         }
 
         return $response->get('ObjectURL');

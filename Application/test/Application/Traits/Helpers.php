@@ -3,6 +3,7 @@
 namespace Application\Test\Application\Traits;
 
 use Application\Test\Application\CronJobs\TaskDeadlineReminderTest;
+use Framework\Base\Model\BrunoInterface;
 
 /**
  * Class Helpers
@@ -102,5 +103,20 @@ trait Helpers
         $adapter->getClient()
             ->selectCollection($databaseName, $resourceName)
             ->drop();
+    }
+
+    private function deleteCollection(BrunoInterface $model)
+    {
+        $repository = $this->getApplication()
+                           ->getRepositoryManager()
+                           ->getRepositoryFromResourceName($model->getCollection());
+
+        $repository->getPrimaryAdapter()
+                   ->getClient()
+                   ->selectCollection(
+                       $model->getDatabase(),
+                       $model->getCollection()
+                   )
+                   ->drop();
     }
 }

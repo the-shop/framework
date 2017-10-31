@@ -27,7 +27,6 @@ class SlackSendMessageTest extends UnitTest
 
         $this->getApplication()
              ->getConfiguration()
-             ->setPathValue('env.SLACK_TOKEN', '123456')
              ->setPathValue('internal.slack.priorityToMinutesDelay.0', 0);
 
         $apiClient = new SlackApiClient();

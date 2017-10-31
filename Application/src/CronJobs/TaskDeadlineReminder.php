@@ -9,8 +9,8 @@ use Framework\Base\Model\BrunoInterface;
 use Framework\Terminal\Commands\Cron\CronJob;
 
 /**
- * Class NotifyProjectParticipantsAboutTaskDeadline
- * @package App\Console\Commands
+ * Class TaskDeadlineReminder
+ * @package Application\CronJobs
  */
 class TaskDeadlineReminder extends CronJob
 {
@@ -146,7 +146,6 @@ class TaskDeadlineReminder extends CronJob
                     $slackService->setMessage(
                         $recipientSlack,
                         $messageDeadlineSoon,
-                        $private = false,
                         SlackService::LOW_PRIORITY
                     );
                 }
@@ -159,7 +158,6 @@ class TaskDeadlineReminder extends CronJob
                     $slackService->setMessage(
                         $recipientSlack,
                         $messageDeadlinePassed,
-                        $private = false,
                         SlackService::LOW_PRIORITY
                     );
                 }

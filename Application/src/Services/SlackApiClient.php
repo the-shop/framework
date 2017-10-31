@@ -151,6 +151,7 @@ class SlackApiClient implements ApplicationAwareInterface
 
     /**
      * SLACK_TOKEN env variable
+     *
      * @return void
      */
     private function setToken()
@@ -229,7 +230,7 @@ class SlackApiClient implements ApplicationAwareInterface
 
         $this->setToken();
 
-        $response = $this->client->post($this::BASE_URI . 'chat.postMessage', [
+        $response = $this->client->post(self::BASE_URI . 'chat.postMessage', [
             'headers' => $this->headers,
             'form_params' => $this->postParams,
         ]);

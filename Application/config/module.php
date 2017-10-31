@@ -110,6 +110,15 @@ return [
             'apiClient' => SlackApiClient::class,
             'httpClient' => Client::class,
         ],
+        EmailService::class => [
+            'mailerInterface' => SendGrid::class,
+            'mailerClient' => [
+                'classPath' => SendGridClient::class,
+                'constructorArguments' => [
+                    getenv('SENDGRID_API_KEY'),
+                ],
+            ],
+        ],
     ],
     'cronJobs' => [
         SlackSendMessage::class => [
@@ -134,15 +143,6 @@ return [
                 ],
             ],
             'args' => [],
-        ],
-    ],
-    'emailService' => [
-        'mailerInterface' => SendGrid::class,
-        'mailerClient' => [
-            'classPath' => SendGridClient::class,
-            'constructorArguments' => [
-                getenv('SENDGRID_API_KEY'),
-            ],
         ],
     ],
 ];

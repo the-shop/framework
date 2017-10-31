@@ -85,6 +85,25 @@ trait Helpers
         return $message;
     }
 
+    /**
+     * Deletes test records from db collection
+     * @param string $resourceName
+     */
+    private function purgeCollection(string $resourceName)
+    {
+        $adapter = $this->getApplication()
+            ->getRepositoryManager()
+            ->getRepositoryFromResourceName($resourceName)
+            ->getPrimaryAdapter();
+
+        $databaseName = $this->getApplication()
+            ->getConfiguration()
+            ->getPathValue('env.DATABASE_NAME');
+
+        $adapter->getClient()
+            ->selectCollection($databaseName, $resourceName)
+            ->drop();
+
     private function deleteCollection(BrunoInterface $model)
     {
         $repository = $this->getApplication()

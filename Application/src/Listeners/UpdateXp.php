@@ -195,7 +195,6 @@ class UpdateXp implements ListenerInterface
         $slackService->setMessage(
             $recipient,
             $slackMessage,
-            $private = false,
             SlackService::HIGH_PRIORITY
         );
     }

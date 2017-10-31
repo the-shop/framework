@@ -6,10 +6,18 @@ use Application\CronJobs\SlackSendMessage;
 use Application\Services\SlackApiClient;
 use Application\Services\SlackService;
 use Application\Test\Application\DummyCurlClient;
+use Application\Test\Application\Traits\Helpers;
 use Framework\Base\Test\UnitTest;
 
 class SlackSendMessageTest extends UnitTest
 {
+    use Helpers;
+
+    public function setUp()
+    {
+        $this->purgeCollection('slackMessages');
+    }
+
     public function testExecute()
     {
         $arr = [
@@ -22,7 +30,8 @@ class SlackSendMessageTest extends UnitTest
              ->setPathValue('internal.slack.priorityToMinutesDelay.0', 0);
 
         $apiClient = new SlackApiClient();
-        $apiClient->setClient(new DummyCurlClient())
+        $slackUsername = $this->generateRandomString();
+        $apiClient->setClient(new DummyCurlClient($slackUsername))
                   ->setApplication($this->getApplication());
 
         /** @var SlackService $service */
@@ -30,33 +39,13 @@ class SlackSendMessageTest extends UnitTest
                         ->getService(SlackService::class)
                         ->setApiClient($apiClient);
 
-        $service->setMessage('test', 'message', false, 0);
+        $service->setMessage($slackUsername, 'message', 0);
 
         $cronJob = new SlackSendMessage($arr);
         $cronJob->setApplication($this->getApplication());
 
-        $this::assertEquals('Message sent to test', $cronJob->execute()['sent'][0]);
+        $this::assertEquals('Message sent to ' . $slackUsername, $cronJob->execute()['sent'][0]);
 
-        $this->delete();
-    }
-
-    /**
-     * Deletes test record from db
-     */
-    private function delete()
-    {
-        $repository = $this->getApplication()
-                           ->getRepositoryManager()
-                           ->getRepositoryFromResourceName('slackMessages');
-
-        $model = $repository->newModel();
-        $query = $repository->getPrimaryAdapter()
-                            ->newQuery()
-                            ->setDatabase($model->getDatabase())
-                            ->setCollection('slackMessages')
-                            ->addAndCondition('message', '=', 'message')
-                            ->addAndCondition('recipient', '=', 'test');
-
-        $repository->loadOne($query)->delete();
+        $this->purgeCollection('slackMessages');
     }
 }

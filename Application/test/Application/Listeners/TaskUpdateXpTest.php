@@ -35,8 +35,10 @@ class TaskUpdateXpTest extends UnitTest
     public function tearDown()
     {
         parent::tearDown();
-
-        $this->profile->delete();
+        $this->purgeCollection('users');
+        $this->purgeCollection('projects');
+        $this->purgeCollection('tasks');
+        $this->purgeCollection('sprints');
     }
 
     /**

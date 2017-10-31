@@ -89,11 +89,9 @@ class TaskDeadlineReminderTest extends UnitTest
 
         $this->profile->delete();
 
-        foreach ($this->taskList as $task) {
-            $task->delete();
-        }
-
-        $this->project->delete();
+        $this->purgeCollection('projects');
+        $this->purgeCollection('tasks');
+        $this->purgeCollection('sprints');
     }
 
     /**

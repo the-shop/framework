@@ -43,12 +43,14 @@ class EmailService implements ServiceInterface
             ->getConfiguration();
 
         $mailerInterfaceClassPath = $appConfiguration
-            ->getPathValue('emailService.mailerInterface');
+            ->getPathValue('servicesConfig.' . self::class . '.mailerInterface');
         $mailerClientClassPath = $appConfiguration
-            ->getPathValue('emailService.mailerClient.classPath');
+            ->getPathValue('servicesConfig.' . self::class . '.mailerClient.classPath');
         $constructorArguments = array_values(
             $appConfiguration
-                ->getPathValue('emailService.mailerClient.constructorArguments')
+                ->getPathValue(
+                    'servicesConfig.' . self::class . '.mailerClient.constructorArguments'
+                )
         );
 
         $mailerInterface = new $mailerInterfaceClassPath();

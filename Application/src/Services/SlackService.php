@@ -76,8 +76,8 @@ class SlackService implements ServiceInterface
     public function setMessage(
         string $recipient,
         string $message,
-        $private = false,
-        $priority = self::MEDIUM_PRIORITY
+        $priority = self::MEDIUM_PRIORITY,
+        $private = false
     ): BrunoInterface {
 
         // Load configuration

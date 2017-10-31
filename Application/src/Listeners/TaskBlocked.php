@@ -19,7 +19,7 @@ class TaskBlocked implements ListenerInterface
     public function handle($payload)
     {
         // Check if payload is BrunoInterface model and if collection is users
-        if (($payload instanceof BrunoInterface) === true|| $payload->getCollection() === 'tasks') {
+        if (($payload instanceof BrunoInterface) === true && $payload->getCollection() === 'tasks') {
             $updatedFields = $payload->getDirtyAttributes();
 
             if (empty($updatedFields) === false) {

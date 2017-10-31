@@ -77,6 +77,10 @@ class AdminsQAWaitingTasksTest extends UnitTest
                               ->setAttributes($models['task'])
                               ->setAttribute('project_id', $this->project->getId())
                               ->save();
+
+        $this->getApplication()
+             ->getConfiguration()
+             ->setPathValue('internal.slack.priorityToMinutesDelay.0', 0);
     }
 
     public function tearDown()

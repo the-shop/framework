@@ -75,7 +75,6 @@ class SlackApiClientTest extends UnitTest
      */
     public function testLists(SlackApiClient $client)
     {
-        $this->getApplication()->getConfiguration()->setPathValue('env.SLACK_TOKEN', '123456');
         $collections = [
             'conversations', 'im', 'channels', 'files', 'groups', 'reminders', 'usergroups',
             'usergroups.users',
@@ -97,7 +96,6 @@ class SlackApiClientTest extends UnitTest
         $slackUsername = $this->generateRandomString();
         $client->setClient(new DummyCurlClient($slackUsername))
                ->setApplication($this->getApplication());
-        $this->getApplication()->getConfiguration()->setPathValue('env.SLACK_TOKEN', '123456');
 
         $this::assertEquals('testId', $client->getUser($slackUsername)->id);
 
@@ -113,7 +111,6 @@ class SlackApiClientTest extends UnitTest
         $client = new SlackApiClient();
         $client->setClient(new DummyCurlClient())
                ->setApplication($this->getApplication());
-        $this->getApplication()->getConfiguration()->setPathValue('env.SLACK_TOKEN', '123456');
 
         $this::assertEquals('testChannelId', $client->openIm('testId'));
 
@@ -128,7 +125,6 @@ class SlackApiClientTest extends UnitTest
         $client = new SlackApiClient();
         $client->setClient(new DummyCurlClient())
                ->setApplication($this->getApplication());
-        $this->getApplication()->getConfiguration()->setPathValue('env.SLACK_TOKEN', '123456');
 
         $response = $client->sendMessage('testId', 'message');
 

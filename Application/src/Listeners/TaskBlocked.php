@@ -22,8 +22,8 @@ class TaskBlocked implements ListenerInterface
         if (($payload instanceof BrunoInterface) === true|| $payload->getCollection() === 'tasks') {
             $updatedFields = $payload->getDirtyAttributes();
 
-            if (empty($payload) === false) {
-                if (key_exists('blocked', $updatedFields) && $updatedFields['blocked'] === true) {
+            if (empty($updatedFields) === false) {
+                if (isset($updatedFields['blocked']) && $updatedFields['blocked'] === true) {
                     $service = $this->getApplication()
                                     ->getService(SlackService::class);
 

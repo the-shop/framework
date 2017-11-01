@@ -52,7 +52,7 @@ return [
         ],
         'tasks' => [
             'reservation' => [
-                'maxReservationTime' => getenv('PROJECT_TASK_RESERVATION_TIME'),
+                'maxReservationTime' => 30,
             ],
         ],
         'taskHistoryStatuses' => [

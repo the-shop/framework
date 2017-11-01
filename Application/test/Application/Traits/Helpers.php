@@ -92,17 +92,18 @@ trait Helpers
     private function purgeCollection(string $resourceName)
     {
         $adapter = $this->getApplication()
-            ->getRepositoryManager()
-            ->getRepositoryFromResourceName($resourceName)
-            ->getPrimaryAdapter();
+                        ->getRepositoryManager()
+                        ->getRepositoryFromResourceName($resourceName)
+                        ->getPrimaryAdapter();
 
         $databaseName = $this->getApplication()
-            ->getConfiguration()
-            ->getPathValue('env.DATABASE_NAME');
+                             ->getConfiguration()
+                             ->getPathValue('env.DATABASE_NAME');
 
         $adapter->getClient()
-            ->selectCollection($databaseName, $resourceName)
-            ->drop();
+                ->selectCollection($databaseName, $resourceName)
+                ->drop();
+    }
 
     private function deleteCollection(BrunoInterface $model)
     {

@@ -102,7 +102,7 @@ class AdminsQAWaitingTasks extends CronJob
                 }
                 // Save message to DB
                 if ($sendMessage === true) {
-                    $service->setMessage($recipient, $text, false, SlackService::HIGH_PRIORITY);
+                    $service->setMessage($recipient, $text, SlackService::HIGH_PRIORITY);
                     $sendMessage = false;
                 }
             }

@@ -40,7 +40,7 @@ class TaskBlocked implements ListenerInterface
                     $owner = $repositoryManager->getRepositoryFromResourceName('users')
                                                ->loadOne($project->getAttribute('acceptedBy'));
 
-                    if ($owner instanceof BrunoInterface
+                    if (($owner instanceof BrunoInterface) === true
                         && ($recipient = $owner->getAttribute('slack')) !== null) {
                         $webDomain = $this->getApplication()
                                           ->getConfiguration()
@@ -57,7 +57,7 @@ class TaskBlocked implements ListenerInterface
                                    . '/tasks/'
                                    . $payload->getId();
 
-                        $service->setMessage($recipient, $message, false, SlackService::HIGH_PRIORITY);
+                        $service->setMessage($recipient, $message, SlackService::HIGH_PRIORITY);
 
                         return true;
                     }

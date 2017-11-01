@@ -118,7 +118,7 @@ class UpdateTaskPriority extends CronJob
                     ) {
                         continue;
                     }
-                    $sendTo = '@' . $recipientAttributes['slack'];
+                    $sendTo = $recipientAttributes['slack'];
                     $message =
                         'On project *'
                         . $projectToNotifyAtt['name']

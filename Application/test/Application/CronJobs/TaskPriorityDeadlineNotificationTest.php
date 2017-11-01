@@ -28,34 +28,34 @@ class TaskPriorityDeadlineNotificationTest extends UnitTest
         parent::setUp();
         $now = time();
         $this->user = $this->getApplication()
-                           ->getRepositoryManager()
-                           ->getRepositoryFromResourceName('users')
-                           ->newModel()
-                           ->setAttributes(
-                               [
-                                   'name' => 'test user',
-                                   'email' => $this->generateRandomEmail(20),
-                                   'password' => 'test',
-                                   'slack' => 'test',
-                                   'active' => true,
-                                ]
-                           )
-                           ->save();
+            ->getRepositoryManager()
+            ->getRepositoryFromResourceName('users')
+            ->newModel()
+            ->setAttributes(
+                [
+                    'name' => 'test user',
+                    'email' => $this->generateRandomEmail(20),
+                    'password' => 'test',
+                    'slack' => 'test',
+                    'active' => true,
+                ]
+            )
+            ->save();
 
         $this->project = $this->getNewProject()
-                              ->setAttribute('acceptedBy', $this->user->getId())
-                              ->save();
+            ->setAttribute('acceptedBy', $this->user->getId())
+            ->save();
 
         $this->task = $this->getNewTask()
-                           ->setAttribute('due_date', ($now + (3 * 24 * 60 * 60)))
-                           ->setAttribute('project_id', $this->project->getId())
-                           ->setAttribute('owner', null)
-                           ->setAttribute('priority', 'High')
-                           ->save();
+            ->setAttribute('due_date', ($now + (3 * 24 * 60 * 60)))
+            ->setAttribute('project_id', $this->project->getId())
+            ->setAttribute('owner', null)
+            ->setAttribute('priority', 'High')
+            ->save();
 
         $this->getApplication()
-             ->getConfiguration()
-             ->setPathValue('internal.slack.priorityToMinutesDelay.0', 0);
+            ->getConfiguration()
+            ->setPathValue('internal.slack.priorityToMinutesDelay.0', 0);
     }
 
     public function tearDown()
@@ -76,26 +76,26 @@ class TaskPriorityDeadlineNotificationTest extends UnitTest
 
         $apiClient = new SlackApiClient();
         $apiClient->setClient(new DummyCurlClient())
-                  ->setApplication($this->getApplication());
+            ->setApplication($this->getApplication());
 
-        $service = $this->getApplication()
-                        ->getService(SlackService::class)
-                        ->setApiClient($apiClient);
+        $this->getApplication()
+            ->getService(SlackService::class)
+            ->setApiClient($apiClient);
 
         $cronJob = new TaskPriorityDeadlineNotification($arr);
         $cronJob->setApplication($this->getApplication())
-                ->execute();
+            ->execute();
 
         $repository = $this->getApplication()
-                           ->getRepositoryManager()
-                           ->getRepositoryFromResourceName('slackMessages');
+            ->getRepositoryManager()
+            ->getRepositoryFromResourceName('slackMessages');
 
         $query = $repository->createNewQueryForModel($repository->newModel())
-                            ->addAndCondition(
-                                'recipient',
-                                '=',
-                                $this->user->getAttribute('slack')
-                            );
+            ->addAndCondition(
+                'recipient',
+                '=',
+                $this->user->getAttribute('slack')
+            );
         $slackMessages = array_values($repository->loadMultiple($query));
 
         $this->slackMessage = $slackMessages[0];

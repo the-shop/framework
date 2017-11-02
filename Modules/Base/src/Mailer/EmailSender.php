@@ -85,4 +85,23 @@ class EmailSender
     {
         return $this->mailerInterface->send();
     }
+
+    /**
+     * @param array $attachments
+     * @return MailerInterface
+     */
+    public function addAttachments(array $attachments)
+    {
+        return $this->mailerInterface->addAttachments($attachments);
+    }
+
+    /**
+     * @param string $fileName
+     * @param $content
+     * @return MailerInterface
+     */
+    public function addAttachment(string $fileName, $content)
+    {
+        return $this->mailerInterface->addAttachment($fileName, $content);
+    }
 }

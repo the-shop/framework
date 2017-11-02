@@ -2,16 +2,13 @@
 
 namespace Framework\Base\Auth\Controller;
 
-use Application\Helpers\EmailSender;
 use Application\Services\EmailService;
 use Firebase\JWT\JWT;
 use Framework\Base\Application\Exception\AuthenticationException;
 use Framework\Base\Application\Exception\NotFoundException;
-use Framework\Base\Mailer\SendGrid;
 use Framework\Base\Model\BrunoInterface;
 use Framework\Base\Auth\RequestAuthorization;
 use Framework\Http\Controller\Http;
-use SendGrid as MailerClient;
 
 /**
  * Class AuthController

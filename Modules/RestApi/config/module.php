@@ -41,6 +41,7 @@ return [
         'PRIVATE_MAIL_FROM' => getenv('PRIVATE_MAIL_FROM'),
         'PRIVATE_MAIL_NAME' => getenv('PRIVATE_MAIL_NAME'),
         'PRIVATE_MAIL_SUBJECT' => getenv('PRIVATE_MAIL_SUBJECT'),
+        'ADMIN_PERFORMANCE_EMAIL_SUBJECT' => getenv('ADMIN_PERFORMANCE_EMAIL_SUBJECT'),
         'WEB_DOMAIN' => getenv('WEB_DOMAIN'),
         'DATABASE_ADDRESS' => getenv('DATABASE_ADDRESS'),
         'DATABASE_NAME' => getenv('DATABASE_NAME'),

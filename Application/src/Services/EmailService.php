@@ -29,6 +29,7 @@ class EmailService implements ServiceInterface
      * @param string $subject
      * @param string $to
      * @param $htmlBody
+     * @param array $attachments
      * @param null $textBody
      * @return mixed
      */
@@ -37,6 +38,7 @@ class EmailService implements ServiceInterface
         string $subject,
         string $to,
         $htmlBody,
+        $attachments = [],
         $textBody = null
     ) {
         $appConfiguration = $this->getApplication()
@@ -68,8 +70,9 @@ class EmailService implements ServiceInterface
         if ($textBody !== null) {
             $emailSender->setTextBody($textBody);
         }
+        $emailSender->addAttachments($attachments);
 
-        return TaskQueue::addTaskToQueue(
+        $response = TaskQueue::addTaskToQueue(
             'email',
             Sync::class,
             [
@@ -78,5 +81,7 @@ class EmailService implements ServiceInterface
                 'parameters' => [],
             ]
         );
+
+        return $response;
     }
 }

@@ -12,7 +12,8 @@
     "symfony/http-foundation": "^3.3",
     "videlalvaro/php-amqplib": "^2.7",
     "lygav/php-slackbot": "^0.0.4",
-    "aws/aws-sdk-php": "^3.36"
+    "aws/aws-sdk-php": "^3.36",
+    "dompdf/dompdf": "^0.8.1"
   },
   "autoload": {
     "psr-4": {

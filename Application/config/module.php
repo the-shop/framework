@@ -182,4 +182,5 @@ return [
             'args' => [],
         ],
     ],
+    'emailTemplatesPath' => '/Application/src/Templates/Emails/profile/'
 ];

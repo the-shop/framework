@@ -47,6 +47,24 @@ interface MailerInterface
     public function setOptions($options);
 
     /**
+     * @param array $attachments
+     * @return MailerInterface
+     */
+    public function addAttachments(array $attachments = []);
+
+    /**
+     * @param string $fileName
+     * @param $content
+     * @return MailerInterface
+     */
+    public function addAttachment(string $fileName, $content);
+
+    /**
+     * @return array
+     */
+    public function getAttachments();
+
+    /**
      * @param $client
      * @return mixed
      */

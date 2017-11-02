@@ -2,9 +2,11 @@
 
 namespace Application\CronJobs;
 
+use Application\Helpers\GenerateHtmlData;
 use Application\Helpers\ProfileOverall;
 use Application\Services\EmailService;
 use Application\Services\ProfilePerformance;
+use Dompdf\Dompdf;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Terminal\Commands\Cron\CronJob;
 
@@ -85,8 +87,15 @@ class EmailProfilePerformance extends CronJob
             if ($forAccountants === false) {
                 $template = $templateDirPath . 'email-template.php';
                 $dataTemplate = $templateDirPath . 'performance-report-html.template.php';
+                $htmlBody = GenerateHtmlData::generateHtml([
+                    'template' => $template,
+                    'data' => [
+                        'dataTemplate' => $dataTemplate,
+                        'dataToFill' => [$data],
+                    ],
+                ]);
                 $subject = $appConfig
-                    ->getPathValue('env.PRIVATE_MAIL_SUBJECT');
+                    ->getPathValue('env.ADMIN_PERFORMANCE_EMAIL_SUBJECT');
 
                 if (isset($profileAttributes['email']) === true
                     && empty($profileAttributes['email']) === false
@@ -97,13 +106,7 @@ class EmailProfilePerformance extends CronJob
                         $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
                         $subject,
                         $profile->getAttribute('email'),
-                        [
-                            'template' => $template,
-                            'data' => [
-                                'dataTemplate' => $dataTemplate,
-                                'dataToFill' => $adminAggregation,
-                            ],
-                        ]
+                        $htmlBody
                     );
                 }
             }
@@ -150,24 +153,27 @@ class EmailProfilePerformance extends CronJob
 
                 // Create pdf with salary report and attach it to email
                 $attachments = [];
-                /*$pdf = \PDF::loadView($dataTemplate, [
-                    'reports' => $adminAggregation,
-                    'pdf' => true
-                ])->output();
-                $attachments['SalaryReport.pdf'] = $pdf;*/
+                $htmlBody = GenerateHtmlData::generateHtml([
+                    'template' => $template,
+                    'data' => [
+                        'dataTemplate' => $dataTemplate,
+                        'dataToFill' => $adminAggregation,
+                    ],
+                ]);
+
+                $pdf = new Dompdf(['enable_remote' => true]);
+                $pdf->setPaper('A4', 'landscape');
+                $pdf->loadHtml($htmlBody);
+                $pdf->render();
+                $pdf = $pdf->output();
+                $attachments['SalaryReport.pdf'] = $pdf;
 
                 $emailService->sendEmail(
                     $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
                     $subject,
-                    //$recipient->getAttribute('email'),
-                    'info1x2@gmail.com',
-                    [
-                        'template' => $template,
-                        'data' => [
-                            'dataTemplate' => $dataTemplate,
-                            'dataToFill' => $adminAggregation,
-                        ],
-                    ]
+                    $recipient->getAttribute('email'),
+                    $htmlBody,
+                    $attachments
                 );
             }
         }

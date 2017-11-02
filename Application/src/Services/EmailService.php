@@ -28,7 +28,7 @@ class EmailService implements ServiceInterface
      * @param string $from
      * @param string $subject
      * @param string $to
-     * @param $htmlBodyOptions
+     * @param $htmlBody
      * @param array $attachments
      * @param null $textBody
      * @return mixed
@@ -37,7 +37,7 @@ class EmailService implements ServiceInterface
         string $from,
         string $subject,
         string $to,
-        $htmlBodyOptions,
+        $htmlBody,
         $attachments = [],
         $textBody = null
     ) {
@@ -66,13 +66,13 @@ class EmailService implements ServiceInterface
         $emailSender->setFrom($from);
         $emailSender->setSubject($subject);
         $emailSender->setTo($to);
-        $emailSender->setHtmlBody($this->generateHtml($htmlBodyOptions));
+        $emailSender->setHtmlBody($htmlBody);
         if ($textBody !== null) {
             $emailSender->setTextBody($textBody);
         }
         $emailSender->addAttachments($attachments);
 
-        return TaskQueue::addTaskToQueue(
+        $response = TaskQueue::addTaskToQueue(
             'email',
             Sync::class,
             [
@@ -81,47 +81,7 @@ class EmailService implements ServiceInterface
                 'parameters' => [],
             ]
         );
-    }
 
-    /**
-     * @param array $htmlOptions
-     * @return bool|mixed|string
-     */
-    private function generateHtml(array $htmlOptions = [])
-    {
-        if (array_key_exists('template', $htmlOptions) === false
-            || array_key_exists('data', $htmlOptions) === false
-            || array_key_exists('dataTemplate', $htmlOptions['data']) === false
-            || array_key_exists('dataToFill', $htmlOptions['data']) === false
-        ) {
-            throw new \InvalidArgumentException('html options array not formatted correctly.', 400);
-        }
-
-        $htmlTemplate = $htmlOptions['template'];
-
-        if (is_file($htmlOptions['template']) === true) {
-            $htmlTemplate = file_get_contents($htmlOptions['template']);
-        }
-
-        if (empty($htmlOptions['data']['dataTemplate']) === false) {
-            $dataTemplate = null;
-            if (is_file($htmlOptions['data']['dataTemplate']) === true) {
-                $dataTemplate = file_get_contents($htmlOptions['data']['dataTemplate']);
-            }
-            if ($dataTemplate !== null) {
-                foreach ($htmlOptions['data']['dataToFill'] as $data) {
-                    $dataFilledTemplate = $dataTemplate;
-
-                    foreach ($data as $k => $v) {
-                        $search = "{{" . "$" . $k . "}}";
-                        $dataFilledTemplate = str_replace($search, $v, $dataFilledTemplate);
-                    }
-
-                    $htmlTemplate .= $dataFilledTemplate;
-                }
-            }
-        }
-
-        return $htmlTemplate;
+        return $response;
     }
 }

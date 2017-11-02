@@ -159,13 +159,7 @@ class AuthController extends Http
                 $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
                 $subject,
                 $model->getAttribute('email'),
-                [
-                    'template' => $html,
-                    'data' => [
-                        'dataTemplate' => '',
-                        'dataToFill' => [],
-                    ],
-                ]
+                $html
             )
             ) {
                 return 'You will shortly receive an email with the link to reset your password.';
@@ -254,13 +248,7 @@ class AuthController extends Http
                 $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
                 $subject,
                 $model->getAttribute('email'),
-                [
-                    'template' => $html,
-                    'data' => [
-                        'dataTemplate' => '',
-                        'dataToFill' => [],
-                    ],
-                ]
+                $html
             );
 
             return 'Password successfully changed.';

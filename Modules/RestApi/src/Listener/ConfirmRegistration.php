@@ -53,13 +53,7 @@ class ConfirmRegistration implements ListenerInterface
                 $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
                 $appConfig->getPathValue('env.PRIVATE_MAIL_SUBJECT'),
                 $payload->getAttribute('email'),
-                [
-                    'template' => $htmlBody,
-                    'data' => [
-                        'dataTemplate' => '',
-                        'dataToFill' => [],
-                    ],
-                ],
+                $htmlBody,
                 $textBody
             );
         }

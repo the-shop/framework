@@ -62,7 +62,7 @@ class SendGrid extends Mailer
         foreach ($attachments as $fileName => $content) {
             $attachment = new Attachment();
             $attachment->setFilename($fileName);
-            $attachment->setContent($content);
+            $attachment->setContent(base64_encode($content));
             $attachment->setDisposition("attachment");
             $mail->addAttachment($attachment);
         }

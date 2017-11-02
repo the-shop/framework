@@ -12,7 +12,7 @@ use Framework\Terminal\Commands\Cron\CronJob;
 
 /**
  * Class EmailProfilePerformance
- * @package App\Console\Commands
+ * @package Application\CronJobs
  */
 class EmailProfilePerformance extends CronJob
 {
@@ -20,6 +20,7 @@ class EmailProfilePerformance extends CronJob
 
     /**
      * Execute the console command.
+     * @return string
      */
     public function execute()
     {
@@ -55,7 +56,8 @@ class EmailProfilePerformance extends CronJob
          */
         $emailService = $app->getService(EmailService::class);
         $emailService->setApplication($app);
-        $templateDirPath = $app->getRootPath() . '/Application/src/Templates/Emails/profile/';
+        $templateDirPath = $app->getRootPath()
+            . $appConfig->getPathValue('emailTemplatesPath');
 
         /**
          * @var ProfilePerformance $performance
@@ -83,7 +85,7 @@ class EmailProfilePerformance extends CronJob
             $data['toDate'] = \DateTime::createFromFormat('U', $unixNow)
                 ->format('Y-m-d');
 
-            // If option is not passed send mail to each profile
+            // If accountants flag is not passed send mail to each profile
             if ($forAccountants === false) {
                 $template = $templateDirPath . 'email-template.html';
                 $dataTemplate = $templateDirPath . 'performance-report-template.html';
@@ -176,5 +178,7 @@ class EmailProfilePerformance extends CronJob
                 );
             }
         }
+
+        return 'CronJob successfully done!';
     }
 }

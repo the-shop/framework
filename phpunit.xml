@@ -23,6 +23,7 @@
         <env name="DATABASE_ADDRESS" value="192.168.33.10:27017"/>
         <env name="DATABASE_NAME" value="framework-test"/>
         <env name="PRIVATE_MAIL_FROM" value="no-reply@the-shop.hr" />
+        <env name="ADMIN_PERFORMANCE_EMAIL_SUBJECT" value="test profile performance - report" />
         <env name="SLACK_TOKEN" value="123456" />
         <env name="WEB_DOMAIN" value="test-theshop" />
         <env name="FILE_TO_UPLOAD_TEST_PATH"

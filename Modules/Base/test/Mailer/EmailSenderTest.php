@@ -47,7 +47,7 @@ class EmailSenderTest extends UnitTest
         $this->assertEquals($testData['to'], $dummyMailer->getTo());
         $this->assertEquals($testData['subject'], $dummyMailer->getSubject());
         $this->assertEquals($testData['options'], $dummyMailer->getOptions());
-        $this->assertEquals('Email was successfully sent!', $out);
+        $this->assertEquals($testData['htmlBody'], $out);
     }
 
     /**

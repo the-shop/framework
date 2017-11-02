@@ -85,8 +85,8 @@ class EmailProfilePerformance extends CronJob
 
             // If option is not passed send mail to each profile
             if ($forAccountants === false) {
-                $template = $templateDirPath . 'email-template.php';
-                $dataTemplate = $templateDirPath . 'performance-report-html.template.php';
+                $template = $templateDirPath . 'email-template.html';
+                $dataTemplate = $templateDirPath . 'performance-report-template.html';
                 $htmlBody = GenerateHtmlData::generateHtml([
                     'template' => $template,
                     'data' => [
@@ -139,13 +139,12 @@ class EmailProfilePerformance extends CronJob
 
         foreach ($overviewRecipients as $recipient) {
             if ($recipient->getAttribute('active') === true) {
-                $template = $templateDirPath . 'email-template.php';
-                $dataTemplate = '';
+                $template = $templateDirPath . 'email-template.html';
 
                 if ($forAccountants === true) {
-                    $dataTemplate = $templateDirPath . 'salary-performance-report-html.template.php';
+                    $dataTemplate = $templateDirPath . 'salary-performance-report-template.html';
                 } else {
-                    $dataTemplate = $templateDirPath . 'performance-report-html.template.php';
+                    $dataTemplate = $templateDirPath . 'performance-report-template.html';
                 }
 
                 $subject = $appConfig

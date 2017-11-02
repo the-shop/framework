@@ -28,7 +28,7 @@ class EmailService implements ServiceInterface
      * @param string $from
      * @param string $subject
      * @param string $to
-     * @param $htmlBody
+     * @param $htmlBodyOptions
      * @param null $textBody
      * @return mixed
      */
@@ -36,7 +36,7 @@ class EmailService implements ServiceInterface
         string $from,
         string $subject,
         string $to,
-        $htmlBody,
+        $htmlBodyOptions,
         $textBody = null
     ) {
         $appConfiguration = $this->getApplication()
@@ -64,7 +64,7 @@ class EmailService implements ServiceInterface
         $emailSender->setFrom($from);
         $emailSender->setSubject($subject);
         $emailSender->setTo($to);
-        $emailSender->setHtmlBody($htmlBody);
+        $emailSender->setHtmlBody($this->generateHtml($htmlBodyOptions));
         if ($textBody !== null) {
             $emailSender->setTextBody($textBody);
         }
@@ -78,5 +78,42 @@ class EmailService implements ServiceInterface
                 'parameters' => [],
             ]
         );
+    }
+
+    /**
+     * @param array $htmlOptions
+     * @return bool|mixed|string
+     */
+    private function generateHtml(array $htmlOptions = [])
+    {
+        if (array_key_exists('template', $htmlOptions) === false
+            || array_key_exists('data', $htmlOptions) === false
+            || array_key_exists('dataTemplate', $htmlOptions['data']) === false
+            || array_key_exists('dataToFill', $htmlOptions['data']) === false
+        ) {
+            throw new \InvalidArgumentException('html options array not formatted correctly.', 400);
+        }
+
+        $htmlTemplate = $htmlOptions['template'];
+
+        if (is_file($htmlOptions['template']) === true) {
+            $htmlTemplate = file_get_contents($htmlOptions['template']);
+        }
+
+        if (empty($htmlOptions['data']['dataTemplate']) === false) {
+            $dataTemplate = file_get_contents($htmlOptions['data']['dataTemplate']);
+
+            foreach ($htmlOptions['data']['dataToFill'] as $data) {
+                $dataFilledTemplate = $dataTemplate;
+
+                foreach ($data as $k => $v) {
+                    str_replace("{{{$k}}}", $v, $dataFilledTemplate);
+                }
+
+                $htmlTemplate .= $dataFilledTemplate;
+            }
+        }
+
+        return $htmlTemplate;
     }
 }

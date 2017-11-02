@@ -2,6 +2,7 @@
 
 namespace Framework\RestApi\Listener;
 
+use Application\Services\EmailService;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Event\ListenerInterface;
 use Framework\Base\Model\BrunoInterface;
@@ -43,13 +44,22 @@ class ConfirmRegistration implements ListenerInterface
                 </html>
                 ";
 
+            /**
+             * @var EmailService $mailSender
+             */
             $mailSender = $this->getApplication()->getService('emailService');
 
             $mailSender->sendEmail(
                 $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
                 $appConfig->getPathValue('env.PRIVATE_MAIL_SUBJECT'),
                 $payload->getAttribute('email'),
-                $htmlBody,
+                [
+                    'template' => $htmlBody,
+                    'data' => [
+                        'dataTemplate' => '',
+                        'dataToFill' => [],
+                    ],
+                ],
                 $textBody
             );
         }

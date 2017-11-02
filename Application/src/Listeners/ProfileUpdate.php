@@ -78,7 +78,13 @@ class ProfileUpdate implements ListenerInterface
                 $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
                 $subject,
                 $payload->getAttribute('email'),
-                $html
+                [
+                    'template' => $html,
+                    'data' => [
+                        'dataTemplate' => '',
+                        'dataToFill' => [],
+                    ],
+                ]
             )
             ) {
                 return $mailResponse;

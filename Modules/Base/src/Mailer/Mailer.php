@@ -42,6 +42,11 @@ abstract class Mailer implements MailerInterface
     ];
 
     /**
+     * @var array
+     */
+    private $attachments = [];
+
+    /**
      * @var
      */
     private $client;
@@ -188,5 +193,38 @@ abstract class Mailer implements MailerInterface
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * @param array $attachments
+     * @return MailerInterface
+     */
+    public function addAttachments(array $attachments = [])
+    {
+        foreach ($attachments as $fileNameAndExtension => $content) {
+            $this->addAttachment($fileNameAndExtension, $content);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $fileName
+     * @param $content
+     * @return MailerInterface
+     */
+    public function addAttachment(string $fileName, $content)
+    {
+        $this->attachments[$fileName] = $content;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttachments()
+    {
+        return $this->attachments;
     }
 }

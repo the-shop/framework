@@ -3,6 +3,7 @@
 namespace Framework\Base\Mailer;
 
 use Framework\Base\Application\Exception\ValidationException;
+use SendGrid\Attachment;
 use SendGrid\Content;
 use SendGrid\Email as EmailAddress;
 use SendGrid\Mail as SendGridEmail;
@@ -21,6 +22,7 @@ class SendGrid extends Mailer
         $htmlBody = $this->getHtmlBody();
         $textBody = $this->getTextBody();
         $options = $this->getOptions();
+        $attachments = $this->getAttachments();
 
         $sg = $this->getClient();
 
@@ -55,6 +57,14 @@ class SendGrid extends Mailer
         }
         if (array_key_exists('bcc', $options) && !empty($options['bcc'])) {
             $mail->personalization[0]->addBcc(['email' => $options['bcc']]);
+        }
+
+        foreach ($attachments as $fileName => $content) {
+            $attachment = new Attachment();
+            $attachment->setFilename($fileName);
+            $attachment->setContent($content);
+            $attachment->setDisposition("attachment");
+            $mail->addAttachment($attachment);
         }
 
         $response = $sg->client->mail()->send()->post($mail);

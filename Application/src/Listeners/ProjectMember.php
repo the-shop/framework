@@ -56,7 +56,7 @@ class ProjectMember implements ListenerInterface
                                            . $projectId
                                            . ')';
 
-                                $service->setMessage($recipient, $message, false, SlackService::HIGH_PRIORITY);
+                                $service->setMessage($recipient, $message, SlackService::HIGH_PRIORITY);
                             }
                         }
                     }
@@ -73,7 +73,7 @@ class ProjectMember implements ListenerInterface
                                            . $projectId
                                            . ')';
 
-                                $service->setMessage($recipient, $message, false, SlackService::HIGH_PRIORITY);
+                                $service->setMessage($recipient, $message, SlackService::HIGH_PRIORITY);
                             }
                         }
                     }

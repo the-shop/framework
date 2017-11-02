@@ -101,16 +101,21 @@ class EmailService implements ServiceInterface
         }
 
         if (empty($htmlOptions['data']['dataTemplate']) === false) {
-            $dataTemplate = file_get_contents($htmlOptions['data']['dataTemplate']);
+            $dataTemplate = null;
+            if (is_file($htmlOptions['data']['dataTemplate']) === true) {
+                $dataTemplate = file_get_contents($htmlOptions['data']['dataTemplate']);
+            }
+            if ($dataTemplate !== null) {
+                foreach ($htmlOptions['data']['dataToFill'] as $data) {
+                    $dataFilledTemplate = $dataTemplate;
 
-            foreach ($htmlOptions['data']['dataToFill'] as $data) {
-                $dataFilledTemplate = $dataTemplate;
+                    foreach ($data as $k => $v) {
+                        $search = "{{" . "$" . $k . "}}";
+                        $dataFilledTemplate = str_replace($search, $v, $dataFilledTemplate);
+                    }
 
-                foreach ($data as $k => $v) {
-                    str_replace("{{{$k}}}", $v, $dataFilledTemplate);
+                    $htmlTemplate .= $dataFilledTemplate;
                 }
-
-                $htmlTemplate .= $dataFilledTemplate;
             }
         }
 

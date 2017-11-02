@@ -1,7 +1,8 @@
 <div style="padding: 20px">
     <p>
         Hey <strong>{{$name}}</strong>,<br/>
-        Here are your stats for period of <strong>{{$fromDate}}</strong> to <strong>{{$toDate}}</strong>:
+        Here are your stats for period of <strong>{{$fromDate}}</strong> to
+        <strong>{{$toDate}}</strong>:
     </p>
 
     <p>
@@ -43,12 +44,9 @@
         Based on your performance, projection of real payout for current month is:
         <strong>{{$monthPrediction}}</strong>
     </p>
+    <p>
+        Oh and your XP changed by <strong>{{$xpDiff}}</strong> and you now have total of
+        <strong>{{$xpTotal}}</strong> XP.
+    </p>
 
-
-    @if($xpDiff !== 0)
-        <p>
-            Oh and your XP changed by <strong>{{$xpDiff}}</strong> and you now have total of
-            <strong>{{$xpTotal}}</strong> XP.
-        </p>
-    @endif
 </div>

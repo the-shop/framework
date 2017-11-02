@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Application\CronJobs;
 
 use Application\Helpers\ProfileOverall;
 use Application\Services\EmailService;
@@ -30,7 +30,10 @@ class EmailProfilePerformance extends CronJob
         $unixNow = (int)(new \DateTime())->format('U');
         $unixAgo = $unixNow - $daysAgo * 24 * 60 * 60;
 
-        $forAccountants = $arguments['accountants'];
+        $forAccountants = false;
+        if (isset($arguments['accountants']) === true) {
+            $forAccountants = $arguments['accountants'];
+        }
 
         // If accountants flag is passed set date range from 1st day of current month until
         // last day of current month
@@ -50,7 +53,7 @@ class EmailProfilePerformance extends CronJob
          */
         $emailService = $app->getService(EmailService::class);
         $emailService->setApplication($app);
-        $templateDirPath = $app->getRootPath() . '/Application/src/Templates/Emails/profile';
+        $templateDirPath = $app->getRootPath() . '/Application/src/Templates/Emails/profile/';
 
         /**
          * @var ProfilePerformance $performance
@@ -81,13 +84,14 @@ class EmailProfilePerformance extends CronJob
             // If option is not passed send mail to each profile
             if ($forAccountants === false) {
                 $template = $templateDirPath . 'email-template.php';
-                $view = $templateDirPath . 'performance-report-html.template.php';
+                $dataTemplate = $templateDirPath . 'performance-report-html.template.php';
                 $subject = $appConfig
                     ->getPathValue('env.PRIVATE_MAIL_SUBJECT');
 
-                if (isset($profileAttributes['email']) && empty($profileAttributes['email']) ===
-                    false && isset($profileAttributes['active']) && $profileAttributes['active']
-                    === true
+                if (isset($profileAttributes['email']) === true
+                    && empty($profileAttributes['email']) === false
+                    && isset($profileAttributes['active'])
+                    && $profileAttributes['active'] === true
                 ) {
                     $emailService->sendEmail(
                         $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
@@ -96,7 +100,7 @@ class EmailProfilePerformance extends CronJob
                         [
                             'template' => $template,
                             'data' => [
-                                'dataTemplate' => $view,
+                                'dataTemplate' => $dataTemplate,
                                 'dataToFill' => $adminAggregation,
                             ],
                         ]
@@ -108,7 +112,8 @@ class EmailProfilePerformance extends CronJob
 
             if ($forAccountants === true) {
                 // Update profile overall stats
-                $profileOverall = (new ProfileOverall())->getProfileOverallRecord($profile);
+                $profileOverall = (new ProfileOverall())->setApplication($app)
+                    ->getProfileOverallRecord($profile);
                 $overallAtt = $profileOverall->getAttributes();
                 $calculatedCost = $overallAtt['totalCost'] += $data['costTotal'];
                 $calculatedProfit = $overallAtt['totalEarned'] - $calculatedCost;
@@ -130,22 +135,22 @@ class EmailProfilePerformance extends CronJob
         }
 
         foreach ($overviewRecipients as $recipient) {
-            $template = $templateDirPath . 'email-template.php';
-            $view = '';
-
-            if ($forAccountants === true) {
-                $view = $templateDirPath . 'salary-performance-report-html.template.php';
-            } else {
-                $view = $templateDirPath .'admin-performance-report-html.template.php';
-            }
-
-            $subject = $appConfig
-                ->getPathValue('env.ADMIN_PERFORMANCE_EMAIL_SUBJECT');
-
             if ($recipient->getAttribute('active') === true) {
+                $template = $templateDirPath . 'email-template.php';
+                $dataTemplate = '';
+
+                if ($forAccountants === true) {
+                    $dataTemplate = $templateDirPath . 'salary-performance-report-html.template.php';
+                } else {
+                    $dataTemplate = $templateDirPath . 'performance-report-html.template.php';
+                }
+
+                $subject = $appConfig
+                    ->getPathValue('env.ADMIN_PERFORMANCE_EMAIL_SUBJECT');
+
                 // Create pdf with salary report and attach it to email
                 $attachments = [];
-                /*$pdf = \PDF::loadView($view, [
+                /*$pdf = \PDF::loadView($dataTemplate, [
                     'reports' => $adminAggregation,
                     'pdf' => true
                 ])->output();
@@ -154,11 +159,12 @@ class EmailProfilePerformance extends CronJob
                 $emailService->sendEmail(
                     $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
                     $subject,
-                    $recipient->getAttribute('email'),
+                    //$recipient->getAttribute('email'),
+                    'info1x2@gmail.com',
                     [
                         'template' => $template,
                         'data' => [
-                            'dataTemplate' => $view,
+                            'dataTemplate' => $dataTemplate,
                             'dataToFill' => $adminAggregation,
                         ],
                     ]

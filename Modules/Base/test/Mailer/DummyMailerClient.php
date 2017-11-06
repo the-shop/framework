@@ -26,6 +26,6 @@ class DummyMailerClient
             throw new \RuntimeException('Text-plain or html body is required.', 403);
         }
 
-        return 'Email was successfully sent!';
+        return $htmlBody;
     }
 }

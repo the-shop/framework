@@ -723,6 +723,15 @@
           ],
           "default": 0
         },
+        "reservationsBy": {
+          "label": "Reservations by",
+          "type": "array",
+          "required": false,
+          "validation": [
+            "array"
+          ],
+          "default": false
+        },
         "priorityCoefficient": {
           "label": "Priority Coefficient",
           "type": "float",

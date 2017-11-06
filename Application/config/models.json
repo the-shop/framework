@@ -722,6 +722,15 @@
             "integer"
           ],
           "default": 0
+        },
+        "priorityCoefficient": {
+          "label": "Priority Coefficient",
+          "type": "float",
+          "required": false,
+          "validation": [
+            "float"
+          ],
+          "default": 0
         }
       }
     },

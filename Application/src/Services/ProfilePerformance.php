@@ -322,7 +322,7 @@ class ProfilePerformance implements ServiceInterface
         $taskOwner->confirmResourceOf('users');
         $task->confirmResourceOf('tasks');
 
-        $taskPriorityCoefficient = 1;
+        $taskPriorityCoefficient = 1.0;
 
         // Get all projects that user is a member of
         $repository = $this->getApplication()

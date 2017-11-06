@@ -371,10 +371,10 @@ abstract class Bruno implements BrunoInterface
         $dirty = [];
 
         foreach ($attributes as $key => $value) {
-            if (!array_key_exists($key, $databaseAttributes)) {
+            if (isset($databaseAttributes[$key]) === false) {
                 $dirty[$key] = $value;
-            } elseif ($value !== $databaseAttributes[$key] &&
-                !$this->originalIsNumericallyEquivalent($key)) {
+            } elseif ($value !== $databaseAttributes[$key]
+                      && $this->originalIsNumericallyEquivalent($key) === false) {
                 $dirty[$key] = $value;
             }
         }

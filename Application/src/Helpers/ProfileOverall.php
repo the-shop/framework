@@ -17,16 +17,16 @@ class ProfileOverall
     /**
      * Get profile overall record
      * @param BrunoInterface $profile
-     * @return BrunoInterface|null
+     * @return BrunoInterface
      */
-    public function getProfileOverallRecord(BrunoInterface $profile)
+    public function getProfileOverallRecord(BrunoInterface $profile): BrunoInterface
     {
         $repository = $this->getApplication()
             ->getRepositoryManager()
             ->getRepositoryFromResourceName('profile_overall');
         $profileId = $profile->getAttribute('_id');
         $profileOverallRecord = $repository->loadOne($profileId);
-        if (!$profileOverallRecord) {
+        if ($profileOverallRecord === null) {
             $profileOverallRecord =
                 $repository->newModel()
                     ->setAttributes([

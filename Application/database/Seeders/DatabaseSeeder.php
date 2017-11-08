@@ -30,7 +30,7 @@ class DatabaseSeeder implements CommandHandlerInterface
         $seeders = $this->getSeeders();
         if (array_key_exists($seederName, $seeders) === true) {
             $seeder = new $seeders[$seederName];
-            $seeder->setApplication($this->getApplication());
+                $seeder->setApplication($this->getApplication());
             return $seeder->handle();
             }
         }

@@ -2,7 +2,7 @@
 
 namespace Application\Services;
 
-use Application\CrudApi\Model\Generic;
+use Framework\CrudApi\Model\Generic;
 use Framework\Base\Application\ServiceInterface;
 use Framework\Base\Helpers\Parse;
 use Application\Helpers\ProfileOverall;

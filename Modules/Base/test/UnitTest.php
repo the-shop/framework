@@ -2,12 +2,12 @@
 
 namespace Framework\Base\Test;
 
-use Application\CrudApi\Controller\Resource;
+use Framework\CrudApi\Controller\Resource;
 use Framework\Base\Application\ApplicationConfiguration;
 use Framework\RestApi\Listener\Acl;
 use Framework\RestApi\RestApi;
 use PHPUnit\Framework\TestCase;
-use Application\CrudApi\Module as CrudApiModule;
+use Framework\CrudApi\Module as CrudApiModule;
 use Framework\Base\Application\BaseApplication;
 use Framework\Base\Request\RequestInterface;
 use Framework\Http\Request\Request;

@@ -1,20 +1,19 @@
 <?php
 
-namespace Application\CrudApi\Controller;
+namespace Framework\CrudApi\Controller;
 
 use Framework\Base\Application\Exception\NotFoundException;
 use Framework\Base\Application\Exception\ValidationException;
 use Framework\Base\Database\DatabaseQueryInterface;
-use Framework\Base\Helpers\Parse;
 use Framework\Base\Model\BrunoInterface;
-use Application\CrudApi\Repository\GenericRepository;
 use Framework\Base\Repository\BrunoRepositoryInterface;
 use Framework\Base\Validation\Validator;
 use Framework\Http\Controller\Http as HttpController;
+use Framework\CrudApi\Repository\GenericRepository;
 
 /**
  * Class Resource
- * @package Application\CrudApi\Controller
+ * @package Framework\CrudApi\Controller
  */
 class Resource extends HttpController
 {
@@ -348,38 +347,6 @@ class Resource extends HttpController
     }
 
     /**
-     * @param string $resourceName
-     * @param string $identifier
-     * @return mixed
-     * @throws NotFoundException
-     */
-    public function getPerformance(string $resourceName, string $identifier)
-    {
-        // Default last month
-        $startDate = strtotime('first day of last month');
-        $endDate = strtotime('last day of last month');
-
-        $query = $this->getQuery();
-
-        if (array_key_exists('unixStart', $query) === true) {
-            $startDate = Parse::unixTimestamp($query['unixStart']);
-        }
-
-        if (array_key_exists('unixEnd', $query) === true) {
-            $endDate = Parse::unixTimestamp($query['unixEnd']);
-        }
-
-        $profile = $this->getRepositoryFromResourceName($resourceName)->loadOne($identifier);
-        if (!$profile) {
-            throw new NotFoundException('Profile not found', 404);
-        }
-
-        $profilePerformance = $this->getApplication()->getService('profilePerformance');
-
-        return $profilePerformance->aggregateForTimeRange($profile, $startDate, $endDate);
-    }
-
-    /**
      * @param array $options
      */
     private function validateRequiredField(array $options = [])
@@ -513,7 +480,7 @@ class Resource extends HttpController
             throw $exception;
         }
 
-        $query->setDatabase(getenv('DATABASE_NAME', 'framework'));
+        $query->setDatabase(getenv('DATABASE_NAME'));
         $query->setCollection($repository->getResourceName());
         $query->setLimit($limit);
         $query->setOffset($offset);

@@ -2,7 +2,7 @@
 
 namespace Application\CronJobs;
 
-use Application\CrudApi\Model\Generic;
+use Framework\CrudApi\Model\Generic;
 use Application\Services\SlackService;
 use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Helpers\Parse;

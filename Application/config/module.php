@@ -1,8 +1,8 @@
 <?php
 
-use Application\CrudApi\Model\Generic as GenericModel;
+use Framework\CrudApi\Model\Generic as GenericModel;
 use Framework\Base\Mongo\MongoAdapter;
-use Application\CrudApi\Repository\GenericRepository;
+use Framework\CrudApi\Repository\GenericRepository;
 use Application\Services\SlackService;
 use Application\CronJobs\SlackSendMessage;
 use Application\CronJobs\AdminsQAWaitingTasks;
@@ -38,37 +38,37 @@ return [
         [
             'get',
             '/{resourceName}/{identifier}/performance',
-            '\Application\CrudApi\Controller\Resource::getPerformance',
+            '\Application\Controller::getPerformance',
         ],
         [
             'get',
             '/{resourceName}',
-            '\Application\CrudApi\Controller\Resource::loadAll',
+            '\Application\Controller::loadAll',
         ],
         [
             'get',
             '/{resourceName}/{identifier}',
-            '\Application\CrudApi\Controller\Resource::load',
+            '\Application\Controller::load',
         ],
         [
             'post',
             '/{resourceName}',
-            '\Application\CrudApi\Controller\Resource::create',
+            '\Application\Controller::create',
         ],
         [
             'put',
             '/{resourceName}/{identifier}',
-            '\Application\CrudApi\Controller\Resource::update',
+            '\Application\Controller::update',
         ],
         [
             'patch',
             '/{resourceName}/{identifier}',
-            '\Application\CrudApi\Controller\Resource::partialUpdate',
+            '\Application\Controller::partialUpdate',
         ],
         [
             'delete',
             '/{resourceName}/{identifier}',
-            '\Application\CrudApi\Controller\Resource::delete',
+            '\Application\Controller::delete',
         ],
     ],
     'repositories' => [

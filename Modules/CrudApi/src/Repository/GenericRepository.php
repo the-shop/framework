@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\CrudApi\Repository;
+namespace Framework\CrudApi\Repository;
 
 use Framework\Base\Database\DatabaseQueryInterface;
 use Framework\Base\Model\BrunoInterface;
@@ -8,7 +8,7 @@ use Framework\Base\Repository\BrunoRepository;
 
 /**
  * Class GenericRepository
- * @package Application\CrudApi\Repository
+ * @package Framework\CrudApi\Repository
  */
 class GenericRepository extends BrunoRepository
 {

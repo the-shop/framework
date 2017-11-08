@@ -26,7 +26,7 @@
         <env name="ADMIN_PERFORMANCE_EMAIL_SUBJECT" value="test profile performance - report" />
         <env name="SLACK_TOKEN" value="123456" />
         <env name="WEB_DOMAIN" value="test-theshop" />
-        <env name="FILE_TO_UPLOAD_TEST_PATH"
-             value="/Modules/Base/test/FileUpload/test.txt"/>
+        <env name="FILE_TO_UPLOAD_TEST_PATH" value="/Modules/Base/test/FileUpload/test.txt"/>
+        <env name="APPLICATION_CONFIG_PATH" value="/Application/config/"/>
     </php>
 </phpunit>

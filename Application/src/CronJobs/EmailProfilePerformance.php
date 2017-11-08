@@ -2,12 +2,12 @@
 
 namespace Application\CronJobs;
 
-use Application\Helpers\GenerateHtmlData;
 use Application\Helpers\ProfileOverall;
 use Application\Services\EmailService;
 use Application\Services\ProfilePerformance;
 use Dompdf\Dompdf;
 use Framework\Base\Application\ApplicationAwareTrait;
+use Framework\Http\Render\Mustache;
 use Framework\Terminal\Commands\Cron\CronJob;
 
 /**
@@ -16,6 +16,7 @@ use Framework\Terminal\Commands\Cron\CronJob;
  */
 class EmailProfilePerformance extends CronJob
 {
+
     use ApplicationAwareTrait;
 
     /**
@@ -26,6 +27,10 @@ class EmailProfilePerformance extends CronJob
     {
         $app = $this->getApplication();
         $appConfig = $app->getConfiguration();
+        $mustache = new Mustache([
+            'templatePath' => $app->getRootPath()
+            . $appConfig->getPathValue('emailTemplatesPath')
+        ]);
 
         // Set time range
         $arguments = $this->getArgs();
@@ -42,11 +47,11 @@ class EmailProfilePerformance extends CronJob
         // last day of current month
         if ($forAccountants === true) {
             $unixNow = (int)(new \DateTime())
-                ->modify('last day of this month')
-                ->format('U');
+                            ->modify('last day of this month')
+                            ->format('U');
             $unixAgo = (int)(new \DateTime())
-                ->modify('first day of this month')
-                ->format('U');
+                            ->modify('first day of this month')
+                            ->format('U');
         }
 
         $adminAggregation = [];
@@ -56,8 +61,6 @@ class EmailProfilePerformance extends CronJob
          */
         $emailService = $app->getService(EmailService::class);
         $emailService->setApplication($app);
-        $templateDirPath = $app->getRootPath()
-            . $appConfig->getPathValue('emailTemplatesPath');
 
         /**
          * @var ProfilePerformance $performance
@@ -66,7 +69,7 @@ class EmailProfilePerformance extends CronJob
 
         // Get profiles
         $usersRepository = $app->getRepositoryManager()
-            ->getRepositoryFromResourceName('users');
+                ->getRepositoryFromResourceName('users');
         $profiles = $usersRepository->loadMultiple(['employee' => true]);
 
         foreach ($profiles as $profile) {
@@ -81,15 +84,15 @@ class EmailProfilePerformance extends CronJob
             $data = $performance->aggregateForTimeRange($profile, $unixAgo, $unixNow);
             $data['name'] = $profileAttributes['name'];
             $data['fromDate'] = \DateTime::createFromFormat('U', $unixAgo)
-                ->format('Y-m-d');
+                    ->format('Y-m-d');
             $data['toDate'] = \DateTime::createFromFormat('U', $unixNow)
-                ->format('Y-m-d');
+                    ->format('Y-m-d');
 
             // If accountants flag is not passed send mail to each profile
             if ($forAccountants === false) {
-                $template = $templateDirPath . 'email-template.html';
-                $dataTemplate = $templateDirPath . 'performance-report-template.html';
-                $htmlBody = GenerateHtmlData::generateHtml([
+                $template = 'email-template.html';
+                $dataTemplate = 'performance-report-template.html';
+                $htmlBody = $mustache->generateHtml([
                     'template' => $template,
                     'data' => [
                         'dataTemplate' => $dataTemplate,
@@ -97,7 +100,7 @@ class EmailProfilePerformance extends CronJob
                     ],
                 ]);
                 $subject = $appConfig
-                    ->getPathValue('env.ADMIN_PERFORMANCE_EMAIL_SUBJECT');
+                        ->getPathValue('env.ADMIN_PERFORMANCE_EMAIL_SUBJECT');
 
                 if (isset($profileAttributes['email']) === true
                     && empty($profileAttributes['email']) === false
@@ -118,7 +121,7 @@ class EmailProfilePerformance extends CronJob
             if ($forAccountants === true) {
                 // Update profile overall stats
                 $profileOverall = (new ProfileOverall())->setApplication($app)
-                    ->getProfileOverallRecord($profile);
+                        ->getProfileOverallRecord($profile);
                 $overallAtt = $profileOverall->getAttributes();
                 $calculatedCost = $overallAtt['totalCost'] += $data['costTotal'];
                 $calculatedProfit = $overallAtt['totalEarned'] - $calculatedCost;
@@ -141,20 +144,20 @@ class EmailProfilePerformance extends CronJob
 
         foreach ($overviewRecipients as $recipient) {
             if ($recipient->getAttribute('active') === true) {
-                $template = $templateDirPath . 'email-template.html';
+                $template =  'email-template.html';
 
                 if ($forAccountants === true) {
-                    $dataTemplate = $templateDirPath . 'salary-performance-report-template.html';
+                    $dataTemplate = 'salary-performance-report-template.html';
                 } else {
-                    $dataTemplate = $templateDirPath . 'performance-report-template.html';
+                    $dataTemplate = 'performance-report-template.html';
                 }
 
                 $subject = $appConfig
-                    ->getPathValue('env.ADMIN_PERFORMANCE_EMAIL_SUBJECT');
+                        ->getPathValue('env.ADMIN_PERFORMANCE_EMAIL_SUBJECT');
 
                 // Create pdf with salary report and attach it to email
                 $attachments = [];
-                $htmlBody = GenerateHtmlData::generateHtml([
+                $htmlBody = $mustache->generateHtml([
                     'template' => $template,
                     'data' => [
                         'dataTemplate' => $dataTemplate,
@@ -170,11 +173,11 @@ class EmailProfilePerformance extends CronJob
                 $attachments['SalaryReport.pdf'] = $pdf;
 
                 $emailService->sendEmail(
-                    $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),
-                    $subject,
-                    $recipient->getAttribute('email'),
-                    $htmlBody,
-                    $attachments
+                        $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'), 
+                        $subject, 
+                        $recipient->getAttribute('email'), 
+                        $htmlBody, 
+                        $attachments
                 );
             }
         }

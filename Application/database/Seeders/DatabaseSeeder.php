@@ -3,12 +3,13 @@
 namespace Application\Database\Seeders;
 
 use Framework\Base\Application\ApplicationAwareTrait;
+use Framework\Terminal\Commands\CommandHandlerInterface;
 
 /**
  * Class DatabaseSeeder
  * @package Application\Database\Seeders
  */
-class DatabaseSeeder
+class DatabaseSeeder implements CommandHandlerInterface
 {
     use ApplicationAwareTrait;
 
@@ -29,10 +30,10 @@ class DatabaseSeeder
         $seeders = $this->getSeeders();
         if (array_key_exists($seederName, $seeders) === true) {
             $seeder = new $seeders[$seederName];
-            $seeder->setApplication($this->getApplication());
+                $seeder->setApplication($this->getApplication());
             return $seeder->handle();
+            }
         }
-    }
 
     /**
      * @return array
@@ -52,5 +53,18 @@ class DatabaseSeeder
         $this->seeders[$seederName] = $fullyQualifiedClassPath;
 
         return $this;
+    }
+
+    /**
+     * @param array $requestedSeeders
+     * @return array
+     */
+    public function run(array $requestedSeeders = []) : array
+    {
+        $handlerOutput = [];
+        foreach ($requestedSeeders as $requestedSeeder) {
+                array_push($handlerOutput, $this->handle($requestedSeeder));
+        }
+        return $handlerOutput;
     }
 }

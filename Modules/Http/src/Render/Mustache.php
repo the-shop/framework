@@ -12,23 +12,31 @@ use Mustache_Engine;
  */
 class Mustache extends Render
 {
+
     /**
      * @var null
      */
     private $templateName = '';
+    private $templatePath = '';
+
+    public function __construct(array $config = [])
+    {
+        if (isset($config["templatePath"])) {
+            $this->setTemplatePath($config["templatePath"]);
+        }
+    }
 
     public function render(ResponseInterface $response)
     {
         $rootPath = str_replace('public', '', getcwd());
         $mustacheEngine = new Mustache_Engine(
-            [
-                'loader' => new \Mustache_Loader_FilesystemLoader(
-                    $rootPath . getenv('MUSTACHE_TEMPLATES_DIR_PATH'),
-                    [
-                        'extension' => getenv('MUSTACHE_FILE_EXTENSION')
+                [
+            'loader' => new \Mustache_Loader_FilesystemLoader(
+                    $rootPath . getenv('MUSTACHE_TEMPLATES_DIR_PATH'), [
+                'extension' => getenv('MUSTACHE_FILE_EXTENSION')
                     ]
-                )
-            ]
+            )
+                ]
         );
 
         $responseBody = $response->getBody();
@@ -58,5 +66,55 @@ class Mustache extends Render
     public function getTemplateName()
     {
         return $this->templateName;
+    }
+
+    /**
+     * @return null
+     */
+    public function getTemplatePath()
+    {
+        return $this->templatePath;
+    }
+
+    /**
+     * @param string $templatePath
+     */
+    public function setTemplatePath(string $templatePath)
+    {
+        $this->templatePath = $templatePath;
+    }
+
+    public function generateHtml(array $htmlOptions = [])
+    {
+
+        if (array_key_exists('template', $htmlOptions) === false
+                || array_key_exists('data', $htmlOptions) === false
+                || array_key_exists('dataTemplate', $htmlOptions['data']) === false
+                || array_key_exists('dataToFill', $htmlOptions['data']) === false
+        ) {
+            throw new \InvalidArgumentException('html options array not formatted correctly.', 400);
+        }
+
+        $htmlTemplate = '';
+        $mustacheEngine = new Mustache_Engine(
+                [
+            'loader' => new \Mustache_Loader_FilesystemLoader(
+                    $this->getTemplatePath(), [
+                'extension' => 'html'
+                    ]
+            )
+                ]
+        );
+        $htmlTemplate = $mustacheEngine->render( $htmlOptions['template']);
+
+        if (empty($htmlOptions['data']['dataTemplate']) === false) {
+            foreach ($htmlOptions['data']['dataToFill'] as $data) {
+                $htmlTemplate .= $mustacheEngine->render($htmlOptions['data']['dataTemplate'], $data);
+            }
+        }
+
+        echo($htmlTemplate."\n\n\n");
+
+        return $htmlTemplate;
     }
 }

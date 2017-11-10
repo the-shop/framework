@@ -1,9 +1,9 @@
 {
-  "name": "the-shop/fortytwo-restapi",
-  "description": "Rest API application implementation using the-shop/fortytwo-* packages",
+  "name": "the-shop/fortytwo-http",
+  "description": "HTTP library implementation using the-shop/fortytwo-* packages",
   "license": "MIT",
   "type": "library",
-  "homepage": "https://github.com/the-shop/fortytwo-restapi",
+  "homepage": "https://github.com/the-shop/fortytwo-http",
   "authors": [
     {
       "name": "The Shop d.o.o.",
@@ -12,8 +12,8 @@
   ],
   "require": {
     "the-shop/fortytwo-base": "0.1.0",
-    "the-shop/fortytwo-http": "0.1.0",
-    "the-shop/fortytwo-crudapi": "0.1.0",
+    "nikic/fast-route": "1.2",
+    "mustache/mustache": "^2.12",
     "symfony/http-foundation": "^3.3"
   },
   "require-dev": {
@@ -22,13 +22,13 @@
   },
   "autoload": {
     "psr-4": {
-      "Framework\\RestApi\\": "src/",
-      "Framework\\RestApi\\Configuration\\": "config/"
+      "Framework\\Http\\": "src/",
+      "Framework\\Http\\Configuration\\": "config/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Framework\\RestApi\\Test\\": "test/"
+      "Framework\\Http\\Test\\": "test/"
     }
   },
   "scripts": {

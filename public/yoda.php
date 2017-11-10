@@ -7,11 +7,11 @@ $dotenv->load(__DIR__ . '/../.env');
 
 $appConfig = new \Framework\Base\Application\ApplicationConfiguration();
 $appConfig->setRegisteredModules([
-    \Application\CrudApi\Module::class,
+    \Framework\CrudApi\Module::class,
     \Framework\Terminal\Module::class
 ]);
 
-$app = new \Framework\Terminal\TerminalApp($appConfig);
+$app = new \Framework\Terminal\Yoda($appConfig);
 
 try {
     $app->run();

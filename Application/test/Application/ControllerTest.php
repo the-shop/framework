@@ -1,27 +1,20 @@
 <?php
 
-namespace Application\Test\Application\CrudApi\Controller;
+namespace Application\Test\Application;
 
-use Application\CrudApi\Controller\Resource;
-use Application\CrudApi\Model\Generic;
+use Framework\CrudApi\Controller\Resource;
+use Framework\CrudApi\Model\Generic;
+use Framework\CrudApi\Test\HelperTrait;
 use Framework\Base\Test\UnitTest;
 use Framework\Http\Request\Request;
-use Application\Test\Application\Traits\Helpers;
 
 /**
  * Class ResourceTest
- * @package ApplicationTest\Application\CrudApi\Controller
+ * @package Application\Test\Application
  */
-class ResourceTest extends UnitTest
+class ControllerTest extends UnitTest
 {
-    use Helpers;
-
-    public function tearDown()
-    {
-        $this->purgeCollection('projects');
-        $this->purgeCollection('tasks');
-        $this->purgeCollection('sprints');
-    }
+    use HelperTrait;
 
     /**
      * @var array
@@ -98,7 +91,6 @@ class ResourceTest extends UnitTest
                 'password' => 'test'
             ]
         );
-
         $createdModel = $response->getBody();
 
         $modelAttributes = $createdModel->getAttributes();
@@ -111,19 +103,29 @@ class ResourceTest extends UnitTest
         return $createdModel;
     }
 
-    public function testGetAllUsers()
+    /**
+     * @param \Framework\CrudApi\Model\Generic $model
+     *
+     * @depends testCreateModel
+     * @return \Framework\CrudApi\Model\Generic
+     */
+    public function testGetAllUsers(Generic $model)
     {
         $response = $this->makeHttpRequest('GET', '/api/v1/users');
 
         $responseBody = $response->getBody();
 
         $this->assertNotEmpty($responseBody);
+
+        return $model;
     }
 
     /**
      * Resource controller -  test load one model - model found
-     * @depends testCreateModel
+     *
      * @param Generic $model
+     *
+     * @depends testGetAllUsers
      * @return mixed;
      */
     public function testLoadOneModel(Generic $model)
@@ -483,5 +485,7 @@ class ResourceTest extends UnitTest
                 'email' => $email,
             ]
         );
+
+        $this->purgeCollection('users');
     }
 }

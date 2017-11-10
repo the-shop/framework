@@ -11,7 +11,7 @@ $dotenv->load(realpath(dirname(__DIR__) . '/.env'));
 $appConfig = new \Framework\Base\Application\ApplicationConfiguration();
 $appConfig->setRegisteredModules([
     \Framework\RestApi\Module::class,
-    \Application\CrudApi\Module::class
+    \Framework\CrudApi\Module::class
 ]);
 
 $app = new \Framework\RestApi\RestApi($appConfig);

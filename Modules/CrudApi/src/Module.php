@@ -1,14 +1,13 @@
 <?php
 
-namespace Application\CrudApi;
+namespace Framework\CrudApi;
 
-use Application\Services\ProfilePerformance;
 use Framework\Base\Module\BaseModule;
-use Application\CrudApi\Repository\GenericRepository;
+use Framework\CrudApi\Repository\GenericRepository;
 
 /**
  * Class Module
- * @package Application\CrudApi
+ * @package Framework\CrudApi
  */
 class Module extends BaseModule
 {
@@ -20,7 +19,10 @@ class Module extends BaseModule
         $application = $this->getApplication();
 
         // Let's read all files from module config folder and set to Configuration
-        $configDirPath = $application->getRootPath() . '/Application/config/';
+        $appConfigPath = $this->getApplication()
+                              ->getConfiguration()
+                              ->getPathValue('env.APPLICATION_CONFIG_PATH');
+        $configDirPath = $application->getRootPath() . $appConfigPath;
         $this->setModuleConfiguration($configDirPath);
         $appConfig = $application->getConfiguration();
 

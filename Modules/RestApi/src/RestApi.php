@@ -8,6 +8,7 @@ use Framework\Http\Render\Json;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
 use Framework\Http\Router\Dispatcher;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 /**
  * Class RestApi
@@ -35,7 +36,7 @@ class RestApi extends BaseApplication
     {
         $request = new Request();
 
-        $helperRequest = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+        $helperRequest = SymfonyRequest::createFromGlobals();
 
         $ctHeader = $helperRequest->headers->get('Content-Type');
         if (strpos($ctHeader, 'application/json') === 0) {

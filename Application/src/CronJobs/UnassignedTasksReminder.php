@@ -7,7 +7,7 @@ use Framework\Base\Application\ApplicationAwareTrait;
 use Framework\Base\Helpers\Parse;
 use Framework\Base\Model\BrunoInterface;
 use Framework\Terminal\Commands\Cron\CronJob;
-use Application\CrudApi\Model\Generic;
+use Framework\CrudApi\Model\Generic;
 
 /**
  * Class UnassignedTasksReminder

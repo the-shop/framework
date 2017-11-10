@@ -2,7 +2,6 @@
 
 namespace Framework\Base\Queue\Adapters;
 
-use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 

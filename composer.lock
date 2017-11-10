@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6267c5e86dcc376eeffdff29de947428",
-    "content-hash": "24263bbbb6193870d682a87127034aba",
+    "hash": "739ac2b7a974126636fb7d64b4c54105",
+    "content-hash": "30b51dc45265a8f92dad309430dd966d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.34",
+            "version": "3.37.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "adc4e9928730cb65b9b7914084cbf1d8c988419a"
+                "reference": "f3166fbdf14cea6898729dd945eaabdd211abe8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/adc4e9928730cb65b9b7914084cbf1d8c988419a",
-                "reference": "adc4e9928730cb65b9b7914084cbf1d8c988419a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f3166fbdf14cea6898729dd945eaabdd211abe8f",
+                "reference": "f3166fbdf14cea6898729dd945eaabdd211abe8f",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-10-26 20:45:00"
+            "time": "2017-11-07 20:32:15"
         },
         {
             "name": "dompdf/dompdf",
@@ -375,52 +375,6 @@
                 "url"
             ],
             "time": "2017-03-20 17:10:46"
-        },
-        {
-            "name": "lygav/php-slackbot",
-            "version": "0.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lygav/php-slackbot.git",
-                "reference": "c3266ebf1f4a30a853e2b86a7ef8bdd188da76cb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lygav/php-slackbot/zipball/c3266ebf1f4a30a853e2b86a7ef8bdd188da76cb",
-                "reference": "c3266ebf1f4a30a853e2b86a7ef8bdd188da76cb",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "lygav\\slackbot\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Vladimir (Vladi) Lyga",
-                    "email": "lyvladi@gmail.com",
-                    "homepage": "https://github.com/lygav"
-                }
-            ],
-            "description": "Simple, easy to use, PHP package for sending messages to Slack. Send pretty, colourful messages with rich attachments quickly with this friendly API",
-            "homepage": "https://github.com/lygav/php-slackbot",
-            "keywords": [
-                "php-slackbot",
-                "slack",
-                "slackbot"
-            ],
-            "time": "2016-12-01 13:50:25"
         },
         {
             "name": "mongodb/mongodb",
@@ -1612,16 +1566,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "5.2.2",
+            "version": "5.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "8ed1902a57849e117b5651fc1a5c48110946c06b"
+                "reference": "8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/8ed1902a57849e117b5651fc1a5c48110946c06b",
-                "reference": "8ed1902a57849e117b5651fc1a5c48110946c06b",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d",
+                "reference": "8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d",
                 "shasum": ""
             },
             "require": {
@@ -1630,7 +1584,7 @@
                 "php": "^7.0",
                 "phpunit/php-file-iterator": "^1.4.2",
                 "phpunit/php-text-template": "^1.2.1",
-                "phpunit/php-token-stream": "^1.4.11 || ^2.0",
+                "phpunit/php-token-stream": "^2.0",
                 "sebastian/code-unit-reverse-lookup": "^1.0.1",
                 "sebastian/environment": "^3.0",
                 "sebastian/version": "^2.0.1",
@@ -1672,7 +1626,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-08-03 12:40:43"
+            "time": "2017-11-03 13:47:33"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -2050,30 +2004,30 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "2.0.2",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "ae068fede81d06e7bb9bb46a367210a3d3e1fe6a"
+                "reference": "1174d9018191e93cb9d719edec01257fc05f8158"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/ae068fede81d06e7bb9bb46a367210a3d3e1fe6a",
-                "reference": "ae068fede81d06e7bb9bb46a367210a3d3e1fe6a",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/1174d9018191e93cb9d719edec01257fc05f8158",
+                "reference": "1174d9018191e93cb9d719edec01257fc05f8158",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.0",
                 "sebastian/diff": "^2.0",
-                "sebastian/exporter": "^3.0"
+                "sebastian/exporter": "^3.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.0"
+                "phpunit/phpunit": "^6.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -2104,13 +2058,13 @@
                 }
             ],
             "description": "Provides the functionality to compare PHP values for equality",
-            "homepage": "http://www.github.com/sebastianbergmann/comparator",
+            "homepage": "https://github.com/sebastianbergmann/comparator",
             "keywords": [
                 "comparator",
                 "compare",
                 "equality"
             ],
-            "time": "2017-08-03 07:14:59"
+            "time": "2017-11-03 07:16:52"
         },
         {
             "name": "sebastian/diff",

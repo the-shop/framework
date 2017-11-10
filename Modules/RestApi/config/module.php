@@ -5,10 +5,10 @@ use Framework\RestApi\Listener\AuthenticationListener;
 use Framework\RestApi\Listener\ExceptionFormatter;
 use Framework\RestApi\Listener\ResponseFormatter;
 use Framework\RestApi\Listener\ConfirmRegistration;
+use Framework\RestApi\Listener\RequestLogger;
 use Framework\Base\Application\Exception\ExceptionHandler;
 use Framework\Base\Application\BaseApplication;
-use Application\CrudApi\Controller\Resource;
-use Framework\RestApi\Listener\RequestLogger;
+use Framework\CrudApi\Controller\Resource;
 
 return [
     'listeners' => [
@@ -28,6 +28,7 @@ return [
         ],
     ],
     'env' => [
+        'APPLICATION_CONFIG_PATH' => getenv('APPLICATION_CONFIG_PATH'),
         'SENTRY_DSN' => getenv('SENTRY_DSN'),
         'SENDGRID_API_KEY' => getenv('SENDGRID_API_KEY'),
         'FILE_LOGGER_FILE_NAME' => getenv('FILE_LOGGER_FILE_NAME'),

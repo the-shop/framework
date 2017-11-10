@@ -47,7 +47,7 @@ class ConfirmRegistration implements ListenerInterface
             /**
              * @var EmailService $mailSender
              */
-            $mailSender = $this->getApplication()->getService('emailService');
+            $mailSender = $this->getApplication()->getService(EmailService::class);
 
             $mailSender->sendEmail(
                 $appConfig->getPathValue('env.PRIVATE_MAIL_FROM'),

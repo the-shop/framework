@@ -13,7 +13,7 @@ use Framework\Http\Response\Response;
  * Class TerminalApp
  * @package Framework\Base\TerminalApp
  */
-class TerminalApp extends BaseApplication
+class Yoda extends BaseApplication
 {
     /**
      * TerminalApp constructor.
